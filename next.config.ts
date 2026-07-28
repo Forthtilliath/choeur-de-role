@@ -17,7 +17,7 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} cloud.umami.is`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: *.supabase.co *.r2.dev i.ytimg.com *.tile.openstreetmap.org",
+  "img-src 'self' data: blob: *.supabase.co *.r2.dev i.ytimg.com *.tile.openstreetmap.org randomuser.me",
   "media-src 'self' *.r2.cloudflarestorage.com",
   "frame-src maps.google.com www.google.com www.youtube.com",
   "worker-src 'self'",
@@ -63,6 +63,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '*.r2.dev',
+      },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
       },
     ],
   },
