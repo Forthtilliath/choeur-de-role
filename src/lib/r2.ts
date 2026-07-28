@@ -15,4 +15,4 @@ export const r2 = new S3Client({
 
 export const R2_BUCKET = env.CLOUDFLARE_R2_BUCKET_NAME;
 export const R2_IMAGES_BUCKET = env.CLOUDFLARE_R2_IMAGES_BUCKET_NAME;
-export const R2_PUBLIC_URL = env.CLOUDFLARE_R2_PUBLIC_URL.replace(/\/+$/, '');
+export const R2_PUBLIC_URL = (env.CLOUDFLARE_R2_PUBLIC_URL ?? '').replace(/\/+$/, '');
