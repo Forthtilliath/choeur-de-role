@@ -18,7 +18,7 @@ const csp = [
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''} cloud.umami.is`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: *.supabase.co *.r2.dev i.ytimg.com *.tile.openstreetmap.org randomuser.me",
-  "media-src 'self' *.r2.cloudflarestorage.com",
+  `media-src 'self' *.r2.cloudflarestorage.com${isDev ? ' http://localhost:54321 http://127.0.0.1:54321' : ''}`,
   "frame-src maps.google.com www.google.com www.youtube.com",
   "worker-src 'self'",
   `connect-src 'self' https://*.supabase.co wss://*.supabase.co cloud.umami.is https://gateway.umami.is https://*.r2.cloudflarestorage.com https://*.ingest.sentry.io${isDev ? ' ws: http://localhost:54321 http://127.0.0.1:54321' : ''}`,
