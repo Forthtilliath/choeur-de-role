@@ -1,0 +1,1 @@
+alter table performances add column if not exists venue text;
