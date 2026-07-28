@@ -1,0 +1,26 @@
+diff --git a/node_modules/playwright/lib/common/index.js b/node_modules/playwright/lib/common/index.js
+index ace2c1a..afc0e84 100644
+--- a/node_modules/playwright/lib/common/index.js
++++ b/node_modules/playwright/lib/common/index.js
+@@ -869,7 +869,7 @@ function resolve(specifier, context, nextResolve) {
+     const filename = import_url.default.fileURLToPath(context.parentURL);
+     const resolved = resolveHook(filename, specifier);
+     if (resolved !== void 0) {
+-      specifier = context.conditions?.includes("import") ? import_url.default.pathToFileURL(resolved).toString() : resolved;
++      specifier = (typeof context.conditions?.has === "function" ? context.conditions.has("import") : context.conditions?.includes?.("import")) ? import_url.default.pathToFileURL(resolved).toString() : resolved;
+     }
+   }
+   const result2 = nextResolve(specifier, context);
+diff --git a/node_modules/playwright/lib/transform/esmLoader.js b/node_modules/playwright/lib/transform/esmLoader.js
+index 2ae509c..2e8b754 100644
+--- a/node_modules/playwright/lib/transform/esmLoader.js
++++ b/node_modules/playwright/lib/transform/esmLoader.js
+@@ -5629,7 +5629,7 @@ function resolve(specifier, context, nextResolve) {
+     const filename = import_url.default.fileURLToPath(context.parentURL);
+     const resolved = resolveHook(filename, specifier);
+     if (resolved !== void 0) {
+-      specifier = context.conditions?.includes("import") ? import_url.default.pathToFileURL(resolved).toString() : resolved;
++      specifier = (typeof context.conditions?.has === "function" ? context.conditions.has("import") : context.conditions?.includes?.("import")) ? import_url.default.pathToFileURL(resolved).toString() : resolved;
+     }
+   }
+   const result2 = nextResolve(specifier, context);

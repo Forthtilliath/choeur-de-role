@@ -1,0 +1,343 @@
+@import 'tailwindcss' source('../');
+
+@keyframes nav-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes slide-down {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-in {
+  animation: page-in 0.2s ease-out;
+}
+
+@layer base {
+  :root {
+    --tw-text-shadow-blur: 0px;
+    @property --tw-text-shadow-blur {
+      syntax: '<length>';
+      inherits: true;
+      initial-value: 0px;
+    }
+
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+@utility shadow-voice-badge {
+  box-shadow: var(--shadow-voice-badge);
+}
+
+@utility shadow-member-photo {
+  box-shadow: var(--shadow-member-photo);
+}
+
+@theme {
+  --color-soprano: oklch(69.8% 0.1613 55.14); /* With black : 7.44 */ /* #EFA462 */
+  --color-alto: oklch(96.8% 0.211 109.8); /* With black : 19.56 */
+  --color-tenor: oklch(73.94% 0.1829 151.8); /* With black : 9.77 */ /* #2CCE6F */
+  --color-bass: oklch(65.02% 0.1304 242.2); /* With black : 6.57 */ /* #7BBBE5 */
+  --color-pianist: oklch(73.07% 0.2099 345.6);
+  --color-choir-director: oklch(64.89% 0.237 26.97);
+
+  --color-app-green: oklch(48% 0.19 295); /* primaire "Chœur de Rôle" : violet/indigo (thème JDR) */
+  --color-trombi-link: oklch(38% 0.17 295);
+  --color-app-blue: oklch(65% 0.15 75); /* secondaire : or/ambre (dés, fantasy) */
+  --color-app-blue-dark: oklch(45% 0.13 75); /* même teinte, assez sombre pour texte blanc */
+
+  --color-primary: var(--color-app-green);
+  /* Variante claire pour texte violet sur fond sombre (nav active state) — le primary
+     lui-même doit rester assez sombre pour le texte blanc des boutons, ces deux usages
+     n'ont pas la même valeur de contraste optimale. */
+  --color-primary-light: var(--color-app-green);
+  --color-secondary: var(--color-app-blue);
+  --color-secondary-dark: var(--color-app-blue-dark);
+  --color-accent: var(--soprano);
+  --color-foreground: oklch(15% 0.01 295);
+  --color-muted: oklch(0.97 0 0);
+  --color-border: oklch(88% 0.01 295);
+
+  --color-background: oklch(99% 0.005 295);
+  --color-background-secondary: oklch(97% 0.015 295);
+  --color-background-tertiary: oklch(95% 0.02 295);
+  --color-background-admin: oklch(90.019% 0.05193 18.054);
+
+  --color-backdrop: oklch(10% 0.02 295);
+
+  --spacing-full-wo-header: calc(100dvh - 4rem - 1px);
+
+  --spacing-border-header: 1px;
+  --spacing-header-visitor: calc(4rem + var(--spacing-border-header));
+  --spacing-header-chorister: calc(
+    var(--spacing-header-visitor) + 2.5rem + var(--spacing-border-header)
+  );
+
+  --spacing-main-visitor: calc(100dvh - var(--spacing-header-visitor));
+  --spacing-main-chorister: calc(100dvh - var(--spacing-header-chorister));
+
+  --shadow-voice-badge: 0 0 6px 2px oklch(0% 0 0 / 0.8);
+  --shadow-member-photo: 0 0 4px 2px oklch(0% 0 0 / 0.7);
+
+  --shadow-header: 0 1px 8px 0 var(--color-red-500)/0.08;
+
+  --aspect-poster: 875 / 1241;
+}
+
+
+.text-shadow-outline {
+  --tw-text-shadow-outline:
+    -1px -1px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    0px -1px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    1px -1px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    -1px 0px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    0px 0px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    1px 0px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    -1px 1px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    0px 1px var(--tw-text-shadow-blur) var(--tw-text-shadow-color),
+    1px 1px var(--tw-text-shadow-blur) var(--tw-text-shadow-color);
+  text-shadow: var(--tw-text-shadow-outline);
+}
+
+html {
+  color-scheme: light dark;
+  overflow-y: scroll;
+  overflow-x: clip;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-foreground: oklch(93% 0.008 295);
+    --color-background: oklch(13% 0.015 295);
+    --color-background-secondary: oklch(17% 0.018 295);
+    --color-background-tertiary: oklch(21% 0.022 295);
+    --color-background-admin: oklch(15% 0.035 18.054);
+    --color-muted: oklch(20% 0.01 295);
+    --color-border: oklch(30% 0.012 295);
+    --color-backdrop: oklch(5% 0.02 295);
+    /* Primary plus vif pour le dark mode, sans casser le contraste texte blanc (≥4.5:1 WCAG AA) */
+    --color-app-green: oklch(55% 0.2 295);
+    --color-primary: var(--color-app-green);
+    /* Plus clair : utilisé quand le violet sert de texte (pas de fond) sur une surface sombre */
+    --color-primary-light: oklch(68% 0.2 295);
+  }
+}
+
+/* Leaflet dark mode */
+@media (prefers-color-scheme: dark) {
+  .leaflet-popup-content-wrapper {
+    background: var(--color-background-secondary) !important;
+    color: var(--color-foreground) !important;
+    border: 1px solid var(--color-border) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+  }
+  .leaflet-popup-tip {
+    background: var(--color-background-secondary) !important;
+  }
+  .leaflet-popup-close-button {
+    color: var(--color-foreground) !important;
+  }
+  .leaflet-popup-content p,
+  .leaflet-popup-content div {
+    color: var(--color-foreground) !important;
+  }
+  .leaflet-popup-content a[href^='tel:'] {
+    background: var(--color-background-tertiary) !important;
+    color: var(--color-foreground) !important;
+    border-color: var(--color-border) !important;
+  }
+  .leaflet-popup-content a[href^='mailto:'] {
+    background: oklch(18% 0.06 242.2) !important;
+    color: oklch(78% 0.12 242.2) !important;
+    border-color: oklch(35% 0.1 242.2) !important;
+  }
+  .leaflet-bar a {
+    background: var(--color-background-secondary) !important;
+    color: var(--color-foreground) !important;
+    border-color: var(--color-border) !important;
+  }
+  .leaflet-bar a:hover {
+    background: var(--color-background-tertiary) !important;
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  overflow-x: clip;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* iOS Safari zooms in on focus when font-size < 16px — prevent that */
+@media (pointer: coarse) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Styles MDX */
+.mdx-content h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.mdx-content li {
+  margin-bottom: 0.25rem;
+  line-height: 1.7;
+}
+
+.mdx-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.mdx-content strong {
+  font-weight: 500;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-foreground);
+  opacity: 0.8;
+}
+
+/* Images alignées par TipTap (text-align appliqué sur le nœud img) */
+.mdx-content img,
+.tiptap img {
+  max-width: 100%;
+  height: auto;
+}
+
+.mdx-content img[style*='text-align: center'],
+.tiptap img[style*='text-align: center'] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mdx-content img[style*='text-align: right'],
+.tiptap img[style*='text-align: right'] {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.tiptap {
+  caret-color: currentColor;
+  outline: none;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: currentColor;
+  opacity: 0.3;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+span[data-badge] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--color-background);
+}
+
+span[data-badge][data-variant='soprano'] {
+  background-color: var(--color-soprano);
+  color: black;
+}
+
+span[data-badge][data-variant='alto'] {
+  background-color: var(--color-alto);
+  color: black;
+}
+
+span[data-badge][data-variant='tenor'] {
+  background-color: var(--color-tenor);
+  color: black;
+}
+
+span[data-badge][data-variant='bass'] {
+  background-color: var(--color-bass);
+  color: black;
+}
