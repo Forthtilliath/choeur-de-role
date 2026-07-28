@@ -58,7 +58,7 @@ export function HomeBlocks({ blocks }: Props) {
                         />
                       </div>
                       <div
-                        className="mdx-contentmax-md:order-1"
+                        className="mdx-content max-md:order-1"
                         dangerouslySetInnerHTML={{ __html: block.content }}
                       />
                     </>
