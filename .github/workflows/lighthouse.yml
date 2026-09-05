@@ -44,7 +44,7 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - uses: supabase/setup-cli@v1
+      - uses: supabase/setup-cli@v3
         with:
           version: latest
 
@@ -66,7 +66,7 @@ jobs:
             >> "$GITHUB_ENV"
 
       - name: Cache Next.js build
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
