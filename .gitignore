@@ -42,8 +42,6 @@ debug.log
 *.tsbuildinfo
 next-env.d.ts
 
-backups/
-
 # playwright
 /playwright-report/
 /test-results/
