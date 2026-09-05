@@ -42,18 +42,28 @@ insert into tasks (title, description, status, priority, due_date, position, cre
    (select id from task_projects where name = 'Second Tour — Organisation'),
    (select id from task_categories where name = 'Logistique'));
 
-insert into task_assignees (task_id, member_id) values
-  ((select id from tasks where title = 'Finaliser la setlist'),
-   (select id from members where email = 'camille.vidal@example.fr')),
-  ((select id from tasks where title = 'Finaliser la setlist'),
-   (select id from members where email = 'julien.leroux@example.fr')),
-  ((select id from tasks where title = 'Réserver la Salle de l''Hexagone'),
-   (select id from members where email = 'e2e.admin@test.cda.invalid')),
-  ((select id from tasks where title = 'Créer l''affiche et les flyers'),
-   (select id from members where email = 'e2e.admin@test.cda.invalid')),
-  ((select id from tasks where title = 'Réserver le camion de matériel'),
-   (select id from members where email = 'e2e.admin@test.cda.invalid')),
-  ((select id from tasks where title = 'Lancer la billetterie en ligne'),
-   (select id from members where email = 'e2e.admin@test.cda.invalid')),
-  ((select id from tasks where title = 'Contacter Radio Angevine'),
-   (select id from members where email = 'e2e.admin@test.cda.invalid'));
+-- Le compte e2e.admin@test.cda.invalid n'existe qu'après scripts/create-test-accounts.ts
+-- (absent lors d'un `supabase start` / `db reset` à froid) : on filtre les lignes
+-- dont le membre est introuvable pour ne pas violer la contrainte NOT NULL.
+insert into task_assignees (task_id, member_id)
+select task_id, member_id
+from (
+  values
+    ((select id from tasks where title = 'Finaliser la setlist'),
+     (select id from members where email = 'camille.vidal@example.fr')),
+    ((select id from tasks where title = 'Finaliser la setlist'),
+     (select id from members where email = 'julien.leroux@example.fr')),
+    ((select id from tasks where title = 'Réserver la Salle de l''Hexagone'),
+     (select id from members where email = 'e2e.admin@test.cda.invalid')),
+    ((select id from tasks where title = 'Créer l''affiche et les flyers'),
+     (select id from members where email = 'e2e.admin@test.cda.invalid')),
+    ((select id from tasks where title = 'Réserver le camion de matériel'),
+     (select id from members where email = 'e2e.admin@test.cda.invalid')),
+    ((select id from tasks where title = 'Lancer la billetterie en ligne'),
+     (select id from members where email = 'e2e.admin@test.cda.invalid')),
+    ((select id from tasks where title = 'Contacter Radio Angevine'),
+     (select id from members where email = 'e2e.admin@test.cda.invalid'))
+) as v(task_id, member_id)
+where task_id is not null
+  and member_id is not null
+on conflict do nothing;
