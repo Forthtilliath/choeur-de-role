@@ -6,6 +6,8 @@ Site vitrine et espace membres d'une chorale **fictive** à Angers, mêlant chan
 
 ![Page d'accueil du Chœur de Rôle](docs/hero.webp)
 
+> **Démo en ligne** : _<url à compléter>_ · **Installation locale** : [SETUP.md](SETUP.md) · **Déploiement** : [DEPLOY.md](DEPLOY.md)
+
 ## Fonctionnalités
 
 ### Site public
@@ -47,15 +49,11 @@ Back-office pour gérer l'ensemble du contenu : membres, saisons et pupitres, co
 
 ```bash
 npm install
+cp .env.local.example .env.local        # préconfiguré pour le mode local
+npm run dev:e2e                          # Supabase local (Docker) + serveur Next.js
 ```
 
-Copier `.env.local.example` vers `.env.local` et renseigner les variables.
-
-```bash
-npm run dev:e2e   # démarre Supabase local (Docker) puis le serveur Next.js
-```
-
-Ouvrir [http://localhost:3000](http://localhost:3000).
+Ouvrir [http://localhost:3000](http://localhost:3000). Guide détaillé (prérequis, comptes de test, 2FA, dépannage) : [SETUP.md](SETUP.md).
 
 ## Scripts disponibles
 
@@ -90,4 +88,13 @@ supabase/
 ```bash
 npm run test          # Unitaires (Vitest)
 npm run test:e2e      # End-to-end (Playwright, nécessite Supabase local)
+```
+
+## Présentation
+
+Une présentation reveal.js autonome est disponible dans [`presentation/`](presentation/).
+
+```bash
+npm run slides          # http://localhost:5500
+npm run slides:deploy   # déploie presentation/ sur Vercel
 ```
