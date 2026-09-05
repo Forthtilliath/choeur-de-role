@@ -52,3 +52,10 @@ next-env.d.ts
 
 # dev server log (redirection locale)
 dev-server.log
+
+# markdown — ignorés par défaut, exceptions explicites uniquement
+*.md
+!README.md
+!CHANGELOG.md
+!SETUP.md
+!DEPLOY.md
