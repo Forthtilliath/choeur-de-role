@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chœur de Rôle — présentation</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" />
+
+    <style>
+      :root {
+        --cdr-accent: #e8b04b;
+        --cdr-accent-2: #7db8a6;
+      }
+      .reveal {
+        font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        text-transform: none;
+        letter-spacing: -0.01em;
+        font-weight: 700;
+      }
+      .reveal h1 { color: var(--cdr-accent); }
+      .reveal h2 { color: var(--cdr-accent); }
+      .reveal section img.shot {
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+        max-height: 62vh;
+        width: auto;
+      }
+      .reveal .subtitle {
+        color: var(--cdr-accent-2);
+        font-size: 0.9em;
+      }
+      .reveal .lead { font-size: 0.95em; line-height: 1.5; }
+      .reveal ul { display: block; }
+      .reveal li { margin: 0.35em 0; }
+      .reveal .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.4em;
+        align-items: center;
+      }
+      .reveal .cols.text-left { text-align: left; }
+      .reveal .tag {
+        display: inline-block;
+        background: rgba(232, 176, 75, 0.14);
+        color: var(--cdr-accent);
+        border: 1px solid rgba(232, 176, 75, 0.35);
+        border-radius: 999px;
+        padding: 0.15em 0.7em;
+        margin: 0.2em;
+        font-size: 0.62em;
+      }
+      .reveal .muted { color: #9aa0a6; font-size: 0.75em; }
+      .reveal section { text-align: left; }
+      .reveal section.center { text-align: center; }
+      .reveal .footer-note {
+        position: absolute;
+        bottom: 12px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #6b7075;
+        font-size: 0.4em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <!-- 1 — Titre -->
+        <section class="center" data-background-color="#141518">
+          <h1>Chœur de Rôle</h1>
+          <p class="subtitle">Site vitrine &amp; espace membres d'une chorale — projet de démonstration</p>
+          <p class="muted">Next.js · TypeScript · Supabase · Tailwind CSS</p>
+          <p class="footer-note">← → pour naviguer · <span>S</span> pour les notes · <span>F</span> plein écran</p>
+        </section>
+
+        <!-- 2 — Le projet -->
+        <section>
+          <h2>Le projet</h2>
+          <p class="lead">
+            Une chorale <strong>fictive</strong> à Angers mêlant chant choral et jeux de société.
+            Toutes les données (choristes, concerts, actualités…) sont inventées — mais
+            l'application est <strong>complète et fonctionnelle de bout en bout</strong>.
+          </p>
+          <ul>
+            <li>🌐 un <strong>site public</strong> (vitrine)</li>
+            <li>🔒 un <strong>espace privé</strong> réservé aux choristes</li>
+            <li>🛠️ un <strong>back-office d'administration</strong> complet</li>
+          </ul>
+          <aside class="notes">
+            Objectif portfolio : montrer une app réaliste, pas une simple landing page.
+            L'univers « chorale + jeu de rôle » sert de fil rouge thématique.
+          </aside>
+        </section>
+
+        <!-- 3 — Stack technique -->
+        <section>
+          <h2>Stack technique</h2>
+          <div class="cols text-left">
+            <div>
+              <p><strong>Front</strong></p>
+              <ul class="muted" style="font-size: 0.9em">
+                <li>Next.js 16 (App Router) + React 19</li>
+                <li>TypeScript strict</li>
+                <li>Tailwind CSS v4</li>
+                <li>PWA (Serwist / service worker)</li>
+              </ul>
+            </div>
+            <div>
+              <p><strong>Back &amp; infra</strong></p>
+              <ul class="muted" style="font-size: 0.9em">
+                <li>Supabase — Auth, Postgres, Storage, RLS</li>
+                <li>Cloudflare R2 — fichiers &amp; images</li>
+                <li>Resend — email transactionnel</li>
+                <li>Sentry · Umami — monitoring &amp; analytics</li>
+              </ul>
+            </div>
+          </div>
+          <p style="margin-top: 0.8em">
+            <span class="tag">Leaflet</span><span class="tag">Tiptap</span><span class="tag">jsPDF</span>
+            <span class="tag">JSZip</span><span class="tag">Recharts</span><span class="tag">dnd-kit</span>
+            <span class="tag">YouTube Data API</span><span class="tag">MDX</span>
+          </p>
+        </section>
+
+        <!-- 4 — Architecture -->
+        <section>
+          <h2>Architecture</h2>
+          <pre><code data-trim data-noescape class="language-text">
+Navigateur ──► Next.js (App Router, RSC + Server Actions)
+                 │
+                 ├─► Supabase   Auth (+ 2FA TOTP) · Postgres · RLS · Storage
+                 ├─► Cloudflare R2   partitions, pistes audio, images
+                 ├─► Resend   formulaire de contact
+                 └─► YouTube Data API   playlist vidéos synchronisée
+          </code></pre>
+          <ul>
+            <li>Rendu serveur par défaut, <strong>Row Level Security</strong> comme socle d'autorisation</li>
+            <li>Schéma &amp; données de démo versionnés dans <code>supabase/migrations/</code> (~75 migrations)</li>
+          </ul>
+        </section>
+
+        <!-- 5 — Site public : accueil -->
+        <section class="center">
+          <h2>Site public — accueil</h2>
+          <img class="shot" src="assets/hero.webp" alt="Page d'accueil du Chœur de Rôle" />
+          <p class="muted">Page d'accueil entièrement éditable par <strong>blocs de contenu</strong> depuis l'admin
+            (héro, histoire, raison d'être, direction artistique, pianiste).</p>
+        </section>
+
+        <!-- 6 — Site public : contenus -->
+        <section>
+          <h2>Site public — contenus</h2>
+          <ul>
+            <li><strong>Concerts</strong> à venir / passés, affiche et détail par représentation</li>
+            <li><strong>Galerie</strong> photos (albums) et vidéos (playlist YouTube synchronisée)</li>
+            <li><strong>Partenaires</strong>, <strong>événements externes</strong></li>
+            <li><strong>Formulaire de contact</strong> (Resend)</li>
+            <li>Mentions légales, CGU, politique de confidentialité</li>
+          </ul>
+        </section>
+
+        <!-- 7 — Galerie -->
+        <section class="center">
+          <h2>Galerie photos &amp; vidéos</h2>
+          <img class="shot" src="assets/galerie.webp" alt="Galerie photos et vidéos" />
+          <p class="muted">Albums photos avec lightbox · playlist vidéo tirée de l'API YouTube.</p>
+        </section>
+
+        <!-- 8 — Espace choristes -->
+        <section>
+          <h2>Espace choristes</h2>
+          <p class="lead">Accès réservé aux membres connectés — authentification Supabase,
+            <strong>double facteur (TOTP)</strong>.</p>
+          <ul>
+            <li>Actualités, calendrier des répétitions, liens utiles</li>
+            <li>Sondages internes</li>
+            <li>Comptes-rendus de bureau</li>
+            <li>Répertoire : partitions, paroles et pistes audio par pupitre</li>
+          </ul>
+        </section>
+
+        <!-- 9 — Trombinoscope -->
+        <section class="center">
+          <h2>Trombinoscope</h2>
+          <img class="shot" src="assets/trombinoscope.webp" alt="Trombinoscope des choristes" />
+          <p class="muted">Filtrable par pupitre · export · respect de la <strong>visibilité choisie</strong>
+            par chaque choriste (email / téléphone / adresse).</p>
+        </section>
+
+        <!-- 10 — Carte -->
+        <section class="center">
+          <h2>Carte des choristes</h2>
+          <img class="shot" src="assets/carte.webp" alt="Carte des choristes géolocalisés" />
+          <p class="muted">Choristes géolocalisés (Leaflet + clustering), adresses géocodées.</p>
+        </section>
+
+        <!-- 11 — Espace bureau -->
+        <section>
+          <h2>Espace bureau</h2>
+          <p class="lead">Pour les membres élus du conseil d'administration.</p>
+          <ul>
+            <li>Tâches de préparation des concerts, assignées aux membres</li>
+            <li>Projets, modèles de tâches réutilisables, catégories, durées</li>
+            <li>Glisser-déposer (dnd-kit), statuts (à faire / en cours / en attente / fait)</li>
+            <li>Comptes-rendus de réunion</li>
+          </ul>
+        </section>
+
+        <!-- 12 — Back-office -->
+        <section>
+          <h2>Administration</h2>
+          <p class="lead">Un back-office pour gérer l'intégralité du contenu :</p>
+          <p>
+            <span class="tag">Membres</span><span class="tag">Saisons &amp; pupitres</span>
+            <span class="tag">Concerts</span><span class="tag">Galerie</span>
+            <span class="tag">Partenaires</span><span class="tag">Calendrier</span>
+            <span class="tag">Sondages</span><span class="tag">Répertoire</span>
+            <span class="tag">Actualités</span><span class="tag">Page d'accueil</span>
+            <span class="tag">Messages de contact</span><span class="tag">Journal d'audit</span>
+          </p>
+          <ul>
+            <li>Éditeur de texte riche (Tiptap), upload d'images &amp; PDF</li>
+            <li>Export PDF (programmes de concert) et ZIP (répertoire)</li>
+            <li><strong>Journal d'audit</strong> des actions sensibles</li>
+          </ul>
+        </section>
+
+        <!-- 13 — Qualité -->
+        <section>
+          <h2>Qualité &amp; robustesse</h2>
+          <div class="cols text-left">
+            <div>
+              <ul class="muted" style="font-size: 0.92em">
+                <li>Tests unitaires — Vitest</li>
+                <li>Tests E2E — Playwright (Supabase local en CI)</li>
+                <li>CI GitHub : types · lint · tests à chaque push</li>
+                <li>Audit Lighthouse automatisé</li>
+              </ul>
+            </div>
+            <div>
+              <ul class="muted" style="font-size: 0.92em">
+                <li>CSP stricte + en-têtes de sécurité</li>
+                <li>Row Level Security sur toutes les tables</li>
+                <li>Validation d'environnement (Zod / t3-env)</li>
+                <li>PWA installable + mode hors-ligne</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 14 — Récupérer le projet -->
+        <section>
+          <h2>Tester en local</h2>
+          <pre><code data-trim data-noescape class="language-bash">
+git clone https://github.com/forthtilliath/choeur-de-role.git
+cd choeur-de-role
+npm install
+cp .env.local.example .env.local
+
+npm run dev:e2e   # Supabase local (Docker) + serveur Next.js
+                  # → http://localhost:3000
+          </code></pre>
+          <p class="muted">Données de démo incluses dans les migrations. Détails complets : <code>SETUP.md</code>.</p>
+        </section>
+
+        <!-- 15 — Fin -->
+        <section class="center" data-background-color="#141518">
+          <h1>Merci</h1>
+          <p class="subtitle">Chœur de Rôle</p>
+          <p class="muted">
+            Démo en ligne : <em>&lt;url à compléter&gt;</em><br />
+            Code : github.com/forthtilliath/choeur-de-role
+          </p>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: 'c/t',
+        transition: 'slide',
+        plugins: [RevealNotes, RevealHighlight, RevealMarkdown],
+      });
+    </script>
+  </body>
+</html>
