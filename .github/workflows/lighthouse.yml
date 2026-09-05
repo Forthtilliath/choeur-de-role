@@ -19,23 +19,19 @@ jobs:
       AUTH_URL: http://localhost:3000
       NEXTAUTH_URL: http://localhost:3000
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
-      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-      NEXT_MAIL_CONTACT: ${{ secrets.NEXT_MAIL_CONTACT }}
-      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      # Valeurs factices : non utilisées par les pages publiques mesurées par Lighthouse,
+      # mais requises par la validation env (src/env.ts).
+      AUTH_SECRET: ci-lighthouse-not-a-real-session-secret
+      RESEND_API_KEY: re_ci_placeholder
+      NEXT_MAIL_CONTACT: ci@example.com
+      YOUTUBE_API_KEY: ci_placeholder
+      # R2 : vraies valeurs (images de la galerie / médias du répertoire).
       CLOUDFLARE_R2_ENDPOINT: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
       CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
       CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
       CLOUDFLARE_R2_BUCKET_NAME: ${{ secrets.CLOUDFLARE_R2_BUCKET_NAME }}
       CLOUDFLARE_R2_IMAGES_BUCKET_NAME: ${{ secrets.CLOUDFLARE_R2_IMAGES_BUCKET_NAME }}
       CLOUDFLARE_R2_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_PUBLIC_URL }}
-      NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-      NEXT_PUBLIC_UMAMI_WEBSITE_ID: ${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}
 
     steps:
       - uses: actions/checkout@v5
@@ -45,11 +41,26 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
       - name: Mettre à jour npm
         run: npm install -g npm@11
 
       - name: Installer les dépendances
         run: npm ci
+
+      - name: Démarrer Supabase local
+        run: supabase start
+
+      - name: Exposer les clés Supabase locales
+        run: |
+          supabase status -o env \
+            --override-name api.url=NEXT_PUBLIC_SUPABASE_URL \
+            --override-name auth.anon_key=NEXT_PUBLIC_SUPABASE_ANON_KEY \
+            --override-name auth.service_role_key=SUPABASE_SERVICE_ROLE_KEY \
+            >> "$GITHUB_ENV"
 
       - name: Cache Next.js build
         uses: actions/cache@v4
