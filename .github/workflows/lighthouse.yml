@@ -19,6 +19,9 @@ jobs:
       AUTH_URL: http://localhost:3000
       NEXTAUTH_URL: http://localhost:3000
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      # Supabase local : port fixe (supabase/config.toml). On utilise `localhost` plutôt
+      # que l'IP renvoyée par `supabase status` — z.url() (src/env.ts) rejette 127.0.0.1.
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54321
       # Valeurs factices : non utilisées par les pages publiques mesurées par Lighthouse,
       # mais requises par la validation env (src/env.ts).
       AUTH_SECRET: ci-lighthouse-not-a-real-session-secret
@@ -57,9 +60,9 @@ jobs:
       - name: Exposer les clés Supabase locales
         run: |
           supabase status -o env \
-            --override-name api.url=NEXT_PUBLIC_SUPABASE_URL \
             --override-name auth.anon_key=NEXT_PUBLIC_SUPABASE_ANON_KEY \
             --override-name auth.service_role_key=SUPABASE_SERVICE_ROLE_KEY \
+            | grep -E '^(NEXT_PUBLIC_SUPABASE_ANON_KEY|SUPABASE_SERVICE_ROLE_KEY)=' \
             >> "$GITHUB_ENV"
 
       - name: Cache Next.js build
