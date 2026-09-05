@@ -23,7 +23,6 @@
 
     "db:reset": "echo y | npx supabase db reset && npm run test:e2e:setup",
     "db:types": "echo \"y\" | npx supabase gen types typescript --linked --schema public > src/types/database.ts",
-    "db:backup": "bash ./scripts/backup.sh",
     "db:seed": "node scripts/seed-from-prod.mjs",
 
     "totp": "npx tsx scripts/totp.ts",
@@ -53,7 +52,6 @@
     "test:e2e:setup": "Crée les comptes de test et enrôle le MFA admin (à lancer une fois)",
     "db:reset": "Remet la DB locale à zéro (migrations + seed) et recrée les comptes de test",
     "db:types": "Régénère src/types/database.ts depuis le schéma Supabase prod",
-    "db:backup": "Sauvegarde la base de données de production",
     "db:seed": "Importe les données de référence depuis la prod vers le local",
     "totp": "Génère un code TOTP pour les comptes MFA de test",
     "slides": "Sert le dossier presentation/ sur le port 5500",
