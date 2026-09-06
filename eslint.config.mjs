@@ -13,6 +13,9 @@ const eslintConfig = defineConfig([
     'out/**',
     'build/**',
     'next-env.d.ts',
+    // Fichiers générés par la CLI Supabase locale (`npx supabase start`).
+    'supabase/.temp/**',
+    'supabase/.branches/**',
   ]),
   prettier, // This must be last to disable conflicting rules
 ]);
