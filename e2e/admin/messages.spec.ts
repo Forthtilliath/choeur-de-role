@@ -78,10 +78,11 @@ test.describe('Admin — Messages de contact', () => {
     await expect(messages.first().locator('.border-t')).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: /Marquer traité|Marquer non traité/i }).click();
     // Snackbar undo apparaît en bas
-    await expect(page.locator('.fixed.bottom-6')).toBeVisible({ timeout: 3_000 });
+    const snackbar = page.getByTestId('undo-snackbar');
+    await expect(snackbar).toBeVisible({ timeout: 3_000 });
     // Annuler pour restaurer l'état initial
-    await page.locator('.fixed.bottom-6').getByRole('button', { name: /Annuler/i }).click();
-    await expect(page.locator('.fixed.bottom-6')).not.toBeVisible({ timeout: 3_000 });
+    await snackbar.getByRole('button', { name: /Annuler/i }).click();
+    await expect(snackbar).not.toBeVisible({ timeout: 3_000 });
   });
 
   test('"Supprimer" demande une confirmation inline avant suppression', async ({ page }) => {

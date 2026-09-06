@@ -15,8 +15,9 @@ async function expectPageLoads(page: Page, url: string) {
   await expect(errorOverlay).not.toBeAttached({ timeout: 3_000 }).catch(() => {
     // L'overlay n'existe pas toujours dans le DOM — on ignore l'absence
   });
-  // La page a rendu quelque chose
-  await expect(page.locator('main')).toBeVisible({ timeout: 10_000 });
+  // La page a rendu quelque chose. `.first()` : un loading.tsx peut exposer
+  // brièvement 2 <main> pendant le streaming. Timeout large = compile Turbopack.
+  await expect(page.locator('main').first()).toBeVisible({ timeout: 30_000 });
 }
 
 // ─── Pages publiques (sans authentification) ──────────────────────────────────
@@ -38,7 +39,9 @@ test.describe('Smoke — pages publiques', () => {
   for (const { url, name } of publicPages) {
     test(`${name} (${url})`, async ({ page }) => {
       await page.goto(url);
-      await expect(page.locator('main')).toBeVisible({ timeout: 10_000 });
+      // `.first()` : les routes avec un loading.tsx exposent brièvement 2 <main>
+      // (skeleton + contenu) pendant le streaming. Timeout large = compile Turbopack.
+      await expect(page.locator('main').first()).toBeVisible({ timeout: 30_000 });
     });
   }
 });

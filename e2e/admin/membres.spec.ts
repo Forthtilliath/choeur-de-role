@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test';
 test.describe('Admin — Gestion des membres', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/choristes/admin/membres');
-    await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
+    // `.first()` : le loading.tsx expose brièvement un 2e <main> pendant le streaming.
+    await expect(page.locator('main h1').first()).toBeVisible({ timeout: 15_000 });
   });
 
   test('la page se charge sans redirection', async ({ page }) => {
@@ -13,7 +14,7 @@ test.describe('Admin — Gestion des membres', () => {
   });
 
   test('le titre "Gestion des membres" est affiché', async ({ page }) => {
-    await expect(page.locator('h1', { hasText: 'Gestion des membres' })).toBeVisible();
+    await expect(page.locator('h1', { hasText: 'Gestion des membres' }).first()).toBeVisible();
   });
 
   test('le champ de recherche est présent', async ({ page }) => {
