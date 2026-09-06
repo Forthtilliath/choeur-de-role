@@ -57,9 +57,10 @@ test.describe('Admin — Programmation concerts', () => {
       return;
     }
     const first = seasons.first();
-    // ConcertsAdminClient season header: ButtonIcon with title="Renommer" + title="Supprimer"
-    await expect(first.getByRole('button', { name: /Renommer/i })).toBeVisible();
-    await expect(first.getByRole('button', { name: /Supprimer/i })).toBeVisible();
+    // ConcertsAdminClient season header: ButtonIcon with title="Renommer" + title="Supprimer".
+    // `.first()` : une saison peut aussi contenir des boutons Supprimer par concert.
+    await expect(first.getByRole('button', { name: /Renommer/i }).first()).toBeVisible();
+    await expect(first.getByRole('button', { name: /Supprimer/i }).first()).toBeVisible();
   });
 
   test('Supprimer affiche une confirmation et Annuler conserve la saison', async ({ page }) => {
@@ -69,7 +70,7 @@ test.describe('Admin — Programmation concerts', () => {
       return;
     }
     const countBefore = await seasons.count();
-    await seasons.first().getByRole('button', { name: /Supprimer/i }).click();
+    await seasons.first().getByRole('button', { name: /Supprimer/i }).first().click();
     // ConcertsAdminClient uses confirmLabel: 'Supprimer' (not default 'Confirmer')
     const modal = page.locator('.fixed.inset-0');
     await expect(modal.getByRole('button', { name: 'Supprimer' })).toBeVisible({ timeout: 3_000 });

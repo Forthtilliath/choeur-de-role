@@ -31,17 +31,18 @@ test.describe('Page Calendrier', () => {
   });
 
   test('naviguer au mois précédent met à jour l\'en-tête', async ({ page }) => {
-    const headerBefore = await page.locator('h2').filter({ hasText: /20\d\d/ }).first().textContent();
+    const header = page.locator('h2').filter({ hasText: /20\d\d/ }).first();
+    const headerBefore = (await header.textContent())?.trim() ?? '';
     await page.getByRole('button', { name: '←' }).click();
-    const headerAfter = await page.locator('h2').filter({ hasText: /20\d\d/ }).first().textContent();
-    expect(headerAfter).not.toBe(headerBefore);
+    // toHaveText réessaie jusqu'à ce que l'en-tête change (évite la course DOM).
+    await expect(header).not.toHaveText(headerBefore);
   });
 
   test('naviguer au mois suivant met à jour l\'en-tête', async ({ page }) => {
-    const headerBefore = await page.locator('h2').filter({ hasText: /20\d\d/ }).first().textContent();
+    const header = page.locator('h2').filter({ hasText: /20\d\d/ }).first();
+    const headerBefore = (await header.textContent())?.trim() ?? '';
     await page.getByRole('button', { name: '→' }).click();
-    const headerAfter = await page.locator('h2').filter({ hasText: /20\d\d/ }).first().textContent();
-    expect(headerAfter).not.toBe(headerBefore);
+    await expect(header).not.toHaveText(headerBefore);
   });
 
   test('basculer en vue semaine change le bouton actif', async ({ page }) => {
