@@ -169,6 +169,42 @@ Le build a besoin de toutes les variables **sans** `SKIP_ENV_VALIDATION`
 
 ---
 
+## 9. Vérifier l'installation en une commande
+
+Une fois la stack démarrée (étape 4) et les comptes créés (étape 5) :
+
+```bash
+npm run verify:setup
+```
+
+Le script (`scripts/verify-setup.mjs`) rejoue les étapes de ce guide sous forme
+de checklist :
+
+| Section | Contrôles |
+| --- | --- |
+| 1. Prérequis | Node ≥ 22, npm ≥ 11, Git, Docker CLI + démon démarré |
+| 2. Projet | `node_modules/` et modules clés résolus |
+| 3. Env | `.env.local` présent, variables requises, mode local |
+| 4. Stack | API Supabase, Postgres, Inbucket joignables ; migrations + données de démo |
+| 5. Comptes | `.env.test.local`, connexion des 3 comptes, `is_test_account`, cycle 2FA admin complet |
+| 6. Reset | scripts et migrations présents |
+
+Options :
+
+```bash
+npm run verify:setup -- --full      # + type-check, lint, tests unitaires, build
+npm run verify:setup -- --e2e       # + smoke Playwright (chaque page se charge, 3 rôles)
+npm run verify:setup:full           # raccourci : --full --e2e
+```
+
+> `--e2e` ne lance que `smoke.spec.ts` (vérification « toutes les pages se
+> chargent »). La suite complète `npm run test:e2e` contient des specs CRUD
+> sensibles au timing du serveur dev et peut être ponctuellement instable.
+
+Sortie `0` si tout passe (les avertissements ne bloquent pas), `1` si un contrôle échoue.
+
+---
+
 ## Dépannage
 
 | Symptôme | Piste |
