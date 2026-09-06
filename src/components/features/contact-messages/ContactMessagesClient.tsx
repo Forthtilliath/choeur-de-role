@@ -158,7 +158,10 @@ export function ContactMessagesClient({ messages: initial }: Props) {
 
       {/* Undo snackbar */}
       {undoToast && (
-        <div className="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom)+0.75rem))] left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-foreground text-background px-4 py-3 rounded-xl shadow-lg text-sm">
+        <div
+          data-testid="undo-snackbar"
+          className="fixed bottom-[max(1.5rem,calc(env(safe-area-inset-bottom)+0.75rem))] left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-foreground text-background px-4 py-3 rounded-xl shadow-lg text-sm"
+        >
           <span>{undoToast.label}</span>
           <button
             onClick={handleUndo}
