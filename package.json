@@ -21,6 +21,9 @@
     "test:e2e:report": "playwright show-report",
     "test:e2e:setup": "npx tsx scripts/create-test-accounts.ts && npx tsx scripts/enroll-test-admin-mfa.ts",
 
+    "verify:setup": "node scripts/verify-setup.mjs",
+    "verify:setup:full": "node scripts/verify-setup.mjs --full --e2e",
+
     "db:reset": "echo y | npx supabase db reset && npm run test:e2e:setup",
     "db:types": "echo \"y\" | npx supabase gen types typescript --linked --schema public > src/types/database.ts",
     "db:seed": "node scripts/seed-from-prod.mjs",
@@ -50,6 +53,8 @@
     "test:e2e:ui": "Tests E2E avec l'interface Playwright UI",
     "test:e2e:report": "Ouvre le rapport HTML du dernier run E2E",
     "test:e2e:setup": "Crée les comptes de test et enrôle le MFA admin (à lancer une fois)",
+    "verify:setup": "Vérifie que le processus de SETUP.md fonctionne (prérequis, env, stack, comptes)",
+    "verify:setup:full": "verify:setup + type-check, lint, tests unitaires, build et smoke E2E",
     "db:reset": "Remet la DB locale à zéro (migrations + seed) et recrée les comptes de test",
     "db:types": "Régénère src/types/database.ts depuis le schéma Supabase prod",
     "db:seed": "Importe les données de référence depuis la prod vers le local",
