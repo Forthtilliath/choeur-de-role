@@ -10,7 +10,14 @@ import {
   suspiciousLoginEmailHtml,
 } from './emailTemplates';
 
-const resend = new Resend(env.RESEND_API_KEY);
+// Init paresseuse : le SDK Resend lève si on le construit sans clé.
+// En mode local (SKIP_ENV_VALIDATION), la clé est absente et le build ne doit pas
+// planter pour autant — l'erreur ne survient qu'à l'envoi réel d'un email.
+let _resend: Resend | null = null;
+function resend(): Resend {
+  if (!_resend) _resend = new Resend(env.RESEND_API_KEY || 're_missing_api_key');
+  return _resend;
+}
 
 export async function sendWelcomeEmail({
   to,
@@ -23,7 +30,7 @@ export async function sendWelcomeEmail({
   passphrase: string;
   confirmationUrl: string;
 }) {
-  await resend.emails.send({
+  await resend().emails.send({
     from: 'onboarding@resend.dev',
     to,
     subject: 'Bienvenue au Chœur de Rôle - Activez votre compte',
@@ -40,7 +47,7 @@ export async function sendEmailChangeEmail({
   firstName: string;
   confirmationUrl: string;
 }) {
-  await resend.emails.send({
+  await resend().emails.send({
     from: 'onboarding@resend.dev',
     to,
     subject: 'Votre adresse email a été modifiée — Chœur de Rôle',
@@ -57,7 +64,7 @@ export async function sendPasswordResetEmail({
   firstName: string;
   passphrase: string;
 }) {
-  await resend.emails.send({
+  await resend().emails.send({
     from: 'onboarding@resend.dev',
     to,
     subject: 'Votre nouveau mot de passe — Chœur de Rôle',
@@ -81,13 +88,13 @@ export async function sendCandidatureEmails({
   const adminUrl = `${env.NEXT_PUBLIC_SITE_URL ?? 'https://choeur-de-role.fr'}/choristes/admin/messages`;
 
   await Promise.all([
-    resend.emails.send({
+    resend().emails.send({
       from: 'onboarding@resend.dev',
       to: env.NEXT_MAIL_CONTACT!,
       subject: `[Candidature] ${firstName} ${lastName} souhaite rejoindre la chorale`,
       html: candidatureNotificationEmailHtml({ firstName, lastName, email, phone, message, adminUrl }),
     }),
-    resend.emails.send({
+    resend().emails.send({
       from: 'onboarding@resend.dev',
       to: email,
       subject: 'Votre candidature au Chœur de Rôle — confirmation de réception',
@@ -119,7 +126,7 @@ export async function sendSuspiciousLoginEmail({
     timeZone: 'Europe/Paris',
   }).format(new Date());
 
-  await resend.emails.send({
+  await resend().emails.send({
     from: 'onboarding@resend.dev',
     to: adminEmails,
     subject: `[Alerte] Connexion inhabituelle — ${memberName}`,
@@ -148,7 +155,7 @@ export async function sendContactEmail({
     autre: 'Autre demande',
   };
 
-  await resend.emails.send({
+  await resend().emails.send({
     from: 'onboarding@resend.dev',
     to: env.NEXT_MAIL_CONTACT!,
     subject: `[Contact] ${categoryLabels[category]} — ${first_name} ${last_name}`,
