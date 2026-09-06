@@ -3,10 +3,17 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import path from 'path';
 
+// .env.local fournit les clés Supabase (URL, anon, service role) ; .env.test.local
+// ajoute/écrase avec les comptes de test. Les deux sont nécessaires aux specs E2E.
+dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 dotenv.config({ path: path.resolve(process.cwd(), '.env.test.local'), override: true });
 
-// Lire .env.test.local directement pour les vars webServer (contourne toute pollution de process.env)
-const testEnv = dotenv.parse(fs.readFileSync(path.resolve(process.cwd(), '.env.test.local'), 'utf-8'));
+// Lire les fichiers directement pour les vars webServer (contourne toute pollution de process.env)
+function parseEnvFile(file: string): Record<string, string> {
+  const abs = path.resolve(process.cwd(), file);
+  return fs.existsSync(abs) ? dotenv.parse(fs.readFileSync(abs, 'utf-8')) : {};
+}
+const testEnv = { ...parseEnvFile('.env.local'), ...parseEnvFile('.env.test.local') };
 
 export default defineConfig({
   testDir: './e2e',
