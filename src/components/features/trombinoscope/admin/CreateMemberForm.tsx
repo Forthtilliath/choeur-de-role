@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
 import { useRole } from '@/hooks/useRole';
-import { Tables } from '@/types/database';
-import { Season } from '../../concerts';
-import { AdminMemberWithSeasons } from '../types';
+import type { Tables } from '@/types/database';
+
+import type { Season } from '../../concerts';
+import type { AdminMemberWithSeasons } from '../types';
 
 type VoicePart = Tables<'voice_parts'>;
 
@@ -23,12 +25,7 @@ const ROLES = [
   { value: 'admin', label: 'Admin' },
 ] as const;
 
-export function CreateMemberForm({
-  voiceParts,
-  seasons,
-  onCloseAction,
-  onSuccessAction,
-}: Props) {
+export function CreateMemberForm({ voiceParts, seasons, onCloseAction, onSuccessAction }: Props) {
   const { role: currentUserRole } = useRole();
   const isSuperAdmin = currentUserRole === 'super_admin';
 
@@ -94,10 +91,10 @@ export function CreateMemberForm({
       // Mode sans email : afficher la passphrase avant de fermer
       setCreatedPassphrase(result.passphrase);
       setCreatedMember(result.member);
-      toast.success('Compte créé sans envoi d\'email');
+      toast.success("Compte créé sans envoi d'email");
     } else {
       onSuccessAction(result.member);
-      toast.success('Compte créé — email d\'invitation envoyé');
+      toast.success("Compte créé — email d'invitation envoyé");
     }
   }
 
@@ -122,9 +119,9 @@ export function CreateMemberForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-foreground/50 uppercase tracking-wide">
+          <span className="text-xs font-medium text-foreground/50 uppercase tracking-wide">
             Passphrase de connexion
-          </label>
+          </span>
           <div className="flex items-center gap-2">
             <code className="flex-1 font-mono text-base font-semibold bg-background border border-primary/30 text-primary rounded-lg px-4 py-3 select-all">
               {createdPassphrase}
@@ -140,7 +137,9 @@ export function CreateMemberForm({
           </div>
           <p className="text-xs text-foreground/40">
             Email :{' '}
-            <span className="font-mono">{(createdMember as unknown as { email: string }).email}</span>
+            <span className="font-mono">
+              {(createdMember as unknown as { email: string }).email}
+            </span>
           </p>
         </div>
 
@@ -167,12 +166,19 @@ export function CreateMemberForm({
         </button>
       </div>
 
-      {error && <p className="text-red-500 dark:text-red-300 text-sm p-3 bg-red-50 dark:bg-red-950/40 rounded-lg">{error}</p>}
+      {error && (
+        <p className="text-red-500 dark:text-red-300 text-sm p-3 bg-red-50 dark:bg-red-950/40 rounded-lg">
+          {error}
+        </p>
+      )}
 
       <div className="flex gap-4">
         <div className="flex flex-col gap-1 flex-1">
-          <label className="text-xs font-medium text-foreground/50">Prénom *</label>
+          <label htmlFor="new-member-first-name" className="text-xs font-medium text-foreground/50">
+            Prénom *
+          </label>
           <input
+            id="new-member-first-name"
             name="first_name"
             type="text"
             required
@@ -180,8 +186,11 @@ export function CreateMemberForm({
           />
         </div>
         <div className="flex flex-col gap-1 flex-1">
-          <label className="text-xs font-medium text-foreground/50">Nom *</label>
+          <label htmlFor="new-member-last-name" className="text-xs font-medium text-foreground/50">
+            Nom *
+          </label>
           <input
+            id="new-member-last-name"
             name="last_name"
             type="text"
             required
@@ -191,8 +200,11 @@ export function CreateMemberForm({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-medium text-foreground/50">Email *</label>
+        <label htmlFor="new-member-email" className="text-xs font-medium text-foreground/50">
+          Email *
+        </label>
         <input
+          id="new-member-email"
           name="email"
           type="email"
           required
@@ -200,8 +212,8 @@ export function CreateMemberForm({
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <label className="text-xs font-medium text-foreground/50">Pupitre *</label>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="text-xs font-medium text-foreground/50">Pupitre *</legend>
         <div className="flex flex-wrap gap-2">
           {voiceParts.map((vp) => (
             <button
@@ -214,10 +226,10 @@ export function CreateMemberForm({
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
-      <div className="flex flex-col gap-2">
-        <label className="text-xs font-medium text-foreground/50">Saison *</label>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="text-xs font-medium text-foreground/50">Saison *</legend>
         {activeSeasons.length === 0 ? (
           <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
             Aucune saison active. Activez une saison dans l&apos;administration des saisons.
@@ -237,7 +249,7 @@ export function CreateMemberForm({
             ))}
           </div>
         )}
-      </div>
+      </fieldset>
 
       {/* Options super_admin */}
       {isSuperAdmin && (
@@ -246,8 +258,8 @@ export function CreateMemberForm({
             Options super admin
           </p>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-xs font-medium text-foreground/50">Rôle</label>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="text-xs font-medium text-foreground/50">Rôle</legend>
             <div className="flex flex-wrap gap-2">
               {ROLES.map((r) => (
                 <button
@@ -260,7 +272,7 @@ export function CreateMemberForm({
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
           <label className="flex items-center gap-3 cursor-pointer select-none">
             <input
@@ -271,7 +283,9 @@ export function CreateMemberForm({
             />
             <span className="text-sm text-foreground/70">
               Créer sans envoi d&apos;email{' '}
-              <span className="text-foreground/40 text-xs">(affiche la passphrase à la création)</span>
+              <span className="text-foreground/40 text-xs">
+                (affiche la passphrase à la création)
+              </span>
             </span>
           </label>
         </div>

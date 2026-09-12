@@ -3,11 +3,13 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
-import { upsertMeeting } from './clientQueries';
-import { CaMeeting } from './types';
 import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+
+import { upsertMeeting } from './clientQueries';
+import type { CaMeeting } from './types';
 
 export function MeetingForm({
   meeting,
@@ -83,9 +85,9 @@ export function MeetingForm({
 
       <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-foreground">
+          <span className="text-sm font-medium text-foreground">
             PDF du compte-rendu <span className="text-foreground/40 font-normal">(optionnel)</span>
-          </label>
+          </span>
           <div className="flex items-center gap-3">
             <label className="cursor-pointer">
               <div
@@ -135,8 +137,11 @@ export function MeetingForm({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">Titre</label>
+            <label htmlFor="meeting-title" className="text-sm font-medium text-foreground">
+              Titre
+            </label>
             <input
+              id="meeting-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -145,8 +150,11 @@ export function MeetingForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">Date de la réunion</label>
+            <label htmlFor="meeting-date" className="text-sm font-medium text-foreground">
+              Date de la réunion
+            </label>
             <input
+              id="meeting-date"
               type="date"
               value={meetingDate}
               onChange={(e) => setMeetingDate(e.target.value)}
@@ -158,7 +166,7 @@ export function MeetingForm({
 
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-foreground">Contenu</label>
+            <span className="text-sm font-medium text-foreground">Contenu</span>
             {pdfUrl && <span className="text-xs text-foreground/40">Pré-rempli depuis le PDF</span>}
           </div>
           <div className="rounded-xl overflow-hidden border border-border">

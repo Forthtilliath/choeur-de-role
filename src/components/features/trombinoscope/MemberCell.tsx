@@ -1,11 +1,13 @@
 'use client';
+import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+
 import { formatPhone } from '@/utils/phoneHelpers';
 import { toTitleCase, toUpperCase } from '@/utils/stringHelpers';
-import { Column, TrombiMember } from './types';
+
+import type { Column, TrombiMember } from './types';
 
 function getVoicePartBg(name: string | undefined): string {
   if (!name) return '';
@@ -15,7 +17,8 @@ function getVoicePartBg(name: string | undefined): string {
   if (n.includes('ténor')) return 'bg-tenor/20 hover:bg-tenor/35';
   if (n.includes('basse')) return 'bg-bass/20 hover:bg-bass/35';
   if (n.includes('pianist')) return 'bg-pianist/20 hover:bg-pianist/35';
-  if (n.includes('chef') || n.includes('directeur')) return 'bg-choir-director/20 hover:bg-choir-director/35';
+  if (n.includes('chef') || n.includes('directeur'))
+    return 'bg-choir-director/20 hover:bg-choir-director/35';
   return 'bg-background-secondary hover:bg-background-tertiary';
 }
 
@@ -35,41 +38,68 @@ export { getVoicePartBg };
 function BureauRoleBadge({ bureauRole }: { bureauRole: string }) {
   const [rect, setRect] = useState<DOMRect | null>(null);
   const ref = useRef<HTMLSpanElement>(null);
-  const roles = bureauRole.split(/\n|\s+-\s+/).map((r) => r.replace(/\//g, ' ').trim()).filter(Boolean);
+  const roles = bureauRole
+    .split(/\n|\s+-\s+/)
+    .map((r) => r.replace(/\//g, ' ').trim())
+    .filter(Boolean);
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className="inline-flex justify-center"
       onMouseEnter={() => setRect(ref.current?.getBoundingClientRect() ?? null)}
       onMouseLeave={() => setRect(null)}
-      onClick={(e) => { e.stopPropagation(); setRect(r => r ? null : ref.current?.getBoundingClientRect() ?? null); }}
+      onClick={(e) => {
+        e.stopPropagation();
+        setRect((r) => (r ? null : (ref.current?.getBoundingClientRect() ?? null)));
+      }}
+      onKeyDown={(e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        e.stopPropagation();
+        setRect((r) => (r ? null : (ref.current?.getBoundingClientRect() ?? null)));
+      }}
     >
-      <span ref={ref} className="text-base cursor-help select-none">🎼</span>
-      {rect && createPortal(
-        <div
-          style={{
-            position: 'fixed',
-            top: rect.top + rect.height / 2,
-            left: rect.right + 8,
-            transform: 'translateY(-50%)',
-            zIndex: 9999,
-            pointerEvents: 'none',
-            maxWidth: `min(220px, calc(100vw - ${rect.right + 16}px))`,
-          }}
-        >
-          <div className="bg-app-green text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-lg">
-            {roles.map((role, i) => (
-              <p key={i} className="m-0 whitespace-nowrap">{role}</p>
-            ))}
-          </div>
-        </div>,
-        document.body,
-      )}
+      <span ref={ref} className="text-base cursor-help select-none">
+        🎼
+      </span>
+      {rect &&
+        createPortal(
+          <div
+            style={{
+              position: 'fixed',
+              top: rect.top + rect.height / 2,
+              left: rect.right + 8,
+              transform: 'translateY(-50%)',
+              zIndex: 9999,
+              pointerEvents: 'none',
+              maxWidth: `min(220px, calc(100vw - ${rect.right + 16}px))`,
+            }}
+          >
+            <div className="bg-app-green text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-lg">
+              {roles.map((role, i) => (
+                <p key={i} className="m-0 whitespace-nowrap">
+                  {role}
+                </p>
+              ))}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
 
-export function MemberCell({ col, member, priority = false }: { col: Column; member: TrombiMember; priority?: boolean }) {
+export function MemberCell({
+  col,
+  member,
+  priority = false,
+}: {
+  col: Column;
+  member: TrombiMember;
+  priority?: boolean;
+}) {
   switch (col.key) {
     case 'ca':
       return member.bureau_role ? <BureauRoleBadge bureauRole={member.bureau_role} /> : null;

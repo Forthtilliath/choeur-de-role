@@ -1,8 +1,9 @@
 import { createServerClient as createServerSupabaseClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
+
 import { env } from '@/env';
-import { Database } from '@/types/database';
+import type { Database } from '@/types/database';
 
 export async function createServerClient() {
   const cookieStore = await cookies();
@@ -20,7 +21,9 @@ export async function createServerClient() {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options),
             );
-          } catch {}
+          } catch {
+            // Appelé depuis un Server Component : les cookies y sont en lecture seule, le middleware se charge du rafraîchissement.
+          }
         },
       },
     },
@@ -28,8 +31,5 @@ export async function createServerClient() {
 }
 
 export function createAdminClient() {
-  return createClient<Database>(
-    env.NEXT_PUBLIC_SUPABASE_URL,
-    env.SUPABASE_SERVICE_ROLE_KEY,
-  );
+  return createClient<Database>(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY);
 }

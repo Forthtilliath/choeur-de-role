@@ -1,17 +1,19 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { toast } from 'sonner';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
+import { useImagePreview } from '@/hooks/useImagePreview';
 import { formatPhone } from '@/utils/phoneHelpers';
-import { GeoValidationPopupWrapper } from './GeoValidationPopupWrapper';
+
 import { saveProfile } from './actions';
 import { geocodeAddress, uploadProfilePhoto } from './clientQueries';
-import { useImagePreview } from '@/hooks/useImagePreview';
-import { BirthdayVisibility, Coords, MemberProfile } from './types';
 import { GdprExportButton } from './GdprExportButton';
+import { GeoValidationPopupWrapper } from './GeoValidationPopupWrapper';
 import { MfaSection } from './MfaSection';
+import type { BirthdayVisibility, Coords, MemberProfile } from './types';
 
 type Props = {
   member: MemberProfile;
@@ -252,34 +254,22 @@ export function ProfilClient({ member }: Props) {
           <p className="text-xs text-foreground/50">JPG, PNG — recommandé : format carré</p>
           {photoIsPending ? (
             <div className="flex gap-2">
-              <Button
-                variant="primary"
-                size="sm"
-                disabled={photoUploading}
-                onClick={confirmPhoto}
-              >
+              <Button variant="primary" size="sm" disabled={photoUploading} onClick={confirmPhoto}>
                 {photoUploading ? (
                   <span className="flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                     Upload...
                   </span>
-                ) : '✓ Valider'}
+                ) : (
+                  '✓ Valider'
+                )}
               </Button>
-              <Button
-                variant="danger"
-                size="sm"
-                disabled={photoUploading}
-                onClick={cancelPhoto}
-              >
+              <Button variant="danger" size="sm" disabled={photoUploading} onClick={cancelPhoto}>
                 Annuler
               </Button>
             </div>
           ) : (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => photoInputRef.current?.click()}
-            >
+            <Button variant="ghost" size="sm" onClick={() => photoInputRef.current?.click()}>
               {photoUrl ? '📷 Changer la photo' : '📷 Ajouter une photo'}
             </Button>
           )}
@@ -299,8 +289,11 @@ export function ProfilClient({ member }: Props) {
           <h2 className="text-sm font-medium text-foreground">Identité</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Prénom</label>
+              <label htmlFor="profile-first-name" className="text-xs text-foreground/50">
+                Prénom
+              </label>
               <input
+                id="profile-first-name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -308,8 +301,11 @@ export function ProfilClient({ member }: Props) {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Nom</label>
+              <label htmlFor="profile-last-name" className="text-xs text-foreground/50">
+                Nom
+              </label>
               <input
+                id="profile-last-name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -319,8 +315,11 @@ export function ProfilClient({ member }: Props) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Date de naissance</label>
+              <label htmlFor="profile-birthday" className="text-xs text-foreground/50">
+                Date de naissance
+              </label>
               <input
+                id="profile-birthday"
                 type="date"
                 value={birthday}
                 onChange={(e) => setBirthday(e.target.value)}
@@ -328,7 +327,7 @@ export function ProfilClient({ member }: Props) {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Pupitre</label>
+              <span className="text-xs text-foreground/50">Pupitre</span>
               <p className="text-sm text-foreground/60 px-4 py-2 border border-border rounded-lg bg-background-secondary">
                 {member.voice_parts?.name ?? 'Non défini'}
               </p>
@@ -343,7 +342,7 @@ export function ProfilClient({ member }: Props) {
         <div className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background">
           <h2 className="text-sm font-medium text-foreground">Contact</h2>
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-foreground/50">Email</label>
+            <span className="text-xs text-foreground/50">Email</span>
             <p className="text-sm text-foreground/60 px-4 py-2 border border-border rounded-lg bg-background-secondary">
               {member.email ?? 'Non défini'}
             </p>
@@ -352,8 +351,11 @@ export function ProfilClient({ member }: Props) {
             </p>
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-foreground/50">Téléphone</label>
+            <label htmlFor="profile-phone" className="text-xs text-foreground/50">
+              Téléphone
+            </label>
             <input
+              id="profile-phone"
               value={phone}
               onChange={(e) => setPhone(formatPhone(e.target.value))}
               type="tel"
@@ -369,8 +371,11 @@ export function ProfilClient({ member }: Props) {
         <div className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background">
           <h2 className="text-sm font-medium text-foreground">Adresse</h2>
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-foreground/50">Rue</label>
+            <label htmlFor="profile-address" className="text-xs text-foreground/50">
+              Rue
+            </label>
             <input
+              id="profile-address"
               value={address}
               onChange={(e) => {
                 setAddress(e.target.value);
@@ -382,8 +387,11 @@ export function ProfilClient({ member }: Props) {
           </div>
           <div className="grid grid-cols-3 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Code postal</label>
+              <label htmlFor="profile-zip" className="text-xs text-foreground/50">
+                Code postal
+              </label>
               <input
+                id="profile-zip"
                 value={zipCode}
                 onChange={(e) => {
                   setZipCode(e.target.value);
@@ -394,8 +402,11 @@ export function ProfilClient({ member }: Props) {
               />
             </div>
             <div className="col-span-2 flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Ville</label>
+              <label htmlFor="profile-city" className="text-xs text-foreground/50">
+                Ville
+              </label>
               <input
+                id="profile-city"
                 value={city}
                 onChange={(e) => {
                   setCity(e.target.value);

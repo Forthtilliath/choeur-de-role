@@ -1,26 +1,29 @@
 'use client';
 
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 type SortKey = 'last_name' | 'voice_part' | 'role' | 'updated' | 'birthday';
 type SortDir = 'default' | 'asc' | 'desc';
 type NameFormat = 'first_last' | 'last_first';
-import { useConfirm } from '@/context/ConfirmContext';
-import { toast } from 'sonner';
 import { Mail } from 'lucide-react';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
 import { VoicePartFilter } from '@/components/ui/VoicePartFilter';
+import { useConfirm } from '@/context/ConfirmContext';
 import { useNow } from '@/hooks/useNow';
-import { Season } from '../../concerts';
-import { bulkAssignSeason, deleteMember, resetAllMembersPasswords } from '../clientQueries';
 import { formatDateTimeCompact } from '@/utils/dateHelpers';
-import { AdminMemberWithSeasons, AuthInfo, VoicePart } from '../types';
+
+import type { Season } from '../../concerts';
+import { bulkAssignSeason, deleteMember, resetAllMembersPasswords } from '../clientQueries';
+import type { AdminMemberWithSeasons, AuthInfo, VoicePart } from '../types';
+
+import { RECENT_MS } from './constants';
 import { CreateMemberForm } from './CreateMemberForm';
 import { CsvImportPanel } from './CsvImportPanel';
 import { MemberForm } from './MemberForm';
 import { MemberRow } from './MemberRow';
-import { RECENT_MS } from './constants';
 
 const ROLE_GROUPS = [
   {
@@ -103,8 +106,10 @@ export function MembresAdminClient({
     function handleKey(e: KeyboardEvent) {
       const tag = (document.activeElement as HTMLElement)?.tagName;
       if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
-      if (e.key === 'ArrowLeft') tableScrollRef.current?.scrollBy({ left: -240, behavior: 'smooth' });
-      if (e.key === 'ArrowRight') tableScrollRef.current?.scrollBy({ left: 240, behavior: 'smooth' });
+      if (e.key === 'ArrowLeft')
+        tableScrollRef.current?.scrollBy({ left: -240, behavior: 'smooth' });
+      if (e.key === 'ArrowRight')
+        tableScrollRef.current?.scrollBy({ left: 240, behavior: 'smooth' });
     }
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
@@ -179,7 +184,15 @@ export function MembresAdminClient({
         );
         return matchSearch && matchPart && matchSeason && matchLocked && matchRole;
       }),
-    [members, search, selectedVoicePartIds, filterSeasonId, showLocked, localAuthMap, selectedRoleGroups],
+    [
+      members,
+      search,
+      selectedVoicePartIds,
+      filterSeasonId,
+      showLocked,
+      localAuthMap,
+      selectedRoleGroups,
+    ],
   );
 
   const sorted = useMemo(() => {
@@ -242,7 +255,9 @@ export function MembresAdminClient({
 
   useEffect(() => {
     document.documentElement.style.overflowY = showForm ? 'hidden' : '';
-    return () => { document.documentElement.style.overflowY = ''; };
+    return () => {
+      document.documentElement.style.overflowY = '';
+    };
   }, [showForm]);
 
   function toggleAll() {
@@ -267,7 +282,9 @@ export function MembresAdminClient({
             : m,
         ),
       );
-      toast.success(`${ids.length} membre${ids.length > 1 ? 's' : ''} ajouté${ids.length > 1 ? 's' : ''} à la saison ${season?.label ?? ''}`);
+      toast.success(
+        `${ids.length} membre${ids.length > 1 ? 's' : ''} ajouté${ids.length > 1 ? 's' : ''} à la saison ${season?.label ?? ''}`,
+      );
     } else {
       toast.error('Erreur lors de la mise à jour');
     }
@@ -275,7 +292,20 @@ export function MembresAdminClient({
 
   function exportToCsv() {
     const seasonMap = new Map(seasons.map((s) => [s.id, s.label ?? '']));
-    const headers = ['prénom', 'nom', 'email', 'téléphone', 'adresse', 'code_postal', 'ville', 'date_de_naissance', 'pupitre', 'rôle', 'rôle_bureau', 'saisons'];
+    const headers = [
+      'prénom',
+      'nom',
+      'email',
+      'téléphone',
+      'adresse',
+      'code_postal',
+      'ville',
+      'date_de_naissance',
+      'pupitre',
+      'rôle',
+      'rôle_bureau',
+      'saisons',
+    ];
     const csvRows = members.map((m) => [
       m.first_name ?? '',
       m.last_name ?? '',
@@ -288,7 +318,10 @@ export function MembresAdminClient({
       m.voice_parts?.name ?? '',
       m.role ?? '',
       m.bureau_role ?? '',
-      m.member_season.map((ms) => seasonMap.get(ms.season_id ?? '') ?? '').filter(Boolean).join(' | '),
+      m.member_season
+        .map((ms) => seasonMap.get(ms.season_id ?? '') ?? '')
+        .filter(Boolean)
+        .join(' | '),
     ]);
     const content = [headers, ...csvRows]
       .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
@@ -309,9 +342,12 @@ export function MembresAdminClient({
       return name ? `${name} <${m.email}>` : m.email!;
     });
     await navigator.clipboard.writeText(entries.join(', '));
-    toast.success(`${entries.length} email${entries.length > 1 ? 's' : ''} copié${entries.length > 1 ? 's' : ''}`, {
-      description: 'Collez directement dans le champ CCI de votre messagerie.',
-    });
+    toast.success(
+      `${entries.length} email${entries.length > 1 ? 's' : ''} copié${entries.length > 1 ? 's' : ''}`,
+      {
+        description: 'Collez directement dans le champ CCI de votre messagerie.',
+      },
+    );
   }
 
   const recentlyUpdatedBySelf = useMemo(
@@ -332,9 +368,7 @@ export function MembresAdminClient({
   }
 
   function handlePhotoUpdate(memberId: string, photoUrl: string) {
-    setMembers((prev) =>
-      prev.map((m) => (m.id === memberId ? { ...m, photo_url: photoUrl } : m)),
-    );
+    setMembers((prev) => prev.map((m) => (m.id === memberId ? { ...m, photo_url: photoUrl } : m)));
   }
 
   function handleLockToggle(memberId: string, locked: boolean) {
@@ -348,11 +382,14 @@ export function MembresAdminClient({
     const item = members.find((m) => m.id === id);
     if (item?.role === 'super_admin') return;
     const name = [item?.first_name, item?.last_name].filter(Boolean).join(' ');
-    if (!await confirm({
-      message: 'Supprimer définitivement ce membre ?',
-      danger: true,
-      details: name ? { icon: '👤', label: name, sublabel: item?.email ?? undefined } : undefined,
-    })) return;
+    if (
+      !(await confirm({
+        message: 'Supprimer définitivement ce membre ?',
+        danger: true,
+        details: name ? { icon: '👤', label: name, sublabel: item?.email ?? undefined } : undefined,
+      }))
+    )
+      return;
     const ok = await deleteMember(id);
     if (ok) {
       setMembers((prev) => prev.filter((m) => m.id !== id));
@@ -420,13 +457,20 @@ export function MembresAdminClient({
             </Button>
             <Button
               variant="ghost"
-              onClick={() => { setShowForm(false); setShowCsvImport((v) => !v); }}
+              onClick={() => {
+                setShowForm(false);
+                setShowCsvImport((v) => !v);
+              }}
               size="sm"
             >
               Importer CSV
             </Button>
             <Button
-              onClick={() => { setShowCsvImport(false); setEditingMember(null); setShowForm(true); }}
+              onClick={() => {
+                setShowCsvImport(false);
+                setEditingMember(null);
+                setShowForm(true);
+              }}
               size="sm"
             >
               Ajouter un membre
@@ -463,7 +507,9 @@ export function MembresAdminClient({
           >
             <option value="">Toutes les saisons</option>
             {seasons.map((s) => (
-              <option key={s.id} value={s.id}>{s.label}</option>
+              <option key={s.id} value={s.id}>
+                {s.label}
+              </option>
             ))}
           </Select>
           <button
@@ -510,12 +556,19 @@ export function MembresAdminClient({
               <div className="flex items-center gap-1.5">
                 <Select
                   defaultValue=""
-                  onChange={(e) => { if (e.target.value) handleBulkAssignSeason(e.target.value); e.target.value = ''; }}
+                  onChange={(e) => {
+                    if (e.target.value) handleBulkAssignSeason(e.target.value);
+                    e.target.value = '';
+                  }}
                   className="text-xs px-2 py-1 text-foreground/70 cursor-pointer"
                 >
-                  <option value="" disabled>Ajouter à la saison…</option>
+                  <option value="" disabled>
+                    Ajouter à la saison…
+                  </option>
                   {seasons.map((s) => (
-                    <option key={s.id} value={s.id}>{s.label}</option>
+                    <option key={s.id} value={s.id}>
+                      {s.label}
+                    </option>
                   ))}
                 </Select>
               </div>
@@ -534,9 +587,7 @@ export function MembresAdminClient({
                 {m.first_name} {m.last_name}
               </span>
               <span className="text-foreground/40 text-xs">
-                {m.updated_at
-                  ? formatDateTimeCompact(m.updated_at)
-                  : ''}
+                {m.updated_at ? formatDateTimeCompact(m.updated_at) : ''}
               </span>
               <button
                 onClick={() => {
@@ -569,12 +620,17 @@ export function MembresAdminClient({
 
       {/* Modal création/modification */}
       {showForm && (
+        // Backdrop click-to-dismiss — Escape non géré ici, la croix du formulaire suffit.
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
         <div
           role="dialog"
           aria-modal="true"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
           onClick={(e) => {
-            if (e.target === e.currentTarget) { setShowForm(false); setEditingMember(null); }
+            if (e.target === e.currentTarget) {
+              setShowForm(false);
+              setEditingMember(null);
+            }
           }}
         >
           <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -627,7 +683,9 @@ export function MembresAdminClient({
           <div className="absolute top-2 right-2 z-30 flex gap-1">
             <button
               type="button"
-              onClick={() => { tableScrollRef.current?.scrollBy({ left: -240, behavior: 'smooth' }); }}
+              onClick={() => {
+                tableScrollRef.current?.scrollBy({ left: -240, behavior: 'smooth' });
+              }}
               disabled={!canScrollLeft}
               className="w-7 h-7 flex items-center justify-center rounded-lg border border-border bg-background text-foreground/60 hover:text-foreground hover:border-foreground/30 disabled:opacity-30 text-xs transition-all"
             >
@@ -635,7 +693,9 @@ export function MembresAdminClient({
             </button>
             <button
               type="button"
-              onClick={() => { tableScrollRef.current?.scrollBy({ left: 240, behavior: 'smooth' }); }}
+              onClick={() => {
+                tableScrollRef.current?.scrollBy({ left: 240, behavior: 'smooth' });
+              }}
               disabled={!canScrollRight}
               className="w-7 h-7 flex items-center justify-center rounded-lg border border-border bg-background text-foreground/60 hover:text-foreground hover:border-foreground/30 disabled:opacity-30 text-xs transition-all"
             >
@@ -655,17 +715,55 @@ export function MembresAdminClient({
                   sortDir={sortDir}
                   onSort={handleSort}
                   nameFormat={nameFormat}
-                  onToggleNameFormat={() => setNameFormat((f) => f === 'first_last' ? 'last_first' : 'first_last')}
-                  className={selectionMode ? '' : 'sticky left-0 z-10 bg-background-secondary border-r border-border/40'}
+                  onToggleNameFormat={() =>
+                    setNameFormat((f) => (f === 'first_last' ? 'last_first' : 'first_last'))
+                  }
+                  className={
+                    selectionMode
+                      ? ''
+                      : 'sticky left-0 z-10 bg-background-secondary border-r border-border/40'
+                  }
                 />
-                <SortTh label="Pupitre" col="voice_part" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <SortTh label="Rôle" col="role" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">Contact</th>
-                <SortTh label="Naissance" col="birthday" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">Adresse</th>
-                <SortTh label="Modifié" col="updated" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">Connexion</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">Actions</th>
+                <SortTh
+                  label="Pupitre"
+                  col="voice_part"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={handleSort}
+                />
+                <SortTh
+                  label="Rôle"
+                  col="role"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={handleSort}
+                />
+                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">
+                  Contact
+                </th>
+                <SortTh
+                  label="Naissance"
+                  col="birthday"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={handleSort}
+                />
+                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">
+                  Adresse
+                </th>
+                <SortTh
+                  label="Modifié"
+                  col="updated"
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={handleSort}
+                />
+                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">
+                  Connexion
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-foreground/50">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -693,12 +791,17 @@ export function MembresAdminClient({
 
       {/* Zone dangereuse */}
       <div className="border border-red-200 dark:border-red-800 rounded-2xl p-5 flex flex-col gap-3">
-        <p className="text-xs font-medium text-red-500 dark:text-red-400 uppercase tracking-wide">Zone dangereuse</p>
+        <p className="text-xs font-medium text-red-500 dark:text-red-400 uppercase tracking-wide">
+          Zone dangereuse
+        </p>
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-medium text-foreground">Réinitialiser tous les mots de passe</p>
+            <p className="text-sm font-medium text-foreground">
+              Réinitialiser tous les mots de passe
+            </p>
             <p className="text-xs text-foreground/40 mt-0.5">
-              Génère un nouveau mot de passe pour chaque choriste confirmé et le leur envoie par email.
+              Génère un nouveau mot de passe pour chaque choriste confirmé et le leur envoie par
+              email.
             </p>
           </div>
           <button
@@ -711,11 +814,11 @@ export function MembresAdminClient({
         </div>
         {bulkResetResult !== null && (
           <p className="text-xs text-primary">
-            ✓ {bulkResetResult} choriste{bulkResetResult > 1 ? 's' : ''} ont reçu leur nouveau mot de passe.
+            ✓ {bulkResetResult} choriste{bulkResetResult > 1 ? 's' : ''} ont reçu leur nouveau mot
+            de passe.
           </p>
         )}
       </div>
-
     </div>
   );
 }

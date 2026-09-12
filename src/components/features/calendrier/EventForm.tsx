@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/Button';
-import { insertRecurringEvents, updateSeriesEvents, upsertCalendarEvent } from './clientQueries';
-import { CalendarEvent, EventType } from './types';
-import { useFormShortcuts } from '@/hooks/useFormShortcuts';
 import Image from 'next/image';
-import { LocationMap } from './LocationMap';
+import { toast } from 'sonner';
+
+import { Button } from '@/components/ui/Button';
+import { useFormShortcuts } from '@/hooks/useFormShortcuts';
 import { formatEventDateRange } from '@/utils/dateHelpers';
+
+import { insertRecurringEvents, updateSeriesEvents, upsertCalendarEvent } from './clientQueries';
+import { LocationMap } from './LocationMap';
+import type { CalendarEvent, EventType } from './types';
 
 function EventTypeSelect({
   eventTypes,
@@ -40,9 +42,15 @@ function EventTypeSelect({
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center gap-2 border border-border rounded-lg px-3 py-2 text-sm bg-background text-foreground hover:border-primary/50 focus:outline-none focus:border-primary transition-colors"
       >
-        <span className="w-2.5 h-2.5 rounded-full shrink-0 transition-colors" style={{ backgroundColor: selected?.color }} />
+        <span
+          className="w-2.5 h-2.5 rounded-full shrink-0 transition-colors"
+          style={{ backgroundColor: selected?.color }}
+        />
         <span className="flex-1 text-left">{selected?.label}</span>
-        <ChevronDown size={14} className={`text-foreground/40 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          size={14}
+          className={`text-foreground/40 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {open && (
@@ -51,10 +59,16 @@ function EventTypeSelect({
             <button
               key={et.id}
               type="button"
-              onClick={() => { onChange(et.id); setOpen(false); }}
+              onClick={() => {
+                onChange(et.id);
+                setOpen(false);
+              }}
               className={`w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-background-secondary ${et.id === value ? 'bg-background-tertiary font-medium text-foreground' : 'text-foreground/70'}`}
             >
-              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: et.color }} />
+              <span
+                className="w-2.5 h-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: et.color }}
+              />
               {et.label}
             </button>
           ))}
@@ -186,7 +200,9 @@ export function EventForm({
       const created = await insertRecurringEvents(rows);
       if (created.length > 0) {
         created.forEach((ev) => onSaveAction(ev));
-        toast.success(`${created.length} évènement${created.length > 1 ? 's' : ''} créé${created.length > 1 ? 's' : ''}`);
+        toast.success(
+          `${created.length} évènement${created.length > 1 ? 's' : ''} créé${created.length > 1 ? 's' : ''}`,
+        );
       } else {
         toast.error('Aucun évènement créé');
       }
@@ -258,7 +274,9 @@ export function EventForm({
             <div className="flex items-start gap-3">
               <div className="flex-1 flex flex-col gap-1">
                 <p className="text-sm font-medium text-foreground">{event.title}</p>
-                {!isBirthday && <p className="text-xs text-foreground/50">{event.event_types.label}</p>}
+                {!isBirthday && (
+                  <p className="text-xs text-foreground/50">{event.event_types.label}</p>
+                )}
                 <p className="text-xs text-foreground/60">
                   {formatEventDateRange(event.starts_at, event.ends_at)}
                 </p>
@@ -277,7 +295,9 @@ export function EventForm({
             </div>
             {event.location && <LocationMap location={event.location} />}
             {event.description && (
-              <p className="text-sm text-foreground/70 mt-2 whitespace-pre-line">{event.description}</p>
+              <p className="text-sm text-foreground/70 mt-2 whitespace-pre-line">
+                {event.description}
+              </p>
             )}
             <Button
               onClick={onCloseAction}
@@ -317,18 +337,24 @@ export function EventForm({
 
             {/* Type */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Type</label>
+              <span className="text-xs text-foreground/50">Type</span>
               <EventTypeSelect
                 eventTypes={eventTypes}
                 value={eventTypeId}
-                onChange={(id) => { setEventTypeId(id); dirty(); }}
+                onChange={(id) => {
+                  setEventTypeId(id);
+                  dirty();
+                }}
               />
             </div>
 
             {/* Titre */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Titre</label>
+              <label htmlFor="calendar-event-title" className="text-xs text-foreground/50">
+                Titre
+              </label>
               <input
+                id="calendar-event-title"
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
@@ -342,10 +368,11 @@ export function EventForm({
 
             {/* Lieu */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">
+              <label htmlFor="calendar-event-location" className="text-xs text-foreground/50">
                 Lieu <span className="text-foreground/30">(optionnel)</span>
               </label>
               <input
+                id="calendar-event-location"
                 value={location}
                 onChange={(e) => {
                   setLocation(e.target.value);
@@ -383,8 +410,11 @@ export function EventForm({
             {!isRecurring && (
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
-                  <label className="text-xs text-foreground/50">Début</label>
+                  <label htmlFor="calendar-event-starts-at" className="text-xs text-foreground/50">
+                    Début
+                  </label>
                   <input
+                    id="calendar-event-starts-at"
                     type="datetime-local"
                     value={startsAt}
                     onChange={(e) => {
@@ -396,8 +426,11 @@ export function EventForm({
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-xs text-foreground/50">Fin</label>
+                  <label htmlFor="calendar-event-ends-at" className="text-xs text-foreground/50">
+                    Fin
+                  </label>
                   <input
+                    id="calendar-event-ends-at"
                     type="datetime-local"
                     value={endsAt}
                     onChange={(e) => {
@@ -414,8 +447,8 @@ export function EventForm({
             {/* Récurrence */}
             {isRecurring && (
               <div className="flex flex-col gap-3 p-4 rounded-xl bg-background-secondary border border-border">
-                <div className="flex flex-col gap-1">
-                  <label className="text-xs text-foreground/50">Jour de la semaine</label>
+                <fieldset className="flex flex-col gap-1">
+                  <legend className="text-xs text-foreground/50">Jour de la semaine</legend>
                   <div className="flex flex-wrap gap-1">
                     {WEEKDAYS.map((day, idx) => (
                       <button
@@ -428,11 +461,17 @@ export function EventForm({
                       </button>
                     ))}
                   </div>
-                </div>
+                </fieldset>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs text-foreground/50">Heure de début</label>
+                    <label
+                      htmlFor="calendar-event-recur-start-time"
+                      className="text-xs text-foreground/50"
+                    >
+                      Heure de début
+                    </label>
                     <input
+                      id="calendar-event-recur-start-time"
                       type="time"
                       value={recurStartTime}
                       onChange={(e) => setRecurStartTime(e.target.value)}
@@ -440,8 +479,14 @@ export function EventForm({
                     />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs text-foreground/50">Heure de fin</label>
+                    <label
+                      htmlFor="calendar-event-recur-end-time"
+                      className="text-xs text-foreground/50"
+                    >
+                      Heure de fin
+                    </label>
                     <input
+                      id="calendar-event-recur-end-time"
                       type="time"
                       value={recurEndTime}
                       onChange={(e) => setRecurEndTime(e.target.value)}
@@ -451,8 +496,14 @@ export function EventForm({
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs text-foreground/50">Du</label>
+                    <label
+                      htmlFor="calendar-event-recur-from"
+                      className="text-xs text-foreground/50"
+                    >
+                      Du
+                    </label>
                     <input
+                      id="calendar-event-recur-from"
                       type="date"
                       value={recurFrom}
                       onChange={(e) => setRecurFrom(e.target.value)}
@@ -461,8 +512,11 @@ export function EventForm({
                     />
                   </div>
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs text-foreground/50">Au</label>
+                    <label htmlFor="calendar-event-recur-to" className="text-xs text-foreground/50">
+                      Au
+                    </label>
                     <input
+                      id="calendar-event-recur-to"
                       type="date"
                       value={recurTo}
                       onChange={(e) => setRecurTo(e.target.value)}
@@ -472,11 +526,15 @@ export function EventForm({
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <label className="text-xs text-foreground/50">
+                  <label
+                    htmlFor="calendar-event-recur-exclusions"
+                    className="text-xs text-foreground/50"
+                  >
                     Dates à exclure{' '}
                     <span className="text-foreground/30">(AAAA-MM-JJ, séparées par virgules)</span>
                   </label>
                   <input
+                    id="calendar-event-recur-exclusions"
                     value={recurExclusions}
                     onChange={(e) => setRecurExclusions(e.target.value)}
                     className="border border-border rounded-lg px-3 py-2 text-sm bg-background"
@@ -493,10 +551,11 @@ export function EventForm({
 
             {/* Note */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">
+              <label htmlFor="calendar-event-description" className="text-xs text-foreground/50">
                 Note <span className="text-foreground/30">(optionnel)</span>
               </label>
               <textarea
+                id="calendar-event-description"
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);

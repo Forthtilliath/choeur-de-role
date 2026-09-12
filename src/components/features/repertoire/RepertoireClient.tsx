@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { RepertoireFileLink } from './RepertoireFileLink';
-import { buildFileLabel } from './helpers';
-import { formatDateShort } from '@/utils/dateHelpers';
-import { PerformanceFilter, SongFile, Song, VoicePart } from './types';
+
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { formatDateShort } from '@/utils/dateHelpers';
+
+import { buildFileLabel } from './helpers';
+import { RepertoireFileLink } from './RepertoireFileLink';
+import type { PerformanceFilter, Song, SongFile, VoicePart } from './types';
 
 type Props = {
   songs: Song[];
@@ -23,11 +25,16 @@ export function RepertoireClient({
   initialOpenSongId,
 }: Props) {
   const [selectedVoicePartId, setSelectedVoicePartId] = useState<string | null>(myVoicePartId);
-  const [selectedPerformanceId, setSelectedPerformanceId] = useLocalStorage<string | null>('repertoire:performanceId', null);
+  const [selectedPerformanceId, setSelectedPerformanceId] = useLocalStorage<string | null>(
+    'repertoire:performanceId',
+    null,
+  );
   const [search, setSearch] = useState('');
   const [downloadModal, setDownloadModal] = useState(false);
   const [showPastPerfs, setShowPastPerfs] = useState(false);
-  const [mobileFilterPanel, setMobileFilterPanel] = useState<'pupitre' | 'representation' | null>(null);
+  const [mobileFilterPanel, setMobileFilterPanel] = useState<'pupitre' | 'representation' | null>(
+    null,
+  );
 
   const now = new Date();
   const tuttiPart = voiceParts.find((vp) => vp.name === 'tutti');
@@ -71,13 +78,17 @@ export function RepertoireClient({
       (song.label ?? '').toLowerCase().includes(search.toLowerCase());
 
     const matchPerformance =
-      !effectivePerformanceId || !selectedPerformance || selectedPerformance.songIds.includes(song.id);
+      !effectivePerformanceId ||
+      !selectedPerformance ||
+      selectedPerformance.songIds.includes(song.id);
 
     return matchSearch && matchPerformance;
   });
 
-  const selectedVoicePartName = voiceParts.find((vp) => vp.id === selectedVoicePartId)?.name ?? 'Tous';
-  const selectedPerfName = performances.find((p) => p.id === effectivePerformanceId)?.title ?? 'Toutes';
+  const selectedVoicePartName =
+    voiceParts.find((vp) => vp.id === selectedVoicePartId)?.name ?? 'Tous';
+  const selectedPerfName =
+    performances.find((p) => p.id === effectivePerformanceId)?.title ?? 'Toutes';
 
   return (
     <div className="flex flex-col gap-6">
@@ -92,7 +103,9 @@ export function RepertoireClient({
             <span>Pupitre — {selectedVoicePartName}</span>
             <span>{mobileFilterPanel === 'pupitre' ? '▲' : '▼'}</span>
           </button>
-          <div className={`flex gap-2 flex-wrap items-center ${mobileFilterPanel === 'pupitre' ? '' : 'hidden sm:flex'}`}>
+          <div
+            className={`flex gap-2 flex-wrap items-center ${mobileFilterPanel === 'pupitre' ? '' : 'hidden sm:flex'}`}
+          >
             <span className="text-xs text-foreground/50 hidden sm:inline">Pupitre :</span>
             <button
               onClick={() => setSelectedVoicePartId(null)}
@@ -118,15 +131,21 @@ export function RepertoireClient({
           <div className="flex flex-col gap-2">
             {/* Mobile toggle */}
             <button
-              onClick={() => setMobileFilterPanel((p) => (p === 'representation' ? null : 'representation'))}
+              onClick={() =>
+                setMobileFilterPanel((p) => (p === 'representation' ? null : 'representation'))
+              }
               className="sm:hidden flex items-center justify-between w-full px-3 py-2 rounded-lg border border-border text-sm text-foreground/60 bg-background"
             >
               <span>Représentation — {selectedPerfName}</span>
               <span>{mobileFilterPanel === 'representation' ? '▲' : '▼'}</span>
             </button>
-            <div className={`flex flex-col gap-2 ${mobileFilterPanel === 'representation' ? '' : 'hidden sm:flex'}`}>
+            <div
+              className={`flex flex-col gap-2 ${mobileFilterPanel === 'representation' ? '' : 'hidden sm:flex'}`}
+            >
               <div className="flex gap-2 flex-wrap items-center">
-                <span className="text-xs text-foreground/50 hidden sm:inline">Représentation :</span>
+                <span className="text-xs text-foreground/50 hidden sm:inline">
+                  Représentation :
+                </span>
                 <button
                   onClick={() => setSelectedPerformanceId(null)}
                   className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${effectivePerformanceId === null ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
@@ -135,7 +154,8 @@ export function RepertoireClient({
                 </button>
                 {upcomingPerfs.map((p) => {
                   const isActive = effectivePerformanceId === p.id;
-                  const isStoredNotInSong = !!initialOpenSongId && selectedPerformanceId === p.id && !isActive;
+                  const isStoredNotInSong =
+                    !!initialOpenSongId && selectedPerformanceId === p.id && !isActive;
                   return (
                     <button
                       key={p.id}
@@ -293,7 +313,7 @@ function SongCard({
       cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 300);
     return () => clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getFilesForVoicePart = (files: SongFile[]) => {
@@ -356,9 +376,15 @@ function SongCard({
             </div>
           ) : (
             <div className="px-6 py-4 flex flex-col gap-4">
-              {audioFiles.length > 0 && <FileSection files={audioFiles} voiceParts={voiceParts} songTitle={song.title} />}
-              {lyricsFiles.length > 0 && <FileSection files={lyricsFiles} voiceParts={voiceParts} songTitle={song.title} />}
-              {scoreFiles.length > 0 && <FileSection files={scoreFiles} voiceParts={voiceParts} songTitle={song.title} />}
+              {audioFiles.length > 0 && (
+                <FileSection files={audioFiles} voiceParts={voiceParts} songTitle={song.title} />
+              )}
+              {lyricsFiles.length > 0 && (
+                <FileSection files={lyricsFiles} voiceParts={voiceParts} songTitle={song.title} />
+              )}
+              {scoreFiles.length > 0 && (
+                <FileSection files={scoreFiles} voiceParts={voiceParts} songTitle={song.title} />
+              )}
             </div>
           )}
         </div>
@@ -367,7 +393,15 @@ function SongCard({
   );
 }
 
-function FileSection({ files, voiceParts, songTitle }: { files: SongFile[]; voiceParts: VoicePart[]; songTitle: string }) {
+function FileSection({
+  files,
+  voiceParts,
+  songTitle,
+}: {
+  files: SongFile[];
+  voiceParts: VoicePart[];
+  songTitle: string;
+}) {
   return (
     <div className="flex flex-col gap-2">
       {files.map((file) => (
@@ -377,7 +411,15 @@ function FileSection({ files, voiceParts, songTitle }: { files: SongFile[]; voic
   );
 }
 
-function FileRow({ file, voiceParts, songTitle }: { file: SongFile; voiceParts: VoicePart[]; songTitle: string }) {
+function FileRow({
+  file,
+  voiceParts,
+  songTitle,
+}: {
+  file: SongFile;
+  voiceParts: VoicePart[];
+  songTitle: string;
+}) {
   const label = buildFileLabel(file, voiceParts);
   const ext = file.file_url.split('.').pop() ?? 'mp3';
   const downloadName = `${songTitle} - ${label}.${ext}`;
@@ -498,10 +540,14 @@ function DownloadModal({
   }
 
   return (
+    // Backdrop click-to-dismiss — Escape n'est pas géré ici, la croix suffit comme équivalent clavier.
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       onClick={onClose}
     >
+      {/* Contient le clic pour éviter la fermeture au clic dans la modale */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
       <div
         className="bg-background rounded-2xl border border-border w-full max-w-md shadow-xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
@@ -514,10 +560,10 @@ function DownloadModal({
         </div>
 
         <div className="px-6 py-5 flex flex-col gap-5">
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-foreground">
+          <fieldset className="flex flex-col gap-2">
+            <legend className="text-sm font-medium text-foreground">
               Que souhaitez-vous télécharger ?
-            </label>
+            </legend>
             <div className="flex gap-2">
               {[
                 { value: 'audio', label: '🎵 Audio' },
@@ -533,10 +579,10 @@ function DownloadModal({
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-foreground">Pour quel pupitre ?</label>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="text-sm font-medium text-foreground">Pour quel pupitre ?</legend>
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setSelectedVoicePartId(null)}
@@ -558,7 +604,7 @@ function DownloadModal({
             <p className="text-xs text-foreground/40">
               Sélectionnez &quot;Tous&quot; pour les fichiers communs à tous les pupitres.
             </p>
-          </div>
+          </fieldset>
 
           {downloading && (
             <div className="flex flex-col gap-2">

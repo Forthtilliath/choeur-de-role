@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search } from 'lucide-react';
+
 import { useCommandPalette } from '@/context/CommandPaletteContext';
 import { useRole } from '@/hooks/useRole';
-import { fetchPublicSearchData, fetchMemberSearchData } from './clientQueries';
+
+import { fetchMemberSearchData, fetchPublicSearchData } from './clientQueries';
 
 type SearchItem = {
   id: string;
@@ -19,41 +21,191 @@ type SearchItem = {
 
 const publicNavItems: SearchItem[] = [
   { id: 'nav-concerts', group: 'Pages', label: 'Concerts', href: '/concerts', icon: '🎶' },
-  { id: 'nav-evenements', group: 'Pages', label: 'Événements externes', href: '/evenements', icon: '📅' },
+  {
+    id: 'nav-evenements',
+    group: 'Pages',
+    label: 'Événements externes',
+    href: '/evenements',
+    icon: '📅',
+  },
   { id: 'nav-galerie', group: 'Pages', label: 'Galerie', href: '/galerie', icon: '🖼️' },
   { id: 'nav-partenaires', group: 'Pages', label: 'Partenaires', href: '/partenaires', icon: '🤝' },
   { id: 'nav-contact', group: 'Pages', label: 'Contact', href: '/contact', icon: '✉️' },
 ];
 
 const privateNavItems: SearchItem[] = [
-  { id: 'nav-actu', group: 'Espace choristes', label: 'Actualités', href: '/choristes', icon: '📰' },
-  { id: 'nav-calendrier', group: 'Espace choristes', label: 'Calendrier', href: '/choristes/calendrier', icon: '📅' },
-  { id: 'nav-repertoire', group: 'Espace choristes', label: 'Répertoire', href: '/choristes/repertoire', icon: '🎵' },
-  { id: 'nav-liens', group: 'Espace choristes', label: 'Liens utiles', href: '/choristes/liens', icon: '🔗' },
-  { id: 'nav-trombi', group: 'Espace choristes', label: 'Trombinoscope', href: '/choristes/trombinoscope', icon: '👥' },
-  { id: 'nav-carte', group: 'Espace choristes', label: 'Carte', href: '/choristes/carte', icon: '🗺️' },
+  {
+    id: 'nav-actu',
+    group: 'Espace choristes',
+    label: 'Actualités',
+    href: '/choristes',
+    icon: '📰',
+  },
+  {
+    id: 'nav-calendrier',
+    group: 'Espace choristes',
+    label: 'Calendrier',
+    href: '/choristes/calendrier',
+    icon: '📅',
+  },
+  {
+    id: 'nav-repertoire',
+    group: 'Espace choristes',
+    label: 'Répertoire',
+    href: '/choristes/repertoire',
+    icon: '🎵',
+  },
+  {
+    id: 'nav-liens',
+    group: 'Espace choristes',
+    label: 'Liens utiles',
+    href: '/choristes/liens',
+    icon: '🔗',
+  },
+  {
+    id: 'nav-trombi',
+    group: 'Espace choristes',
+    label: 'Trombinoscope',
+    href: '/choristes/trombinoscope',
+    icon: '👥',
+  },
+  {
+    id: 'nav-carte',
+    group: 'Espace choristes',
+    label: 'Carte',
+    href: '/choristes/carte',
+    icon: '🗺️',
+  },
   { id: 'nav-ca', group: 'Espace choristes', label: 'CA', href: '/choristes/ca', icon: '📋' },
-  { id: 'nav-sondages', group: 'Espace choristes', label: 'Sondages', href: '/choristes/sondages', icon: '📊' },
-  { id: 'nav-profil', group: 'Espace choristes', label: 'Mon profil', href: '/choristes/profil', icon: '👤' },
+  {
+    id: 'nav-sondages',
+    group: 'Espace choristes',
+    label: 'Sondages',
+    href: '/choristes/sondages',
+    icon: '📊',
+  },
+  {
+    id: 'nav-profil',
+    group: 'Espace choristes',
+    label: 'Mon profil',
+    href: '/choristes/profil',
+    icon: '👤',
+  },
 ];
 
 const adminNavItems: SearchItem[] = [
-  { id: 'adm-dash', group: 'Administration', label: 'Tableau de bord', href: '/choristes/admin/tableau-de-bord', icon: '📊' },
-  { id: 'adm-messages', group: 'Administration', label: 'Messages de contact', href: '/choristes/admin/messages', icon: '✉️' },
-  { id: 'adm-homepage', group: 'Administration', label: "Page d'accueil", href: '/choristes/admin/homepage', icon: '🏠' },
-  { id: 'adm-concerts', group: 'Administration', label: 'Concerts', href: '/choristes/admin/concerts', icon: '🎭' },
-  { id: 'adm-galerie', group: 'Administration', label: 'Galerie photos', href: '/choristes/admin/galerie', icon: '🖼️' },
-  { id: 'adm-evenements', group: 'Administration', label: 'Événements', href: '/choristes/admin/evenements', icon: '📅' },
-  { id: 'adm-sponsors', group: 'Administration', label: 'Partenaires', href: '/choristes/admin/sponsors', icon: '🤝' },
-  { id: 'adm-membres', group: 'Administration', label: 'Membres', href: '/choristes/admin/membres', icon: '👥' },
-  { id: 'adm-pupitres', group: 'Administration', label: 'Pupitres', href: '/choristes/admin/pupitres', icon: '🎤' },
-  { id: 'adm-saisons', group: 'Administration', label: 'Saisons', href: '/choristes/admin/saisons', icon: '📆' },
-  { id: 'adm-media', group: 'Administration', label: 'Médiathèque', href: '/choristes/admin/mediatheque', icon: '📁' },
-  { id: 'adm-calendrier', group: 'Administration', label: 'Calendrier', href: '/choristes/admin/calendrier', icon: '📅' },
-  { id: 'adm-liens', group: 'Administration', label: 'Liens utiles', href: '/choristes/admin/liens', icon: '🔗' },
-  { id: 'adm-ca', group: 'Administration', label: 'Comptes-rendus CA', href: '/choristes/admin/ca', icon: '📋' },
-  { id: 'adm-sondages', group: 'Administration', label: 'Sondages', href: '/choristes/admin/sondages', icon: '📊' },
-  { id: 'adm-audit', group: 'Administration', label: "Journal d'audit", href: '/choristes/admin/audit-log', icon: '🔍' },
+  {
+    id: 'adm-dash',
+    group: 'Administration',
+    label: 'Tableau de bord',
+    href: '/choristes/admin/tableau-de-bord',
+    icon: '📊',
+  },
+  {
+    id: 'adm-messages',
+    group: 'Administration',
+    label: 'Messages de contact',
+    href: '/choristes/admin/messages',
+    icon: '✉️',
+  },
+  {
+    id: 'adm-homepage',
+    group: 'Administration',
+    label: "Page d'accueil",
+    href: '/choristes/admin/homepage',
+    icon: '🏠',
+  },
+  {
+    id: 'adm-concerts',
+    group: 'Administration',
+    label: 'Concerts',
+    href: '/choristes/admin/concerts',
+    icon: '🎭',
+  },
+  {
+    id: 'adm-galerie',
+    group: 'Administration',
+    label: 'Galerie photos',
+    href: '/choristes/admin/galerie',
+    icon: '🖼️',
+  },
+  {
+    id: 'adm-evenements',
+    group: 'Administration',
+    label: 'Événements',
+    href: '/choristes/admin/evenements',
+    icon: '📅',
+  },
+  {
+    id: 'adm-sponsors',
+    group: 'Administration',
+    label: 'Partenaires',
+    href: '/choristes/admin/sponsors',
+    icon: '🤝',
+  },
+  {
+    id: 'adm-membres',
+    group: 'Administration',
+    label: 'Membres',
+    href: '/choristes/admin/membres',
+    icon: '👥',
+  },
+  {
+    id: 'adm-pupitres',
+    group: 'Administration',
+    label: 'Pupitres',
+    href: '/choristes/admin/pupitres',
+    icon: '🎤',
+  },
+  {
+    id: 'adm-saisons',
+    group: 'Administration',
+    label: 'Saisons',
+    href: '/choristes/admin/saisons',
+    icon: '📆',
+  },
+  {
+    id: 'adm-media',
+    group: 'Administration',
+    label: 'Médiathèque',
+    href: '/choristes/admin/mediatheque',
+    icon: '📁',
+  },
+  {
+    id: 'adm-calendrier',
+    group: 'Administration',
+    label: 'Calendrier',
+    href: '/choristes/admin/calendrier',
+    icon: '📅',
+  },
+  {
+    id: 'adm-liens',
+    group: 'Administration',
+    label: 'Liens utiles',
+    href: '/choristes/admin/liens',
+    icon: '🔗',
+  },
+  {
+    id: 'adm-ca',
+    group: 'Administration',
+    label: 'Comptes-rendus CA',
+    href: '/choristes/admin/ca',
+    icon: '📋',
+  },
+  {
+    id: 'adm-sondages',
+    group: 'Administration',
+    label: 'Sondages',
+    href: '/choristes/admin/sondages',
+    icon: '📊',
+  },
+  {
+    id: 'adm-audit',
+    group: 'Administration',
+    label: "Journal d'audit",
+    href: '/choristes/admin/audit-log',
+    icon: '🔍',
+  },
 ];
 
 // Outer component — persists across opens, caches dynamic data
@@ -68,7 +220,8 @@ export function CommandPalette() {
     function handler(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        if (isOpen) close(); else open();
+        if (isOpen) close();
+        else open();
       }
       if (e.key === 'Escape' && isOpen) {
         e.preventDefault();
@@ -170,11 +323,7 @@ export function CommandPalette() {
 
   return (
     // CommandPaletteInner remounts on each open → query/activeIndex always start fresh
-    <CommandPaletteInner
-      navItems={navItems}
-      dynamicItems={dynamicItems}
-      onClose={close}
-    />
+    <CommandPaletteInner navItems={navItems} dynamicItems={dynamicItems} onClose={close} />
   );
 }
 
@@ -212,9 +361,7 @@ function CommandPaletteInner({
   const allItems = [...navItems, ...dynamicItems];
   const filtered = q
     ? allItems.filter(
-        (item) =>
-          item.label.toLowerCase().includes(q) ||
-          item.sublabel?.toLowerCase().includes(q),
+        (item) => item.label.toLowerCase().includes(q) || item.sublabel?.toLowerCase().includes(q),
       )
     : [];
 
@@ -247,10 +394,14 @@ function CommandPaletteInner({
   const hasNoResults = q && flat.length === 0;
 
   return (
+    // Backdrop click-to-dismiss — Escape (géré plus haut) est l'équivalent clavier.
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className="fixed inset-0 z-100 flex items-start justify-center pt-[15vh] bg-black/50 backdrop-blur-sm"
       onMouseDown={onClose}
     >
+      {/* Contient le clic pour éviter la fermeture au clic dans la palette */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         className="w-full max-w-xl mx-4 bg-background border border-border rounded-2xl shadow-2xl overflow-hidden"
         onMouseDown={(e) => e.stopPropagation()}
@@ -280,45 +431,46 @@ function CommandPaletteInner({
                   Aucun résultat pour &quot;{debouncedQuery}&quot;
                 </p>
               )}
-              {hasResults && Object.entries(groups).map(([group, items]) => (
-                <div key={group}>
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/40 px-4 pt-3 pb-1">
-                    {group}
-                  </p>
-                  {items.map((item) => {
-                    const idx = flat.indexOf(item);
-                    const isActive = idx === activeIndex;
-                    return (
-                      <Link
-                        key={item.id}
-                        href={item.href}
-                        onClick={onClose}
-                        onMouseEnter={() => setActiveIndex(idx)}
-                        className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors ${
-                          isActive
-                            ? 'bg-primary/10 text-primary-light'
-                            : 'text-foreground hover:bg-background-secondary'
-                        }`}
-                      >
-                        <span className="text-base shrink-0">{item.icon}</span>
-                        <span className="flex-1 min-w-0">
-                          <span className="block truncate">{item.label}</span>
-                          {item.sublabel && (
-                            <span className="block truncate text-xs text-foreground/50">
-                              {item.sublabel}
-                            </span>
+              {hasResults &&
+                Object.entries(groups).map(([group, items]) => (
+                  <div key={group}>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-foreground/40 px-4 pt-3 pb-1">
+                      {group}
+                    </p>
+                    {items.map((item) => {
+                      const idx = flat.indexOf(item);
+                      const isActive = idx === activeIndex;
+                      return (
+                        <Link
+                          key={item.id}
+                          href={item.href}
+                          onClick={onClose}
+                          onMouseEnter={() => setActiveIndex(idx)}
+                          className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors ${
+                            isActive
+                              ? 'bg-primary/10 text-primary-light'
+                              : 'text-foreground hover:bg-background-secondary'
+                          }`}
+                        >
+                          <span className="text-base shrink-0">{item.icon}</span>
+                          <span className="flex-1 min-w-0">
+                            <span className="block truncate">{item.label}</span>
+                            {item.sublabel && (
+                              <span className="block truncate text-xs text-foreground/50">
+                                {item.sublabel}
+                              </span>
+                            )}
+                          </span>
+                          {isActive && (
+                            <kbd className="text-xs text-foreground/30 border border-border rounded px-1.5 py-0.5 shrink-0">
+                              ↵
+                            </kbd>
                           )}
-                        </span>
-                        {isActive && (
-                          <kbd className="text-xs text-foreground/30 border border-border rounded px-1.5 py-0.5 shrink-0">
-                            ↵
-                          </kbd>
-                        )}
-                      </Link>
-                    );
-                  })}
-                </div>
-              ))}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ))}
             </div>
 
             {hasResults && (

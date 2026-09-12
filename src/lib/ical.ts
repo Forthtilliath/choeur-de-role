@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@/components/features/calendrier/types';
+import type { CalendarEvent } from '@/components/features/calendrier/types';
 
 const CRLF = '\r\n';
 
@@ -27,7 +27,16 @@ function foldLine(line: string): string {
     remaining = remaining.slice(chars);
   }
 
-  return segments[0] + (segments.length > 1 ? CRLF + segments.slice(1).map((s) => ' ' + s).join(CRLF) : '');
+  return (
+    segments[0] +
+    (segments.length > 1
+      ? CRLF +
+        segments
+          .slice(1)
+          .map((s) => ' ' + s)
+          .join(CRLF)
+      : '')
+  );
 }
 
 function escapeText(value: string): string {
@@ -101,6 +110,6 @@ export function generateIcal(
 
   lines.push('END:VCALENDAR');
 
-  // UTF-8 BOM (﻿) — tells Windows apps (Outlook, Excel…) that the file is UTF-8
+  // UTF-8 BOM — tells Windows apps (Outlook, Excel…) that the file is UTF-8
   return '﻿' + lines.join(CRLF) + CRLF;
 }

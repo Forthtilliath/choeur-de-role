@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useConfirm } from '@/context/ConfirmContext';
+
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
 import { createClient } from '@/lib/supabase.client';
-import { uploadRepresentationFile, deleteRepresentationFile } from '../clientQueries';
+
+import { deleteRepresentationFile, uploadRepresentationFile } from '../clientQueries';
 
 type RepFile = { id: string; label: string; file_url: string };
 
@@ -46,7 +48,7 @@ export function RepresentationFileManager({ performanceId }: { performanceId: st
   }
 
   async function handleDelete(id: string, fileName: string) {
-    if (!await confirm({ message: `Supprimer "${fileName}" ?`, danger: true })) return;
+    if (!(await confirm({ message: `Supprimer "${fileName}" ?`, danger: true }))) return;
     const ok = await deleteRepresentationFile(id);
     if (ok) {
       setFiles((prev) => prev.filter((f) => f.id !== id));
@@ -97,7 +99,7 @@ export function RepresentationFileManager({ performanceId }: { performanceId: st
               className="border border-border rounded-lg px-3 py-2 text-sm bg-background w-full"
             />
             <div className="flex items-center gap-2">
-              <label className="flex-1 cursor-pointer min-w-0">
+              <label aria-label="Ajouter un fichier" className="flex-1 cursor-pointer min-w-0">
                 <div className="flex items-center gap-2 px-3 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all bg-background">
                   <span>📎</span>
                   <span className="truncate">{file ? file.name : 'Choisir un fichier...'}</span>

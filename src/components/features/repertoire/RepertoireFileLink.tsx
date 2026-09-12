@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Copy, Download, ExternalLink, Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { toast } from 'sonner';
+
 import { openSignedUrl } from '@/lib/downloadFile';
 
 type Props = {
@@ -24,15 +25,25 @@ function getCachedUrl(fileUrl: string): string | null {
     const raw = sessionStorage.getItem(`r2_url:${fileUrl}`);
     if (!raw) return null;
     const { url, expiresAt } = JSON.parse(raw);
-    if (Date.now() > expiresAt) { sessionStorage.removeItem(`r2_url:${fileUrl}`); return null; }
+    if (Date.now() > expiresAt) {
+      sessionStorage.removeItem(`r2_url:${fileUrl}`);
+      return null;
+    }
     return url;
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }
 
 function setCachedUrl(fileUrl: string, url: string): void {
   try {
-    sessionStorage.setItem(`r2_url:${fileUrl}`, JSON.stringify({ url, expiresAt: Date.now() + CACHE_TTL * 1000 }));
-  } catch {}
+    sessionStorage.setItem(
+      `r2_url:${fileUrl}`,
+      JSON.stringify({ url, expiresAt: Date.now() + CACHE_TTL * 1000 }),
+    );
+  } catch {
+    // Cache best-effort — sessionStorage indisponible (quota, navigation privée...) : ignoré volontairement.
+  }
 }
 
 async function fetchSignedUrl(fileUrl: string): Promise<string> {
@@ -52,12 +63,20 @@ function getStoredVolume(): number {
   try {
     const v = localStorage.getItem(VOLUME_KEY);
     return v ? Math.min(1, Math.max(0, parseFloat(v))) : 0.5;
-  } catch { return 0.5; }
+  } catch {
+    return 0.5;
+  }
 }
 
 function broadcastVolume(v: number): void {
-  try { localStorage.setItem(VOLUME_KEY, String(v)); } catch {}
-  document.querySelectorAll('audio').forEach((el) => { (el as HTMLAudioElement).volume = v; });
+  try {
+    localStorage.setItem(VOLUME_KEY, String(v));
+  } catch {
+    // localStorage indisponible (quota, navigation privée...) : ignoré volontairement.
+  }
+  document.querySelectorAll('audio').forEach((el) => {
+    (el as HTMLAudioElement).volume = v;
+  });
   window.dispatchEvent(new CustomEvent('audio-volume-change', { detail: v }));
 }
 
@@ -74,12 +93,35 @@ export function RepertoireFileLink({ fileUrl, label, downloadName, type, date, i
   if (type === 'audio') {
     return <AudioFileRow fileUrl={fileUrl} label={label} downloadName={downloadName} date={date} />;
   }
-  return <NonAudioFileRow fileUrl={fileUrl} label={label} downloadName={downloadName} type={type} date={date} id={id} />;
+  return (
+    <NonAudioFileRow
+      fileUrl={fileUrl}
+      label={label}
+      downloadName={downloadName}
+      type={type}
+      date={date}
+      id={id}
+    />
+  );
 }
 
 // ── Fichier non-audio ───────────────────────────────────────────
 
-function NonAudioFileRow({ fileUrl, label, downloadName, type, date, id }: { fileUrl: string; label: string; downloadName: string; type: string; date: string | null; id?: string }) {
+function NonAudioFileRow({
+  fileUrl,
+  label,
+  downloadName,
+  type,
+  date,
+  id,
+}: {
+  fileUrl: string;
+  label: string;
+  downloadName: string;
+  type: string;
+  date: string | null;
+  id?: string;
+}) {
   const [loading, setLoading] = useState(false);
   const icon = type === 'score' ? '📄' : '📝';
 
@@ -88,7 +130,7 @@ function NonAudioFileRow({ fileUrl, label, downloadName, type, date, id }: { fil
     try {
       await openSignedUrl(fileUrl);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Impossible d\'ouvrir le fichier');
+      toast.error(err instanceof Error ? err.message : "Impossible d'ouvrir le fichier");
     } finally {
       setLoading(false);
     }
@@ -154,7 +196,17 @@ function NonAudioFileRow({ fileUrl, label, downloadName, type, date, id }: { fil
 
 // ── Fichier audio ───────────────────────────────────────────────
 
-function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string; label: string; downloadName: string; date: string | null }) {
+function AudioFileRow({
+  fileUrl,
+  label,
+  downloadName,
+  date,
+}: {
+  fileUrl: string;
+  label: string;
+  downloadName: string;
+  date: string | null;
+}) {
   const [loadingUrl, setLoadingUrl] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [playerOpen, setPlayerOpen] = useState(false);
@@ -173,8 +225,10 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   // Init volume depuis localStorage (SSR-safe : useEffect évite le mismatch d'hydratation)
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { setVolume(getStoredVolume()); }, []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect, @eslint-react/set-state-in-effect
+    setVolume(getStoredVolume());
+  }, []);
 
   // Sync volume si un autre composant le change
   useEffect(() => {
@@ -193,11 +247,16 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
     const onTimeUpdate = () => setCurrentTime(audio.currentTime);
     const onDuration = () => setDuration(audio.duration);
     const onPlay = () => {
-      document.querySelectorAll('audio').forEach((el) => { if (el !== audio) el.pause(); });
+      document.querySelectorAll('audio').forEach((el) => {
+        if (el !== audio) el.pause();
+      });
       setIsPlaying(true);
     };
     const onPause = () => setIsPlaying(false);
-    const onEnded = () => { setIsPlaying(false); setCurrentTime(0); };
+    const onEnded = () => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+    };
 
     audio.addEventListener('timeupdate', onTimeUpdate);
     audio.addEventListener('durationchange', onDuration);
@@ -230,7 +289,10 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
   }
 
   function openVolumePopup() {
-    if (volumeCloseTimer.current) { clearTimeout(volumeCloseTimer.current); volumeCloseTimer.current = null; }
+    if (volumeCloseTimer.current) {
+      clearTimeout(volumeCloseTimer.current);
+      volumeCloseTimer.current = null;
+    }
     setVolumeClosing(false);
     setShowVolumePopup(true);
   }
@@ -260,7 +322,7 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
         try {
           await openSignedUrl(fileUrl);
         } catch {
-          toast.error('Impossible de charger l\'audio');
+          toast.error("Impossible de charger l'audio");
         }
       } finally {
         setLoadingUrl(false);
@@ -305,7 +367,20 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
     if (!audio || !bar || !duration) return;
     const touch = e.touches[0] ?? e.changedTouches[0];
     const rect = bar.getBoundingClientRect();
-    audio.currentTime = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width)) * duration;
+    audio.currentTime =
+      Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width)) * duration;
+  }
+
+  function seekByKeyboard(e: React.KeyboardEvent<HTMLDivElement>) {
+    const audio = audioRef.current;
+    if (!audio || !duration) return;
+    const step = 5;
+    if (e.key === 'ArrowRight') audio.currentTime = Math.min(duration, audio.currentTime + step);
+    else if (e.key === 'ArrowLeft') audio.currentTime = Math.max(0, audio.currentTime - step);
+    else if (e.key === 'Home') audio.currentTime = 0;
+    else if (e.key === 'End') audio.currentTime = duration;
+    else return;
+    e.preventDefault();
   }
 
   function handleVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -316,10 +391,13 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
 
   return (
     <div className="w-full">
+      {/* Enregistrement audio d'un chant — pas de dialogue à sous-titrer. */}
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       {audioUrl && <audio ref={audioRef} src={audioUrl} preload="metadata" />}
 
-      <div className={`rounded-xl border transition-colors ${playerOpen ? 'border-primary/30 bg-background-secondary' : 'border-border'}`}>
-
+      <div
+        className={`rounded-xl border transition-colors ${playerOpen ? 'border-primary/30 bg-background-secondary' : 'border-border'}`}
+      >
         {/* Ligne titre */}
         <div className="flex items-center gap-3 px-4 py-2.5">
           <span className="text-lg shrink-0">🎵</span>
@@ -344,23 +422,23 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
             className="w-8 h-8 rounded-full bg-primary/15 hover:bg-primary/25 flex items-center justify-center text-primary transition-colors shrink-0 disabled:opacity-50"
             aria-label={isPlaying ? 'Pause' : 'Lecture'}
           >
-            {loadingUrl
-              ? <span className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              : isPlaying
-                ? <Pause size={13} fill="currentColor" />
-                : <Play size={13} fill="currentColor" className="translate-x-px" />
-            }
+            {loadingUrl ? (
+              <span className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            ) : isPlaying ? (
+              <Pause size={13} fill="currentColor" />
+            ) : (
+              <Play size={13} fill="currentColor" className="translate-x-px" />
+            )}
           </button>
         </div>
 
         {/* Barre de progression dépliée */}
         {playerOpen && (
           <div className="px-4 pb-3 flex items-center gap-2">
-
             {/* Bouton volume → popup */}
             <div className="relative shrink-0" ref={volumePopupRef}>
               <button
-                onClick={() => showVolumePopup ? closeVolumePopup() : openVolumePopup()}
+                onClick={() => (showVolumePopup ? closeVolumePopup() : openVolumePopup())}
                 className="text-foreground/40 hover:text-primary transition-colors"
                 aria-label="Volume"
               >
@@ -369,22 +447,31 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
 
               {showVolumePopup && (
                 <>
-                  {/* Backdrop mobile */}
+                  {/* Backdrop mobile — pas un tab stop, la fermeture au clavier passe par le bouton volume. */}
+                  {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
                   <div
                     className="sm:hidden fixed inset-0 bg-black/40 z-20"
                     onClick={closeVolumePopup}
                   />
                   {/* Bottom sheet (mobile) / popup (desktop) */}
-                  <div className={`${volumeClosing ? 'animate-slide-down' : 'animate-slide-up'} sm:animate-none fixed bottom-0 left-0 right-0 z-30 sm:absolute sm:bottom-full sm:left-1/2 sm:-translate-x-1/2 sm:right-auto sm:w-auto sm:z-20 bg-background border-t border-border sm:border sm:rounded-xl rounded-t-2xl shadow-lg px-6 pt-5 pb-8 sm:px-4 sm:py-3 flex flex-col items-center gap-3`}>
+                  <div
+                    className={`${volumeClosing ? 'animate-slide-down' : 'animate-slide-up'} sm:animate-none fixed bottom-0 left-0 right-0 z-30 sm:absolute sm:bottom-full sm:left-1/2 sm:-translate-x-1/2 sm:right-auto sm:w-auto sm:z-20 bg-background border-t border-border sm:border sm:rounded-xl rounded-t-2xl shadow-lg px-6 pt-5 pb-8 sm:px-4 sm:py-3 flex flex-col items-center gap-3`}
+                  >
                     <div className="w-10 h-1 bg-border rounded-full sm:hidden" />
                     <span className="text-sm sm:text-xs text-foreground/60">Volume global</span>
                     <input
-                      type="range" min="0" max="1" step="0.01" value={volume}
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={volume}
                       onChange={handleVolumeChange}
                       className="w-full sm:w-28 h-2 sm:h-1 accent-primary cursor-pointer"
                       aria-label="Volume global"
                     />
-                    <span className="text-sm sm:text-xs tabular-nums text-foreground/40">{Math.round(volume * 100)}%</span>
+                    <span className="text-sm sm:text-xs tabular-nums text-foreground/40">
+                      {Math.round(volume * 100)}%
+                    </span>
                   </div>
                 </>
               )}
@@ -401,6 +488,14 @@ function AudioFileRow({ fileUrl, label, downloadName, date }: { fileUrl: string;
               onClick={seek}
               onTouchStart={seekTouch}
               onTouchMove={seekTouch}
+              onKeyDown={seekByKeyboard}
+              role="slider"
+              tabIndex={0}
+              aria-label="Position de lecture"
+              aria-valuemin={0}
+              aria-valuemax={Math.round(duration)}
+              aria-valuenow={Math.round(currentTime)}
+              aria-valuetext={`${formatTime(currentTime)} sur ${formatTime(duration)}`}
               className="flex-1 h-1.5 bg-border rounded-full cursor-pointer relative group"
             >
               <div

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+
 import { Button } from '@/components/ui/Button';
 import { formatPhone } from '@/utils/phoneHelpers';
 
@@ -24,7 +25,9 @@ const VALID_SUBJECTS = ['rejoindre', 'partenariat', 'autre'] as const;
 export function ContactForm() {
   const searchParams = useSearchParams();
   const sujet = searchParams.get('sujet') ?? 'rejoindre';
-  const initialCategory = VALID_SUBJECTS.includes(sujet as (typeof VALID_SUBJECTS)[number]) ? sujet : '';
+  const initialCategory = VALID_SUBJECTS.includes(sujet as (typeof VALID_SUBJECTS)[number])
+    ? sujet
+    : '';
   const [category, setCategory] = useState(initialCategory);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -77,8 +80,8 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       {/* Catégorie */}
-      <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-foreground">Objet de votre message</label>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="text-sm font-medium text-foreground">Objet de votre message</legend>
         <div className="grid grid-cols-1 gap-3">
           {CATEGORIES.map((cat) => (
             <button
@@ -102,13 +105,16 @@ export function ContactForm() {
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       {/* Nom / Prénom */}
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Prénom</label>
+          <label htmlFor="contact-firstname" className="text-sm font-medium text-foreground">
+            Prénom
+          </label>
           <input
+            id="contact-firstname"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
@@ -117,8 +123,11 @@ export function ContactForm() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Nom</label>
+          <label htmlFor="contact-lastname" className="text-sm font-medium text-foreground">
+            Nom
+          </label>
           <input
+            id="contact-lastname"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
@@ -130,8 +139,11 @@ export function ContactForm() {
 
       {/* Email */}
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-foreground">Email</label>
+        <label htmlFor="contact-email" className="text-sm font-medium text-foreground">
+          Email
+        </label>
         <input
+          id="contact-email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -143,10 +155,11 @@ export function ContactForm() {
 
       {/* Téléphone */}
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-foreground">
+        <label htmlFor="contact-phone" className="text-sm font-medium text-foreground">
           Téléphone <span className="text-foreground/40 font-normal">(optionnel)</span>
         </label>
         <input
+          id="contact-phone"
           type="tel"
           value={phone}
           onChange={(e) => setPhone(formatPhone(e.target.value))}
@@ -158,8 +171,11 @@ export function ContactForm() {
 
       {/* Message */}
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-foreground">Message</label>
+        <label htmlFor="contact-message" className="text-sm font-medium text-foreground">
+          Message
+        </label>
         <textarea
+          id="contact-message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
@@ -169,7 +185,11 @@ export function ContactForm() {
         />
       </div>
 
-      {error && <p className="text-red-500 text-sm" role="alert">{error}</p>}
+      {error && (
+        <p className="text-red-500 text-sm" role="alert">
+          {error}
+        </p>
+      )}
 
       <Button type="submit" disabled={sending || !category} loading={sending}>
         {sending ? 'Envoi en cours...' : 'Envoyer le message'}

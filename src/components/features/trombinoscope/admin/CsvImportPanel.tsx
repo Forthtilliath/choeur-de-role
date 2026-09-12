@@ -2,11 +2,13 @@
 
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/Button';
-import { Tables } from '@/types/database';
-import { Season } from '../../concerts';
-import { AdminMemberWithSeasons } from '../types';
+
 import type { ImportRowResult } from '@/app/api/admin/bulk-import-members/route';
+import { Button } from '@/components/ui/Button';
+import type { Tables } from '@/types/database';
+
+import type { Season } from '../../concerts';
+import type { AdminMemberWithSeasons } from '../types';
 
 type VoicePart = Tables<'voice_parts'>;
 
@@ -35,16 +37,41 @@ type Props = {
 };
 
 const COLUMN_MAP: Record<string, string> = {
-  prénom: 'first_name', prenom: 'first_name', first_name: 'first_name', firstname: 'first_name',
-  nom: 'last_name', last_name: 'last_name', lastname: 'last_name',
-  email: 'email', courriel: 'email',
-  pupitre: 'voice_part', voice_part: 'voice_part', voicepart: 'voice_part',
-  saison: 'season', season: 'season',
-  téléphone: 'phone', telephone: 'phone', phone: 'phone', tel: 'phone', mobile: 'phone', portable: 'phone',
-  rue: 'address', adresse: 'address', address: 'address', street: 'address',
-  code_postal: 'zip_code', codepostal: 'zip_code', zip_code: 'zip_code', zipcode: 'zip_code', cp: 'zip_code',
-  ville: 'city', city: 'city',
-  date_de_naissance: 'birthday', date_naissance: 'birthday', naissance: 'birthday', birthday: 'birthday',
+  prénom: 'first_name',
+  prenom: 'first_name',
+  first_name: 'first_name',
+  firstname: 'first_name',
+  nom: 'last_name',
+  last_name: 'last_name',
+  lastname: 'last_name',
+  email: 'email',
+  courriel: 'email',
+  pupitre: 'voice_part',
+  voice_part: 'voice_part',
+  voicepart: 'voice_part',
+  saison: 'season',
+  season: 'season',
+  téléphone: 'phone',
+  telephone: 'phone',
+  phone: 'phone',
+  tel: 'phone',
+  mobile: 'phone',
+  portable: 'phone',
+  rue: 'address',
+  adresse: 'address',
+  address: 'address',
+  street: 'address',
+  code_postal: 'zip_code',
+  codepostal: 'zip_code',
+  zip_code: 'zip_code',
+  zipcode: 'zip_code',
+  cp: 'zip_code',
+  ville: 'city',
+  city: 'city',
+  date_de_naissance: 'birthday',
+  date_naissance: 'birthday',
+  naissance: 'birthday',
+  birthday: 'birthday',
 };
 
 function parseCSVLine(line: string): string[] {
@@ -54,8 +81,10 @@ function parseCSVLine(line: string): string[] {
   for (let i = 0; i < line.length; i++) {
     const ch = line[i];
     if (ch === '"') {
-      if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
-      else inQuotes = !inQuotes;
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else inQuotes = !inQuotes;
     } else if (ch === ',' && !inQuotes) {
       result.push(current.trim());
       current = '';
@@ -72,7 +101,8 @@ function isValidEmail(email: string): boolean {
 }
 
 function downloadTemplate() {
-  const content = 'prénom,nom,email,pupitre,saison,téléphone,adresse,code_postal,ville,date_de_naissance\nJean,Dupont,jean.dupont@example.com,Ténors,2025-2026,0612345678,12 rue de la Paix,75001,Paris,1985-03-15\n';
+  const content =
+    'prénom,nom,email,pupitre,saison,téléphone,adresse,code_postal,ville,date_de_naissance\nJean,Dupont,jean.dupont@example.com,Ténors,2025-2026,0612345678,12 rue de la Paix,75001,Paris,1985-03-15\n';
   const blob = new Blob(['﻿' + content], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -106,7 +136,11 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
       const rawHeaders = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/\s+/g, '_'));
       const headers = rawHeaders.map((h) => COLUMN_MAP[h] ?? h);
 
-      if (!headers.includes('first_name') || !headers.includes('last_name') || !headers.includes('email')) {
+      if (
+        !headers.includes('first_name') ||
+        !headers.includes('last_name') ||
+        !headers.includes('email')
+      ) {
         toast.error('Colonnes requises manquantes : prénom, nom, email');
         return;
       }
@@ -114,7 +148,9 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
       const parsed: ParsedRow[] = lines.slice(1).map((line) => {
         const values = parseCSVLine(line);
         const raw: Record<string, string> = {};
-        headers.forEach((h, i) => { raw[h] = values[i] ?? ''; });
+        headers.forEach((h, i) => {
+          raw[h] = values[i] ?? '';
+        });
 
         const first_name = raw.first_name ?? '';
         const last_name = raw.last_name ?? '';
@@ -142,23 +178,34 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
 
         let voice_part_id: string | null = null;
         if (voice_part_name) {
-          const vp = voiceParts.find(
-            (v) => v.name.toLowerCase() === voice_part_name.toLowerCase(),
-          );
+          const vp = voiceParts.find((v) => v.name.toLowerCase() === voice_part_name.toLowerCase());
           if (vp) voice_part_id = vp.id;
           else warnings.push(`Pupitre inconnu : "${voice_part_name}"`);
         }
 
         let season_ids: string[] = defaultSeasonIds;
         if (season_label) {
-          const season = seasons.find(
-            (s) => s.label?.toLowerCase() === season_label.toLowerCase(),
-          );
+          const season = seasons.find((s) => s.label?.toLowerCase() === season_label.toLowerCase());
           if (season) season_ids = [season.id];
           else warnings.push(`Saison inconnue : "${season_label}" — saison active par défaut`);
         }
 
-        return { first_name, last_name, email, phone, address, zip_code, city, birthday, voice_part_name, season_label, voice_part_id, season_ids, errors, warnings };
+        return {
+          first_name,
+          last_name,
+          email,
+          phone,
+          address,
+          zip_code,
+          city,
+          birthday,
+          voice_part_name,
+          season_label,
+          voice_part_id,
+          season_ids,
+          errors,
+          warnings,
+        };
       });
 
       setRows(parsed);
@@ -179,18 +226,20 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          rows: [{
-            first_name: row.first_name,
-            last_name: row.last_name,
-            email: row.email,
-            voice_part_id: row.voice_part_id,
-            season_ids: row.season_ids,
-            phone: row.phone || null,
-            address: row.address || null,
-            zip_code: row.zip_code || null,
-            city: row.city || null,
-            birthday: row.birthday || null,
-          }],
+          rows: [
+            {
+              first_name: row.first_name,
+              last_name: row.last_name,
+              email: row.email,
+              voice_part_id: row.voice_part_id,
+              season_ids: row.season_ids,
+              phone: row.phone || null,
+              address: row.address || null,
+              zip_code: row.zip_code || null,
+              city: row.city || null,
+              birthday: row.birthday || null,
+            },
+          ],
           send_emails: sendEmails,
         }),
       });
@@ -204,7 +253,9 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
 
     const successCount = batchResults.filter((r) => r.success).length;
     if (successCount > 0) {
-      toast.success(`${successCount} membre${successCount > 1 ? 's' : ''} importé${successCount > 1 ? 's' : ''}`);
+      toast.success(
+        `${successCount} membre${successCount > 1 ? 's' : ''} importé${successCount > 1 ? 's' : ''}`,
+      );
     }
   }
 
@@ -225,8 +276,9 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
         {successRows.length > 0 && (
           <div className="flex flex-col gap-3">
             <p className="text-sm text-foreground/60">
-              ✅ {successRows.length} compte{successRows.length > 1 ? 's' : ''} créé{successRows.length > 1 ? 's' : ''}
-              {!hasPassphrases && ' — emails d\'invitation envoyés'}
+              ✅ {successRows.length} compte{successRows.length > 1 ? 's' : ''} créé
+              {successRows.length > 1 ? 's' : ''}
+              {!hasPassphrases && " — emails d'invitation envoyés"}
             </p>
 
             {hasPassphrases && (
@@ -234,23 +286,36 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border bg-background">
-                      <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Nom</th>
-                      <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Email</th>
-                      <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Passphrase</th>
+                      <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">
+                        Nom
+                      </th>
+                      <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">
+                        Email
+                      </th>
+                      <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">
+                        Passphrase
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {successRows.map((r, i) => (
                       <tr key={i} className="border-b border-border last:border-0">
-                        <td className="px-3 py-2 text-foreground">{r.first_name} {r.last_name}</td>
-                        <td className="px-3 py-2 text-foreground/60 font-mono text-xs">{r.email}</td>
+                        <td className="px-3 py-2 text-foreground">
+                          {r.first_name} {r.last_name}
+                        </td>
+                        <td className="px-3 py-2 text-foreground/60 font-mono text-xs">
+                          {r.email}
+                        </td>
                         <td className="px-3 py-2">
                           <div className="flex items-center gap-2">
                             <code className="text-xs font-mono text-primary bg-primary/5 px-2 py-0.5 rounded">
                               {r.passphrase}
                             </code>
                             <button
-                              onClick={() => { navigator.clipboard.writeText(r.passphrase ?? ''); toast.success('Copié'); }}
+                              onClick={() => {
+                                navigator.clipboard.writeText(r.passphrase ?? '');
+                                toast.success('Copié');
+                              }}
                               className="text-xs text-foreground/40 hover:text-foreground transition-colors"
                             >
                               Copier
@@ -268,11 +333,18 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
 
         {failedRows.length > 0 && (
           <div className="flex flex-col gap-2">
-            <p className="text-sm text-red-600">❌ {failedRows.length} échec{failedRows.length > 1 ? 's' : ''}</p>
+            <p className="text-sm text-red-600">
+              ❌ {failedRows.length} échec{failedRows.length > 1 ? 's' : ''}
+            </p>
             <div className="flex flex-col gap-1">
               {failedRows.map((r, i) => (
-                <div key={i} className="flex items-center gap-3 text-xs px-3 py-2 bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-800 rounded-lg">
-                  <span className="text-foreground font-medium">{r.first_name} {r.last_name}</span>
+                <div
+                  key={i}
+                  className="flex items-center gap-3 text-xs px-3 py-2 bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-800 rounded-lg"
+                >
+                  <span className="text-foreground font-medium">
+                    {r.first_name} {r.last_name}
+                  </span>
                   <span className="text-foreground/50">{r.email}</span>
                   <span className="text-red-600 dark:text-red-400 ml-auto">{r.error}</span>
                 </div>
@@ -308,39 +380,71 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
       <div className="border border-border rounded-2xl p-6 bg-background-secondary flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-medium text-foreground">Prévisualisation</h2>
-          <button onClick={() => setView('upload')} className="text-foreground/40 hover:text-foreground text-lg">✕</button>
+          <button
+            onClick={() => setView('upload')}
+            className="text-foreground/40 hover:text-foreground text-lg"
+          >
+            ✕
+          </button>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap text-xs">
-          <span className="px-2.5 py-1 rounded-full bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300">{validCount} valide{validCount > 1 ? 's' : ''}</span>
-          {errorCount > 0 && <span className="px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300">{errorCount} erreur{errorCount > 1 ? 's' : ''}</span>}
-          {rows.some((r) => r.warnings.length > 0) && <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-700">{rows.filter((r) => r.warnings.length > 0).length} avertissement{rows.filter((r) => r.warnings.length > 0).length > 1 ? 's' : ''}</span>}
+          <span className="px-2.5 py-1 rounded-full bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300">
+            {validCount} valide{validCount > 1 ? 's' : ''}
+          </span>
+          {errorCount > 0 && (
+            <span className="px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300">
+              {errorCount} erreur{errorCount > 1 ? 's' : ''}
+            </span>
+          )}
+          {rows.some((r) => r.warnings.length > 0) && (
+            <span className="px-2.5 py-1 rounded-full bg-amber-100 text-amber-700">
+              {rows.filter((r) => r.warnings.length > 0).length} avertissement
+              {rows.filter((r) => r.warnings.length > 0).length > 1 ? 's' : ''}
+            </span>
+          )}
         </div>
 
         <div className="border border-border rounded-xl overflow-hidden overflow-x-auto">
           <table className="w-full text-sm min-w-150">
             <thead>
               <tr className="border-b border-border bg-background">
-                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Prénom</th>
+                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">
+                  Prénom
+                </th>
                 <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Nom</th>
-                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Email</th>
-                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Pupitre</th>
-                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">Statut</th>
+                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">
+                  Email
+                </th>
+                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">
+                  Pupitre
+                </th>
+                <th className="text-left px-3 py-2 text-xs text-foreground/50 font-medium">
+                  Statut
+                </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((row, i) => (
-                <tr key={i} className={`border-b border-border last:border-0 ${row.errors.length > 0 ? 'bg-red-50/40 dark:bg-red-950/20' : ''}`}>
-                  <td className="px-3 py-2 text-foreground">{row.first_name || <span className="text-red-500 italic">—</span>}</td>
-                  <td className="px-3 py-2 text-foreground">{row.last_name || <span className="text-red-500 italic">—</span>}</td>
+                <tr
+                  key={i}
+                  className={`border-b border-border last:border-0 ${row.errors.length > 0 ? 'bg-red-50/40 dark:bg-red-950/20' : ''}`}
+                >
+                  <td className="px-3 py-2 text-foreground">
+                    {row.first_name || <span className="text-red-500 italic">—</span>}
+                  </td>
+                  <td className="px-3 py-2 text-foreground">
+                    {row.last_name || <span className="text-red-500 italic">—</span>}
+                  </td>
                   <td className="px-3 py-2 text-foreground/70 font-mono text-xs">{row.email}</td>
                   <td className="px-3 py-2 text-foreground/60 text-xs">
-                    {row.voice_part_id
-                      ? voiceParts.find((v) => v.id === row.voice_part_id)?.name
-                      : row.voice_part_name
-                        ? <span className="text-amber-600">{row.voice_part_name}</span>
-                        : <span className="text-foreground/30">—</span>
-                    }
+                    {row.voice_part_id ? (
+                      voiceParts.find((v) => v.id === row.voice_part_id)?.name
+                    ) : row.voice_part_name ? (
+                      <span className="text-amber-600">{row.voice_part_name}</span>
+                    ) : (
+                      <span className="text-foreground/30">—</span>
+                    )}
                   </td>
                   <td className="px-3 py-2 text-xs">
                     {row.errors.length > 0 ? (
@@ -366,18 +470,23 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
           />
           <span className="text-sm text-foreground/70">
             Envoyer les emails d&apos;invitation
-            <span className="text-foreground/40 text-xs block">Sans email : les passphrases s&apos;affichent dans les résultats</span>
+            <span className="text-foreground/40 text-xs block">
+              Sans email : les passphrases s&apos;affichent dans les résultats
+            </span>
           </span>
         </label>
 
         {errorCount > 0 && (
           <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-            Les lignes en erreur seront ignorées. Seuls les {validCount} membres valides seront importés.
+            Les lignes en erreur seront ignorées. Seuls les {validCount} membres valides seront
+            importés.
           </p>
         )}
 
         <div className="flex gap-3 justify-end pt-2">
-          <Button variant="ghost" onClick={() => setView('upload')}>Retour</Button>
+          <Button variant="ghost" onClick={() => setView('upload')}>
+            Retour
+          </Button>
           <Button onClick={handleImport} disabled={validCount === 0}>
             Importer {validCount} membre{validCount > 1 ? 's' : ''}
           </Button>
@@ -390,15 +499,24 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
     <div className="border border-border rounded-2xl p-6 bg-background-secondary flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <h2 className="text-base font-medium text-foreground">Importer des membres via CSV</h2>
-        <button onClick={onCloseAction} className="text-foreground/40 hover:text-foreground text-lg">✕</button>
+        <button
+          onClick={onCloseAction}
+          className="text-foreground/40 hover:text-foreground text-lg"
+        >
+          ✕
+        </button>
       </div>
 
       <div className="flex flex-col gap-2 text-xs text-foreground/60 bg-background border border-border rounded-xl p-4">
         <p className="font-medium text-foreground/80">Format attendu</p>
-        <code className="font-mono text-foreground/50">prénom,nom,email,pupitre,saison,téléphone,adresse,code_postal,ville,date_de_naissance</code>
+        <code className="font-mono text-foreground/50">
+          prénom,nom,email,pupitre,saison,téléphone,adresse,code_postal,ville,date_de_naissance
+        </code>
         <p>
-          Colonnes <span className="font-medium text-foreground/70">obligatoires</span> : prénom, nom, email.{' '}
-          <span className="font-medium text-foreground/70">Optionnelles</span> : pupitre, saison, téléphone, adresse, code postal, ville, date de naissance <span className="text-foreground/40">(AAAA-MM-JJ)</span>.
+          Colonnes <span className="font-medium text-foreground/70">obligatoires</span> : prénom,
+          nom, email. <span className="font-medium text-foreground/70">Optionnelles</span> :
+          pupitre, saison, téléphone, adresse, code postal, ville, date de naissance{' '}
+          <span className="text-foreground/40">(AAAA-MM-JJ)</span>.
         </p>
         <button
           onClick={downloadTemplate}
@@ -409,6 +527,7 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
       </div>
 
       <label
+        aria-label="Importer un fichier CSV"
         className="border-2 border-dashed border-border rounded-xl p-8 flex flex-col items-center gap-3 cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all"
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
@@ -417,8 +536,20 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
           if (file) parseFile(file);
         }}
       >
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-foreground/30">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-foreground/30"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="17 8 12 3 7 8" />
+          <line x1="12" y1="3" x2="12" y2="15" />
         </svg>
         <div className="text-center">
           <p className="text-sm text-foreground/60">Glisser-déposer un fichier CSV</p>
@@ -437,7 +568,9 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
       </label>
 
       <div className="flex justify-end">
-        <Button variant="ghost" onClick={onCloseAction}>Annuler</Button>
+        <Button variant="ghost" onClick={onCloseAction}>
+          Annuler
+        </Button>
       </div>
     </div>
   );

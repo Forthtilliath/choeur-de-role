@@ -1,18 +1,21 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverEvent,
-  DragOverlay,
-  DragStartEvent,
-  useDroppable,
-} from '@dnd-kit/core';
-import { SortableContext, arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import type { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
+import { DndContext, DragOverlay, useDroppable } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Plus } from 'lucide-react';
+
 import { useDndSensors } from '@/hooks/useDndSensors';
-import type { CaMember, Task, TaskCategory, TaskComment, TaskPriority, TaskStatus } from '@/types/tasks';
+import type {
+  CaMember,
+  Task,
+  TaskCategory,
+  TaskComment,
+  TaskPriority,
+  TaskStatus,
+} from '@/types/tasks';
+
 import { reorderTasks } from './actions';
 import { TaskCard } from './TaskCard';
 import { TaskModal } from './TaskModal';
@@ -27,16 +30,46 @@ const VIEWS: { id: TaskView; label: string }[] = [
 const STATUSES: TaskStatus[] = ['on_hold', 'todo', 'in_progress', 'done'];
 
 const COLUMNS: { id: TaskStatus; label: string; dotClass: string; emptyLabel: string }[] = [
-  { id: 'on_hold', label: 'En attente', dotClass: 'bg-amber-400', emptyLabel: 'Aucune tâche en attente' },
-  { id: 'todo', label: 'À faire', dotClass: 'bg-foreground/30', emptyLabel: 'Aucune tâche à faire' },
-  { id: 'in_progress', label: 'En cours', dotClass: 'bg-blue-500', emptyLabel: 'Aucune tâche en cours' },
+  {
+    id: 'on_hold',
+    label: 'En attente',
+    dotClass: 'bg-amber-400',
+    emptyLabel: 'Aucune tâche en attente',
+  },
+  {
+    id: 'todo',
+    label: 'À faire',
+    dotClass: 'bg-foreground/30',
+    emptyLabel: 'Aucune tâche à faire',
+  },
+  {
+    id: 'in_progress',
+    label: 'En cours',
+    dotClass: 'bg-blue-500',
+    emptyLabel: 'Aucune tâche en cours',
+  },
   { id: 'done', label: 'Terminé', dotClass: 'bg-green-500', emptyLabel: 'Aucune tâche terminée' },
 ];
 
-const PRIORITY_COLUMNS: { id: TaskPriority; label: string; dotClass: string; emptyLabel: string }[] = [
+const PRIORITY_COLUMNS: {
+  id: TaskPriority;
+  label: string;
+  dotClass: string;
+  emptyLabel: string;
+}[] = [
   { id: 'high', label: 'Haute', dotClass: 'bg-red-500', emptyLabel: 'Aucune tâche haute priorité' },
-  { id: 'medium', label: 'Moyenne', dotClass: 'bg-amber-400', emptyLabel: 'Aucune tâche priorité moyenne' },
-  { id: 'low', label: 'Basse', dotClass: 'bg-foreground/30', emptyLabel: 'Aucune tâche basse priorité' },
+  {
+    id: 'medium',
+    label: 'Moyenne',
+    dotClass: 'bg-amber-400',
+    emptyLabel: 'Aucune tâche priorité moyenne',
+  },
+  {
+    id: 'low',
+    label: 'Basse',
+    dotClass: 'bg-foreground/30',
+    emptyLabel: 'Aucune tâche basse priorité',
+  },
 ];
 
 const STATUS_DOT: Record<TaskStatus, string> = {
@@ -54,7 +87,9 @@ const STATUS_LABEL: Record<TaskStatus, string> = {
 };
 
 function formatDueDate(date: string) {
-  return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' }).format(new Date(date));
+  return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' }).format(
+    new Date(date),
+  );
 }
 
 function TaskColumn({
@@ -99,7 +134,9 @@ function TaskColumn({
         {header}
         <div className="flex flex-col gap-2 min-h-24 rounded-xl p-1.5 bg-background-secondary">
           {tasks.length === 0 && (
-            <p className="text-xs text-foreground/30 text-center py-4 italic">{column.emptyLabel}</p>
+            <p className="text-xs text-foreground/30 text-center py-4 italic">
+              {column.emptyLabel}
+            </p>
           )}
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} onClickAction={() => onTaskClickAction(task)} />
@@ -120,7 +157,9 @@ function TaskColumn({
           }`}
         >
           {tasks.length === 0 && !isOver && (
-            <p className="text-xs text-foreground/30 text-center py-4 italic">{column.emptyLabel}</p>
+            <p className="text-xs text-foreground/30 text-center py-4 italic">
+              {column.emptyLabel}
+            </p>
           )}
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} onClickAction={() => onTaskClickAction(task)} />
@@ -131,13 +170,7 @@ function TaskColumn({
   );
 }
 
-function PriorityCard({
-  task,
-  onClickAction,
-}: {
-  task: Task;
-  onClickAction: () => void;
-}) {
+function PriorityCard({ task, onClickAction }: { task: Task; onClickAction: () => void }) {
   const isOverdue =
     task.due_date &&
     new Date(task.due_date) < new Date() &&
@@ -146,8 +179,15 @@ function PriorityCard({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className="bg-background border border-border rounded-xl p-3 flex flex-col gap-2 cursor-pointer hover:border-primary/40 hover:shadow-sm transition-all"
       onClick={onClickAction}
+      onKeyDown={(e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        onClickAction();
+      }}
     >
       <div className="flex items-start gap-2">
         <span
@@ -160,7 +200,9 @@ function PriorityCard({
         <div className="flex items-center gap-1.5">
           <span className="text-[10px] text-foreground/40">{STATUS_LABEL[task.status]}</span>
           {task.due_date && (
-            <span className={`text-[10px] font-medium ${isOverdue ? 'text-red-500' : 'text-foreground/40'}`}>
+            <span
+              className={`text-[10px] font-medium ${isOverdue ? 'text-red-500' : 'text-foreground/40'}`}
+            >
               · {formatDueDate(task.due_date)}
             </span>
           )}
@@ -199,7 +241,16 @@ type Props = {
   readOnly?: boolean;
 };
 
-export function TaskBoard({ projectId, initialTasks, initialComments, caMembers, categories, currentUserId, isAdmin, readOnly = false }: Props) {
+export function TaskBoard({
+  projectId,
+  initialTasks,
+  initialComments,
+  caMembers,
+  categories,
+  currentUserId,
+  isAdmin,
+  readOnly = false,
+}: Props) {
   const [view, setView] = useState<TaskView>('backlog');
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [comments, setComments] = useState<TaskComment[]>(initialComments);
@@ -247,7 +298,9 @@ export function TaskBoard({ projectId, initialTasks, initialComments, caMembers,
 
     if (!targetStatus || targetStatus === activeTask.status) return;
 
-    setTasks((prev) => prev.map((t) => (t.id === activeTaskId ? { ...t, status: targetStatus } : t)));
+    setTasks((prev) =>
+      prev.map((t) => (t.id === activeTaskId ? { ...t, status: targetStatus } : t)),
+    );
   }
 
   async function handleDragEnd({ active, over }: DragEndEvent) {
@@ -334,8 +387,8 @@ export function TaskBoard({ projectId, initialTasks, initialComments, caMembers,
       </div>
 
       {/* Backlog view */}
-      {view === 'backlog' && (
-        readOnly ? (
+      {view === 'backlog' &&
+        (readOnly ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {COLUMNS.map((col) => (
               <TaskColumn
@@ -371,8 +424,7 @@ export function TaskBoard({ projectId, initialTasks, initialComments, caMembers,
               {activeTask && <TaskCard task={activeTask} overlay onClickAction={() => {}} />}
             </DragOverlay>
           </DndContext>
-        )
-      )}
+        ))}
 
       {/* Par priorité view */}
       {view === 'by_priority' && (
@@ -399,7 +451,9 @@ export function TaskBoard({ projectId, initialTasks, initialComments, caMembers,
               </div>
               <div className="flex flex-col gap-2 min-h-24 rounded-xl p-1.5 bg-background-secondary">
                 {tasksByPriority[col.id].length === 0 && (
-                  <p className="text-xs text-foreground/30 text-center py-4 italic">{col.emptyLabel}</p>
+                  <p className="text-xs text-foreground/30 text-center py-4 italic">
+                    {col.emptyLabel}
+                  </p>
                 )}
                 {tasksByPriority[col.id].map((task) => (
                   <PriorityCard

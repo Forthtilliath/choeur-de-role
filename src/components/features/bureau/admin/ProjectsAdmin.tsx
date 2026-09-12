@@ -1,13 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import Link from 'next/link';
 import { Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { Select } from '@/components/ui/Select';
-import { createProject, deleteProject, toggleProjectActive } from '../projectActions';
 import type { TaskProject, TaskTemplate } from '@/types/tasks';
+
+import { createProject, deleteProject, toggleProjectActive } from '../projectActions';
 
 type Props = {
   projects: TaskProject[];
@@ -64,8 +66,14 @@ export function ProjectsAdmin({ projects, templates }: Props) {
         <form onSubmit={handleCreate} className="flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Nom *</label>
+              <label
+                htmlFor="project-name"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Nom *
+              </label>
               <input
+                id="project-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="ex. Concert 2026"
@@ -73,8 +81,14 @@ export function ProjectsAdmin({ projects, templates }: Props) {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Template (optionnel)</label>
+              <label
+                htmlFor="project-template"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Template (optionnel)
+              </label>
               <Select
+                id="project-template"
                 value={templateId}
                 onChange={(e) => setTemplateId(e.target.value)}
               >
@@ -88,8 +102,14 @@ export function ProjectsAdmin({ projects, templates }: Props) {
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Description</label>
+            <label
+              htmlFor="project-description"
+              className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+            >
+              Description
+            </label>
             <input
+              id="project-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description optionnelle"
@@ -125,14 +145,18 @@ export function ProjectsAdmin({ projects, templates }: Props) {
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full shrink-0 ${project.is_active ? 'bg-green-500' : 'bg-foreground/20'}`} />
+                <span
+                  className={`w-2 h-2 rounded-full shrink-0 ${project.is_active ? 'bg-green-500' : 'bg-foreground/20'}`}
+                />
                 <span className="text-sm font-medium text-foreground truncate">{project.name}</span>
                 <span className="text-xs text-foreground/40">
                   {project.task_count} tâche{project.task_count !== 1 ? 's' : ''}
                 </span>
               </div>
               {project.description && (
-                <p className="text-xs text-foreground/40 mt-0.5 pl-4 truncate">{project.description}</p>
+                <p className="text-xs text-foreground/40 mt-0.5 pl-4 truncate">
+                  {project.description}
+                </p>
               )}
             </div>
             <div className="flex items-center gap-2 shrink-0">

@@ -1,12 +1,22 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ChevronDown, ChevronLeft, ChevronUp, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { ChevronLeft, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { DurationInput } from '@/components/ui/DurationInput';
 import { Select } from '@/components/ui/Select';
+import type {
+  DurationUnit,
+  TaskCategory,
+  TaskPriority,
+  TaskStatus,
+  TaskTemplate,
+  TaskTemplateItem,
+} from '@/types/tasks';
+
 import {
   addTemplateItem,
   deleteTemplateItem,
@@ -14,7 +24,6 @@ import {
   updateTemplate,
   updateTemplateItem,
 } from '../templateActions';
-import type { DurationUnit, TaskCategory, TaskPriority, TaskStatus, TaskTemplate, TaskTemplateItem } from '@/types/tasks';
 
 const PRIORITY_LABELS: Record<TaskPriority, string> = {
   low: 'Basse',
@@ -120,13 +129,21 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
     await reorderTemplateItems(updates);
   }
 
-  async function handleInlineUpdate(item: TaskTemplateItem, field: keyof TaskTemplateItem, value: string) {
+  async function handleInlineUpdate(
+    item: TaskTemplateItem,
+    field: keyof TaskTemplateItem,
+    value: string,
+  ) {
     const updated = { ...item, [field]: value };
     setItems((prev) => prev.map((i) => (i.id === item.id ? updated : i)));
     await updateTemplateItem(item.id, { [field]: value });
   }
 
-  async function handleDurationUpdate(item: TaskTemplateItem, value: number | null, unit: DurationUnit | null) {
+  async function handleDurationUpdate(
+    item: TaskTemplateItem,
+    value: number | null,
+    unit: DurationUnit | null,
+  ) {
     const updated = { ...item, duration_value: value, duration_unit: unit };
     setItems((prev) => prev.map((i) => (i.id === item.id ? updated : i)));
     await updateTemplateItem(item.id, { duration_value: value, duration_unit: unit });
@@ -163,16 +180,28 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
         <form onSubmit={handleSaveMeta} className="flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Nom *</label>
+              <label
+                htmlFor="template-name"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Nom *
+              </label>
               <input
+                id="template-name"
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
                 className="border border-border rounded-lg px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Description</label>
+              <label
+                htmlFor="template-description"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Description
+              </label>
               <input
+                id="template-description"
                 value={templateDesc}
                 onChange={(e) => setTemplateDesc(e.target.value)}
                 placeholder="Description optionnelle"
@@ -195,8 +224,7 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
       {/* Items */}
       <section className="flex flex-col gap-4">
         <h2 className="text-sm font-semibold text-foreground">
-          Tâches types{' '}
-          <span className="text-foreground/40 font-normal">({items.length})</span>
+          Tâches types <span className="text-foreground/40 font-normal">({items.length})</span>
         </h2>
 
         {items.length === 0 && (
@@ -255,7 +283,9 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
                   className="text-xs rounded-md px-2 py-1"
                 >
                   {(Object.keys(PRIORITY_LABELS) as TaskPriority[]).map((p) => (
-                    <option key={p} value={p}>{PRIORITY_LABELS[p]}</option>
+                    <option key={p} value={p}>
+                      {PRIORITY_LABELS[p]}
+                    </option>
                   ))}
                 </Select>
                 <Select
@@ -264,7 +294,9 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
                   className="text-xs rounded-md px-2 py-1"
                 >
                   {(Object.keys(STATUS_LABELS) as TaskStatus[]).map((s) => (
-                    <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                    <option key={s} value={s}>
+                      {STATUS_LABELS[s]}
+                    </option>
                   ))}
                 </Select>
                 <DurationInput
@@ -279,7 +311,9 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
                 >
                   <option value="">— Catégorie —</option>
                   {categories.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
                   ))}
                 </Select>
               </div>
@@ -295,8 +329,13 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
         </div>
 
         {/* Add item */}
-        <form onSubmit={handleAddItem} className="rounded-xl border border-dashed border-border p-4 flex flex-col gap-3">
-          <p className="text-xs font-medium text-foreground/50 uppercase tracking-wide">Ajouter une tâche type</p>
+        <form
+          onSubmit={handleAddItem}
+          className="rounded-xl border border-dashed border-border p-4 flex flex-col gap-3"
+        >
+          <p className="text-xs font-medium text-foreground/50 uppercase tracking-wide">
+            Ajouter une tâche type
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto_auto_auto] gap-2">
             <input
               value={newTitle}
@@ -310,7 +349,9 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
               className="px-2"
             >
               {(Object.keys(PRIORITY_LABELS) as TaskPriority[]).map((p) => (
-                <option key={p} value={p}>{PRIORITY_LABELS[p]}</option>
+                <option key={p} value={p}>
+                  {PRIORITY_LABELS[p]}
+                </option>
               ))}
             </Select>
             <Select
@@ -319,13 +360,18 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
               className="px-2"
             >
               {(Object.keys(STATUS_LABELS) as TaskStatus[]).map((s) => (
-                <option key={s} value={s}>{STATUS_LABELS[s]}</option>
+                <option key={s} value={s}>
+                  {STATUS_LABELS[s]}
+                </option>
               ))}
             </Select>
             <DurationInput
               value={newDurationValue}
               unit={newDurationUnit}
-              onChangeAction={(v, u) => { setNewDurationValue(v); setNewDurationUnit(u); }}
+              onChangeAction={(v, u) => {
+                setNewDurationValue(v);
+                setNewDurationUnit(u);
+              }}
             />
             <Select
               value={newCategoryId ?? ''}
@@ -334,7 +380,9 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
             >
               <option value="">— Catégorie —</option>
               {categories.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
               ))}
             </Select>
           </div>
