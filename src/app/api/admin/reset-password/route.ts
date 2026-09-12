@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
+
+import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
 import { sendPasswordResetEmail } from '@/lib/email';
 import { generatePassphrase } from '@/lib/passphrase';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { createAdminClient, createServerClient } from '@/lib/supabase.server';
-import { toApiError } from '@/lib/apiError';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();

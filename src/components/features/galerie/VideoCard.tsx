@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+
 import type { GalleryVideo } from './types';
 
 export function VideoCard({ video }: { video: GalleryVideo }) {

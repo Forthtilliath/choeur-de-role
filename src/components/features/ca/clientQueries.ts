@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { CaMeeting } from './types';
+
+import type { CaMeeting } from './types';
 
 export async function toggleMeetingPublished(id: string, published: boolean): Promise<boolean> {
   const supabase = createClient();

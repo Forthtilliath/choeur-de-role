@@ -1,11 +1,13 @@
 'use client';
 
-import { CheckCircle, ClipboardList } from 'lucide-react';
 import { useState } from 'react';
+import { CheckCircle, ClipboardList } from 'lucide-react';
+
 import { Button } from '@/components/ui/Button';
+
 import { PollAnswerClient } from './PollAnswerClient';
 import { getMyPollAnswers, getPoll } from './queries.client';
-import { Poll, PollAnswer, PollSummary } from './types';
+import type { Poll, PollAnswer, PollSummary } from './types';
 
 type Props = {
   polls: PollSummary[];

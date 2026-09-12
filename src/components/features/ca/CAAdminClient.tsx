@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
-import { toast } from 'sonner';
 import Link from 'next/link';
+import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
-import { MeetingForm } from './MeetingForm';
+import { useConfirm } from '@/context/ConfirmContext';
 import { formatDate } from '@/utils/dateHelpers';
+
 import { deleteMeeting, toggleMeetingPublished } from './clientQueries';
-import { CaMeeting } from './types';
+import { MeetingForm } from './MeetingForm';
+import type { CaMeeting } from './types';
 
 export function CAAdminClient({ initialMeetings }: { initialMeetings: CaMeeting[] }) {
   const [meetings, setMeetings] = useState<CaMeeting[]>(initialMeetings);

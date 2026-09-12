@@ -1,23 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
 import Image from 'next/image';
 import { toast } from 'sonner';
+
 import { EditableSection } from '@/components/editor/EditableSection';
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
+
 import {
-  updateBlockOrder,
-  toggleBlockActive,
   deleteBlock,
-  updateBlockContent,
-  uploadBlockImage,
-  removeBlockImage,
-  updateBlockRatio,
   insertBlock,
+  removeBlockImage,
+  toggleBlockActive,
+  updateBlockContent,
+  updateBlockOrder,
+  updateBlockRatio,
+  uploadBlockImage,
 } from '../clientQueries';
-import { Block } from '../types';
+import type { Block } from '../types';
 
 type Props = {
   initialBlocks: Block[];

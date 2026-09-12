@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase.server';
-import { generateIcal } from '@/lib/ical';
-import { CalendarEvent } from '@/components/features/calendrier/types';
+
+import type { CalendarEvent } from '@/components/features/calendrier/types';
 import { toApiError } from '@/lib/apiError';
+import { generateIcal } from '@/lib/ical';
+import { createServerClient } from '@/lib/supabase.server';
 
 export async function GET() {
   const supabase = await createServerClient();

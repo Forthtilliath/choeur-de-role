@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-import { AppError, CodeError } from './appError';
+
+import type { CodeError } from './appError';
+import { AppError } from './appError';
 
 const STATUS_MAP: Record<CodeError, number> = {
   NOT_FOUND: 404,

@@ -1,7 +1,8 @@
-import { defineConfig, devices } from '@playwright/test';
-import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import path from 'path';
+
+import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
 // .env.local fournit les clés Supabase (URL, anon, service role) ; .env.test.local
 // ajoute/écrase avec les comptes de test. Les deux sont nécessaires aux specs E2E.

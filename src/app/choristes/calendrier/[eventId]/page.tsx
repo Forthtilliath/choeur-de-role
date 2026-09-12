@@ -1,13 +1,14 @@
 import { Suspense } from 'react';
-import { CalendrierClient } from '@/components/features/calendrier/CalendrierClient';
+
 import { buildBirthdayEvents } from '@/components/features/calendrier/birthdayHelpers';
+import { CalendrierClient } from '@/components/features/calendrier/CalendrierClient';
 import {
   getBirthdayMembers,
   getCalendarEvents,
   getCalendarEventTypes,
 } from '@/components/features/calendrier/queries';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { Main } from '@/components/ui/Main';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 async function CalendarContent({ eventId }: { eventId: string }) {
   const [events, eventTypes, birthdayMembers] = await Promise.all([

@@ -1,15 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
 import { ChevronDown, ChevronUp, FilePlus, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/Button';
+
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { RepresentationFileManager } from '@/components/features/concerts/admin/RepresentationFileManager';
 import { updatePerformanceNotes } from '@/components/features/concerts/clientQueries';
+import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
+
 import { deleteSong } from '../clientQueries';
-import { FileType, Performance, Song, SongFile, VoicePart } from '../types';
+import type { FileType, Performance, Song, SongFile, VoicePart } from '../types';
+
 import { FileManager } from './FileManager';
 import { SongForm } from './SongForm';
 

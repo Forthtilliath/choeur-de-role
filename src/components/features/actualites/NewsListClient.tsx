@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { NewsCard } from './NewsCard';
+
 import { fetchMoreNews } from './actions';
+import { NewsCard } from './NewsCard';
 import type { News } from './types';
 
 type Props = {

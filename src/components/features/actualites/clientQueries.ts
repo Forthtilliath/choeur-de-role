@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase.client';
 import { getCurrentTimestampString } from '@/lib/utils';
 import { uploadDocToR2 } from '@/utils/uploadDocToR2';
-import { News, NewsFile } from './types';
+
+import type { News, NewsFile } from './types';
 
 export async function updateNewsOrder(items: { id: string; order_index: number }[]): Promise<void> {
   const supabase = createClient();

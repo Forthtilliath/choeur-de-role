@@ -1,7 +1,8 @@
 import { AppError } from '@/lib/appError';
 import { getUserQuery } from '@/lib/auth';
 import { createServerClient } from '@/lib/supabase.server';
-import { MemberProfile } from './types';
+
+import type { MemberProfile } from './types';
 
 export async function getProfileInfo(): Promise<MemberProfile> {
   const userRoleInfo = await getUserQuery();

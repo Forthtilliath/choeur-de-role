@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, X } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 import { getPastPerformances, getUpcomingPerformances } from '@/utils/performanceHelpers';
+
 import { ConcertsList } from './ConcertsList';
 import { NoConcertsPlaceholder } from './NoConcertsPlaceholder';
 import type { PerformanceDatesWithSeasons } from './types';

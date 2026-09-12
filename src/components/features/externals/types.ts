@@ -1,4 +1,4 @@
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export type ExternalEventDate = Tables<'external_event_dates'>;
 export type ExternalEventFile = Tables<'external_event_files'>;

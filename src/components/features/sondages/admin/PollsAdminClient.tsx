@@ -1,10 +1,13 @@
 'use client';
 
-import { BarChart2, Edit, Eye, EyeOff, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
+import { BarChart2, Edit, Eye, EyeOff, Trash2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
+
 import {
   createPoll,
   deletePoll,
@@ -12,9 +15,9 @@ import {
   updatePoll,
 } from '../clientQueries';
 import { getPollResults } from '../queries.client';
-import { Poll, PollDraft, PollResults } from '../types';
+import type { Poll, PollDraft, PollResults } from '../types';
+
 import { PollForm } from './PollForm';
-import dynamic from 'next/dynamic';
 
 const PollResultsClient = dynamic(() => import('./PollResultsClient').then(m => m.PollResultsClient), { ssr: false });
 

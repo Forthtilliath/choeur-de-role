@@ -1,7 +1,8 @@
 'use client';
 
 import { formatTime } from '@/utils/dateHelpers';
-import { CalendarEvent } from './types';
+
+import type { CalendarEvent } from './types';
 
 const MONTHS = [
   'Janvier',

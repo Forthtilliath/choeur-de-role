@@ -1,7 +1,7 @@
 import { CarteWrapper } from '@/components/features/carte/CarteWrapper';
 import { getMembersForMap, getMembersForMapAdmin } from '@/components/features/carte/queries';
+import { getUserQuery, handlePageAccess, isCa } from '@/lib/auth';
 import { getContentBlocks } from '@/lib/content';
-import { handlePageAccess, getUserQuery, isCa } from '@/lib/auth';
 
 export default async function CartePage() {
   await handlePageAccess();

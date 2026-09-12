@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect,test } from '@playwright/test';
 
 // La palette de recherche (Ctrl+K) est accessible depuis toutes les pages choristes
 

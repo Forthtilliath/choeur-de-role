@@ -1,11 +1,12 @@
 import { Suspense } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/Button';
-import { Skeleton } from '@/components/ui/Skeleton';
+
 import { HomeBlocks } from '@/components/features/home/HomeBlocks';
 import { getHomeBlocks } from '@/components/features/home/queries';
-import { getContentBlocks } from '@/lib/content';
+import { Button } from '@/components/ui/Button';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { getUserQuery } from '@/lib/auth';
+import { getContentBlocks } from '@/lib/content';
 
 async function HeroSection() {
   const [userInfo, contentBlocks] = await Promise.all([

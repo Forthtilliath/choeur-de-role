@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+
 import { RichEditor } from '@/components/editor/RichEditor';
 import { Button } from '@/components/ui/Button';
 

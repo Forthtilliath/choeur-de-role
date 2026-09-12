@@ -1,15 +1,18 @@
 'use client';
 
 // Imports statiques OK — ce composant est chargé via dynamic(..., { ssr: false })
+import { useEffect, useRef } from 'react';
 import * as LNamespace from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+
+import { escapeHtml, toTitleCase, toUpperCase } from '@/utils/stringHelpers';
+
 import 'leaflet.markercluster';
+
+import type { MapCenter, MembreCarte } from './types';
+
+import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-
-import { useEffect, useRef } from 'react';
-import { escapeHtml, toTitleCase, toUpperCase } from '@/utils/stringHelpers';
-import type { MapCenter, MembreCarte } from './types';
 
 // Turbopack crée un namespace ESM figé depuis le module CJS de leaflet.
 // .default pointe vers module.exports (l'objet live que les plugins peuvent augmenter).

@@ -1,4 +1,4 @@
-import { GalleryAlbum } from '@/components/features/galerie';
+import type { GalleryAlbum } from '@/components/features/galerie';
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
 
 export function sortAlbumPhotos(albums: GalleryAlbum[]): GalleryAlbum[] {

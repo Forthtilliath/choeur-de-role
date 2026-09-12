@@ -1,6 +1,6 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export type Partner = Tables<'partners'>;
 

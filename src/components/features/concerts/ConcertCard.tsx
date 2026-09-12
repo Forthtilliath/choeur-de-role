@@ -1,8 +1,10 @@
 import Link from 'next/link';
+
 import { formatDate } from '@/utils/dateHelpers';
 import { sortPerformanceDates } from '@/utils/performanceHelpers';
+
 import { CardImage } from './CardImage';
-import { PerformanceDatesWithSeasons } from './types';
+import type { PerformanceDatesWithSeasons } from './types';
 
 export function ConcertCard({
   performance,

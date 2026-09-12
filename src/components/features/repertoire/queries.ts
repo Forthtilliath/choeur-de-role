@@ -1,9 +1,10 @@
 import { AppError } from '@/lib/appError';
-import { isValidDbRole } from '@/lib/roles';
 import { getUserQuery } from '@/lib/auth';
+import { isValidDbRole } from '@/lib/roles';
 import { createServerClient } from '@/lib/supabase.server';
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
-import { MemberWithSeasons, Song } from './types';
+
+import type { MemberWithSeasons, Song } from './types';
 
 export async function getSongsWithFiles(): Promise<Song[]> {
   const supabase = await createServerClient();

@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { News } from './types';
+
+import type { News } from './types';
 
 export const NEWS_PAGE_SIZE = 8;
 

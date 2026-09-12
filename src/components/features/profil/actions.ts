@@ -2,6 +2,7 @@
 
 import { createServerClient } from '@/lib/supabase.server';
 import { nominatimGeocode } from '@/utils/geocoding';
+
 import type { BirthdayVisibility } from './types';
 
 type SaveProfilePayload = {

@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createAdminClient, createServerClient } from '@/lib/supabase.server';
-import { BirthdayMember, CalendarEvent, EventType } from './types';
+
+import type { BirthdayMember, CalendarEvent, EventType } from './types';
 
 export async function getCalendarEvents(): Promise<CalendarEvent[]> {
   const supabase = await createServerClient();

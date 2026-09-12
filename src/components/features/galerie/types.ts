@@ -1,4 +1,4 @@
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export type GalleryPhoto = Tables<'gallery_photos'>;
 export type GalleryVideo = Tables<'gallery_videos'>;

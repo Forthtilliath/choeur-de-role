@@ -1,5 +1,6 @@
 import { formatDateTimeShort } from '@/utils/dateHelpers';
-import { News } from './types';
+
+import type { News } from './types';
 
 const UPDATE_THRESHOLD_MS = 60_000;
 

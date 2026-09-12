@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect,test } from '@playwright/test';
 
 // La page Tâches est réservée aux membres CA (layout bureau vérifie isCa)
 

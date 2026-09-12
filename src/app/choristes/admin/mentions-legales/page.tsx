@@ -1,7 +1,7 @@
 import { MentionsLegalesAdminClient } from '@/components/features/mentions-legales/MentionsLegalesAdminClient';
 import { getLegalData } from '@/components/features/mentions-legales/queries';
-import { handlePageAccess, isAdmin } from '@/lib/auth';
 import { Main } from '@/components/ui/Main';
+import { handlePageAccess, isAdmin } from '@/lib/auth';
 
 export default async function AdminMentionsLegalesPage() {
   await handlePageAccess(isAdmin);

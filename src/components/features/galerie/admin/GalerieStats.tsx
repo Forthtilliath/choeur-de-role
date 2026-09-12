@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+
 import type { GalleryAlbum } from '../types';
 
 type Props = {

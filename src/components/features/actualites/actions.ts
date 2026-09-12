@@ -1,8 +1,9 @@
 'use server';
 
 import { createServerClient } from '@/lib/supabase.server';
-import { News } from './types';
+
 import { NEWS_PAGE_SIZE } from './queries';
+import type { News } from './types';
 
 export async function fetchMoreNews(offset: number): Promise<{ news: News[]; hasMore: boolean }> {
   const supabase = await createServerClient();

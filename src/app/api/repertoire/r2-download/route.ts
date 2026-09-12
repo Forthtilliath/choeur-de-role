@@ -1,8 +1,9 @@
 import { GetObjectCommand } from '@aws-sdk/client-s3';
 import { NextResponse } from 'next/server';
+
+import { toApiError } from '@/lib/apiError';
 import { r2, R2_BUCKET } from '@/lib/r2';
 import { createServerClient } from '@/lib/supabase.server';
-import { toApiError } from '@/lib/apiError';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

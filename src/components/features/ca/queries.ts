@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { CaMeeting } from './types';
+
+import type { CaMeeting } from './types';
 
 export async function getCaMeetingsQuery(): Promise<CaMeeting[]> {
   const supabase = await createServerClient();

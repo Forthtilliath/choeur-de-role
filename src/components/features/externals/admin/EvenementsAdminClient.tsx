@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
+
 import { deleteEvent, toggleEventPublished } from '../clientQueries';
-import { ExternalEvent } from '../types';
+import type { ExternalEvent } from '../types';
+
 import { EventForm } from './EventForm';
 import { EventRow } from './EventRow';
 

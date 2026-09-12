@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { MemberLink, Visibility } from './types';
+
+import type { MemberLink, Visibility } from './types';
 
 export async function updateLinksOrder(items: { id: string; order_index: number }[]): Promise<void> {
   const supabase = createClient();
