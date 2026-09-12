@@ -1,5 +1,5 @@
-import { createServerClient } from '@/lib/supabase.server';
 import type { BirthdayVisibility } from '@/components/features/profil/types';
+import { createServerClient } from '@/lib/supabase.server';
 
 export type MemberForOnboarding = {
   first_name: string | null;

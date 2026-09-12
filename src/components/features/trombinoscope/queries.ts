@@ -1,10 +1,12 @@
 import { headers } from 'next/headers';
+
 import { AppError } from '@/lib/appError';
+import { logAudit } from '@/lib/auditLog';
 import { getUserQuery } from '@/lib/auth';
 import { createAdminClient, createServerClient } from '@/lib/supabase.server';
-import { logAudit } from '@/lib/auditLog';
 import { nominatimGeocode } from '@/utils/geocoding';
-import { AdminMember, AdminMemberWithSeasons, TrombiMember } from './types';
+
+import type { AdminMember, AdminMemberWithSeasons, TrombiMember } from './types';
 
 export type MemberHistoryEntry = {
   id: string;

@@ -1,13 +1,14 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { createServerClient } from '@/lib/supabase.server';
-import { isAdmin } from '@/lib/auth';
-import type { MemberRole } from '@/lib/roles';
+
 import {
   getMemberRoleForOnboarding,
   updateAdminOnboarding,
 } from '@/components/features/onboarding/queries';
+import { isAdmin } from '@/lib/auth';
+import type { MemberRole } from '@/lib/roles';
+import { createServerClient } from '@/lib/supabase.server';
 
 export async function completeAdminOnboarding(): Promise<boolean> {
   const supabase = await createServerClient();

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect,test } from '@playwright/test';
 
 test.describe('Admin — Prévisualisation des emails', () => {
   test.beforeEach(async ({ page }) => {

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase.client';
 import { uploadDocToR2 } from '@/utils/uploadDocToR2';
-import { Partner } from './types';
+
+import type { Partner } from './types';
 
 export async function togglePartnerActive(id: string, active: boolean): Promise<boolean> {
   const supabase = createClient();

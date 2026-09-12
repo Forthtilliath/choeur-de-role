@@ -1,9 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Subscription } from '@supabase/supabase-js';
+import type { Subscription } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import { RoleInfo, buildRoleInfo, isValidDbRole } from '@/lib/roles';
+
+import type {RoleInfo } from '@/lib/roles';
+import { buildRoleInfo, isValidDbRole } from '@/lib/roles';
 import { createClient } from '@/lib/supabase.client';
 
 type UseRoleReturn = RoleInfo & {

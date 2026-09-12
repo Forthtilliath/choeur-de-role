@@ -1,7 +1,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+
 import type { AuditAction } from '@/lib/auditLog';
+
 import type { AuditLogEntry } from './queries';
 
 const AUDIT_PAGE_SIZE = 25;

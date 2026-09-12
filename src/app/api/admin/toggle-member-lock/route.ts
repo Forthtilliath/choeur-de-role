@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import { logAudit } from '@/lib/auditLog';
-import { createAdminClient, createServerClient } from '@/lib/supabase.server';
+
 import { getMemberRole } from '@/components/features/membres/queries';
 import { toApiError } from '@/lib/apiError';
+import { logAudit } from '@/lib/auditLog';
+import { createAdminClient, createServerClient } from '@/lib/supabase.server';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();

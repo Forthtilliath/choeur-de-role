@@ -1,11 +1,10 @@
-import { CalendrierClient } from '@/components/features/calendrier/CalendrierClient';
 import { buildBirthdayEvents } from '@/components/features/calendrier/birthdayHelpers';
+import { CalendrierClient } from '@/components/features/calendrier/CalendrierClient';
 import {
   getBirthdayMembersAdmin,
   getCalendarEvents,
   getCalendarEventTypes,
 } from '@/components/features/calendrier/queries';
-
 import { Button } from '@/components/ui/Button';
 import { Main } from '@/components/ui/Main';
 import { handlePageAccess, isAdmin } from '@/lib/auth';

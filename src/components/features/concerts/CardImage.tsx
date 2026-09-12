@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import { PerformanceDatesWithSeasons } from './types';
+
+import type { PerformanceDatesWithSeasons } from './types';
 
 export function CardImage({
   performance,

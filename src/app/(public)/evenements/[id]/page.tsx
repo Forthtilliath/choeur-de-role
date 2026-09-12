@@ -1,13 +1,14 @@
-import type { Metadata } from 'next';
 import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
 import NextImage from 'next/image';
 import Link from 'next/link';
+
 import { getExternalEventBySlugQuery } from '@/components/features/externals/queries';
-import { withNotFound } from '@/lib/withNotFound';
 import { Button } from '@/components/ui/Button';
+import { LocationMap } from '@/components/ui/LocationMap';
 import { ShareButtons } from '@/components/ui/ShareButtons';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
-import { LocationMap } from '@/components/ui/LocationMap';
+import { withNotFound } from '@/lib/withNotFound';
 import { formatEventDateRange, formatLongDateTime } from '@/utils/dateHelpers';
 
 export async function generateMetadata({

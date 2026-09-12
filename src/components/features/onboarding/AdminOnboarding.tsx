@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/Button';
+
 import { completeAdminOnboarding } from '@/app/choristes/admin/bienvenue/actions';
+import { Button } from '@/components/ui/Button';
 
 type Props = {
   firstName: string;

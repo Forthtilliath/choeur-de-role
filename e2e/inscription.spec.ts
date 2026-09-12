@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { expect,test } from '@playwright/test';
+
 import { createTestMember, deleteTestMember } from './helpers/supabase';
 
 const TEST_EMAIL = `test-inscription-${Date.now()}@e2e.local`;

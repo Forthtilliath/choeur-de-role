@@ -1,14 +1,15 @@
-import type { Metadata } from 'next';
 import {
   Calendar,
   ImageIcon,
+  Mic2,
   Music,
   Newspaper,
   Users,
   Vote,
-  Mic2,
 } from 'lucide-react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
 import { getDashboardStats } from '@/components/features/dashboard/queries';
 import { Main } from '@/components/ui/Main';
 import { handlePageAccess, isAdmin } from '@/lib/auth';

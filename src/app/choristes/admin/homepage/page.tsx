@@ -1,8 +1,8 @@
 import { HeroAdmin } from '@/components/features/home/admin/HeroAdmin';
 import { HomeBlocksAdmin } from '@/components/features/home/admin/HomeBlocksAdmin';
 import { getHomeBlocks } from '@/components/features/home/queries';
-import { getContentBlocks } from '@/lib/content';
 import { handlePageAccess, isAdmin } from '@/lib/auth';
+import { getContentBlocks } from '@/lib/content';
 
 export default async function AdminHomepagePage() {
   await handlePageAccess(isAdmin);

@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { ExternalEvent } from './types';
+
+import type { ExternalEvent } from './types';
 
 const SELECT = `*, external_event_dates (*), external_event_files (*)`;
 

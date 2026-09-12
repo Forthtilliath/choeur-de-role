@@ -1,7 +1,9 @@
 import Image from 'next/image';
+
 import { Button } from '@/components/ui/Button';
 import { formatDate } from '@/utils/dateHelpers';
-import { ExternalEvent } from '../types';
+
+import type { ExternalEvent } from '../types';
 
 export function EventRow({
   event,

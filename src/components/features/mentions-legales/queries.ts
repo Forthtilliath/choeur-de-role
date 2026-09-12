@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { LegalData } from './types';
+
+import type { LegalData } from './types';
 
 export async function getLegalData(): Promise<LegalData> {
   const supabase = await createServerClient();

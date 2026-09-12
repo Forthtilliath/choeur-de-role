@@ -2,7 +2,8 @@
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Column, ColumnKey } from './types';
+
+import type { Column, ColumnKey } from './types';
 
 export function SortableColumnRow({
   col,

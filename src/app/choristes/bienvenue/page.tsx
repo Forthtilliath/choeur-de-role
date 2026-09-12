@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation';
-import { handlePageAccess } from '@/lib/auth';
+
 import { ChoristeOnboarding } from '@/components/features/onboarding/ChoristeOnboarding';
 import { getMemberForOnboarding } from '@/components/features/onboarding/queries';
-import { formatPhone } from '@/utils/phoneHelpers';
 import type { BirthdayVisibility } from '@/components/features/profil/types';
+import { handlePageAccess } from '@/lib/auth';
+import { formatPhone } from '@/utils/phoneHelpers';
 
 export const metadata = { title: 'Bienvenue' };
 

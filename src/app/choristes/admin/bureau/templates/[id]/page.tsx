@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getCategories, getTemplateWithItems } from '@/components/features/bureau/queries';
+
 import { TemplateEditor } from '@/components/features/bureau/admin/TemplateEditor';
+import { getCategories, getTemplateWithItems } from '@/components/features/bureau/queries';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;

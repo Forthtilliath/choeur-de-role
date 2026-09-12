@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase.server';
+
 import { getMemberGdprData } from '@/components/features/gdpr/queries';
 import { toApiError } from '@/lib/apiError';
+import { createServerClient } from '@/lib/supabase.server';
 
 export async function GET() {
   const supabase = await createServerClient();

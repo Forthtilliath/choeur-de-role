@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { MemberLink, Visibility, VISIBILITY_BADGE, VISIBILITY_LABEL } from './types';
+
+import type { MemberLink, Visibility} from './types';
+import { VISIBILITY_BADGE, VISIBILITY_LABEL } from './types';
 
 export function LinkCard({ link }: { link: MemberLink }) {
   const visibility = (link.visibility as Visibility) ?? 'member';

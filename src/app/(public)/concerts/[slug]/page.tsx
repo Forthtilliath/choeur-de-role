@@ -1,7 +1,8 @@
-import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
 import NextImage from 'next/image';
+
 import {
   getAlbumsForPerformance,
   getPerformancesFromSlugQuery,
@@ -9,11 +10,11 @@ import {
 } from '@/components/features/concerts';
 import { GalerieClient } from '@/components/features/galerie/GalerieClient';
 import { Button } from '@/components/ui/Button';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { ShareButtons } from '@/components/ui/ShareButtons';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { getUserQuery } from '@/lib/auth';
-import { withNotFound } from '@/lib/withNotFound';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
+import { withNotFound } from '@/lib/withNotFound';
 import { formatLongDateTime } from '@/utils/dateHelpers';
 import { sortAlbumPhotos } from '@/utils/galleryHelpers';
 import { sortPerformanceDates } from '@/utils/performanceHelpers';

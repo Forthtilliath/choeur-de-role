@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
-import { handlePageAccess, isAdmin } from '@/lib/auth';
-import { Main } from '@/components/ui/Main';
+
 import { EmailPreviewClient } from '@/components/features/emails/EmailPreviewClient';
+import { Main } from '@/components/ui/Main';
+import { handlePageAccess, isAdmin } from '@/lib/auth';
 import {
-  welcomeEmailHtml,
-  passwordResetEmailHtml,
-  emailChangeEmailHtml,
-  candidatureNotificationEmailHtml,
   candidatureAcknowledgementEmailHtml,
+  candidatureNotificationEmailHtml,
+  emailChangeEmailHtml,
+  passwordResetEmailHtml,
+  welcomeEmailHtml,
 } from '@/lib/emailTemplates';
 import { generatePassphrase } from '@/lib/passphrase';
 

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { PollAnswer, PollDraft, PollQuestionDraft } from './types';
+
+import type { PollAnswer, PollDraft, PollQuestionDraft } from './types';
 
 export async function createPoll(draft: PollDraft, memberId: string): Promise<string | null> {
   const supabase = createClient();

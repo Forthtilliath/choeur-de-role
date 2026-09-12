@@ -1,9 +1,10 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+
 import { isAdmin, isCa } from '@/lib/auth';
-import { createServerClient } from '@/lib/supabase.server';
 import type { MemberRole } from '@/lib/roles';
+import { createServerClient } from '@/lib/supabase.server';
 import type { DurationUnit, TaskPriority, TaskStatus } from '@/types/tasks';
 
 async function getCaAuth() {

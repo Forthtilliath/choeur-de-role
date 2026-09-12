@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { VoicePart } from './types';
+
+import type { VoicePart } from './types';
 
 export async function updateVoicePartsOrder(
   items: { id: string; order_index: number }[],

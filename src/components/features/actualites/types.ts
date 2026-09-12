@@ -1,4 +1,4 @@
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export type NewsFile = Tables<'news_files'>;
 // scheduled_at sera dans Tables<'news'> après le prochain npm run db:types

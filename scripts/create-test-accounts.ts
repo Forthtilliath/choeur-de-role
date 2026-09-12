@@ -10,10 +10,11 @@
  * After running:
  *   Run: npx tsx scripts/enroll-test-admin-mfa.ts   (to enroll 2FA on the admin account)
  */
-import { createClient } from '@supabase/supabase-js';
-import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+
+import { createClient } from '@supabase/supabase-js';
+import { config } from 'dotenv';
 
 config({ path: '.env.local' });
 config({ path: '.env.test.local', override: true });

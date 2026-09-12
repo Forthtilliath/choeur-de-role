@@ -1,5 +1,5 @@
-import type { Json } from '@/types/database';
 import { createAdminClient } from '@/lib/supabase.server';
+import type { Json } from '@/types/database';
 
 export type AuditAction =
   | 'member_create'

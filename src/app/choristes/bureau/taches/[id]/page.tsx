@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllTaskComments, getCategories, getCaMembers, getProject, getTasks } from '@/components/features/bureau/queries';
+
+import { getAllTaskComments, getCaMembers, getCategories, getProject, getTasks } from '@/components/features/bureau/queries';
 import { TaskBoard } from '@/components/features/bureau/TaskBoard';
 import { getUserQuery } from '@/lib/auth';
 

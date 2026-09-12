@@ -1,4 +1,4 @@
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export type MemberProfile = Tables<'members'> & {
   voice_parts: { name: string } | null;

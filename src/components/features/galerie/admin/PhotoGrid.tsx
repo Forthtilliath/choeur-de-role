@@ -1,10 +1,14 @@
 'use client';
 
-import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
-import { SortableContext, rectSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { closestCenter,DndContext } from '@dnd-kit/core';
+import { arrayMove,rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
+
 import { useDndSensors } from '@/hooks/useDndSensors';
+
 import { updatePhotosOrder } from '../clientQueries';
 import type { GalleryPhoto } from '../types';
+
 import { PhotoCard } from './PhotoCard';
 
 type Props = {

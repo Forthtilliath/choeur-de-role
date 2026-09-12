@@ -1,8 +1,9 @@
 import { mergeAttributes, Node } from '@tiptap/core';
-import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
 import type { ReactNodeViewProps } from '@tiptap/react';
-import { Badge } from '@/components/shared/Badge';
+import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
+
 import type { BadgeVariant } from '@/components/shared/Badge';
+import { Badge } from '@/components/shared/Badge';
 
 type BadgeAttrs = {
   variant: BadgeVariant;

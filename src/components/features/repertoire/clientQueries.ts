@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { SongFile, SongItem } from './types';
+
+import type { SongFile, SongItem } from './types';
 
 export async function upsertSong(
   payload: { title: string; composer: string | null; label: string | null; id?: string },

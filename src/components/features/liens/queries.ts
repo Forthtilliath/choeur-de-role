@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { MemberLink } from './types';
+
+import type { MemberLink } from './types';
 
 export async function getMemberLinksQuery(): Promise<MemberLink[]> {
   const supabase = await createServerClient();

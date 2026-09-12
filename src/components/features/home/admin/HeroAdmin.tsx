@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef,useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
-import { uploadImageToR2 } from '@/utils/uploadImageToR2';
+
 import { EditableSection } from '@/components/editor/EditableSection';
 import { Button } from '@/components/ui/Button';
-import { createClient } from '@/lib/supabase.client';
 import { useImagePreview } from '@/hooks/useImagePreview';
+import { createClient } from '@/lib/supabase.client';
+import { uploadImageToR2 } from '@/utils/uploadImageToR2';
 
 type Props = {
   heroTitle: string;

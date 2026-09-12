@@ -1,9 +1,10 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { NextResponse } from 'next/server';
 import { extractText } from 'unpdf';
+
+import { getMemberRole } from '@/components/features/membres/queries';
 import { r2, R2_IMAGES_BUCKET, R2_PUBLIC_URL } from '@/lib/r2';
 import { createServerClient } from '@/lib/supabase.server';
-import { getMemberRole } from '@/components/features/membres/queries';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();

@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useContext, useState } from 'react';
+
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 export type ConfirmDetails = {

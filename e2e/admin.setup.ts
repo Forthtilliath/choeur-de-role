@@ -1,7 +1,8 @@
-import { test as setup } from '@playwright/test';
 import { createHmac } from 'crypto';
 import fs from 'fs';
 import path from 'path';
+
+import { test as setup } from '@playwright/test';
 
 const ADMIN_AUTH_FILE = path.join(__dirname, '.auth/admin.json');
 

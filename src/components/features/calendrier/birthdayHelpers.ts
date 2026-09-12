@@ -1,4 +1,4 @@
-import { BirthdayMember, CalendarEvent, EventType } from './types';
+import type { BirthdayMember, CalendarEvent, EventType } from './types';
 
 export function buildBirthdayEvents(
   members: BirthdayMember[],

@@ -2,7 +2,8 @@ import { createClient } from '@/lib/supabase.client';
 import { getCurrentTimestampString } from '@/lib/utils';
 import { uploadDocToR2 } from '@/utils/uploadDocToR2';
 import { uploadImageToR2 } from '@/utils/uploadImageToR2';
-import { ExternalEvent, ExternalEventDate, ExternalEventFile } from './types';
+
+import type { ExternalEvent, ExternalEventDate, ExternalEventFile } from './types';
 
 export async function toggleEventPublished(id: string, published: boolean): Promise<boolean> {
   const supabase = createClient();

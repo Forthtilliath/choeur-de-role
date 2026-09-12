@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import { createAdminClient, createServerClient } from '@/lib/supabase.server';
+
 import { toApiError } from '@/lib/apiError';
+import { createAdminClient, createServerClient } from '@/lib/supabase.server';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();

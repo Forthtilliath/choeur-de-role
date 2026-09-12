@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+
 import type { Notification } from '@/app/api/notifications/route';
 
 const ICON: Record<Notification['type'], string> = {

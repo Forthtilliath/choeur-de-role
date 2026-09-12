@@ -1,6 +1,8 @@
 import Link from 'next/link';
+
 import { formatDate } from '@/utils/dateHelpers';
-import { CaMeeting } from './types';
+
+import type { CaMeeting } from './types';
 
 export function MeetingCard({ meeting }: { meeting: CaMeeting }) {
   const date = formatDate(meeting.meeting_date);

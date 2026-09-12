@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect,test } from '@playwright/test';
 
 // Ce fichier tourne dans le projet "choriste" (user.json) — rôle member.
 // Un membre ne doit PAS pouvoir accéder aux pages /choristes/admin/*.

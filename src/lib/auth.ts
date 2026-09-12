@@ -1,7 +1,9 @@
 import { cache } from 'react';
 import { redirect } from 'next/navigation';
+
 import { AppError } from '@/lib/appError';
-import { isAdmin, isCa, isValidDbRole, MemberRole } from '@/lib/roles';
+import type { MemberRole } from '@/lib/roles';
+import { isAdmin, isCa, isValidDbRole } from '@/lib/roles';
 import { createServerClient } from '@/lib/supabase.server';
 
 export { isAdmin, isCa, isMember } from '@/lib/roles';

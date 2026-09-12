@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { getProjects } from '@/components/features/bureau/queries';
+
 import { ProjectList } from '@/components/features/bureau/ProjectList';
+import { getProjects } from '@/components/features/bureau/queries';
 
 export const metadata: Metadata = { title: 'Tâches — Projets' };
 

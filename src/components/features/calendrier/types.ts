@@ -1,4 +1,4 @@
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export type CalendarEvent = Tables<'calendar_events'> & {
   event_types: Pick<Tables<'event_types'>, 'label' | 'color' | 'is_special'>;

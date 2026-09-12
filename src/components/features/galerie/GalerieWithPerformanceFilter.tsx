@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+
 import { GalerieClient } from './GalerieClient';
 import type { GalleryAlbum } from './types';
 

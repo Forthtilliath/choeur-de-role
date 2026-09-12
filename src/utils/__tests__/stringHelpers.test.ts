@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { toUpperCase, toTitleCase, escapeHtml } from '../stringHelpers';
+import { describe, expect,it } from 'vitest';
+
+import { escapeHtml,toTitleCase, toUpperCase } from '../stringHelpers';
 
 describe('toUpperCase', () => {
   it('met en majuscules', () => expect(toUpperCase('hello')).toBe('HELLO'));

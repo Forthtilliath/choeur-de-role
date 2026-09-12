@@ -1,10 +1,11 @@
 import { Suspense } from 'react';
+
 import { EditableSection } from '@/components/editor/EditableSection';
 import { NewsCard, NotificationsPopup } from '@/components/features/actualites';
 import { NewsListClient } from '@/components/features/actualites/NewsListClient';
 import { getNewsQuery } from '@/components/features/actualites/queries';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { Main } from '@/components/ui/Main';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { handlePageAccess } from '@/lib/auth';
 import { getContentBlocks } from '@/lib/content';
 

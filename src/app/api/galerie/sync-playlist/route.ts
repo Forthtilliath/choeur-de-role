@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase.server';
-import { env } from '@/env';
-import { getMemberRole } from '@/components/features/membres/queries';
+
 import { syncPlaylistVideos } from '@/components/features/galerie/queries';
+import { getMemberRole } from '@/components/features/membres/queries';
+import { env } from '@/env';
+import { createServerClient } from '@/lib/supabase.server';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();

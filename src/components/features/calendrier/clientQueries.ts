@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { CalendarEvent, EventType } from './types';
+
+import type { CalendarEvent, EventType } from './types';
 
 const SELECT = `*, event_types (label, color, is_special)`;
 

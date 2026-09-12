@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next';
-import { SITE_URL } from '@/lib/seo';
+
 import { getSitemapPerformances } from '@/components/features/concerts/queries';
 import { getSitemapExternalEvents } from '@/components/features/externals/queries';
 import { getGalleryLastUpdated } from '@/components/features/galerie/queries';
+import { SITE_URL } from '@/lib/seo';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [performances, events, galerieLastModified] = await Promise.all([

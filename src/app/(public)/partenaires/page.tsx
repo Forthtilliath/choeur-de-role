@@ -9,9 +9,10 @@ export const metadata: Metadata = {
   openGraph: { url: 'https://www.choeur-de-role.fr/partenaires' },
 };
 import Link from 'next/link';
-import { SponsorDossierButton } from '@/components/features/partenaires/SponsorDossierButton';
+
 import { getPartners } from '@/components/features/partenaires/queries';
-import { Partner } from '@/components/features/partenaires/types';
+import { SponsorDossierButton } from '@/components/features/partenaires/SponsorDossierButton';
+import type { Partner } from '@/components/features/partenaires/types';
 import { Button } from '@/components/ui/Button';
 import { Main } from '@/components/ui/Main';
 import { getUserQuery } from '@/lib/auth';

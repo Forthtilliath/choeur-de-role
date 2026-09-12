@@ -3,8 +3,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+
 import { formatEventDateRange } from '@/utils/dateHelpers';
-import { ExternalEvent } from './types';
+
+import type { ExternalEvent } from './types';
 
 function ChoirPlaceholder() {
   return (

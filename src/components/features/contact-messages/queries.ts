@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase.server';
+
 import type { ContactMessage } from './actions';
 
 export async function getContactMessagesQuery(): Promise<ContactMessage[]> {

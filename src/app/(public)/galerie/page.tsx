@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import { GalerieClient } from '@/components/features/galerie/GalerieClient';
 
 export const metadata: Metadata = {

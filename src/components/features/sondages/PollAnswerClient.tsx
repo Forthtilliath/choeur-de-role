@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+
 import { Button } from '@/components/ui/Button';
+
 import { submitPollResponse, updatePollResponse } from './clientQueries';
-import { Poll, PollAnswer, PollQuestion } from './types';
+import type { Poll, PollAnswer, PollQuestion } from './types';
 
 type Props = {
   poll: Poll;

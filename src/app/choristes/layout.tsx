@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+
 import { ActivityTracker } from '@/components/features/auth/ActivityTracker';
 import { checkActiveSeasonEnrollment, getUserQuery } from '@/lib/auth';
 

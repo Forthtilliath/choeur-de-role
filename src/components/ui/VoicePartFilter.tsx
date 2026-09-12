@@ -1,6 +1,6 @@
 'use client';
 
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 type VoicePart = Tables<'voice_parts'>;
 

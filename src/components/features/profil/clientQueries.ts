@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase.client';
 import { uploadImageToR2 } from '@/utils/uploadImageToR2';
-import { BirthdayVisibility } from './types';
+
+import type { BirthdayVisibility } from './types';
 
 export async function uploadProfilePhoto(memberId: string, file: File): Promise<string | null> {
   const supabase = createClient();

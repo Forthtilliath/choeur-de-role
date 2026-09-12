@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
 import { createServerClient } from '@/lib/supabase.server';
+
 import { AppError } from './appError';
 
 export async function getContentBlocks(page: string): Promise<Record<string, string>> {

@@ -1,4 +1,4 @@
-import { Tables } from '@/types/database';
+import type { Tables } from '@/types/database';
 
 export type MemberLink = Tables<'member_links'>;
 export type Visibility = 'member' | 'ca' | 'admin';

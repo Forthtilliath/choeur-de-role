@@ -13,9 +13,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+
 import { Button } from '@/components/ui/Button';
-import { PollResponse, PollResults, QuestionResult } from '../types';
+
 import { exportResultsPdf } from '../pdfExport';
+import type { PollResponse, PollResults, QuestionResult } from '../types';
 
 const COLORS = ['#6366f1', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#84cc16'];
 

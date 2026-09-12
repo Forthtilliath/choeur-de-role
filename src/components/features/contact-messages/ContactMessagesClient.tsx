@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useMemo, useTransition, useEffect, useRef } from 'react';
-import { toggleMessageRead, deleteContactMessage, type ContactMessage } from './actions';
+import { useEffect, useMemo, useRef,useState, useTransition } from 'react';
+
+import { type ContactMessage,deleteContactMessage, toggleMessageRead } from './actions';
 
 const CATEGORY_LABELS: Record<string, string> = {
   rejoindre: 'Candidature',

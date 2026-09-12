@@ -8,13 +8,15 @@
  * and NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local
  */
 
-import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+
+import { config } from 'dotenv';
 config({ path: '.env.local' });
 config({ path: '.env.test.local', override: true });
-import { createClient } from '@supabase/supabase-js';
 import { createHmac } from 'crypto';
+
+import { createClient } from '@supabase/supabase-js';
 
 const ENV_FILE = path.resolve('.env.test.local');
 

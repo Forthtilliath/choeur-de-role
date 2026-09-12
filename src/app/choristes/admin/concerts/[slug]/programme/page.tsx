@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
+
+import { PrintButton } from '@/components/features/concerts/programme/PrintButton';
+import { Main } from '@/components/ui/Main';
 import { handlePageAccess, isAdmin } from '@/lib/auth';
 import { createServerClient } from '@/lib/supabase.server';
-import { Main } from '@/components/ui/Main';
-import { PrintButton } from '@/components/features/concerts/programme/PrintButton';
 import { sortPerformanceDates } from '@/utils/performanceHelpers';
 
 function formatDate(iso: string) {

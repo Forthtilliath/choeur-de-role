@@ -1,5 +1,5 @@
 import { EventCard } from './EventCard';
-import { ExternalEvent } from './types';
+import type { ExternalEvent } from './types';
 
 export function EventGrid({
   events,

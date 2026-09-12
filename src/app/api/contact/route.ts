@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+
 import { sendCandidatureEmails, sendContactEmail } from '@/lib/email';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { createAdminClient } from '@/lib/supabase.server';

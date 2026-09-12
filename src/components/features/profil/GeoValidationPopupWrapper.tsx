@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+
 import type { Coords } from './types';
 
 const GeoValidationPopup = dynamic(() => import('./GeoValidationPopup').then(m => m.GeoValidationPopup), {

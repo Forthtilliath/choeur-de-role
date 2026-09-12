@@ -1,15 +1,16 @@
 'use client';
 
-import { useTransition, useState, useEffect } from 'react';
+import { useEffect,useState, useTransition } from 'react';
 import { Search, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+
 import { adminGroups } from '@/components/layout/AdminSidebar';
 import { AuthButton } from '@/components/layout/AuthButton';
 import { Button } from '@/components/ui/Button';
-import { useRole } from '@/hooks/useRole';
 import { useCommandPalette } from '@/context/CommandPaletteContext';
+import { useRole } from '@/hooks/useRole';
 
 const publicLinks = [
   { href: '/concerts', label: 'Concerts', icon: '🎶' },

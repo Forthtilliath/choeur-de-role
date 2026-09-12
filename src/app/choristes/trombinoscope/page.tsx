@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+
 import { getVoiceParts } from '@/components/features/pupitres/queries';
 import { getMembersForTrombi } from '@/components/features/trombinoscope/queries';
 import { TrombinoscopeClient } from '@/components/features/trombinoscope/TrombinoscopeClient';

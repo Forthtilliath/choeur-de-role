@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { VoicePart } from './types';
+
+import type { VoicePart } from './types';
 
 export async function getVoiceParts(): Promise<VoicePart[]> {
   const supabase = await createServerClient();

@@ -1,12 +1,13 @@
-import { env } from '@/env';
 import { NextResponse } from 'next/server';
-import { MemberInsert } from '@/components/features/trombinoscope';
-import { getUserQuery } from '@/lib/auth';
+
+import type { MemberInsert } from '@/components/features/trombinoscope';
+import { env } from '@/env';
+import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
+import { getUserQuery } from '@/lib/auth';
 import { sendWelcomeEmail } from '@/lib/email';
 import { generatePassphrase } from '@/lib/passphrase';
 import { createAdminClient } from '@/lib/supabase.server';
-import { toApiError } from '@/lib/apiError';
 
 type ImportRow = {
   first_name: string;

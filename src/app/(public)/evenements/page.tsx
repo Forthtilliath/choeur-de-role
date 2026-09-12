@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import { EventGrid } from '@/components/features/externals/EventGrid';
 
 export const metadata: Metadata = {

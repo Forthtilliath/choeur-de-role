@@ -1,11 +1,12 @@
 import { Suspense } from 'react';
+
 import { getPerformanceFromSeasons } from '@/components/features/concerts';
 import { getVoiceParts } from '@/components/features/pupitres/queries';
-import { RepertoireClient } from '@/components/features/repertoire/RepertoireClient';
 import { getMemberWithSeasons } from '@/components/features/repertoire/queries';
+import { RepertoireClient } from '@/components/features/repertoire/RepertoireClient';
 import type { Song } from '@/components/features/repertoire/types';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { Main } from '@/components/ui/Main';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
 
 async function RepertoireContent({

@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 type AdminLink = { href: string; currentLabel: string };

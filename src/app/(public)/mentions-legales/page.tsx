@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import { getLegalData } from '@/components/features/mentions-legales/queries';
 import { FictionalNotice } from '@/components/ui/FictionalNotice';
 import { Main } from '@/components/ui/Main';

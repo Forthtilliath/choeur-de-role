@@ -1,7 +1,7 @@
-import type { NextConfig } from 'next';
 import createMDX from '@next/mdx';
-import withSerwist from '@serwist/next';
 import { withSentryConfig } from '@sentry/nextjs';
+import withSerwist from '@serwist/next';
+import type { NextConfig } from 'next';
 
 const withMDX = createMDX({
   options: {

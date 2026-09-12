@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
+
+import { toApiError } from '@/lib/apiError';
 import { getUserQuery } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase.server';
-import { toApiError } from '@/lib/apiError';
 
 export async function POST(request: Request) {
   const { isAdmin } = await getUserQuery();

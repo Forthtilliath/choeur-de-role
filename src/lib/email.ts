@@ -1,13 +1,15 @@
 import { Resend } from 'resend';
+
 import { env } from '@/env';
 import { escapeHtml as h } from '@/utils/stringHelpers';
+
 import {
-  welcomeEmailHtml,
-  passwordResetEmailHtml,
-  emailChangeEmailHtml,
-  candidatureNotificationEmailHtml,
   candidatureAcknowledgementEmailHtml,
+  candidatureNotificationEmailHtml,
+  emailChangeEmailHtml,
+  passwordResetEmailHtml,
   suspiciousLoginEmailHtml,
+  welcomeEmailHtml,
 } from './emailTemplates';
 
 // Init paresseuse : le SDK Resend lève si on le construit sans clé.

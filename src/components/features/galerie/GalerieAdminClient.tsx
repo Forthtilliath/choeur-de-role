@@ -1,28 +1,30 @@
 'use client';
 
 import { useState } from 'react';
-import { DndContext, closestCenter, type DragEndEvent } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
-import { useConfirm } from '@/context/ConfirmContext';
+import { closestCenter, DndContext, type DragEndEvent } from '@dnd-kit/core';
+import { arrayMove,SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+
 import type { PerformanceTitle } from '@/components/features/concerts';
-import { useDndSensors } from '@/hooks/useDndSensors';
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
+import { useDndSensors } from '@/hooks/useDndSensors';
+
 import { AddAlbumForm } from './admin/AddAlbumForm';
 import { AlbumCard } from './admin/AlbumCard';
 import { GalerieStats } from './admin/GalerieStats';
 import {
   addAlbum,
-  updateAlbumFields,
-  toggleAlbumPublished,
   deleteAlbum,
-  updateAlbumsOrder,
-  uploadAlbumCover,
-  removeAlbumCover,
-  uploadPhotos,
   deletePhoto,
+  removeAlbumCover,
+  toggleAlbumPublished,
+  updateAlbumFields,
+  updateAlbumsOrder,
   updatePhotoCaption,
+  uploadAlbumCover,
+  uploadPhotos,
 } from './clientQueries';
 import type { GalleryAlbum, GalleryPhoto } from './types';
 
