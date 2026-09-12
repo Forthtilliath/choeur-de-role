@@ -1,10 +1,11 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { createServerClient } from '@/lib/supabase.server';
+
+import type { OnboardingPayload } from '@/components/features/onboarding/queries';
 import { updateMemberOnboarding } from '@/components/features/onboarding/queries';
 import type { BirthdayVisibility } from '@/components/features/profil/types';
-import type { OnboardingPayload } from '@/components/features/onboarding/queries';
+import { createServerClient } from '@/lib/supabase.server';
 
 export type OnboardingProfileData = {
   phone: string | null;

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { handlePageAccess, isAdmin } from '@/lib/auth';
-import { Main } from '@/components/ui/Main';
-import { ContactMessagesClient } from '@/components/features/contact-messages/ContactMessagesClient';
+
 import { getContactMessages } from '@/components/features/contact-messages/actions';
+import { ContactMessagesClient } from '@/components/features/contact-messages/ContactMessagesClient';
+import { Main } from '@/components/ui/Main';
+import { handlePageAccess, isAdmin } from '@/lib/auth';
 
 export const metadata: Metadata = { title: 'Messages de contact' };
 

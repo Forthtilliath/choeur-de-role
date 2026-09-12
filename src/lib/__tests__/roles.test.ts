@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { isValidDbRole, isAdmin, isCa, isMember, buildRoleInfo } from '../roles';
+import { describe, expect,it } from 'vitest';
+
+import { buildRoleInfo,isAdmin, isCa, isMember, isValidDbRole } from '../roles';
 
 describe('isValidDbRole', () => {
   it.each(['member', 'ca', 'admin', 'super_admin'])('accepte le rôle valide "%s"', (role) => {

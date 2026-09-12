@@ -1,6 +1,7 @@
 import { AppError } from "@/lib/appError";
 import { createServerClient } from "@/lib/supabase.server";
-import { HomeBlock } from "./types";
+
+import type { HomeBlock } from "./types";
 
 export async function getHomeBlocks(): Promise<HomeBlock[]> {
   const supabase = await createServerClient();

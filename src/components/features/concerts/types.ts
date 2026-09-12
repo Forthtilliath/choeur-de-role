@@ -1,5 +1,5 @@
-import { Tables, TablesInsert, TablesUpdate } from '@/types/database';
-import { Merge } from '@/types/utils';
+import type { Tables, TablesInsert, TablesUpdate } from '@/types/database';
+import type { Merge } from '@/types/utils';
 
 export type RepresentationFile = Tables<'representation_files'>;
 

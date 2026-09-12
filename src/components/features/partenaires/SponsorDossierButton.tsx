@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
+
 import { uploadSponsorDossier } from './clientQueries';
 
 export function SponsorDossierButton({ currentUrl }: { currentUrl: string }) {

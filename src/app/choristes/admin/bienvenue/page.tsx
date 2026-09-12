@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
-import { handlePageAccess, isAdmin } from '@/lib/auth';
-import { Main } from '@/components/ui/Main';
+
 import { AdminOnboarding } from '@/components/features/onboarding/AdminOnboarding';
 import { getMemberForAdminOnboarding } from '@/components/features/onboarding/queries';
+import { Main } from '@/components/ui/Main';
+import { handlePageAccess, isAdmin } from '@/lib/auth';
 import type { MemberRole } from '@/lib/roles';
 
 export const metadata = { title: 'Bienvenue — Administration' };

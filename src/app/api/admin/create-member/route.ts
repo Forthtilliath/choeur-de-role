@@ -1,13 +1,14 @@
-import { env } from '@/env';
 import { NextResponse } from 'next/server';
-import { MemberInsert } from '@/components/features/trombinoscope';
-import { getUserQuery } from '@/lib/auth';
+
+import type { MemberInsert } from '@/components/features/trombinoscope';
+import { env } from '@/env';
+import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
+import { getUserQuery } from '@/lib/auth';
 import { sendWelcomeEmail } from '@/lib/email';
 import { generatePassphrase } from '@/lib/passphrase';
 import { MEMBER_ROLES } from '@/lib/roles';
 import { createAdminClient } from '@/lib/supabase.server';
-import { toApiError } from '@/lib/apiError';
 
 export async function POST(request: Request) {
   const userQuery = await getUserQuery();

@@ -1,4 +1,4 @@
-import { SongFile, VoicePart } from './types';
+import type { SongFile, VoicePart } from './types';
 
 export function getVoicePartDisplay(voicePartIds: string[], voiceParts: VoicePart[]): string {
   if (voicePartIds.length === 0) return '';

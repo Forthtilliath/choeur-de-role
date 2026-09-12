@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { AdminMember } from './types';
+
+import type { AdminMember } from './types';
 
 export async function deleteMember(id: string): Promise<boolean> {
   const supabase = createClient();

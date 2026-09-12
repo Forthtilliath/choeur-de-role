@@ -3,19 +3,21 @@ import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import Script from 'next/script';
 import { Toaster } from 'sonner';
+
+import { CommandPalette } from '@/components/features/search/CommandPalette';
+import { getActivePollsForMember } from '@/components/features/sondages/queries';
 import { AdminContextBar } from '@/components/layout/AdminContextBar';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { SwRegister } from '@/components/layout/SwRegister';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 import { PageTransition } from '@/components/ui/PageTransition';
-import { ConfirmProvider } from '@/context/ConfirmContext';
 import { CommandPaletteProvider } from '@/context/CommandPaletteContext';
-import { CommandPalette } from '@/components/features/search/CommandPalette';
-import { getUserQuery } from '@/lib/auth';
-import { getActivePollsForMember } from '@/components/features/sondages/queries';
-import { organizationJsonLd, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/seo';
+import { ConfirmProvider } from '@/context/ConfirmContext';
 import { env } from '@/env';
+import { getUserQuery } from '@/lib/auth';
+import { organizationJsonLd, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/seo';
+
 import './globals.css';
 
 const geist = Geist({ subsets: ['latin'] });

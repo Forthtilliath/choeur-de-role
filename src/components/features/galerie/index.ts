@@ -1,5 +1,4 @@
-export { GalerieClient } from './GalerieClient';
 export { GalerieAdminClient } from './GalerieAdminClient';
-export { VideoCard } from './VideoCard';
-
+export { GalerieClient } from './GalerieClient';
 export type * from './types';
+export { VideoCard } from './VideoCard';

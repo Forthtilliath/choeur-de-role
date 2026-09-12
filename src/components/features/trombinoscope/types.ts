@@ -1,5 +1,5 @@
-import { Tables, TablesInsert } from '@/types/database';
-import { Merge } from '@/types/utils';
+import type { Tables, TablesInsert } from '@/types/database';
+import type { Merge } from '@/types/utils';
 
 export type VoicePart = Tables<'voice_parts'>;
 

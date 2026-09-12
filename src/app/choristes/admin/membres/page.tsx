@@ -1,10 +1,10 @@
 import { getSeasonsQuery } from '@/components/features/concerts/queries';
-import { getChoristerVoiceParts, getAdminVoiceParts } from '@/components/features/pupitres/queries';
+import { getAdminVoiceParts,getChoristerVoiceParts } from '@/components/features/pupitres/queries';
 import { MembresAdminClient } from '@/components/features/trombinoscope/admin/MembresAdminClient';
 import { getMembersForTrombiAdmin } from '@/components/features/trombinoscope/queries';
 import { getUsers } from '@/components/features/trombinoscope/queries';
-import { handlePageAccess, isAdmin } from '@/lib/auth';
 import { Main } from '@/components/ui/Main';
+import { handlePageAccess, isAdmin } from '@/lib/auth';
 
 export default async function AdminMembresPage() {
   const { role: currentUserRole } = await handlePageAccess(isAdmin);

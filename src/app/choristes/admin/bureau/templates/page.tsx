@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { getTemplates } from '@/components/features/bureau/queries';
+
 import { TemplatesAdmin } from '@/components/features/bureau/admin/TemplatesAdmin';
+import { getTemplates } from '@/components/features/bureau/queries';
 
 export const metadata: Metadata = { title: 'Admin — Templates' };
 

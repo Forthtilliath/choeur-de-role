@@ -3,7 +3,8 @@
  * Stratégie : on cherche la présence d'un <main> et l'absence d'une overlay d'erreur Turbopack/Next.
  * Les tests admin utilisent le storage state admin.
  */
-import { test, expect, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { expect,test } from '@playwright/test';
 
 async function expectPageLoads(page: Page, url: string) {
   await page.goto(url);

@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect,it } from 'vitest';
+
 import { generatePassphrase } from '../passphrase';
 import { wordlist } from '../wordlist';
 

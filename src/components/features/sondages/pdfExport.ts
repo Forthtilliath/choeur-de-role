@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { OptionResult, PollResponse, PollResults, QuestionResult } from './types';
+
+import type { OptionResult, PollResponse, PollResults, QuestionResult } from './types';
 
 const PRIMARY = [99, 102, 241] as const; // indigo-500
 

@@ -1,5 +1,6 @@
-import { config } from 'dotenv';
 import { createHmac } from 'crypto';
+
+import { config } from 'dotenv';
 
 config({ path: '.env.local' });
 config({ path: '.env.test.local', override: true });

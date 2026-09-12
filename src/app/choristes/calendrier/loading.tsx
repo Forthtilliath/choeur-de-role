@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/Skeleton';
 import { Main } from '@/components/ui/Main';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 

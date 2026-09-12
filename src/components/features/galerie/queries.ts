@@ -1,6 +1,7 @@
 import { AppError } from '@/lib/appError';
 import { createServerClient } from '@/lib/supabase.server';
-import { GalleryAlbum } from './types';
+
+import type { GalleryAlbum } from './types';
 
 export async function getGalleryLastUpdated(): Promise<Date> {
   const supabase = await createServerClient();

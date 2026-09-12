@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase.client';
-import { LegalData } from './types';
+
+import type { LegalData } from './types';
 
 const CENTER_KEYS = ['center_lat', 'center_lng', 'center_label'];
 

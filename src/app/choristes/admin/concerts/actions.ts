@@ -1,10 +1,11 @@
 'use server';
 
 import { PutObjectCommand } from '@aws-sdk/client-s3';
-import { createServerClient } from '@/lib/supabase.server';
+
 import { isAdmin } from '@/lib/auth';
 import { r2, R2_IMAGES_BUCKET, R2_PUBLIC_URL } from '@/lib/r2';
 import type { MemberRole } from '@/lib/roles';
+import { createServerClient } from '@/lib/supabase.server';
 
 export async function migratePerformanceImagesToR2(): Promise<{
   migrated: number;

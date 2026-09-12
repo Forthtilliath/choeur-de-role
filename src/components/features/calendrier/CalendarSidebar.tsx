@@ -1,6 +1,7 @@
 import { formatDayMonthShort, formatTime } from '@/utils/dateHelpers';
+
 import { LocationMap } from './LocationMap';
-import { CalendarEvent } from './types';
+import type { CalendarEvent } from './types';
 
 export function CalendarSidebar({ events }: { events: CalendarEvent[] }) {
   const today = new Date();

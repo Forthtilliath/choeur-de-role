@@ -1,5 +1,6 @@
 import { createServerClient } from '@/lib/supabase.server';
-import { Poll, PollResults, PollSummary, QuestionResult } from './types';
+
+import type { Poll, PollResults, PollSummary, QuestionResult } from './types';
 
 type RawAnswer = {
   question_id: string;

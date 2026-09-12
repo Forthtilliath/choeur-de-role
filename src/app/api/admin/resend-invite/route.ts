@@ -1,11 +1,12 @@
-import { env } from '@/env';
 import { NextResponse } from 'next/server';
+
+import { getMemberEmailAndFirstName,getMemberRole } from '@/components/features/membres/queries';
+import { env } from '@/env';
+import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
 import { sendWelcomeEmail } from '@/lib/email';
 import { generatePassphrase } from '@/lib/passphrase';
 import { createAdminClient, createServerClient } from '@/lib/supabase.server';
-import { getMemberRole, getMemberEmailAndFirstName } from '@/components/features/membres/queries';
-import { toApiError } from '@/lib/apiError';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();

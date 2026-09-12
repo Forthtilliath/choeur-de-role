@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { formatTime, formatEventDateRange } from '../dateHelpers';
+import { describe, expect,it } from 'vitest';
+
+import { formatEventDateRange,formatTime } from '../dateHelpers';
 
 // ── formatTime ───────────────────────────────────────────────────────────────
 
