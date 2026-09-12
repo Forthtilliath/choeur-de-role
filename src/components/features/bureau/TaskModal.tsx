@@ -2,13 +2,28 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Trash2, X } from 'lucide-react';
+
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { DurationInput } from '@/components/ui/DurationInput';
 import { Select } from '@/components/ui/Select';
-import type { CaMember, DurationUnit, Task, TaskCategory, TaskComment, TaskPriority, TaskStatus } from '@/types/tasks';
+import type {
+  CaMember,
+  DurationUnit,
+  Task,
+  TaskCategory,
+  TaskComment,
+  TaskPriority,
+  TaskStatus,
+} from '@/types/tasks';
+
 import { addComment, createTask, deleteComment, deleteTask, updateTask } from './actions';
 
-const PRIORITIES: { id: TaskPriority; label: string; className: string; activeClassName: string }[] = [
+const PRIORITIES: {
+  id: TaskPriority;
+  label: string;
+  className: string;
+  activeClassName: string;
+}[] = [
   {
     id: 'low',
     label: 'Basse',
@@ -18,13 +33,16 @@ const PRIORITIES: { id: TaskPriority; label: string; className: string; activeCl
   {
     id: 'medium',
     label: 'Moyenne',
-    className: 'border-amber-200 text-amber-600 hover:border-amber-400 dark:border-amber-800 dark:text-amber-400',
-    activeClassName: 'border-amber-400 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
+    className:
+      'border-amber-200 text-amber-600 hover:border-amber-400 dark:border-amber-800 dark:text-amber-400',
+    activeClassName:
+      'border-amber-400 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
   },
   {
     id: 'high',
     label: 'Haute',
-    className: 'border-red-200 text-red-500 hover:border-red-400 dark:border-red-800 dark:text-red-400',
+    className:
+      'border-red-200 text-red-500 hover:border-red-400 dark:border-red-800 dark:text-red-400',
     activeClassName: 'border-red-400 bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300',
   },
 ];
@@ -78,10 +96,14 @@ export function TaskModal({
 
   const [title, setTitle] = useState(task?.title ?? '');
   const [description, setDescription] = useState(task?.description ?? '');
-  const [priority, setPriority] = useState<TaskPriority>(task?.priority ?? initialPriority ?? 'medium');
+  const [priority, setPriority] = useState<TaskPriority>(
+    task?.priority ?? initialPriority ?? 'medium',
+  );
   const [dueDate, setDueDate] = useState(task?.due_date ?? '');
   const [durationValue, setDurationValue] = useState<number | null>(task?.duration_value ?? null);
-  const [durationUnit, setDurationUnit] = useState<DurationUnit | null>(task?.duration_unit ?? null);
+  const [durationUnit, setDurationUnit] = useState<DurationUnit | null>(
+    task?.duration_unit ?? null,
+  );
   const [categoryId, setCategoryId] = useState<string | null>(task?.category_id ?? null);
   const [assigneeIds, setAssigneeIds] = useState<string[]>(
     task?.assignees.map((a) => a.member_id) ?? [],
@@ -230,6 +252,8 @@ export function TaskModal({
 
   return (
     <>
+      {/* Backdrop click-to-dismiss — Escape (géré plus haut) est l'équivalent clavier. */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
       <div
         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
         onClick={(e) => {
@@ -254,8 +278,14 @@ export function TaskModal({
           <div className="flex flex-col gap-5 px-6 py-5 overflow-y-auto flex-1">
             {/* Title */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Titre</label>
+              <label
+                htmlFor="task-title"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Titre
+              </label>
               <input
+                id="task-title"
                 ref={titleRef}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -266,8 +296,14 @@ export function TaskModal({
 
             {/* Description */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Description</label>
+              <label
+                htmlFor="task-description"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Description
+              </label>
               <textarea
+                id="task-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Détails, contexte, liens utiles..."
@@ -278,8 +314,10 @@ export function TaskModal({
 
             {/* Priority + Due date + Duration */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Priorité</label>
+              <fieldset className="flex flex-col gap-1.5">
+                <legend className="text-xs font-medium text-foreground/60 uppercase tracking-wide">
+                  Priorité
+                </legend>
                 <div className="flex gap-1.5">
                   {PRIORITIES.map((p) => (
                     <button
@@ -294,13 +332,17 @@ export function TaskModal({
                     </button>
                   ))}
                 </div>
-              </div>
+              </fieldset>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">
+                <label
+                  htmlFor="task-due-date"
+                  className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+                >
                   Échéance
                 </label>
                 <input
+                  id="task-due-date"
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
@@ -312,28 +354,37 @@ export function TaskModal({
             {/* Duration + Category */}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">
+                <span className="text-xs font-medium text-foreground/60 uppercase tracking-wide">
                   Durée estimée
-                </label>
+                </span>
                 <DurationInput
                   value={durationValue}
                   unit={durationUnit}
-                  onChangeAction={(v, u) => { setDurationValue(v); setDurationUnit(u); }}
+                  onChangeAction={(v, u) => {
+                    setDurationValue(v);
+                    setDurationUnit(u);
+                  }}
                 />
               </div>
               {categories.length > 0 && (
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">
+                  <label
+                    htmlFor="task-category"
+                    className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+                  >
                     Catégorie
                   </label>
                   <Select
+                    id="task-category"
                     value={categoryId ?? ''}
                     onChange={(e) => setCategoryId(e.target.value || null)}
                     wrapperClassName="w-full"
                   >
                     <option value="">— Aucune —</option>
                     {categories.map((c) => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                      </option>
                     ))}
                   </Select>
                 </div>
@@ -341,8 +392,10 @@ export function TaskModal({
             </div>
 
             {/* Assignees */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Assignés</label>
+            <fieldset className="flex flex-col gap-2">
+              <legend className="text-xs font-medium text-foreground/60 uppercase tracking-wide">
+                Assignés
+              </legend>
               <div className="flex flex-wrap gap-1.5">
                 {caMembers.map((member) => {
                   const isSelected = assigneeIds.includes(member.id);
@@ -358,7 +411,9 @@ export function TaskModal({
                           : 'border-border text-foreground/60 hover:border-primary/30 hover:text-foreground'
                       }`}
                     >
-                      <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold ${isSelected ? 'bg-primary text-white' : 'bg-foreground/10 text-foreground/60'}`}>
+                      <span
+                        className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold ${isSelected ? 'bg-primary text-white' : 'bg-foreground/10 text-foreground/60'}`}
+                      >
                         {initials(member.first_name, member.last_name)}
                       </span>
                       {name || 'Inconnu'}
@@ -366,7 +421,7 @@ export function TaskModal({
                   );
                 })}
               </div>
-            </div>
+            </fieldset>
 
             {/* Comments — only in edit mode */}
             {!isNew && task && (
@@ -376,7 +431,9 @@ export function TaskModal({
                 </label>
 
                 {comments.length === 0 && (
-                  <p className="text-xs text-foreground/40 italic">Aucun commentaire pour l&apos;instant.</p>
+                  <p className="text-xs text-foreground/40 italic">
+                    Aucun commentaire pour l&apos;instant.
+                  </p>
                 )}
 
                 <div className="flex flex-col gap-3">
@@ -384,7 +441,12 @@ export function TaskModal({
                     <div key={c.id} className="flex gap-2.5 group/comment">
                       <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">
                         {c.author_name
-                          ? c.author_name.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2)
+                          ? c.author_name
+                              .split(' ')
+                              .map((w) => w[0])
+                              .join('')
+                              .toUpperCase()
+                              .slice(0, 2)
                           : '?'}
                       </span>
                       <div className="flex-1 min-w-0">
@@ -392,11 +454,15 @@ export function TaskModal({
                           <span className="text-xs font-medium text-foreground">
                             {c.author_name ?? 'Inconnu'}
                           </span>
-                          <span className="text-[10px] text-foreground/40">{formatDate(c.created_at)}</span>
+                          <span className="text-[10px] text-foreground/40">
+                            {formatDate(c.created_at)}
+                          </span>
                         </div>
-                        <p className="text-sm text-foreground/80 mt-0.5 leading-relaxed">{c.content}</p>
+                        <p className="text-sm text-foreground/80 mt-0.5 leading-relaxed">
+                          {c.content}
+                        </p>
                       </div>
-                      {(c.author_id === currentUserId) && (
+                      {c.author_id === currentUserId && (
                         <button
                           onClick={() => setCommentToDelete(c.id)}
                           className="shrink-0 opacity-0 group-hover/comment:opacity-100 transition-opacity text-foreground/30 hover:text-red-500"
@@ -429,41 +495,41 @@ export function TaskModal({
 
           {/* Footer */}
           <div className="flex flex-col gap-2 px-6 py-4 border-t border-border shrink-0">
-          {saveError && (
-            <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2">
-              {saveError}
-            </p>
-          )}
-          <div className="flex items-center justify-between gap-3">
-            {!isNew && !readOnly && (isAdmin || task.created_by === currentUserId) ? (
-              <button
-                onClick={() => setShowDeleteConfirm(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-              >
-                <Trash2 size={14} />
-                Supprimer
-              </button>
-            ) : (
-              <div />
+            {saveError && (
+              <p className="text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2">
+                {saveError}
+              </p>
             )}
-            <div className="flex gap-2">
-              <button
-                onClick={onCloseAction}
-                className="px-4 py-2 rounded-lg text-sm border border-border text-foreground/60 hover:text-foreground hover:bg-muted transition-colors"
-              >
-                Annuler
-              </button>
-              {!readOnly && (
+            <div className="flex items-center justify-between gap-3">
+              {!isNew && !readOnly && (isAdmin || task.created_by === currentUserId) ? (
                 <button
-                  onClick={handleSave}
-                  disabled={!title.trim() || saving}
-                  className="px-4 py-2 rounded-lg text-sm bg-primary text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
                 >
-                  {saving ? 'Enregistrement...' : isNew ? 'Créer' : 'Sauvegarder'}
+                  <Trash2 size={14} />
+                  Supprimer
                 </button>
+              ) : (
+                <div />
               )}
+              <div className="flex gap-2">
+                <button
+                  onClick={onCloseAction}
+                  className="px-4 py-2 rounded-lg text-sm border border-border text-foreground/60 hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  Annuler
+                </button>
+                {!readOnly && (
+                  <button
+                    onClick={handleSave}
+                    disabled={!title.trim() || saving}
+                    className="px-4 py-2 rounded-lg text-sm bg-primary text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                  >
+                    {saving ? 'Enregistrement...' : isNew ? 'Créer' : 'Sauvegarder'}
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>

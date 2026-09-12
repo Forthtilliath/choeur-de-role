@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type Options<T> = {
   serialize?: (value: T) => string;
@@ -26,7 +26,9 @@ export function useLocalStorage<T>(
     try {
       const raw = localStorage.getItem(key);
       if (raw !== null) setValue(deserializeRef.current(raw));
-    } catch {}
+    } catch {
+      // localStorage indisponible (quota, navigation privée...) : ignoré volontairement.
+    }
     initialized.current = true;
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -37,7 +39,9 @@ export function useLocalStorage<T>(
         if (initialized.current) {
           try {
             localStorage.setItem(key, serializeRef.current(next));
-          } catch {}
+          } catch {
+            // localStorage indisponible (quota, navigation privée...) : ignoré volontairement.
+          }
         }
         return next;
       });

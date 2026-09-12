@@ -1,24 +1,28 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
-import type { Season } from '@/components/features/concerts';
 import { toast } from 'sonner';
+
+import type { Season } from '@/components/features/concerts';
 import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
-import { formatPhone } from '@/utils/phoneHelpers';
+import { useFormShortcuts } from '@/hooks/useFormShortcuts';
 import { useImagePreview } from '@/hooks/useImagePreview';
+import { formatPhone } from '@/utils/phoneHelpers';
 import { uploadImageToR2 } from '@/utils/uploadImageToR2';
-import { saveMemberAdminAction, getMemberAuditHistory } from './actions';
-import type { MemberHistoryEntry } from '../queries';
+
 import {
   addMemberSeason,
   removeMemberSeason,
   resetMemberPassword,
   updateMemberEmail,
 } from '../clientQueries';
-import { AdminMemberWithSeasons, ROLE_LABELS, VoicePart } from '../types';
-import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+import type { MemberHistoryEntry } from '../queries';
+import type { AdminMemberWithSeasons, VoicePart } from '../types';
+import { ROLE_LABELS } from '../types';
+
+import { getMemberAuditHistory, saveMemberAdminAction } from './actions';
 
 const ROLE_RANK: Record<string, number> = { member: 0, ca: 1, admin: 2, super_admin: 3 };
 
@@ -88,7 +92,7 @@ export function MemberForm({
       body: JSON.stringify({ memberId: member.id, photoUrl: url }),
     });
     if (!res.ok) {
-      toast.error("Erreur lors de la mise à jour de la photo");
+      toast.error('Erreur lors de la mise à jour de la photo');
       throw new Error('DB update failed');
     }
     setPhotoUrl(url);
@@ -218,7 +222,9 @@ export function MemberForm({
                   sizes="64px"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-foreground/30 text-2xl">👤</div>
+                <div className="w-full h-full flex items-center justify-center text-foreground/30 text-2xl">
+                  👤
+                </div>
               )}
             </div>
             <div className="flex flex-col gap-2">
@@ -231,29 +237,49 @@ export function MemberForm({
                         <span className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                         Upload...
                       </span>
-                    ) : 'Confirmer'}
+                    ) : (
+                      'Confirmer'
+                    )}
                   </Button>
-                  <Button type="button" variant="ghost" size="sm" disabled={photoUploading} onClick={cancelPhoto}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={photoUploading}
+                    onClick={cancelPhoto}
+                  >
                     Annuler
                   </Button>
                 </div>
               ) : (
-                <Button type="button" variant="ghost" size="sm" onClick={() => photoInputRef.current?.click()}>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => photoInputRef.current?.click()}
+                >
                   {photoUrl ? '📷 Changer la photo' : '📷 Ajouter une photo'}
                 </Button>
               )}
-              {photoSuccess && (
-                <p className="text-xs text-primary">✓ Photo enregistrée</p>
-              )}
+              {photoSuccess && <p className="text-xs text-primary">✓ Photo enregistrée</p>}
             </div>
-            <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoSelect} className="hidden" />
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoSelect}
+              className="hidden"
+            />
           </div>
         )}
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-foreground/50">Prénom *</label>
+            <label htmlFor="member-first-name" className="text-xs font-medium text-foreground/50">
+              Prénom *
+            </label>
             <input
+              id="member-first-name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
@@ -262,8 +288,11 @@ export function MemberForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-foreground/50">Nom</label>
+            <label htmlFor="member-last-name" className="text-xs font-medium text-foreground/50">
+              Nom
+            </label>
             <input
+              id="member-last-name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -274,7 +303,7 @@ export function MemberForm({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-foreground/50">Email</label>
+            <span className="text-xs font-medium text-foreground/50">Email</span>
             {member ? (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
@@ -326,8 +355,11 @@ export function MemberForm({
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-foreground/50">Téléphone</label>
+            <label htmlFor="member-phone" className="text-xs font-medium text-foreground/50">
+              Téléphone
+            </label>
             <input
+              id="member-phone"
               value={phone}
               onChange={(e) => setPhone(formatPhone(e.target.value))}
               type="tel"
@@ -343,7 +375,9 @@ export function MemberForm({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium text-foreground/50">Mot de passe</p>
-                <p className="text-xs text-foreground/30">Génère un nouveau mot de passe et l&apos;envoie par email</p>
+                <p className="text-xs text-foreground/30">
+                  Génère un nouveau mot de passe et l&apos;envoie par email
+                </p>
               </div>
               <button
                 type="button"
@@ -362,8 +396,11 @@ export function MemberForm({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-foreground/50">Date de naissance</label>
+            <label htmlFor="member-birthday" className="text-xs font-medium text-foreground/50">
+              Date de naissance
+            </label>
             <input
+              id="member-birthday"
               value={birthday}
               onChange={(e) => setBirthday(e.target.value)}
               type="date"
@@ -371,8 +408,11 @@ export function MemberForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-foreground/50">Pupitre</label>
+            <label htmlFor="member-voice-part" className="text-xs font-medium text-foreground/50">
+              Pupitre
+            </label>
             <Select
+              id="member-voice-part"
               value={voicePartId}
               onChange={(e) => setVoicePartId(e.target.value)}
               className="px-4"
@@ -388,8 +428,11 @@ export function MemberForm({
         </div>
 
         <div className="flex flex-col gap-3">
-          <label className="text-xs font-medium text-foreground/50">Adresse</label>
+          <label htmlFor="member-address" className="text-xs font-medium text-foreground/50">
+            Adresse
+          </label>
           <input
+            id="member-address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -416,13 +459,9 @@ export function MemberForm({
         {member && (
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-foreground/50">Rôle</label>
+              <span className="text-xs font-medium text-foreground/50">Rôle</span>
               {canEditRole ? (
-                <Select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="px-4"
-                >
+                <Select value={role} onChange={(e) => setRole(e.target.value)} className="px-4">
                   {availableRoles.map((r) => (
                     <option key={r} value={r}>
                       {ROLE_LABELS[r]}
@@ -436,8 +475,14 @@ export function MemberForm({
               )}
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-foreground/50">Rôle bureau</label>
+              <label
+                htmlFor="member-bureau-role"
+                className="text-xs font-medium text-foreground/50"
+              >
+                Rôle bureau
+              </label>
               <input
+                id="member-bureau-role"
                 value={bureauRole}
                 onChange={(e) => setBureauRole(e.target.value)}
                 className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -447,40 +492,44 @@ export function MemberForm({
           </div>
         )}
 
-        {member && (() => {
-          const activeSeasons = seasons
-            .filter((s) => s.active)
-            .sort((a, b) => new Date(a.created_at ?? 0).getTime() - new Date(b.created_at ?? 0).getTime());
-          if (activeSeasons.length === 0) return null;
-          return (
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-medium text-foreground/50">Saisons</label>
-              <div className="flex flex-wrap gap-2">
-                {activeSeasons.map((s) => {
-                  const assigned = memberSeasons.includes(s.id);
-                  return (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => handleToggleSeason(s.id)}
-                      className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
-                        assigned
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-border text-foreground/60'
-                      }`}
-                    >
-                      {assigned ? '✓ ' : ''}
-                      {s.label}
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="text-xs text-foreground/30">
-                Modifié immédiatement — pas besoin d&apos;enregistrer.
-              </p>
-            </div>
-          );
-        })()}
+        {member &&
+          (() => {
+            const activeSeasons = seasons
+              .filter((s) => s.active)
+              .sort(
+                (a, b) =>
+                  new Date(a.created_at ?? 0).getTime() - new Date(b.created_at ?? 0).getTime(),
+              );
+            if (activeSeasons.length === 0) return null;
+            return (
+              <fieldset className="flex flex-col gap-2">
+                <legend className="text-xs font-medium text-foreground/50">Saisons</legend>
+                <div className="flex flex-wrap gap-2">
+                  {activeSeasons.map((s) => {
+                    const assigned = memberSeasons.includes(s.id);
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => handleToggleSeason(s.id)}
+                        className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
+                          assigned
+                            ? 'border-primary bg-primary/10 text-primary'
+                            : 'border-border text-foreground/60'
+                        }`}
+                      >
+                        {assigned ? '✓ ' : ''}
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-foreground/30">
+                  Modifié immédiatement — pas besoin d&apos;enregistrer.
+                </p>
+              </fieldset>
+            );
+          })()}
 
         {error && (
           <p className="text-sm text-red-500 dark:text-red-300 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-lg px-4 py-2.5">
@@ -523,30 +572,42 @@ export function MemberForm({
               {!historyLoading && history?.length === 0 && (
                 <p className="text-xs text-foreground/40">Aucune modification enregistrée.</p>
               )}
-              {!historyLoading && history?.map((entry) => (
-                <div key={entry.id} className="border border-border rounded-lg px-3 py-2 bg-background text-xs flex flex-col gap-1">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-foreground/70">{ACTION_HISTORY_LABELS[entry.action] ?? entry.action}</span>
-                    <span className="text-foreground/30 shrink-0">{formatHistoryDate(entry.created_at)}</span>
-                  </div>
-                  {entry.actor_name && (
-                    <span className="text-foreground/40">par {entry.actor_name}</span>
-                  )}
-                  {!!entry.details?.changes && (
-                    <div className="mt-1 flex flex-col gap-0.5">
-                      {Object.entries(entry.details.changes as Record<string, { from: unknown; to: unknown }>).map(([field, { from, to }]) => (
-                        <p key={field} className="text-foreground/50">
-                          <span className="font-medium">{FIELD_LABELS[field] ?? field}</span>
-                          {' : '}
-                          <span className="line-through text-foreground/30">{formatFieldValue(field, from)}</span>
-                          {' → '}
-                          <span className="text-foreground">{formatFieldValue(field, to)}</span>
-                        </p>
-                      ))}
+              {!historyLoading &&
+                history?.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="border border-border rounded-lg px-3 py-2 bg-background text-xs flex flex-col gap-1"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-medium text-foreground/70">
+                        {ACTION_HISTORY_LABELS[entry.action] ?? entry.action}
+                      </span>
+                      <span className="text-foreground/30 shrink-0">
+                        {formatHistoryDate(entry.created_at)}
+                      </span>
                     </div>
-                  )}
-                </div>
-              ))}
+                    {entry.actor_name && (
+                      <span className="text-foreground/40">par {entry.actor_name}</span>
+                    )}
+                    {!!entry.details?.changes && (
+                      <div className="mt-1 flex flex-col gap-0.5">
+                        {Object.entries(
+                          entry.details.changes as Record<string, { from: unknown; to: unknown }>,
+                        ).map(([field, { from, to }]) => (
+                          <p key={field} className="text-foreground/50">
+                            <span className="font-medium">{FIELD_LABELS[field] ?? field}</span>
+                            {' : '}
+                            <span className="line-through text-foreground/30">
+                              {formatFieldValue(field, from)}
+                            </span>
+                            {' → '}
+                            <span className="text-foreground">{formatFieldValue(field, to)}</span>
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
             </div>
           )}
         </div>
@@ -588,7 +649,10 @@ const FIELD_LABELS: Record<string, string> = {
 
 function formatHistoryDate(iso: string) {
   return new Intl.DateTimeFormat('fr-FR', {
-    day: '2-digit', month: '2-digit', year: 'numeric',
-    hour: '2-digit', minute: '2-digit',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   }).format(new Date(iso));
 }

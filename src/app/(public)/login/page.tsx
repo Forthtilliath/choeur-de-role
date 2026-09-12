@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
+
 import { Button } from '@/components/ui/Button';
 import { useCheckUser } from '@/hooks/useCheckUser';
 import { createClient } from '@/lib/supabase.client';
@@ -55,14 +56,15 @@ export default function LoginPage() {
       return;
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     const { data: memberData } = await supabase
       .from('members')
       .select('role')
       .eq('id', user!.id)
       .single();
-    const userIsAdmin =
-      memberData?.role === 'admin' || memberData?.role === 'super_admin';
+    const userIsAdmin = memberData?.role === 'admin' || memberData?.role === 'super_admin';
 
     const { data: factors } = await supabase.auth.mfa.listFactors();
     const totpFactor = factors?.totp?.find((f) => f.status === 'verified');
@@ -75,7 +77,7 @@ export default function LoginPage() {
           friendlyName: `CDR Admin (${(form.elements.namedItem('email') as HTMLInputElement).value})`,
         });
         if (enrollError || !enrollData) {
-          setError("Erreur lors de la configuration de la 2FA");
+          setError('Erreur lors de la configuration de la 2FA');
           setLoading(false);
           return;
         }
@@ -209,7 +211,6 @@ export default function LoginPage() {
         </Button>
 
         <div className="w-full max-w-sm flex flex-col gap-8">
-
           {step === 'login' && (
             <>
               <div className="flex flex-col gap-1">
@@ -221,8 +222,11 @@ export default function LoginPage() {
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-foreground">Email</label>
+                  <label htmlFor="login-email" className="text-sm font-medium text-foreground">
+                    Email
+                  </label>
                   <input
+                    id="login-email"
                     name="email"
                     type="email"
                     placeholder="votre@email.com"
@@ -233,9 +237,12 @@ export default function LoginPage() {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-foreground">Mot de passe</label>
+                  <label htmlFor="login-password" className="text-sm font-medium text-foreground">
+                    Mot de passe
+                  </label>
                   <div className="relative">
                     <input
+                      id="login-password"
                       name="password"
                       type={showPassword ? 'text' : 'password'}
                       placeholder="••••••••"
@@ -248,7 +255,9 @@ export default function LoginPage() {
                       onClick={() => setShowPassword((v) => !v)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground transition-colors"
                       tabIndex={-1}
-                      aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                      aria-label={
+                        showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
+                      }
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -275,7 +284,9 @@ export default function LoginPage() {
           {step === 'mfa' && (
             <>
               <div className="flex flex-col gap-1">
-                <h1 className="text-2xl font-medium text-foreground">Vérification en deux étapes</h1>
+                <h1 className="text-2xl font-medium text-foreground">
+                  Vérification en deux étapes
+                </h1>
                 <p className="text-sm text-foreground/50">
                   Entrez le code à 6 chiffres de votre application d&apos;authentification.
                 </p>
@@ -283,10 +294,11 @@ export default function LoginPage() {
 
               <form onSubmit={handleMfaSubmit} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-foreground">
+                  <label htmlFor="mfa-code" className="text-sm font-medium text-foreground">
                     Code d&apos;authentification
                   </label>
                   <input
+                    id="mfa-code"
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
@@ -318,7 +330,11 @@ export default function LoginPage() {
 
               <button
                 type="button"
-                onClick={() => { setStep('login'); setMfaCode(''); setError(''); }}
+                onClick={() => {
+                  setStep('login');
+                  setMfaCode('');
+                  setError('');
+                }}
                 className="text-xs text-foreground/40 hover:text-foreground text-center transition-colors"
               >
                 ← Retour à la connexion
@@ -333,24 +349,34 @@ export default function LoginPage() {
                   Activez la double authentification
                 </h1>
                 <p className="text-sm text-foreground/50">
-                  Requis pour les comptes administrateur. À faire une seule fois — prend moins de 2 minutes.
+                  Requis pour les comptes administrateur. À faire une seule fois — prend moins de 2
+                  minutes.
                 </p>
               </div>
 
               <ol className="flex flex-col gap-3">
                 <li className="flex gap-3 text-sm text-foreground/70">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs">1</span>
+                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs">
+                    1
+                  </span>
                   <span>
-                    Installez <strong>Google Authenticator</strong> ou <strong>Authy</strong> sur votre téléphone
-                    (gratuites, App Store ou Google Play).
+                    Installez <strong>Google Authenticator</strong> ou <strong>Authy</strong> sur
+                    votre téléphone (gratuites, App Store ou Google Play).
                   </span>
                 </li>
                 <li className="flex gap-3 text-sm text-foreground/70">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs">2</span>
-                  <span>Ouvrez l&apos;app, appuyez sur <strong>+</strong> puis <strong>Scanner un QR code</strong>.</span>
+                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs">
+                    2
+                  </span>
+                  <span>
+                    Ouvrez l&apos;app, appuyez sur <strong>+</strong> puis{' '}
+                    <strong>Scanner un QR code</strong>.
+                  </span>
                 </li>
                 <li className="flex gap-3 text-sm text-foreground/70">
-                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs">3</span>
+                  <span className="shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs">
+                    3
+                  </span>
                   <span>Scannez ce code avec votre téléphone :</span>
                 </li>
               </ol>
@@ -364,15 +390,21 @@ export default function LoginPage() {
 
                 <details className="text-xs text-foreground/40 cursor-pointer">
                   <summary>Pas de caméra ? Saisie manuelle</summary>
-                  <p className="mt-1">Dans l&apos;app, choisissez &laquo;&nbsp;Entrer une clé&nbsp;&raquo; et collez ce code :</p>
-                  <code className="block mt-1 font-mono break-all select-all bg-background-secondary px-2 py-1 rounded">{enrollSecret}</code>
+                  <p className="mt-1">
+                    Dans l&apos;app, choisissez &laquo;&nbsp;Entrer une clé&nbsp;&raquo; et collez
+                    ce code :
+                  </p>
+                  <code className="block mt-1 font-mono break-all select-all bg-background-secondary px-2 py-1 rounded">
+                    {enrollSecret}
+                  </code>
                 </details>
 
                 <div className="flex flex-col gap-1">
-                  <label className="text-sm font-medium text-foreground">
+                  <label htmlFor="enroll-code" className="text-sm font-medium text-foreground">
                     Étape 4 — Entrez le code à 6 chiffres affiché dans l&apos;app
                   </label>
                   <input
+                    id="enroll-code"
                     type="text"
                     inputMode="numeric"
                     pattern="[0-9]*"
@@ -403,14 +435,17 @@ export default function LoginPage() {
 
               <button
                 type="button"
-                onClick={() => { setStep('login'); setEnrollCode(''); setError(''); }}
+                onClick={() => {
+                  setStep('login');
+                  setEnrollCode('');
+                  setError('');
+                }}
                 className="text-xs text-foreground/40 hover:text-foreground text-center transition-colors"
               >
                 ← Retour à la connexion
               </button>
             </>
           )}
-
         </div>
       </div>
     </main>

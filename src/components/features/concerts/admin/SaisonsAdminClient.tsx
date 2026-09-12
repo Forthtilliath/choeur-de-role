@@ -1,16 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
-import { Tables } from '@/types/database';
+import { useConfirm } from '@/context/ConfirmContext';
+import type { Tables } from '@/types/database';
+
 import {
-  insertSeason,
-  updateSeasonLabel,
-  toggleSeasonActive,
   deactivateSeasons,
   deleteSeason,
+  insertSeason,
+  toggleSeasonActive,
+  updateSeasonLabel,
 } from '../clientQueries';
 
 type Season = Tables<'seasons'>;
@@ -46,7 +48,7 @@ export function SaisonsAdminClient({ initialSeasons }: Props) {
         setSeasons((prev) => [data, ...prev]);
         toast.success('Saison ajoutée');
       } else {
-        toast.error("Erreur lors de la création de la saison");
+        toast.error('Erreur lors de la création de la saison');
       }
     }
 
@@ -82,10 +84,11 @@ export function SaisonsAdminClient({ initialSeasons }: Props) {
 
   async function handleDelete(id: string) {
     if (
-      !await confirm({
-        message: 'Supprimer cette saison ? Les représentations seront déplacées dans "Sans saison".',
+      !(await confirm({
+        message:
+          'Supprimer cette saison ? Les représentations seront déplacées dans "Sans saison".',
         danger: true,
-      })
+      }))
     )
       return;
     const ok = await deleteSeason(id);
@@ -132,8 +135,11 @@ export function SaisonsAdminClient({ initialSeasons }: Props) {
           </h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-foreground">Label</label>
+              <label htmlFor="saison-label" className="text-sm font-medium text-foreground">
+                Label
+              </label>
               <input
+                id="saison-label"
                 value={editingLabel}
                 onChange={(e) => setEditingLabel(e.target.value)}
                 required

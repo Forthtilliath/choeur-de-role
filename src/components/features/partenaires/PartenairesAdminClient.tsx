@@ -1,23 +1,22 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
-import {
-  DndContext,
-  closestCenter,
-  DragEndEvent,
-} from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
-  verticalListSortingStrategy,
   useSortable,
+  verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useDndSensors } from '@/hooks/useDndSensors';
 import { CSS } from '@dnd-kit/utilities';
 import Image from 'next/image';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
+import { useDndSensors } from '@/hooks/useDndSensors';
+
 import {
   deletePartner,
   togglePartnerActive,
@@ -25,7 +24,7 @@ import {
   uploadPartnerLogo,
   upsertPartner,
 } from './clientQueries';
-import { Partner } from './types';
+import type { Partner } from './types';
 
 const SIZE_LABELS: Record<NonNullable<Partner['size']>, string> = {
   current_large: 'En cours — Large',
@@ -34,11 +33,7 @@ const SIZE_LABELS: Record<NonNullable<Partner['size']>, string> = {
   past_square: 'Passé — Carré',
 };
 
-export function PartenairesAdminClient({
-  initialPartners,
-}: {
-  initialPartners: Partner[];
-}) {
+export function PartenairesAdminClient({ initialPartners }: { initialPartners: Partner[] }) {
   const [partners, setPartners] = useState<Partner[]>(initialPartners);
   const [showForm, setShowForm] = useState(false);
   const [editingPartner, setEditingPartner] = useState<Partner | null>(null);
@@ -69,21 +64,21 @@ export function PartenairesAdminClient({
   }
 
   async function openNew() {
-    if (!await confirmDirty()) return;
+    if (!(await confirmDirty())) return;
     setIsDirty(false);
     setEditingPartner(null);
     setShowForm(true);
   }
 
   async function openEdit(partner: Partner) {
-    if (!await confirmDirty()) return;
+    if (!(await confirmDirty())) return;
     setIsDirty(false);
     setEditingPartner(partner);
     setShowForm(true);
   }
 
   async function closeForm() {
-    if (!await confirmDirty()) return;
+    if (!(await confirmDirty())) return;
     setShowForm(false);
     setEditingPartner(null);
     setIsDirty(false);
@@ -135,11 +130,14 @@ export function PartenairesAdminClient({
                   }
                 }}
                 onDelete={async () => {
-                  if (!await confirm({
-                    message: 'Supprimer ce partenaire ?',
-                    danger: true,
-                    details: { icon: '🤝', label: partner.name },
-                  })) return;
+                  if (
+                    !(await confirm({
+                      message: 'Supprimer ce partenaire ?',
+                      danger: true,
+                      details: { icon: '🤝', label: partner.name },
+                    }))
+                  )
+                    return;
                   const ok = await deletePartner(partner.id);
                   if (ok) {
                     setPartners((prev) => prev.filter((p) => p.id !== partner.id));
@@ -316,8 +314,11 @@ function PartnerForm({
       </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Nom</label>
+          <label htmlFor="partner-name" className="text-sm font-medium text-foreground">
+            Nom
+          </label>
           <input
+            id="partner-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -326,8 +327,11 @@ function PartnerForm({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Site web (optionnel)</label>
+          <label htmlFor="partner-website" className="text-sm font-medium text-foreground">
+            Site web (optionnel)
+          </label>
           <input
+            id="partner-website"
             value={websiteUrl}
             onChange={(e) => setWebsiteUrl(e.target.value)}
             className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -336,8 +340,11 @@ function PartnerForm({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-foreground">Logo</label>
+          <label htmlFor="partner-logo" className="text-sm font-medium text-foreground">
+            Logo
+          </label>
           <input
+            id="partner-logo"
             type="file"
             accept="image/*"
             onChange={(e) => {
@@ -361,8 +368,8 @@ function PartnerForm({
           )}
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-foreground">Statut</label>
+        <fieldset className="flex flex-col gap-2">
+          <legend className="text-sm font-medium text-foreground">Statut</legend>
           <div className="flex gap-3">
             {[
               { value: true, label: 'En cours' },
@@ -378,10 +385,10 @@ function PartnerForm({
               </button>
             ))}
           </div>
-        </div>
+        </fieldset>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-foreground">Format d&apos;affichage</label>
+        <fieldset className="flex flex-col gap-2">
+          <legend className="text-sm font-medium text-foreground">Format d&apos;affichage</legend>
           <div className="flex gap-4">
             <button
               type="button"
@@ -421,7 +428,7 @@ function PartnerForm({
               <span className="text-xs text-foreground/40">{isCurrent ? 2 : 3} par ligne</span>
             </button>
           </div>
-        </div>
+        </fieldset>
 
         <div className="flex gap-3 justify-end pt-2">
           <Button type="button" variant="ghost" onClick={onClose}>

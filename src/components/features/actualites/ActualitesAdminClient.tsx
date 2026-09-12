@@ -1,29 +1,46 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
-import { toast } from 'sonner';
-import { CalendarClock, Eye, EyeOff, GripVertical, Pencil, Pin, PinOff, Trash2 } from 'lucide-react';
-import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, arrayMove, useSortable } from '@dnd-kit/sortable';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext } from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import {
+  CalendarClock,
+  Eye,
+  EyeOff,
+  GripVertical,
+  Pencil,
+  Pin,
+  PinOff,
+  Trash2,
+} from 'lucide-react';
+import { toast } from 'sonner';
+
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
+import { useDndSensors } from '@/hooks/useDndSensors';
+import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+import { toLocalDatetimeInput } from '@/lib/utils';
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
 import { formatDate, formatDateTimeShort } from '@/utils/dateHelpers';
-import { toLocalDatetimeInput } from '@/lib/utils';
-import { useDndSensors } from '@/hooks/useDndSensors';
+
 import {
   deleteNews,
   deleteNewsFile,
-  toggleNewsPublished,
   toggleNewsPinned,
+  toggleNewsPublished,
   updateNewsOrder,
   uploadNewsFile,
   upsertNews,
 } from './clientQueries';
-import { News, NewsFile } from './types';
-import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+import type { News, NewsFile } from './types';
 
 function isScheduledFuture(item: News): boolean {
   return !!item.scheduled_at && new Date(item.scheduled_at) > new Date();
@@ -75,11 +92,14 @@ export function ActualitesAdminClient({ initialNews }: { initialNews: News[] }) 
 
   async function handleDelete(id: string) {
     const item = news.find((n) => n.id === id);
-    if (!await confirm({
-      message: 'Supprimer cette actualité ?',
-      danger: true,
-      details: item ? { icon: '📰', label: item.title } : undefined,
-    })) return;
+    if (
+      !(await confirm({
+        message: 'Supprimer cette actualité ?',
+        danger: true,
+        details: item ? { icon: '📰', label: item.title } : undefined,
+      }))
+    )
+      return;
     const ok = await deleteNews(id);
     if (ok) {
       setNews((prev) => prev.filter((n) => n.id !== id));
@@ -142,7 +162,10 @@ export function ActualitesAdminClient({ initialNews }: { initialNews: News[] }) 
               <SortableNewsItem
                 key={item.id}
                 item={item}
-                onEdit={() => { setEditingNews(item); setShowForm(true); }}
+                onEdit={() => {
+                  setEditingNews(item);
+                  setShowForm(true);
+                }}
                 onTogglePin={() => handleTogglePin(item)}
                 onTogglePublish={() => handleTogglePublish(item)}
                 onDelete={() => handleDelete(item.id)}
@@ -184,7 +207,10 @@ function SortableNewsItem({
   const badge = !item.published
     ? { label: 'Brouillon', className: 'bg-foreground/10 text-foreground/40' }
     : scheduled
-      ? { label: '🗓 Programmée', className: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' }
+      ? {
+          label: '🗓 Programmée',
+          className: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+        }
       : { label: 'Publié', className: 'bg-primary/10 text-primary' };
 
   return (
@@ -298,7 +324,11 @@ function NewsForm({
       if (isSchedulingFuture) {
         toast.success(`Actualité programmée pour le ${formatDateTimeShort(scheduledAtIso)}`);
       } else {
-        toast.success(news ? 'Actualité modifiée' : 'Actualité créée — vous pouvez maintenant ajouter des fichiers');
+        toast.success(
+          news
+            ? 'Actualité modifiée'
+            : 'Actualité créée — vous pouvez maintenant ajouter des fichiers',
+        );
       }
     } else {
       toast.error('Erreur lors de la sauvegarde');
@@ -325,7 +355,7 @@ function NewsForm({
   }
 
   async function handleDeleteFile(id: string) {
-    if (!await confirm({ message: 'Supprimer ce fichier ?', danger: true })) return;
+    if (!(await confirm({ message: 'Supprimer ce fichier ?', danger: true }))) return;
     const ok = await deleteNewsFile(id);
     if (ok) {
       setFiles((prev) => prev.filter((f) => f.id !== id));
@@ -342,8 +372,11 @@ function NewsForm({
       </h2>
       <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Titre</label>
+          <label htmlFor="news-title" className="text-sm font-medium text-foreground">
+            Titre
+          </label>
           <input
+            id="news-title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
@@ -352,7 +385,7 @@ function NewsForm({
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Contenu</label>
+          <span className="text-sm font-medium text-foreground">Contenu</span>
           <RichEditor
             content={content}
             onChangeAction={setContent}
@@ -362,12 +395,16 @@ function NewsForm({
 
         {/* Programmation */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground flex items-center gap-1.5">
+          <label
+            htmlFor="news-scheduled-at"
+            className="text-sm font-medium text-foreground flex items-center gap-1.5"
+          >
             <CalendarClock size={14} className="text-foreground/50" />
             Publication programmée
             <span className="text-foreground/40 font-normal">(optionnel)</span>
           </label>
           <input
+            id="news-scheduled-at"
             type="datetime-local"
             value={scheduledAt}
             onChange={(e) => setScheduledAt(e.target.value)}
@@ -376,7 +413,8 @@ function NewsForm({
           />
           {scheduledAt && new Date(scheduledAt) > new Date() && (
             <p className="text-xs text-amber-600 dark:text-amber-400">
-              L&apos;actualité sera visible automatiquement le {formatDateTimeShort(new Date(scheduledAt).toISOString())}.
+              L&apos;actualité sera visible automatiquement le{' '}
+              {formatDateTimeShort(new Date(scheduledAt).toISOString())}.
             </p>
           )}
         </div>
@@ -384,7 +422,7 @@ function NewsForm({
         {/* Section fichiers — disponible uniquement en mode édition */}
         {news ? (
           <div className="flex flex-col gap-3 pt-2 border-t border-border">
-            <label className="text-sm font-medium text-foreground">Documents joints</label>
+            <span className="text-sm font-medium text-foreground">Documents joints</span>
 
             {files.length > 0 && (
               <div className="flex flex-col gap-2">
@@ -449,7 +487,8 @@ function NewsForm({
               />
             </div>
             <p className="text-xs text-foreground/40">
-              Saisissez un libellé puis cliquez sur &ldquo;+ Fichier&rdquo;. Sans libellé, le nom du fichier est utilisé.
+              Saisissez un libellé puis cliquez sur &ldquo;+ Fichier&rdquo;. Sans libellé, le nom du
+              fichier est utilisé.
             </p>
           </div>
         ) : (

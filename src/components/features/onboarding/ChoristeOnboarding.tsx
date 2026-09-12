@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/Button';
-import { formatPhone } from '@/utils/phoneHelpers';
-import { uploadProfilePhoto } from '@/components/features/profil/clientQueries';
+
 import { completeOnboarding } from '@/app/choristes/bienvenue/actions';
-import { useImagePreview } from '@/hooks/useImagePreview';
+import { uploadProfilePhoto } from '@/components/features/profil/clientQueries';
 import type { BirthdayVisibility } from '@/components/features/profil/types';
+import { Button } from '@/components/ui/Button';
+import { useImagePreview } from '@/hooks/useImagePreview';
+import { formatPhone } from '@/utils/phoneHelpers';
 
 type Props = {
   memberId: string;
@@ -144,8 +145,6 @@ export function ChoristeOnboarding({
 
   const [completing, setCompleting] = useState(false);
 
-
-
   async function handleComplete(destination = '/choristes') {
     setCompleting(true);
     const ok = await completeOnboarding({
@@ -247,31 +246,22 @@ export function ChoristeOnboarding({
               <div className="flex flex-col items-center gap-2">
                 {photoIsPending ? (
                   <div className="flex gap-2">
-                    <Button
-                      variant="primary"
-                      disabled={photoUploading}
-                      onClick={confirmPhoto}
-                    >
+                    <Button variant="primary" disabled={photoUploading} onClick={confirmPhoto}>
                       {photoUploading ? (
                         <span className="flex items-center gap-2">
                           <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                           Upload en cours...
                         </span>
-                      ) : '✓ Valider la photo'}
+                      ) : (
+                        '✓ Valider la photo'
+                      )}
                     </Button>
-                    <Button
-                      variant="danger"
-                      disabled={photoUploading}
-                      onClick={cancelPhoto}
-                    >
+                    <Button variant="danger" disabled={photoUploading} onClick={cancelPhoto}>
                       Annuler
                     </Button>
                   </div>
                 ) : (
-                  <Button
-                    variant="outline"
-                    onClick={() => photoInputRef.current?.click()}
-                  >
+                  <Button variant="outline" onClick={() => photoInputRef.current?.click()}>
                     {photoUrl ? '📷 Changer la photo' : '📷 Choisir une photo'}
                   </Button>
                 )}
@@ -316,8 +306,14 @@ export function ChoristeOnboarding({
 
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs text-foreground/60 font-medium">Téléphone</label>
+                <label
+                  htmlFor="onboarding-phone"
+                  className="text-xs text-foreground/60 font-medium"
+                >
+                  Téléphone
+                </label>
                 <input
+                  id="onboarding-phone"
                   value={phone}
                   onChange={(e) => setPhone(formatPhone(e.target.value))}
                   type="tel"
@@ -329,8 +325,14 @@ export function ChoristeOnboarding({
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs text-foreground/60 font-medium">Date de naissance</label>
+                <label
+                  htmlFor="onboarding-birthday"
+                  className="text-xs text-foreground/60 font-medium"
+                >
+                  Date de naissance
+                </label>
                 <input
+                  id="onboarding-birthday"
                   type="date"
                   value={birthday}
                   onChange={(e) => setBirthday(e.target.value)}
@@ -339,8 +341,14 @@ export function ChoristeOnboarding({
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs text-foreground/60 font-medium">Adresse</label>
+                <label
+                  htmlFor="onboarding-address"
+                  className="text-xs text-foreground/60 font-medium"
+                >
+                  Adresse
+                </label>
                 <input
+                  id="onboarding-address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className={inputClass}
@@ -350,8 +358,14 @@ export function ChoristeOnboarding({
 
               <div className="grid grid-cols-3 gap-3">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-xs text-foreground/60 font-medium">Code postal</label>
+                  <label
+                    htmlFor="onboarding-zip"
+                    className="text-xs text-foreground/60 font-medium"
+                  >
+                    Code postal
+                  </label>
                   <input
+                    id="onboarding-zip"
                     value={zipCode}
                     onChange={(e) => setZipCode(e.target.value)}
                     className={inputClass}
@@ -359,8 +373,14 @@ export function ChoristeOnboarding({
                   />
                 </div>
                 <div className="col-span-2 flex flex-col gap-1.5">
-                  <label className="text-xs text-foreground/60 font-medium">Ville</label>
+                  <label
+                    htmlFor="onboarding-city"
+                    className="text-xs text-foreground/60 font-medium"
+                  >
+                    Ville
+                  </label>
                   <input
+                    id="onboarding-city"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     className={inputClass}
@@ -460,9 +480,7 @@ export function ChoristeOnboarding({
               <p className="text-xs text-primary font-medium uppercase tracking-widest mb-2">
                 Prêt !
               </p>
-              <h2 className="text-2xl font-medium text-foreground mb-2">
-                Par où commencer ?
-              </h2>
+              <h2 className="text-2xl font-medium text-foreground mb-2">Par où commencer ?</h2>
               <p className="text-foreground/60 text-sm">
                 Votre profil est configuré. Voici trois choses à faire dès maintenant pour vous
                 sentir chez vous.

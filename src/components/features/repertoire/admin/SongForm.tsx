@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
-import { upsertSong } from '../clientQueries';
-import { Performance, Song } from '../types';
 import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+
+import { upsertSong } from '../clientQueries';
+import type { Performance, Song } from '../types';
 
 export function SongForm({
   song,
@@ -65,8 +67,11 @@ export function SongForm({
       <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">Titre</label>
+            <label htmlFor="song-title" className="text-sm font-medium text-foreground">
+              Titre
+            </label>
             <input
+              id="song-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -75,10 +80,11 @@ export function SongForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">
+            <label htmlFor="song-composer" className="text-sm font-medium text-foreground">
               Compositeur <span className="text-foreground/40 font-normal">(optionnel)</span>
             </label>
             <input
+              id="song-composer"
               value={composer}
               onChange={(e) => setComposer(e.target.value)}
               className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -88,10 +94,11 @@ export function SongForm({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">
+          <label htmlFor="song-label" className="text-sm font-medium text-foreground">
             Label <span className="text-foreground/40 font-normal">(optionnel)</span>
           </label>
           <input
+            id="song-label"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -99,8 +106,8 @@ export function SongForm({
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-foreground">Représentations</label>
+        <fieldset className="flex flex-col gap-2">
+          <legend className="text-sm font-medium text-foreground">Représentations</legend>
           <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
             {performances.map((p) => (
               <button
@@ -129,7 +136,7 @@ export function SongForm({
               </button>
             ))}
           </div>
-        </div>
+        </fieldset>
 
         <div className="flex gap-3 justify-end">
           <Button type="button" variant="ghost" onClick={onCloseAction}>

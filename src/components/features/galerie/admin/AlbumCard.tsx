@@ -4,12 +4,15 @@ import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import Image from 'next/image';
+
 import type { PerformanceTitle } from '@/components/features/concerts';
 import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
 import { cn } from '@/lib/utils';
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
+
 import type { GalleryAlbum, GalleryPhoto } from '../types';
+
 import { PhotoGrid } from './PhotoGrid';
 import { YoutubePlaylistSync } from './YoutubePlaylistSync';
 
@@ -132,8 +135,20 @@ export function AlbumCard({
             <>
               <Image src={coverPreviewUrl} alt="" fill className="object-cover" sizes="48px" />
               <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-1">
-                <button onClick={confirmCover} aria-label="Valider la couverture" className="text-emerald-400 hover:text-emerald-300 text-xs">✓</button>
-                <button onClick={cancelCoverPreview} aria-label="Annuler" className="text-red-400 hover:text-red-300 text-xs">✕</button>
+                <button
+                  onClick={confirmCover}
+                  aria-label="Valider la couverture"
+                  className="text-emerald-400 hover:text-emerald-300 text-xs"
+                >
+                  ✓
+                </button>
+                <button
+                  onClick={cancelCoverPreview}
+                  aria-label="Annuler"
+                  className="text-red-400 hover:text-red-300 text-xs"
+                >
+                  ✕
+                </button>
               </div>
             </>
           ) : album.cover_url ? (
@@ -142,9 +157,18 @@ export function AlbumCard({
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1">
                 <label className="cursor-pointer text-white text-xs hover:underline">
                   ✏️
-                  <input type="file" accept="image/*" className="hidden" onChange={handleCoverSelect} />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleCoverSelect}
+                  />
                 </label>
-                <button onClick={onRemoveCoverAction} aria-label="Supprimer la couverture" className="text-white text-xs hover:underline">
+                <button
+                  onClick={onRemoveCoverAction}
+                  aria-label="Supprimer la couverture"
+                  className="text-white text-xs hover:underline"
+                >
                   ✕
                 </button>
               </div>
@@ -215,8 +239,11 @@ export function AlbumCard({
           {/* Métadonnées */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs text-foreground/50 mb-1 block">Description</label>
+              <label htmlFor="album-description" className="text-xs text-foreground/50 mb-1 block">
+                Description
+              </label>
               <input
+                id="album-description"
                 defaultValue={album.description ?? ''}
                 onBlur={(e) => onUpdateAlbumAction({ description: e.target.value })}
                 className="w-full text-sm bg-background border border-border rounded-lg px-3 py-2 outline-none focus:border-primary"
@@ -224,8 +251,11 @@ export function AlbumCard({
               />
             </div>
             <div>
-              <label className="text-xs text-foreground/50 mb-1 block">Concert associé</label>
+              <label htmlFor="album-performance" className="text-xs text-foreground/50 mb-1 block">
+                Concert associé
+              </label>
               <Select
+                id="album-performance"
                 value={album.performance_id ?? ''}
                 onChange={(e) => onUpdateAlbumAction({ performance_id: e.target.value || null })}
                 wrapperClassName="w-full"
@@ -249,18 +279,22 @@ export function AlbumCard({
 
           {/* Upload photos */}
           <div>
-            <label className="text-xs text-foreground/50 mb-2 block">Ajouter des photos</label>
+            <span className="text-xs text-foreground/50 mb-2 block">Ajouter des photos</span>
             {pendingPhotos.length > 0 ? (
               <div className="flex flex-col gap-3">
                 <div className="flex gap-2 flex-wrap">
                   {pendingPhotos.map((p, i) => (
-                    <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden bg-background-tertiary">
+                    <div
+                      key={i}
+                      className="relative w-16 h-16 rounded-lg overflow-hidden bg-background-tertiary"
+                    >
                       <Image src={p.previewUrl} alt="" fill className="object-cover" sizes="64px" />
                     </div>
                   ))}
                 </div>
                 <p className="text-xs text-foreground/50">
-                  {pendingPhotos.length} photo{pendingPhotos.length > 1 ? 's' : ''} sélectionnée{pendingPhotos.length > 1 ? 's' : ''}
+                  {pendingPhotos.length} photo{pendingPhotos.length > 1 ? 's' : ''} sélectionnée
+                  {pendingPhotos.length > 1 ? 's' : ''}
                 </p>
                 <div className="flex gap-2">
                   <Button size="sm" variant="primary" disabled={uploading} onClick={confirmPhotos}>

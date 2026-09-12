@@ -1,6 +1,7 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+import type React from 'react';
+
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
+import { cn } from '@/lib/utils';
 
 type Variant = 'public' | 'choriste' | 'admin';
 
@@ -70,17 +71,13 @@ export function Main({
           />
         )}
         <main id="main-content" className={cn(base, 'py-6 md:py-12', className)}>
-          {(title || actions) && (
+          {Boolean(title || actions) && (
             <div className="flex items-start justify-between gap-4 mb-8">
               <div className="min-w-0">
-                {title && (
-                  <h1 className="text-2xl font-medium text-foreground">{title}</h1>
-                )}
-                {subtitle && (
-                  <p className="text-sm text-foreground/70 mt-1">{subtitle}</p>
-                )}
+                {title && <h1 className="text-2xl font-medium text-foreground">{title}</h1>}
+                {subtitle && <p className="text-sm text-foreground/70 mt-1">{subtitle}</p>}
               </div>
-              {actions && <div className="shrink-0">{actions}</div>}
+              {Boolean(actions) && <div className="shrink-0">{actions}</div>}
             </div>
           )}
           {children}
@@ -93,17 +90,13 @@ export function Main({
   if (effective === 'choriste') {
     return (
       <main id="main-content" className={cn(base, 'py-6 md:py-12', className)}>
-        {(title || actions) && (
+        {Boolean(title || actions) && (
           <div className="flex items-center justify-between gap-4 mb-8">
             <div className="min-w-0">
-              {title && (
-                <h1 className="text-2xl font-medium text-foreground">{title}</h1>
-              )}
-              {subtitle && (
-                <p className="text-sm text-foreground/70 mt-1">{subtitle}</p>
-              )}
+              {title && <h1 className="text-2xl font-medium text-foreground">{title}</h1>}
+              {subtitle && <p className="text-sm text-foreground/70 mt-1">{subtitle}</p>}
             </div>
-            {actions && <div className="shrink-0">{actions}</div>}
+            {Boolean(actions) && <div className="shrink-0">{actions}</div>}
           </div>
         )}
         {align === 'left' ? (
@@ -120,15 +113,13 @@ export function Main({
   /* ── PUBLIC (default) ────────────────────────────────────────────────── */
   return (
     <main id="main-content" className={cn(base, 'py-8 md:py-16', className)}>
-      {(title || subtitle || actions) && (
+      {Boolean(title || subtitle || actions) && (
         <div className="text-center mb-10 md:mb-16">
           {title && (
             <h1 className="text-3xl md:text-4xl font-medium mb-3 text-foreground">{title}</h1>
           )}
-          {subtitle && (
-            <p className="text-foreground/70 max-w-xl mx-auto">{subtitle}</p>
-          )}
-          {actions && <div className="mt-6">{actions}</div>}
+          {subtitle && <p className="text-foreground/70 max-w-xl mx-auto">{subtitle}</p>}
+          {Boolean(actions) && <div className="mt-6">{actions}</div>}
         </div>
       )}
       {children}

@@ -1,23 +1,22 @@
 'use client';
 
+import { useState } from 'react';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext } from '@dnd-kit/core';
 import {
-  DndContext,
-  DragEndEvent,
-  closestCenter,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Plus, Trash2, X } from 'lucide-react';
-import { useState } from 'react';
+
 import { Button } from '@/components/ui/Button';
-import { PollDraft, PollOptionDraft, PollQuestionDraft, QuestionType } from '../types';
-import { useFormShortcuts } from '@/hooks/useFormShortcuts';
 import { useDndSensors } from '@/hooks/useDndSensors';
+import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+
+import type { PollDraft, PollOptionDraft, PollQuestionDraft, QuestionType } from '../types';
 
 const QUESTION_TYPES: { value: QuestionType; label: string }[] = [
   { value: 'single_choice', label: 'Choix unique' },
@@ -144,8 +143,11 @@ export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }:
       <div className="border border-border rounded-2xl p-5 bg-background-secondary flex flex-col gap-4">
         <h3 className="text-sm font-semibold text-foreground">Informations générales</h3>
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Titre *</label>
+          <label htmlFor="poll-title" className="text-sm font-medium text-foreground">
+            Titre *
+          </label>
           <input
+            id="poll-title"
             value={draft.title}
             onChange={(e) => setMeta('title', e.target.value)}
             required
@@ -154,10 +156,11 @@ export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }:
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">
+          <label htmlFor="poll-description" className="text-sm font-medium text-foreground">
             Description <span className="text-foreground/40 font-normal">(optionnel)</span>
           </label>
           <textarea
+            id="poll-description"
             value={draft.description}
             onChange={(e) => setMeta('description', e.target.value)}
             rows={2}
@@ -167,10 +170,11 @@ export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }:
         </div>
         <div className="flex gap-4 flex-wrap">
           <div className="flex flex-col gap-1 flex-1 min-w-44">
-            <label className="text-sm font-medium text-foreground">
+            <label htmlFor="poll-closes-at" className="text-sm font-medium text-foreground">
               Date de clôture <span className="text-foreground/40 font-normal">(optionnel)</span>
             </label>
             <input
+              id="poll-closes-at"
               type="datetime-local"
               value={draft.closes_at}
               onChange={(e) => setMeta('closes_at', e.target.value)}
@@ -259,7 +263,9 @@ function QuestionCard({
   function handleOptionDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-    const from = question.options.findIndex((_, i) => optionId(question.options[i], i) === active.id);
+    const from = question.options.findIndex(
+      (_, i) => optionId(question.options[i], i) === active.id,
+    );
     const to = question.options.findIndex((_, i) => optionId(question.options[i], i) === over.id);
     if (from !== -1 && to !== -1) onReorderOptions(from, to);
   }
@@ -321,9 +327,10 @@ function QuestionCard({
                 const hasOpts = t.value === 'single_choice' || t.value === 'multiple_choice';
                 onUpdate({
                   type: t.value,
-                  options: hasOpts && question.options.length === 0
-                    ? [{ label: '', order_index: 0 }]
-                    : question.options,
+                  options:
+                    hasOpts && question.options.length === 0
+                      ? [{ label: '', order_index: 0 }]
+                      : question.options,
                 });
               }}
               className={`text-xs px-2.5 py-1.5 rounded-md transition-all ${
@@ -350,7 +357,11 @@ function QuestionCard({
       {/* Options (choix) */}
       {hasOptions && (
         <div className="flex flex-col gap-2 pl-6">
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleOptionDragEnd}>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleOptionDragEnd}
+          >
             <SortableContext
               items={question.options.map((o, i) => optionId(o, i))}
               strategy={verticalListSortingStrategy}
@@ -380,9 +391,7 @@ function QuestionCard({
       )}
 
       {question.type === 'rating' && (
-        <p className="text-xs text-foreground/40 pl-6">
-          Les choristes noteront de 1 à 5.
-        </p>
+        <p className="text-xs text-foreground/40 pl-6">Les choristes noteront de 1 à 5.</p>
       )}
     </div>
   );
@@ -398,7 +407,9 @@ type SortableOptionProps = {
 };
 
 function SortableOption({ id, opt, index, canRemove, onChange, onRemove }: SortableOptionProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+  });
 
   return (
     <div

@@ -1,14 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
 import { toast } from 'sonner';
+
+import { useConfirm } from '@/context/ConfirmContext';
+
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarSidebar } from './CalendarSidebar';
 import { CalendarWeek } from './CalendarWeek';
-import { EventForm } from './EventForm';
 import { deleteCalendarEvent } from './clientQueries';
-import { CalendarEvent, EventType } from './types';
+import { EventForm } from './EventForm';
+import type { CalendarEvent, EventType } from './types';
 
 type Props = {
   initialEvents: CalendarEvent[];
@@ -26,7 +28,13 @@ function getMondayOf(date: Date): Date {
   return d;
 }
 
-export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEventId, birthdayCountsByMonth }: Props) {
+export function CalendrierClient({
+  initialEvents,
+  eventTypes,
+  canEdit,
+  initialEventId,
+  birthdayCountsByMonth,
+}: Props) {
   const today = new Date();
   const initialEvent = initialEventId
     ? (initialEvents.find((e) => e.id === initialEventId) ?? null)
@@ -46,13 +54,17 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
   const [legendOpen, setLegendOpen] = useState(false);
 
   function prevMonth() {
-    if (month === 0) { setMonth(11); setYear((y) => y - 1); }
-    else setMonth((m) => m - 1);
+    if (month === 0) {
+      setMonth(11);
+      setYear((y) => y - 1);
+    } else setMonth((m) => m - 1);
   }
 
   function nextMonth() {
-    if (month === 11) { setMonth(0); setYear((y) => y + 1); }
-    else setMonth((m) => m + 1);
+    if (month === 11) {
+      setMonth(0);
+      setYear((y) => y + 1);
+    } else setMonth((m) => m + 1);
   }
 
   function prevWeek() {
@@ -86,7 +98,14 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
       if (seriesUpdated && event.series_id) {
         next = next.map((e) =>
           e.series_id === event.series_id && e.starts_at >= event.starts_at && e.id !== event.id
-            ? { ...e, title: event.title, event_type_id: event.event_type_id, event_types: event.event_types, location: event.location, description: event.description }
+            ? {
+                ...e,
+                title: event.title,
+                event_type_id: event.event_type_id,
+                event_types: event.event_types,
+                location: event.location,
+                description: event.description,
+              }
             : e,
         );
       }
@@ -98,11 +117,14 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
   async function handleDelete(id: string) {
     if (id.startsWith('birthday-')) return;
     const item = events.find((e) => e.id === id);
-    if (!await confirm({
-      message: 'Supprimer cet évènement ?',
-      danger: true,
-      details: item ? { icon: '📅', label: item.title } : undefined,
-    })) return;
+    if (
+      !(await confirm({
+        message: 'Supprimer cet évènement ?',
+        danger: true,
+        details: item ? { icon: '📅', label: item.title } : undefined,
+      }))
+    )
+      return;
     const ok = await deleteCalendarEvent(id);
     if (ok) {
       setEvents((prev) => prev.filter((e) => e.id !== id));
@@ -121,7 +143,11 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
 
   async function handleBackdropClick() {
     if (isDirty) {
-      if (await confirm({ message: 'Des modifications non sauvegardées seront perdues. Fermer quand même ?' }))
+      if (
+        await confirm({
+          message: 'Des modifications non sauvegardées seront perdues. Fermer quand même ?',
+        })
+      )
         closeForm();
     } else {
       closeForm();
@@ -146,7 +172,11 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
           >
             <span className="flex gap-1">
               {eventTypes.slice(0, 4).map((et) => (
-                <span key={et.id} className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: et.color }} />
+                <span
+                  key={et.id}
+                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                  style={{ backgroundColor: et.color }}
+                />
               ))}
             </span>
             Légende {legendOpen ? '▲' : '▼'}
@@ -156,7 +186,10 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
           <div className="hidden md:flex flex-wrap gap-3 flex-1">
             {eventTypes.map((et) => (
               <div key={et.id} className="flex items-center gap-1.5 text-xs text-foreground/60">
-                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: et.color }} />
+                <span
+                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                  style={{ backgroundColor: et.color }}
+                />
                 {et.label}
               </div>
             ))}
@@ -196,10 +229,19 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs border border-border text-foreground/50 hover:text-foreground hover:border-primary/40 transition-colors"
               title="Exporter le calendrier (.ics)"
             >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
               <span className="hidden sm:inline">.ics</span>
             </a>
@@ -211,7 +253,10 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
           <div className="md:hidden flex flex-col gap-2 p-3 rounded-xl border border-border bg-background-secondary">
             {eventTypes.map((et) => (
               <div key={et.id} className="flex items-center gap-2 text-xs text-foreground/60">
-                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: et.color }} />
+                <span
+                  className="w-2.5 h-2.5 rounded-full shrink-0"
+                  style={{ backgroundColor: et.color }}
+                />
                 {et.label}
               </div>
             ))}
@@ -237,7 +282,10 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
               canEdit={canEdit}
               onPrevWeekAction={prevWeek}
               onNextWeekAction={nextWeek}
-              onClickEventAction={(event) => { setEditingEvent(event); setShowForm(true); }}
+              onClickEventAction={(event) => {
+                setEditingEvent(event);
+                setShowForm(true);
+              }}
               onClickAddDayAction={openAddDay}
             />
           </div>
@@ -252,7 +300,10 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
                 canEdit={canEdit}
                 onPrevMonthAction={prevMonth}
                 onNextMonthAction={nextMonth}
-                onClickEventAction={(event) => { setEditingEvent(event); setShowForm(true); }}
+                onClickEventAction={(event) => {
+                  setEditingEvent(event);
+                  setShowForm(true);
+                }}
                 onClickAddDayAction={openAddDay}
                 birthdayCountsByMonth={birthdayCountsByMonth}
               />
@@ -263,7 +314,10 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
                 canEdit={canEdit}
                 onPrevWeekAction={prevWeek}
                 onNextWeekAction={nextWeek}
-                onClickEventAction={(event) => { setEditingEvent(event); setShowForm(true); }}
+                onClickEventAction={(event) => {
+                  setEditingEvent(event);
+                  setShowForm(true);
+                }}
                 onClickAddDayAction={openAddDay}
               />
             )}
@@ -274,10 +328,13 @@ export function CalendrierClient({ initialEvents, eventTypes, canEdit, initialEv
       </div>
 
       {showForm && (
+        // Backdrop click-to-dismiss — Escape (géré dans EventForm) est l'équivalent clavier.
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
         <div
           className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
           onClick={handleBackdropClick}
         >
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */}
           <div
             role="dialog"
             aria-modal="true"
