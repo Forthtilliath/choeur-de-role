@@ -3,31 +3,35 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
+
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
+import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+
 import {
-  upsertEvent,
-  uploadEventImage,
+  deleteEventFile,
   replaceEventDates,
   uploadEventFile,
-  deleteEventFile,
+  uploadEventImage,
+  upsertEvent,
 } from '../clientQueries';
-import { ExternalEvent, ExternalEventDate } from '../types';
-import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+import type { ExternalEvent, ExternalEventDate } from '../types';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 const fmtDate = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const fmtTime = (d: Date) =>
   d.getHours() === 0 && d.getMinutes() === 0 ? '' : `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 const isSameDay = (a: Date, b: Date) =>
-  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate();
 
 type DateEntry = {
-  startDate: string;  // "YYYY-MM-DD"
-  startTime: string;  // "HH:MM" or ""
-  endTime: string;    // "HH:MM" or "" — heure de fin le même jour
-  endDate: string;    // "YYYY-MM-DD" or "" — jour de fin différent
+  startDate: string; // "YYYY-MM-DD"
+  startTime: string; // "HH:MM" or ""
+  endTime: string; // "HH:MM" or "" — heure de fin le même jour
+  endDate: string; // "YYYY-MM-DD" or "" — jour de fin différent
 };
 
 function dateEntryFromRecord(d: ExternalEventDate): DateEntry {
@@ -131,7 +135,7 @@ export function EventForm({
   }
 
   async function handleDeleteFile(id: string, label: string) {
-    if (!await confirm({ message: `Supprimer "${label}" ?`, danger: true })) return;
+    if (!(await confirm({ message: `Supprimer "${label}" ?`, danger: true }))) return;
     const ok = await deleteEventFile(id);
     if (ok) {
       setFiles((prev) => prev.filter((f) => f.id !== id));
@@ -151,8 +155,11 @@ export function EventForm({
         {/* Titre + Lieu */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">Titre</label>
+            <label htmlFor="event-title" className="text-sm font-medium text-foreground">
+              Titre
+            </label>
             <input
+              id="event-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -161,10 +168,11 @@ export function EventForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">
+            <label htmlFor="event-location" className="text-sm font-medium text-foreground">
               Lieu <span className="text-foreground/40 font-normal">(optionnel)</span>
             </label>
             <input
+              id="event-location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -175,13 +183,16 @@ export function EventForm({
 
         {/* Dates */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-foreground">Dates</label>
+          <span className="text-sm font-medium text-foreground">Dates</span>
           <div className="flex flex-col gap-3">
             {dates.map((entry, idx) => {
               const update = (patch: Partial<DateEntry>) =>
                 setDates((prev) => prev.map((e, i) => (i === idx ? { ...e, ...patch } : e)));
               return (
-                <div key={idx} className="flex flex-col gap-1.5 p-3 border border-border rounded-xl bg-background">
+                <div
+                  key={idx}
+                  className="flex flex-col gap-1.5 p-3 border border-border rounded-xl bg-background"
+                >
                   {/* Ligne 1 : date début + heures */}
                   <div className="flex gap-2 items-center flex-wrap">
                     <input
@@ -237,7 +248,9 @@ export function EventForm({
                       </button>
                     )}
                     {!entry.endDate && (
-                      <span className="text-xs text-foreground/30 italic">laisser vide si même journée</span>
+                      <span className="text-xs text-foreground/30 italic">
+                        laisser vide si même journée
+                      </span>
                     )}
                   </div>
                 </div>
@@ -255,9 +268,9 @@ export function EventForm({
 
         {/* Description RichEditor */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">
+          <span className="text-sm font-medium text-foreground">
             Description <span className="text-foreground/40 font-normal">(optionnel)</span>
-          </label>
+          </span>
           <div className="rounded-xl overflow-hidden border border-border">
             <RichEditor
               content={description}
@@ -269,10 +282,11 @@ export function EventForm({
 
         {/* Lien externe */}
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">
+          <label htmlFor="event-external-url" className="text-sm font-medium text-foreground">
             Lien externe <span className="text-foreground/40 font-normal">(optionnel)</span>
           </label>
           <input
+            id="event-external-url"
             value={externalUrl}
             onChange={(e) => setExternalUrl(e.target.value)}
             type="url"
@@ -284,10 +298,10 @@ export function EventForm({
         {/* Affiche */}
         <div className="flex gap-4 items-end">
           <div className="flex flex-col gap-2 flex-1">
-            <label className="text-sm font-medium text-foreground">
+            <span className="text-sm font-medium text-foreground">
               Affiche <span className="text-foreground/40 font-normal">(portrait recommandé)</span>
-            </label>
-            <label className="cursor-pointer self-start">
+            </span>
+            <label aria-label="Ajouter une affiche" className="cursor-pointer self-start">
               <div className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all bg-background">
                 <span>📷</span>
                 <span>{imagePreview ? "Changer l'affiche" : 'Ajouter une affiche'}</span>
@@ -336,7 +350,7 @@ export function EventForm({
         {/* Fichiers — uniquement en modification */}
         {event && (
           <div className="flex flex-col gap-3">
-            <label className="text-sm font-medium text-foreground">Fichiers joints</label>
+            <span className="text-sm font-medium text-foreground">Fichiers joints</span>
 
             {files.length > 0 && (
               <div className="flex flex-col gap-2">

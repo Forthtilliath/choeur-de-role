@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { Map } from 'leaflet';
+
 import { Button } from '@/components/ui/Button';
 
 type Props = {
@@ -28,7 +30,7 @@ export function CenterMapPicker({ lat, lng, label, onChange }: Props) {
 
   useEffect(() => {
     if (!open) return;
-    let map: import('leaflet').Map;
+    let map: Map;
     let isMounted = true;
 
     async function initMap() {
@@ -45,8 +47,7 @@ export function CenterMapPicker({ lat, lng, label, onChange }: Props) {
         iconRetinaUrl:
           'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
         iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-        shadowUrl:
-          'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
       });
 
       currentCoordsRef.current = coords;

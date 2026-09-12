@@ -17,10 +17,14 @@ export function VenueButton({ venue }: { venue: string }) {
       </button>
 
       {open && (
+        // Backdrop click-to-dismiss — la croix suffit comme équivalent clavier.
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
           onClick={() => setOpen(false)}
         >
+          {/* Contient le clic pour éviter la fermeture au clic dans la modale */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
           <div
             className="bg-background rounded-2xl border border-border overflow-hidden w-full max-w-3xl shadow-xl"
             onClick={(e) => e.stopPropagation()}

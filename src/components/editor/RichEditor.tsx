@@ -7,7 +7,7 @@ import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
-import { useEditor, EditorContent, Extension } from '@tiptap/react';
+import { EditorContent, Extension, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { cva } from 'class-variance-authority';
 import {
@@ -34,8 +34,12 @@ import {
   Underline,
   Undo,
 } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
-import { Badge, BadgeVariant } from '../shared/Badge';
+
+import type { BadgeVariant } from '../shared/Badge';
+import { Badge } from '../shared/Badge';
+
 import { BadgeNode } from './Badge';
 import { uploadEditorImage } from './uploadEditorImage';
 
@@ -181,7 +185,8 @@ export function RichEditor({ content, onChangeAction, placeholder, dark }: Props
 
   return (
     <div className="border border-border rounded-lg overflow-hidden flex flex-col max-h-150">
-      {/* Toolbar */}
+      {/* Toolbar — préserve la sélection dans l'éditeur au clic (pas une vraie interaction). */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         className="flex items-center gap-0.5 flex-wrap p-1.5 border-b border-border bg-background sticky top-0 z-10 shrink-0"
         onMouseDown={(e) => e.preventDefault()}
@@ -397,7 +402,10 @@ export function RichEditor({ content, onChangeAction, placeholder, dark }: Props
                   .focus()
                   .insertContent([
                     { type: 'text', text: ' ' },
-                    { type: 'badgeComponent', attrs: { variant: badge.variant, text: badge.label } },
+                    {
+                      type: 'badgeComponent',
+                      attrs: { variant: badge.variant, text: badge.label },
+                    },
                     { type: 'text', text: ' ' },
                   ])
                   .run();

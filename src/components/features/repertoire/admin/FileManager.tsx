@@ -1,15 +1,18 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
+import { useEffect, useRef, useState } from 'react';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
+import { useConfirm } from '@/context/ConfirmContext';
 import { openSignedUrl } from '@/lib/downloadFile';
+import { formatDateShort } from '@/utils/dateHelpers';
+
 import { deleteSongFile } from '../clientQueries';
 import { buildFileLabel } from '../helpers';
-import { formatDateShort } from '@/utils/dateHelpers';
-import { FileType, Song, SongFile, VoicePart } from '../types';
+import type { FileType, Song, SongFile, VoicePart } from '../types';
+
 import { SongFileForm } from './SongFileForm';
 
 const TYPE_ORDER: FileType[] = ['audio', 'lyrics', 'score'];
@@ -105,7 +108,7 @@ export function FileManager({
   }
 
   async function handleDeleteFile(id: string) {
-    if (!await confirm({ message: 'Supprimer ce fichier ?', danger: true })) return;
+    if (!(await confirm({ message: 'Supprimer ce fichier ?', danger: true }))) return;
     const ok = await deleteSongFile(id);
     if (ok) {
       const updated = files.filter((f) => f.id !== id);
@@ -139,7 +142,6 @@ export function FileManager({
     const group = filteredFiles.filter((f) => f.type === type);
     if (group.length > 0) grouped.set(type, group);
   }
-
 
   return (
     <div className="flex flex-col lg:flex-row gap-4 lg:items-start">
@@ -215,17 +217,20 @@ export function FileManager({
             })}
           </div>
         ))}
-
       </div>
 
-      {/* Backdrop */}
+      {/* Backdrop — pas un tab stop, la fermeture au clavier passe par le formulaire. */}
       {formOpen && (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
         <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={closeForm} />
       )}
 
       {/* Formulaire — bottom sheet */}
       {formOpen && (
-        <div ref={formRef} className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-6 pt-3 max-h-[90vh] overflow-y-auto bg-background rounded-t-2xl lg:static lg:bottom-auto lg:left-auto lg:right-auto lg:z-auto lg:px-0 lg:pb-0 lg:pt-0 lg:max-h-none lg:overflow-visible lg:bg-transparent lg:rounded-none lg:w-80 lg:shrink-0">
+        <div
+          ref={formRef}
+          className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-6 pt-3 max-h-[90vh] overflow-y-auto bg-background rounded-t-2xl lg:static lg:bottom-auto lg:left-auto lg:right-auto lg:z-auto lg:px-0 lg:pb-0 lg:pt-0 lg:max-h-none lg:overflow-visible lg:bg-transparent lg:rounded-none lg:w-80 lg:shrink-0"
+        >
           <div className="w-10 h-1 bg-border rounded-full mx-auto mb-4 lg:hidden" />
           <SongFileForm
             key={editingFile?.id ?? 'new'}

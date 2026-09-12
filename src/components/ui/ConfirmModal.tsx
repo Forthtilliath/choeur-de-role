@@ -57,6 +57,8 @@ export function ConfirmModal({
   const canConfirm = !requireTyping || typedValue === requireTyping;
 
   return (
+    // Backdrop click-to-dismiss — Escape (géré plus haut) est l'équivalent clavier.
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       onClick={(e) => {
@@ -64,20 +66,18 @@ export function ConfirmModal({
       }}
     >
       <div className="bg-background rounded-2xl border border-border w-full max-w-sm shadow-2xl flex flex-col">
-
         {/* Header */}
         <div className="p-6 flex items-center gap-4">
           <div
             className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-              danger
-                ? 'bg-red-100 dark:bg-red-950/50'
-                : 'bg-amber-100 dark:bg-amber-950/50'
+              danger ? 'bg-red-100 dark:bg-red-950/50' : 'bg-amber-100 dark:bg-amber-950/50'
             }`}
           >
-            {danger
-              ? <Trash2 size={18} className="text-red-600 dark:text-red-400" />
-              : <Info size={18} className="text-amber-600 dark:text-amber-400" />
-            }
+            {danger ? (
+              <Trash2 size={18} className="text-red-600 dark:text-red-400" />
+            ) : (
+              <Info size={18} className="text-amber-600 dark:text-amber-400" />
+            )}
           </div>
 
           <div className="flex-1 min-w-0">
@@ -123,12 +123,12 @@ export function ConfirmModal({
         {/* Require typing */}
         {requireTyping && (
           <div className="mx-6 mt-4 flex flex-col gap-2">
-            <label className="text-xs text-foreground/50">
-              Tapez{' '}
-              <span className="font-mono font-bold text-foreground">{requireTyping}</span>{' '}
+            <label htmlFor="confirm-typed-value" className="text-xs text-foreground/50">
+              Tapez <span className="font-mono font-bold text-foreground">{requireTyping}</span>{' '}
               pour continuer
             </label>
             <input
+              id="confirm-typed-value"
               ref={inputRef}
               value={typedValue}
               onChange={(e) => setTypedValue(e.target.value)}

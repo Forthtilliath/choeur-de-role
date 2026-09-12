@@ -1,24 +1,23 @@
 'use client';
 
+import { useState } from 'react';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext } from '@dnd-kit/core';
 import {
-  DndContext,
-  DragEndEvent,
-  closestCenter,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
-import { deleteEventType, updateEventTypesOrder, upsertEventType } from '../clientQueries';
-import { EventType } from '../types';
+import { useConfirm } from '@/context/ConfirmContext';
 import { useDndSensors } from '@/hooks/useDndSensors';
+
+import { deleteEventType, updateEventTypesOrder, upsertEventType } from '../clientQueries';
+import type { EventType } from '../types';
 
 type RowProps = {
   et: EventType;
@@ -90,11 +89,17 @@ export function EventTypesAdmin({ initialEventTypes }: { initialEventTypes: Even
   }
 
   async function handleDelete(id: string) {
-    if (!await confirm({ message: 'Supprimer ce type ? Les évènements liés seront aussi supprimés.', danger: true })) return;
+    if (
+      !(await confirm({
+        message: 'Supprimer ce type ? Les évènements liés seront aussi supprimés.',
+        danger: true,
+      }))
+    )
+      return;
     const ok = await deleteEventType(id);
     if (ok) {
       setEventTypes((prev) => prev.filter((et) => et.id !== id));
-      toast.success('Type d\'évènement supprimé');
+      toast.success("Type d'évènement supprimé");
     } else {
       toast.error('Erreur lors de la suppression');
     }
@@ -202,8 +207,11 @@ function EventTypeForm({
       </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">Label</label>
+          <label htmlFor="event-type-label" className="text-sm font-medium text-foreground">
+            Label
+          </label>
           <input
+            id="event-type-label"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             required
@@ -212,10 +220,11 @@ function EventTypeForm({
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">
+          <label htmlFor="event-type-description" className="text-sm font-medium text-foreground">
             Description <span className="text-foreground/40 font-normal">(optionnel)</span>
           </label>
           <textarea
+            id="event-type-description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
@@ -225,9 +234,12 @@ function EventTypeForm({
         </div>
         <div className="flex gap-4 items-end">
           <div className="flex flex-col gap-1 flex-1">
-            <label className="text-sm font-medium text-foreground">Couleur</label>
+            <label htmlFor="event-type-color" className="text-sm font-medium text-foreground">
+              Couleur
+            </label>
             <div className="flex items-center gap-3">
               <input
+                id="event-type-color"
                 type="color"
                 value={color}
                 onChange={(e) => setColor(e.target.value)}

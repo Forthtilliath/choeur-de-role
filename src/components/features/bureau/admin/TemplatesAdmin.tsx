@@ -1,12 +1,14 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ChevronRight, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { Trash2, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
-import { createTemplate, deleteTemplate } from '../templateActions';
 import type { TaskTemplate } from '@/types/tasks';
+
+import { createTemplate, deleteTemplate } from '../templateActions';
 
 export function TemplatesAdmin({ templates }: { templates: TaskTemplate[] }) {
   const router = useRouter();
@@ -21,7 +23,10 @@ export function TemplatesAdmin({ templates }: { templates: TaskTemplate[] }) {
     if (!name.trim()) return;
     setCreating(true);
     setError('');
-    const result = await createTemplate({ name: name.trim(), description: description.trim() || undefined });
+    const result = await createTemplate({
+      name: name.trim(),
+      description: description.trim() || undefined,
+    });
     if ('error' in result) {
       setError(result.error);
     } else {
@@ -45,8 +50,14 @@ export function TemplatesAdmin({ templates }: { templates: TaskTemplate[] }) {
         <form onSubmit={handleCreate} className="flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Nom *</label>
+              <label
+                htmlFor="new-template-name"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Nom *
+              </label>
               <input
+                id="new-template-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="ex. Concert standard"
@@ -54,8 +65,14 @@ export function TemplatesAdmin({ templates }: { templates: TaskTemplate[] }) {
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-foreground/60 uppercase tracking-wide">Description</label>
+              <label
+                htmlFor="new-template-description"
+                className="text-xs font-medium text-foreground/60 uppercase tracking-wide"
+              >
+                Description
+              </label>
               <input
+                id="new-template-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Description optionnelle"

@@ -3,13 +3,20 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
+
 import { DURATION_UNIT_LABELS } from '@/components/ui/DurationInput';
 import type { Task, TaskPriority } from '@/types/tasks';
 
 const PRIORITY_BADGE: Record<TaskPriority, { label: string; className: string }> = {
   low: { label: 'Basse', className: 'bg-foreground/8 text-foreground/50' },
-  medium: { label: 'Moyenne', className: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400' },
-  high: { label: 'Haute', className: 'bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400' },
+  medium: {
+    label: 'Moyenne',
+    className: 'bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400',
+  },
+  high: {
+    label: 'Haute',
+    className: 'bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-400',
+  },
 };
 
 function initials(firstName: string | null, lastName: string | null) {
@@ -17,7 +24,9 @@ function initials(firstName: string | null, lastName: string | null) {
 }
 
 function formatDueDate(date: string) {
-  return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' }).format(new Date(date));
+  return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' }).format(
+    new Date(date),
+  );
 }
 
 type Props = {
@@ -47,10 +56,17 @@ export function TaskCard({ task, overlay = false, onClickAction }: Props) {
     <div
       ref={setNodeRef}
       style={style}
+      role="button"
+      tabIndex={0}
       className={`bg-background border border-border rounded-xl p-3 flex flex-col gap-2 cursor-pointer group transition-all ${
         isDragging ? 'opacity-40' : 'hover:border-primary/40 hover:shadow-sm'
       } ${overlay ? 'shadow-lg rotate-1 opacity-95' : ''}`}
       onClick={onClickAction}
+      onKeyDown={(e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        onClickAction();
+      }}
     >
       <div className="flex items-start gap-2">
         <button
@@ -71,13 +87,16 @@ export function TaskCard({ task, overlay = false, onClickAction }: Props) {
             {badge.label}
           </span>
           {task.due_date && (
-            <span className={`text-[10px] font-medium ${isOverdue ? 'text-red-500' : 'text-foreground/40'}`}>
+            <span
+              className={`text-[10px] font-medium ${isOverdue ? 'text-red-500' : 'text-foreground/40'}`}
+            >
               {formatDueDate(task.due_date)}
             </span>
           )}
-          {task.duration_value && task.duration_unit && (
+          {Boolean(task.duration_value) && task.duration_unit && (
             <span className="text-[10px] font-medium text-foreground/40">
-              ⏱ {task.duration_value}{DURATION_UNIT_LABELS[task.duration_unit]}
+              ⏱ {task.duration_value}
+              {DURATION_UNIT_LABELS[task.duration_unit]}
             </span>
           )}
           {task.category && (

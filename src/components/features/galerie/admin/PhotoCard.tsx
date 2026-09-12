@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import Image from 'next/image';
+
 import type { GalleryPhoto } from '../types';
 
 type Props = {
@@ -15,7 +16,14 @@ type Props = {
   onUpdateCaptionAction: (caption: string) => void;
 };
 
-export function PhotoCard({ photo, index, total, onDeleteAction, onMoveAction, onUpdateCaptionAction }: Props) {
+export function PhotoCard({
+  photo,
+  index,
+  total,
+  onDeleteAction,
+  onMoveAction,
+  onUpdateCaptionAction,
+}: Props) {
   const [editingCaption, setEditingCaption] = useState(false);
   const [caption, setCaption] = useState(photo.caption ?? '');
   const [showActions, setShowActions] = useState(false);
@@ -34,8 +42,15 @@ export function PhotoCard({ photo, index, total, onDeleteAction, onMoveAction, o
   return (
     <div ref={setNodeRef} style={style} className="flex flex-col gap-1.5">
       <div
+        role="button"
+        tabIndex={0}
         className="relative aspect-square rounded-xl overflow-hidden bg-background-secondary group"
-        onClick={() => setShowActions(s => !s)}
+        onClick={() => setShowActions((s) => !s)}
+        onKeyDown={(e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          setShowActions((s) => !s);
+        }}
       >
         <Image
           src={photo.url}
@@ -55,21 +70,28 @@ export function PhotoCard({ photo, index, total, onDeleteAction, onMoveAction, o
           ⠿
         </button>
 
-        {/* Actions */}
+        {/* Actions — empêche le clic de rouvrir/fermer la tuile au-dessus */}
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
         <div
           className={`absolute inset-0 bg-black/50 transition-opacity flex flex-col items-center justify-center gap-2 ${showActions ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'}`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex gap-1">
             <button
-              onClick={() => { onMoveAction('left'); setShowActions(false); }}
+              onClick={() => {
+                onMoveAction('left');
+                setShowActions(false);
+              }}
               disabled={index === 0}
               className="px-3 py-2 rounded bg-white/20 hover:bg-white/40 text-white text-xs disabled:opacity-30"
             >
               ←
             </button>
             <button
-              onClick={() => { onMoveAction('right'); setShowActions(false); }}
+              onClick={() => {
+                onMoveAction('right');
+                setShowActions(false);
+              }}
               disabled={index === total - 1}
               className="px-3 py-2 rounded bg-white/20 hover:bg-white/40 text-white text-xs disabled:opacity-30"
             >
@@ -77,7 +99,10 @@ export function PhotoCard({ photo, index, total, onDeleteAction, onMoveAction, o
             </button>
           </div>
           <button
-            onClick={() => { onDeleteAction(); setShowActions(false); }}
+            onClick={() => {
+              onDeleteAction();
+              setShowActions(false);
+            }}
             className="px-3 py-2 rounded bg-red-500/70 hover:bg-red-500 text-white text-xs"
           >
             Supprimer

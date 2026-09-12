@@ -1,21 +1,22 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { toast } from 'sonner';
-import {
-  DndContext,
-  closestCenter,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy, arrayMove } from '@dnd-kit/sortable';
+import { useMemo, useState } from 'react';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import type { jsPDF } from 'jspdf';
 import { BookImage, FileText, Mail, MailCheck } from 'lucide-react';
+import { toast } from 'sonner';
+
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
 import { VoicePartFilter } from '@/components/ui/VoicePartFilter';
-import { MemberCell, getVoicePartBg } from './MemberCell';
-import { SortableColumnRow } from './SortableColumnRow';
-import { Column, ColumnKey, DEFAULT_COLUMNS, TrombiMember, VoicePart } from './types';
 import { useDndSensors } from '@/hooks/useDndSensors';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+
+import { getVoicePartBg, MemberCell } from './MemberCell';
+import { SortableColumnRow } from './SortableColumnRow';
+import type { Column, ColumnKey, TrombiMember, VoicePart } from './types';
+import { DEFAULT_COLUMNS } from './types';
 
 type SortKey = 'first_name' | 'last_name' | 'voice_part' | 'address';
 type SortDir = 'asc' | 'desc';
@@ -196,16 +197,21 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
   }
 
   async function copyEmails() {
-    const entries = sorted.filter((m) => m.email).map((m) => {
-      const name = [m.first_name, m.last_name].filter(Boolean).join(' ');
-      return name ? `${name} <${m.email}>` : m.email!;
-    });
+    const entries = sorted
+      .filter((m) => m.email)
+      .map((m) => {
+        const name = [m.first_name, m.last_name].filter(Boolean).join(' ');
+        return name ? `${name} <${m.email}>` : m.email!;
+      });
     await navigator.clipboard.writeText(entries.join(', '));
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2000);
-    toast.success(`${entries.length} email${entries.length > 1 ? 's' : ''} copié${entries.length > 1 ? 's' : ''}`, {
-      description: 'Collez directement dans le champ CCI de votre messagerie.',
-    });
+    toast.success(
+      `${entries.length} email${entries.length > 1 ? 's' : ''} copié${entries.length > 1 ? 's' : ''}`,
+      {
+        description: 'Collez directement dans le champ CCI de votre messagerie.',
+      },
+    );
   }
 
   async function exportPDFList() {
@@ -253,7 +259,12 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
     doc.text('Trombinoscope — Chœur de Rôle', pageW / 2, 14, { align: 'center' });
     doc.setFontSize(9);
     doc.setTextColor(120);
-    doc.text(`${sorted.length} choristes — ${new Date().toLocaleDateString('fr-FR')}`, pageW / 2, 20, { align: 'center' });
+    doc.text(
+      `${sorted.length} choristes — ${new Date().toLocaleDateString('fr-FR')}`,
+      pageW / 2,
+      20,
+      { align: 'center' },
+    );
     doc.setTextColor(0);
 
     const cols = 5;
@@ -312,15 +323,17 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
       const photoB64 = photoMap.get(m.id);
       if (photoB64) {
         try {
-          const fmt = photoB64.startsWith('data:image/png') ? 'PNG'
-            : photoB64.startsWith('data:image/webp') ? 'WEBP'
-            : 'JPEG';
+          const fmt = photoB64.startsWith('data:image/png')
+            ? 'PNG'
+            : photoB64.startsWith('data:image/webp')
+              ? 'WEBP'
+              : 'JPEG';
           doc.addImage(photoB64, fmt, x, y, photoSize, photoSize);
         } catch {
-          drawPlaceholder(doc as unknown as import('jspdf').jsPDF, x, y, photoSize, m);
+          drawPlaceholder(doc as unknown as jsPDF, x, y, photoSize, m);
         }
       } else {
-        drawPlaceholder(doc as unknown as import('jspdf').jsPDF, x, y, photoSize, m);
+        drawPlaceholder(doc as unknown as jsPDF, x, y, photoSize, m);
       }
 
       doc.setFontSize(8);
@@ -449,7 +462,6 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
                 </div>
               )}
             </div>
-
           </div>
         </div>
 
@@ -512,10 +524,17 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
               {sorted.map((member, memberIndex) => {
                 const bg = getVoicePartBg(member.voice_parts?.name);
                 return (
-                  <tr key={member.id} className={`${bg} border-b border-white/40 dark:border-black/10 last:border-0`}>
+                  <tr
+                    key={member.id}
+                    className={`${bg} border-b border-white/40 dark:border-black/10 last:border-0`}
+                  >
                     {visibleColumns.map((col) => (
                       <td key={col.key} className="px-4 py-2">
-                        <MemberCell col={col} member={member} priority={col.key === 'photo' && memberIndex < 3} />
+                        <MemberCell
+                          col={col}
+                          member={member}
+                          priority={col.key === 'photo' && memberIndex < 3}
+                        />
                       </td>
                     ))}
                   </tr>
@@ -529,13 +548,7 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
   );
 }
 
-function drawPlaceholder(
-  doc: import('jspdf').jsPDF,
-  x: number,
-  y: number,
-  size: number,
-  m: TrombiMember,
-) {
+function drawPlaceholder(doc: jsPDF, x: number, y: number, size: number, m: TrombiMember) {
   doc.setFillColor(220, 220, 220);
   doc.rect(x, y, size, size, 'F');
   const initials = `${(m.first_name ?? '?')[0]}${(m.last_name ?? '?')[0]}`.toUpperCase();

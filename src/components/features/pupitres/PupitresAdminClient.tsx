@@ -1,27 +1,23 @@
 'use client';
 
+import { useRef, useState } from 'react';
+import type { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext, DragOverlay } from '@dnd-kit/core';
 import {
-  DndContext,
-  DragEndEvent,
-  DragOverEvent,
-  DragOverlay,
-  DragStartEvent,
-  closestCenter,
-} from '@dnd-kit/core';
-import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useRef, useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
-import { deleteVoicePart, updateVoicePartsGroupAndOrder, upsertVoicePart } from './clientQueries';
-import { VoicePart } from './types';
+import { useConfirm } from '@/context/ConfirmContext';
 import { useDndSensors } from '@/hooks/useDndSensors';
+
+import { deleteVoicePart, updateVoicePartsGroupAndOrder, upsertVoicePart } from './clientQueries';
+import type { VoicePart } from './types';
 
 const GROUP_PREFIX = '__group__';
 
@@ -29,7 +25,9 @@ type Group = { key: string; name: string | null; items: VoicePart[] };
 
 function initGroups(initialVoiceParts: VoicePart[]): Group[] {
   const sorted = [...initialVoiceParts].sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
-  const groupMap = new Map<string, Group>([['__null__', { key: '__null__', name: null, items: [] }]]);
+  const groupMap = new Map<string, Group>([
+    ['__null__', { key: '__null__', name: null, items: [] }],
+  ]);
   for (const vp of sorted) {
     const key = vp.group_name ?? '__null__';
     if (!groupMap.has(key)) groupMap.set(key, { key, name: vp.group_name, items: [] });
@@ -50,7 +48,9 @@ function groupsToPayload(groups: Group[]) {
 type RowProps = { vp: VoicePart; onEdit: (vp: VoicePart) => void; onDelete: (id: string) => void };
 
 function SortableRow({ vp, onEdit, onDelete }: RowProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: vp.id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: vp.id,
+  });
 
   return (
     <div
@@ -223,10 +223,10 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
 
   const isGroupDrag = activeId?.startsWith(GROUP_PREFIX) ?? false;
   const activeGroup = isGroupDrag
-    ? groups.find((g) => `${GROUP_PREFIX}${g.key}` === activeId) ?? null
+    ? (groups.find((g) => `${GROUP_PREFIX}${g.key}` === activeId) ?? null)
     : null;
   const activeVp = !isGroupDrag
-    ? groups.flatMap((g) => g.items).find((vp) => vp.id === activeId) ?? null
+    ? (groups.flatMap((g) => g.items).find((vp) => vp.id === activeId) ?? null)
     : null;
 
   function handleDragStart({ active }: DragStartEvent) {
@@ -306,13 +306,13 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
   async function handleDelete(id: string) {
     const item = groups.flatMap((g) => g.items).find((vp) => vp.id === id);
     if (
-      !await confirm({
+      !(await confirm({
         message: 'Supprimer ce pupitre ? Les fichiers liés ne seront plus associés.',
         danger: true,
         details: item
           ? { icon: '🎤', label: item.name, sublabel: item.group_name ?? undefined }
           : undefined,
-      })
+      }))
     )
       return;
     const ok = await deleteVoicePart(id);
@@ -332,7 +332,10 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
     setGroups((prev) => {
       const existsInAnyGroup = prev.some((g) => g.items.some((i) => i.id === part.id));
       if (existsInAnyGroup) {
-        return prev.map((g) => ({ ...g, items: g.items.map((i) => (i.id === part.id ? part : i)) }));
+        return prev.map((g) => ({
+          ...g,
+          items: g.items.map((i) => (i.id === part.id ? part : i)),
+        }));
       }
       const targetKey = part.group_name ?? '__null__';
       const targetGroup = prev.find((g) => g.key === targetKey);
@@ -353,7 +356,12 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-end">
-        <Button onClick={() => { setEditingPart(null); setShowForm(true); }}>
+        <Button
+          onClick={() => {
+            setEditingPart(null);
+            setShowForm(true);
+          }}
+        >
           + Ajouter un pupitre
         </Button>
       </div>
@@ -362,7 +370,10 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
         <VoicePartForm
           key={editingPart?.id ?? 'new'}
           part={editingPart}
-          onClose={() => { setShowForm(false); setEditingPart(null); }}
+          onClose={() => {
+            setShowForm(false);
+            setEditingPart(null);
+          }}
           onSave={handleSave}
           nextOrderIndex={nextOrderIndex}
           existingGroups={existingGroups}
@@ -382,7 +393,10 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
           {nullGroup && (
             <StaticGroupContainer
               group={nullGroup}
-              onEdit={(vp) => { setEditingPart(vp); setShowForm(true); }}
+              onEdit={(vp) => {
+                setEditingPart(vp);
+                setShowForm(true);
+              }}
               onDelete={handleDelete}
             />
           )}
@@ -397,7 +411,10 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
                 key={group.key}
                 group={group}
                 isFirst={!nullGroup && idx === 0}
-                onEdit={(vp) => { setEditingPart(vp); setShowForm(true); }}
+                onEdit={(vp) => {
+                  setEditingPart(vp);
+                  setShowForm(true);
+                }}
                 onDelete={handleDelete}
               />
             ))}
@@ -460,8 +477,11 @@ function VoicePartForm({
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">Nom</label>
+            <label htmlFor="pupitre-name" className="text-sm font-medium text-foreground">
+              Nom
+            </label>
             <input
+              id="pupitre-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -470,10 +490,11 @@ function VoicePartForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">
+            <label htmlFor="pupitre-group" className="text-sm font-medium text-foreground">
               Groupe <span className="text-foreground/40 font-normal">(optionnel)</span>
             </label>
             <input
+              id="pupitre-group"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
               list="groups-list"

@@ -1,28 +1,40 @@
 'use client';
 
 import { useState } from 'react';
-import { useConfirm } from '@/context/ConfirmContext';
-import { ChevronDown, ChevronUp, ExternalLink, FileText, Pencil, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
-import { toast } from 'sonner';
+import {
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
+  FileText,
+  Pencil,
+  ToggleLeft,
+  ToggleRight,
+  Trash2,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'sonner';
+
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
-import { Select } from '@/components/ui/Select';
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
+import { Select } from '@/components/ui/Select';
+import { useConfirm } from '@/context/ConfirmContext';
 import { toLocalDatetimeInput } from '@/lib/utils';
-import {
-  insertSeason,
-  updateSeasonLabel,
-  toggleSeasonActive,
-  deleteSeason,
-  deletePerformance,
-  upsertPerformance,
-  replacePerformanceDates,
-  uploadPerformanceImage,
-} from '../clientQueries';
 import { formatDateTimeShort } from '@/utils/dateHelpers';
-import { PerformanceWithDates, SeasonWithPerformancesWithDates } from '../types';
+
+import {
+  deletePerformance,
+  deleteSeason,
+  insertSeason,
+  replacePerformanceDates,
+  toggleSeasonActive,
+  updateSeasonLabel,
+  uploadPerformanceImage,
+  upsertPerformance,
+} from '../clientQueries';
+import type { PerformanceWithDates, SeasonWithPerformancesWithDates } from '../types';
+
 import { RepresentationFileManager } from './RepresentationFileManager';
 
 type Props = {
@@ -46,11 +58,7 @@ function findInitialEdit(
   return null;
 }
 
-export function ConcertsAdminClient({
-  initialSeasons,
-  initialOrphaned,
-  editPerformanceId,
-}: Props) {
+export function ConcertsAdminClient({ initialSeasons, initialOrphaned, editPerformanceId }: Props) {
   const [seasons, setSeasons] = useState<SeasonWithPerformancesWithDates[]>(initialSeasons);
   const [orphaned, setOrphaned] = useState<PerformanceWithDates[]>(initialOrphaned);
 
@@ -135,12 +143,12 @@ export function ConcertsAdminClient({
         ? `Les ${season.performances.length} représentation(s) seront déplacées dans "Sans saison" et pourront être réaffectées.`
         : `Cette action est irréversible.`;
     if (
-      !await confirm({
+      !(await confirm({
         title: `Supprimer la saison "${season.label}" ?`,
         message,
         confirmLabel: 'Supprimer',
         danger: true,
-      })
+      }))
     )
       return;
 
@@ -205,7 +213,13 @@ export function ConcertsAdminClient({
   }
 
   async function handleDeletePerformance(id: string, fromSeasonId: string | null) {
-    if (!await confirm({ message: 'Supprimer cette représentation et toutes ses dates ?', danger: true })) return;
+    if (
+      !(await confirm({
+        message: 'Supprimer cette représentation et toutes ses dates ?',
+        danger: true,
+      }))
+    )
+      return;
     const ok = await deletePerformance(id);
     if (ok) {
       if (fromSeasonId === 'orphaned' || fromSeasonId === null) {
@@ -297,6 +311,8 @@ export function ConcertsAdminClient({
           >
             {/* Gauche : nom + rep count (ou formulaire de renommage) */}
             {renamingSeasonId === season.id ? (
+              // Empêche le clic dans le champ de renommage de rouvrir/fermer le panneau de saison.
+              // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
               <div className="flex items-center gap-2 flex-1" onClick={(e) => e.stopPropagation()}>
                 <input
                   value={renameLabel}
@@ -358,6 +374,8 @@ export function ConcertsAdminClient({
 
             {/* Droite col 1 : actions (icônes Lucide) */}
             {!season.isVirtual && renamingSeasonId !== season.id && (
+              // Empêche le clic sur les icônes d'actions de rouvrir/fermer le panneau de saison.
+              // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
               <div
                 className="flex items-center gap-0.5 shrink-0"
                 onClick={(e) => e.stopPropagation()}
@@ -620,9 +638,7 @@ function PerformanceForm({
       : (performance?.image_url ?? null);
 
     const seasonValue = selectedSeasonId || null;
-    const isoDateStrings = dates
-      .filter((d) => d.date)
-      .map((d) => new Date(d.date).toISOString());
+    const isoDateStrings = dates.filter((d) => d.date).map((d) => new Date(d.date).toISOString());
 
     const payload = {
       title,
@@ -655,8 +671,11 @@ function PerformanceForm({
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">Titre</label>
+            <label htmlFor="performance-title" className="text-sm font-medium text-foreground">
+              Titre
+            </label>
             <input
+              id="performance-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -665,8 +684,11 @@ function PerformanceForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">Saison</label>
+            <label htmlFor="performance-season" className="text-sm font-medium text-foreground">
+              Saison
+            </label>
             <Select
+              id="performance-season"
               value={selectedSeasonId}
               onChange={(e) => setSelectedSeasonId(e.target.value)}
               className="px-4"
@@ -683,10 +705,11 @@ function PerformanceForm({
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">
+            <label htmlFor="performance-venue" className="text-sm font-medium text-foreground">
               Lieu <span className="text-foreground/40 font-normal">(optionnel)</span>
             </label>
             <input
+              id="performance-venue"
               value={venue}
               onChange={(e) => setVenue(e.target.value)}
               className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
@@ -694,10 +717,11 @@ function PerformanceForm({
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-foreground">
+            <label htmlFor="performance-ticket-url" className="text-sm font-medium text-foreground">
               Lien billetterie <span className="text-foreground/40 font-normal">(optionnel)</span>
             </label>
             <input
+              id="performance-ticket-url"
               value={ticketUrl}
               onChange={(e) => setTicketUrl(e.target.value)}
               type="url"
@@ -708,10 +732,11 @@ function PerformanceForm({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">
+          <label htmlFor="performance-external-url" className="text-sm font-medium text-foreground">
             Lien externe <span className="text-foreground/40 font-normal">(optionnel)</span>
           </label>
           <input
+            id="performance-external-url"
             value={externalUrl}
             onChange={(e) => setExternalUrl(e.target.value)}
             type="url"
@@ -721,9 +746,9 @@ function PerformanceForm({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground">
+          <span className="text-sm font-medium text-foreground">
             Notes choristes <span className="text-foreground/40 font-normal">(optionnel)</span>
-          </label>
+          </span>
           <RichEditor
             content={notes}
             onChangeAction={setNotes}
@@ -737,10 +762,10 @@ function PerformanceForm({
         {/* Image portrait — bouton stylé */}
         <div className="flex gap-4 items-end">
           <div className="flex flex-col gap-2 flex-1">
-            <label className="text-sm font-medium text-foreground">
+            <span className="text-sm font-medium text-foreground">
               Affiche <span className="text-foreground/40 font-normal">(portrait recommandé)</span>
-            </label>
-            <label className="cursor-pointer self-start">
+            </span>
+            <label aria-label="Ajouter une affiche" className="cursor-pointer self-start">
               <div className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all bg-background">
                 <span>📷</span>
                 <span>{imagePreview ? "Changer l'affiche" : 'Ajouter une affiche'}</span>
@@ -788,7 +813,7 @@ function PerformanceForm({
 
         {/* Dates */}
         <div className="flex flex-col gap-3">
-          <label className="text-sm font-medium text-foreground">Dates</label>
+          <span className="text-sm font-medium text-foreground">Dates</span>
           {dates.map((date, index) => (
             <div key={index} className="flex gap-3 items-center">
               <input

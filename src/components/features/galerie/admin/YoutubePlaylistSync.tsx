@@ -10,12 +10,7 @@ type Props = {
   onSyncAction: () => void;
 };
 
-export function YoutubePlaylistSync({
-  albumId,
-  currentUrl,
-  videoCount,
-  onSyncAction,
-}: Props) {
+export function YoutubePlaylistSync({ albumId, currentUrl, videoCount, onSyncAction }: Props) {
   const [url, setUrl] = useState(currentUrl);
   const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState('');
@@ -45,12 +40,13 @@ export function YoutubePlaylistSync({
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs text-foreground/50">
+      <label htmlFor="youtube-playlist-url" className="text-xs text-foreground/50">
         Playlist YouTube <span className="text-foreground/30">(optionnel)</span>
       </label>
 
       <div className="flex gap-2">
         <input
+          id="youtube-playlist-url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://www.youtube.com/playlist?list=PL..."

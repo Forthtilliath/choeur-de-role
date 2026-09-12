@@ -1,5 +1,6 @@
-import { Tables } from '@/types/database';
-import { Merge } from '@/types/utils';
+import type { MemberRole } from '@/lib/roles';
+import type { Tables } from '@/types/database';
+import type { Merge } from '@/types/utils';
 
 export type VoicePart = Tables<'voice_parts'>;
 
@@ -35,7 +36,7 @@ export type PerformanceFilter = {
 export type FileType = 'audio' | 'score' | 'lyrics';
 
 export type MemberWithSeasons = {
-  role: import('@/lib/roles').MemberRole;
+  role: MemberRole;
   voice_part_id: string | null;
   member_seasons: string[];
 };

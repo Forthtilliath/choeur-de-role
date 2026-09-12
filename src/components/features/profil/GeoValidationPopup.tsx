@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type { Map } from 'leaflet';
+
 import { Button } from '@/components/ui/Button';
-import { Coords } from './types';
+
+import type { Coords } from './types';
 
 type Props = {
   coords: Coords;
@@ -11,17 +14,12 @@ type Props = {
   onCloseAction: () => void;
 };
 
-export function GeoValidationPopup({
-  coords,
-  address,
-  onConfirmAction,
-  onCloseAction,
-}: Props) {
+export function GeoValidationPopup({ coords, address, onConfirmAction, onCloseAction }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
   const currentCoordsRef = useRef<Coords>(coords);
 
   useEffect(() => {
-    let map: import('leaflet').Map;
+    let map: Map;
     let isMounted = true;
 
     async function initMap() {

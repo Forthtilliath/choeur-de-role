@@ -2,10 +2,13 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+
 import { Button } from '@/components/ui/Button';
-import { saveLegalData } from './clientQueries';
-import { LegalData, LEGAL_FIELDS } from './types';
+
 import { CenterMapPicker } from './CenterMapPicker';
+import { saveLegalData } from './clientQueries';
+import type { LegalData } from './types';
+import { LEGAL_FIELDS } from './types';
 
 export function MentionsLegalesAdminClient({ initialData }: { initialData: LegalData }) {
   const [data, setData] = useState<LegalData>(initialData);
@@ -41,8 +44,11 @@ export function MentionsLegalesAdminClient({ initialData }: { initialData: Legal
           >
             <h2 className="text-sm font-medium text-foreground">{section.section}</h2>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Nom du lieu de répétition</label>
+              <label htmlFor="center-label" className="text-xs text-foreground/50">
+                Nom du lieu de répétition
+              </label>
               <input
+                id="center-label"
                 type="text"
                 value={data['center_label'] ?? ''}
                 onChange={(e) => handleChange('center_label', e.target.value)}
@@ -50,7 +56,7 @@ export function MentionsLegalesAdminClient({ initialData }: { initialData: Legal
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-foreground/50">Position sur la carte</label>
+              <span className="text-xs text-foreground/50">Position sur la carte</span>
               <CenterMapPicker
                 lat={data['center_lat'] ?? ''}
                 lng={data['center_lng'] ?? ''}
@@ -69,8 +75,11 @@ export function MentionsLegalesAdminClient({ initialData }: { initialData: Legal
             <h2 className="text-sm font-medium text-foreground">{section.section}</h2>
             {section.fields.map((field) => (
               <div key={field.key} className="flex flex-col gap-1">
-                <label className="text-xs text-foreground/50">{field.label}</label>
+                <label htmlFor={`legal-${field.key}`} className="text-xs text-foreground/50">
+                  {field.label}
+                </label>
                 <input
+                  id={`legal-${field.key}`}
                   type={field.type ?? 'text'}
                   value={data[field.key] ?? ''}
                   onChange={(e) => handleChange(field.key, e.target.value)}

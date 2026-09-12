@@ -1,18 +1,22 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { LoaderCircle, Lock, LockOpen, MailCheck, MailWarning, Pencil, X } from 'lucide-react';
-import { toast } from 'sonner';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'sonner';
+
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
 import { useNow } from '@/hooks/useNow';
 import { formatDate, formatDateTimeCompact } from '@/utils/dateHelpers';
 import { formatPhone } from '@/utils/phoneHelpers';
-import { AdminMember, AuthInfo, ROLE_LABELS } from '../types';
-import { getVoicePartBadge } from '../MemberCell';
+
 import { toggleMemberLock } from '../clientQueries';
+import { getVoicePartBadge } from '../MemberCell';
+import type { AdminMember, AuthInfo } from '../types';
+import { ROLE_LABELS } from '../types';
+
 import { RECENT_MS } from './constants';
 
 export function MemberRow({
@@ -127,7 +131,9 @@ export function MemberRow({
             )}
           </div>
           <div>
-            <p className={`font-medium whitespace-nowrap ${isLocked ? 'text-foreground/40 line-through' : 'text-foreground'}`}>
+            <p
+              className={`font-medium whitespace-nowrap ${isLocked ? 'text-foreground/40 line-through' : 'text-foreground'}`}
+            >
               {displayName}
             </p>
             {isLocked && <span className="text-xs text-red-500 dark:text-red-400">Verrouillé</span>}
@@ -138,7 +144,9 @@ export function MemberRow({
       {/* Pupitre */}
       <td className="px-4 py-3 whitespace-nowrap">
         {member.voice_parts && (
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getVoicePartBadge(member.voice_parts.name)}`}>
+          <span
+            className={`text-xs px-2 py-0.5 rounded-full font-medium ${getVoicePartBadge(member.voice_parts.name)}`}
+          >
             {member.voice_parts.name}
           </span>
         )}
@@ -231,12 +239,19 @@ export function MemberRow({
               onClick={handleToggleLock}
               disabled={locking}
               title={isLocked ? 'Déverrouiller le compte' : 'Verrouiller le compte'}
-              className={isLocked
-                ? 'border-red-400 text-red-500 hover:border-red-300 disabled:opacity-50'
-                : 'border-foreground/20 text-foreground/40 hover:border-red-400 hover:text-red-500 disabled:opacity-50'
+              className={
+                isLocked
+                  ? 'border-red-400 text-red-500 hover:border-red-300 disabled:opacity-50'
+                  : 'border-foreground/20 text-foreground/40 hover:border-red-400 hover:text-red-500 disabled:opacity-50'
               }
             >
-              {locking ? <LoaderCircle className="animate-spin" /> : isLocked ? <Lock /> : <LockOpen />}
+              {locking ? (
+                <LoaderCircle className="animate-spin" />
+              ) : isLocked ? (
+                <Lock />
+              ) : (
+                <LockOpen />
+              )}
             </ButtonIcon>
           )}
           {member.role !== 'super_admin' && (
@@ -262,37 +277,64 @@ function RoleBadge({ role, bureauRole }: { role: string; bureauRole?: string | n
         : 'bg-foreground/10 text-foreground/50';
 
   const lines = bureauRole
-    ? bureauRole.split(/\n|\s+-\s+/).map((r) => r.replace(/\//g, ' ').trim()).filter(Boolean)
+    ? bureauRole
+        .split(/\n|\s+-\s+/)
+        .map((r) => r.replace(/\//g, ' ').trim())
+        .filter(Boolean)
     : [];
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className="inline-flex"
-      onMouseEnter={() => lines.length ? setRect(ref.current?.getBoundingClientRect() ?? null) : undefined}
+      onMouseEnter={() =>
+        lines.length ? setRect(ref.current?.getBoundingClientRect() ?? null) : undefined
+      }
       onMouseLeave={() => setRect(null)}
-      onClick={(e) => { e.stopPropagation(); if (lines.length) setRect(r => r ? null : ref.current?.getBoundingClientRect() ?? null); }}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (lines.length)
+          setRect((r) => (r ? null : (ref.current?.getBoundingClientRect() ?? null)));
+      }}
+      onKeyDown={(e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (lines.length)
+          setRect((r) => (r ? null : (ref.current?.getBoundingClientRect() ?? null)));
+      }}
     >
-      <span ref={ref} className={`text-xs px-2 py-0.5 rounded-full ${roleClass} ${lines.length ? 'cursor-help' : ''}`}>
+      <span
+        ref={ref}
+        className={`text-xs px-2 py-0.5 rounded-full ${roleClass} ${lines.length ? 'cursor-help' : ''}`}
+      >
         {ROLE_LABELS[role]}
       </span>
-      {rect && lines.length > 0 && createPortal(
-        <div
-          style={{
-            position: 'fixed',
-            top: rect.top + rect.height / 2,
-            left: rect.right + 8,
-            transform: 'translateY(-50%)',
-            zIndex: 9999,
-            pointerEvents: 'none',
-            maxWidth: `min(220px, calc(100vw - ${rect.right + 16}px))`,
-          }}
-        >
-          <div className="bg-app-green text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-lg">
-            {lines.map((line, i) => <p key={i} className="m-0 whitespace-nowrap">{line}</p>)}
-          </div>
-        </div>,
-        document.body,
-      )}
+      {rect &&
+        lines.length > 0 &&
+        createPortal(
+          <div
+            style={{
+              position: 'fixed',
+              top: rect.top + rect.height / 2,
+              left: rect.right + 8,
+              transform: 'translateY(-50%)',
+              zIndex: 9999,
+              pointerEvents: 'none',
+              maxWidth: `min(220px, calc(100vw - ${rect.right + 16}px))`,
+            }}
+          >
+            <div className="bg-app-green text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-lg">
+              {lines.map((line, i) => (
+                <p key={i} className="m-0 whitespace-nowrap">
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
