@@ -7,7 +7,9 @@ export function ActivityTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    fetch('/api/auth/ping', { method: 'POST' }).catch(() => {});
+    const controller = new AbortController();
+    fetch('/api/auth/ping', { method: 'POST', signal: controller.signal }).catch(() => {});
+    return () => controller.abort();
   }, [pathname]);
 
   return null;
