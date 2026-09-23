@@ -82,7 +82,7 @@ function ProjectCard({ project, archived = false }: { project: TaskProject; arch
         <span>
           {project.task_count} tâche{project.task_count !== 1 ? 's' : ''}
         </span>
-        <span>Modifié le {formatDate(project.updated_at)}</span>
+        {project.updated_at && <span>Modifié le {formatDate(project.updated_at)}</span>}
       </div>
     </Link>
   );

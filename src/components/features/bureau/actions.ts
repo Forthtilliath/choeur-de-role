@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { isAdmin, isCa } from '@/lib/auth';
 import type { MemberRole } from '@/lib/roles';
 import { createServerClient } from '@/lib/supabase.server';
+import type { TablesUpdate } from '@/types/database';
 import type { DurationUnit, TaskPriority, TaskStatus } from '@/types/tasks';
 
 async function getCaAuth() {
@@ -16,8 +17,7 @@ async function getCaAuth() {
   const { data: member } = await supabase.from('members').select('role').eq('id', user.id).single();
   const role = member?.role as MemberRole | undefined;
   if (!role || !isCa(role)) return null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return { userId: user.id, isAdmin: isAdmin(role), db: supabase as any };
+  return { userId: user.id, isAdmin: isAdmin(role), db: supabase };
 }
 
 const REVALIDATE = () => revalidatePath('/choristes/bureau/taches', 'layout');
@@ -94,7 +94,7 @@ export async function updateTask(
   const auth = await getCaAuth();
   if (!auth) return { error: 'Non autorisé' };
 
-  const updates: Record<string, unknown> = {};
+  const updates: TablesUpdate<'tasks'> = {};
   if (input.title !== undefined) updates.title = input.title;
   if (input.description !== undefined) updates.description = input.description;
   if (input.priority !== undefined) updates.priority = input.priority;
