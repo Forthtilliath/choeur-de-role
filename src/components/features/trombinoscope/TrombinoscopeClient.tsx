@@ -75,7 +75,7 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
   const [showColumnMenu, setShowColumnMenu] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [selectedRoleGroups, setSelectedRoleGroups] = useState<Set<string>>(
-    new Set(ROLE_GROUPS.map((g) => g.key)),
+    () => new Set(ROLE_GROUPS.map((g) => g.key)),
   );
 
   const realParts = useMemo(
