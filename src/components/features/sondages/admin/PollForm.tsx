@@ -54,7 +54,7 @@ type Props = {
 };
 
 export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }: Props) {
-  const [draft, setDraft] = useState<PollDraft>(initialDraft ?? emptyDraft());
+  const [draft, setDraft] = useState<PollDraft>(() => initialDraft ?? emptyDraft());
   const formRef = useFormShortcuts(onCancelAction);
 
   function setMeta<K extends keyof PollDraft>(key: K, value: PollDraft[K]) {

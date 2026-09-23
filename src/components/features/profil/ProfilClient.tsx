@@ -68,7 +68,7 @@ const FIELD_LABELS: Record<string, string> = {
 export function ProfilClient({ member }: Props) {
   const [firstName, setFirstName] = useState(member.first_name ?? '');
   const [lastName, setLastName] = useState(member.last_name ?? '');
-  const [phone, setPhone] = useState(
+  const [phone, setPhone] = useState(() =>
     member.phone ? formatPhone(member.phone.replace(/\D/g, '')) : '',
   );
   const [address, setAddress] = useState(member.address ?? '');
