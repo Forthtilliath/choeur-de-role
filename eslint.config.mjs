@@ -6,8 +6,10 @@ const eslintConfig = defineConfig([
   // strict: false — this app previously ran eslint-config-next's looser
   // "recommended" preset; keep that baseline rather than jumping straight to
   // typescript-eslint's strictTypeChecked. turbo: false — standalone repo,
-  // not a Turborepo.
-  ...createNextJsConfig({ strict: false, turbo: false }),
+  // not a Turborepo. snakeCase: variables mirror Supabase's snake_case DB
+  // columns verbatim (first_name, zip_code, voice_part_id...), a deliberate
+  // convention throughout.
+  ...createNextJsConfig({ strict: false, turbo: false, snakeCase: true }),
   {
     // Not part of the package's tsconfig (src/sw.ts is explicitly excluded,
     // and the tsconfig's `include` doesn't cover plain .mjs scripts), so
@@ -39,49 +41,8 @@ const eslintConfig = defineConfig([
       'jsx-a11y/no-autofocus': 'warn',
     },
   },
-  {
-    // This codebase consistently mirrors Supabase's snake_case DB columns
-    // verbatim in destructured variables/payloads (first_name, zip_code,
-    // voice_part_id...) rather than aliasing to camelCase — a deliberate,
-    // established convention throughout, not a one-off. Allow it alongside
-    // the base config's camelCase/UPPER_CASE.
-    files: ['**/*.{ts,tsx}'],
-    rules: {
-      '@typescript-eslint/naming-convention': [
-        'error',
-        {
-          selector: 'variable',
-          format: ['camelCase', 'UPPER_CASE', 'snake_case'],
-          leadingUnderscore: 'allow',
-          trailingUnderscore: 'allow',
-        },
-        {
-          selector: 'variable',
-          modifiers: ['const'],
-          format: ['camelCase', 'UPPER_CASE', 'PascalCase', 'snake_case'],
-          leadingUnderscore: 'allow',
-          trailingUnderscore: 'allow',
-        },
-        {
-          selector: 'function',
-          format: ['camelCase', 'PascalCase'],
-        },
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-        },
-      ],
-    },
-  },
-  globalIgnores([
-    '.next/**',
-    'out/**',
-    'build/**',
-    'next-env.d.ts',
-    // Fichiers générés par la CLI Supabase locale (`npx supabase start`).
-    'supabase/.temp/**',
-    'supabase/.branches/**',
-  ]),
+  // Fichiers générés par la CLI Supabase locale (`npx supabase start`).
+  globalIgnores(['supabase/.temp/**', 'supabase/.branches/**']),
 ]);
 
 export default eslintConfig;
