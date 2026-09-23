@@ -22,7 +22,8 @@ export function NotificationsPopup() {
     const shown = sessionStorage.getItem('notif_shown');
     if (shown) return;
 
-    fetch('/api/notifications')
+    const controller = new AbortController();
+    fetch('/api/notifications', { signal: controller.signal })
       .then((res) => res.json())
       .then((data: Notification[]) => {
         if (data.length > 0) {
@@ -32,6 +33,7 @@ export function NotificationsPopup() {
         }
       })
       .catch(() => {});
+    return () => controller.abort();
   }, []);
 
   if (!visible || notifications.length === 0) return null;
