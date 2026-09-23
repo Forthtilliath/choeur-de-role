@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Search, X } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import { useNow } from '@/hooks/useNow';
 import { getPastPerformances, getUpcomingPerformances } from '@/utils/performanceHelpers';
 
 import { ConcertsList } from './ConcertsList';
@@ -56,7 +57,7 @@ export function ConcertsClient({ performances }: { performances: PerformanceDate
     });
   }, [performances, search, selectedSeasonId]);
 
-  const now = new Date();
+  const now = new Date(useNow());
   const upcoming = getUpcomingPerformances(filtered, now);
   const past = getPastPerformances(filtered, now);
   const hasFilters = search.trim() !== '' || selectedSeasonId !== null;

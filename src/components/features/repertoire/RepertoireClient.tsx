@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useNow } from '@/hooks/useNow';
 import { formatDateShort } from '@/utils/dateHelpers';
 
 import { buildFileLabel } from './helpers';
@@ -36,7 +37,7 @@ export function RepertoireClient({
     null,
   );
 
-  const now = new Date();
+  const now = new Date(useNow());
   const tuttiPart = voiceParts.find((vp) => vp.name === 'tutti');
   const regularParts = voiceParts;
 
