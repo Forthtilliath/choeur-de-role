@@ -1,9 +1,11 @@
+import type { SupabaseClient } from '@supabase/supabase-js';
+
 import { createAdminClient, createServerClient } from '@/lib/supabase.server';
+import type { Database } from '@/types/database';
 
 // Used by proxy.ts which creates its own Supabase client with middleware cookie handling.
 // These functions accept an external client instead of creating one.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ProxyClient = { from: (table: string) => any };
+type ProxyClient = SupabaseClient<Database>;
 
 export type MemberOnboarding = {
   role: string;
@@ -20,8 +22,8 @@ export async function getMemberOnboarding(
   supabase: ProxyClient,
   userId: string,
 ): Promise<MemberOnboarding | null> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = await (supabase.from('members') as any)
+  const { data } = await supabase
+    .from('members')
     .select('role, onboarded_at, admin_onboarded_at')
     .eq('id', userId)
     .single();
@@ -32,8 +34,8 @@ export async function getMemberAdminOnboarding(
   supabase: ProxyClient,
   userId: string,
 ): Promise<MemberAdminOnboarding | null> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = await (supabase.from('members') as any)
+  const { data } = await supabase
+    .from('members')
     .select('role, admin_onboarded_at')
     .eq('id', userId)
     .single();

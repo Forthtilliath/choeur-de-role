@@ -20,8 +20,7 @@ export type GdprExportData = {
 
 export async function getMemberGdprData(memberId: string): Promise<GdprExportData> {
   const supabase = await createServerClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const admin = createAdminClient() as any;
+  const admin = createAdminClient();
 
   const [profileRes, responsesRes, seasonIdsRes, auditRes] = await Promise.all([
     supabase
@@ -65,11 +64,9 @@ export async function getMemberGdprData(memberId: string): Promise<GdprExportDat
   ]);
 
   const pollMap = new Map<string, RawPoll>(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (pollsRes.data ?? []).map((p: any) => [p.id as string, p as RawPoll]),
+    (pollsRes.data ?? []).map((p) => [p.id as string, p as RawPoll]),
   );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const profile = profileRes.data as any;
+  const profile = profileRes.data;
 
   return {
     date_export: new Date().toISOString(),
