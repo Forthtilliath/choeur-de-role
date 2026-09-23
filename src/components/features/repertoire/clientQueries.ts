@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase.client';
+import { uploadPrivateFileToR2 } from '@/utils/uploadPrivateFileToR2';
 
 import type { SongFile, SongItem } from './types';
 
@@ -49,18 +50,6 @@ export async function deleteSongFile(id: string): Promise<boolean> {
   return !error;
 }
 
-async function uploadToR2(file: File, key: string): Promise<void> {
-  const body = new FormData();
-  body.append('file', file);
-  body.append('key', key);
-
-  const res = await fetch('/api/repertoire/upload-file', { method: 'POST', body });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error ?? `Échec upload (${res.status})`);
-  }
-}
-
 export async function uploadSongFile({
   songId,
   file,
@@ -78,7 +67,7 @@ export async function uploadSongFile({
   const ext = file.name.split('.').pop();
   const fileName = `songs/${songId}/${Date.now()}.${ext}`;
 
-  await uploadToR2(file, fileName);
+  await uploadPrivateFileToR2(file, fileName);
   const file_url = `r2://${fileName}`;
 
   const { data: existingFiles } = await supabase
@@ -122,7 +111,7 @@ export async function updateSongFile(
   if (newFile) {
     const ext = newFile.name.split('.').pop();
     const fileName = `songs/${songId}/${Date.now()}.${ext}`;
-    await uploadToR2(newFile, fileName);
+    await uploadPrivateFileToR2(newFile, fileName);
     file_url = `r2://${fileName}`;
   }
 
