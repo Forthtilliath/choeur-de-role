@@ -57,8 +57,7 @@ export async function getMyPollAnswers(
   if (!data) return {};
   const answers = (data.poll_answers ?? []) as PollAnswer[];
   return answers.reduce<Record<string, PollAnswer[]>>((acc, a) => {
-    if (!acc[a.question_id]) acc[a.question_id] = [];
-    acc[a.question_id].push(a);
+    (acc[a.question_id] ??= []).push(a);
     return acc;
   }, {});
 }

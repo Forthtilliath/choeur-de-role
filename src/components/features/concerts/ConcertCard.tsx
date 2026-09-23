@@ -17,10 +17,10 @@ export function ConcertCard({
 }) {
   const dates = sortPerformanceDates(performance.performance_dates);
   const firstDate = dates[0];
-  const lastDate = dates[dates.length - 1];
+  const lastDate = dates.at(-1);
 
   const dateDisplay =
-    dates.length === 0
+    !firstDate || !lastDate
       ? null
       : dates.length === 1
         ? formatDate(firstDate.date)

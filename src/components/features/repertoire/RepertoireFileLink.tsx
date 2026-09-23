@@ -366,6 +366,7 @@ function AudioFileRow({
     const bar = progressRef.current;
     if (!audio || !bar || !duration) return;
     const touch = e.touches[0] ?? e.changedTouches[0];
+    if (!touch) return;
     const rect = bar.getBoundingClientRect();
     audio.currentTime =
       Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width)) * duration;

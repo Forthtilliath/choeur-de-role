@@ -89,8 +89,8 @@ export default async function EvenementPage({ params }: { params: Promise<{ id: 
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     organizer,
   });
-  const eventJsonLd =
-    sortedDates.length === 1 ? buildOccurrence(sortedDates[0]) : sortedDates.map(buildOccurrence);
+  const occurrences = sortedDates.map(buildOccurrence);
+  const eventJsonLd = occurrences.length === 1 ? occurrences[0] : occurrences;
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 md:py-16">
