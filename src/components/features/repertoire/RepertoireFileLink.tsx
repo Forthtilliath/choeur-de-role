@@ -226,7 +226,7 @@ function AudioFileRow({
 
   // Init volume depuis localStorage (SSR-safe : useEffect évite le mismatch d'hydratation)
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect, @eslint-react/set-state-in-effect
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setVolume(getStoredVolume());
   }, []);
 
@@ -277,7 +277,7 @@ function AudioFileRow({
       audio.removeEventListener('ended', onEnded);
     };
     // volume exclu : il n'est appliqué qu'au chargement (un changement ne doit pas réinscrire les écouteurs)
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
+    // eslint-disable-next-line @eslint-react/exhaustive-deps
   }, [audioUrl]);
 
   function closeVolumePopup() {

@@ -74,7 +74,7 @@ export function CenterMapPicker({ lat, lng, label, onChange }: Props) {
       map?.remove();
     };
     // coords exclu : la carte est initialisée avec la position au moment de l'ouverture
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
+    // eslint-disable-next-line @eslint-react/exhaustive-deps
   }, [open]);
 
   function handleConfirm() {
