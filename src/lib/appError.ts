@@ -8,12 +8,10 @@ export type CodeError =
 
 export class AppError extends Error {
   code: CodeError;
-  message: string;
 
   constructor(code: CodeError, message: string) {
     super(message);
     this.name = 'AppError';
     this.code = code;
-    this.message = message;
   }
 }
