@@ -277,7 +277,7 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
 
     async function fetchImageBase64(url: string): Promise<string | null> {
       try {
-        const cleanUrl = url.split('?')[0];
+        const cleanUrl = url.split('?')[0] ?? url;
         const res = await fetch(`/api/r2/image-view?url=${encodeURIComponent(cleanUrl)}`);
         if (!res.ok) return null;
         const blob = await res.blob();
@@ -303,8 +303,7 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
     );
 
     let currentPage = 0;
-    for (let i = 0; i < sorted.length; i++) {
-      const m = sorted[i];
+    for (const [i, m] of sorted.entries()) {
       const itemsPerPage = Math.floor((pageHeight - marginY) / cellH) * cols;
       const indexOnPage = i % itemsPerPage;
       const colOnPage = indexOnPage % cols;

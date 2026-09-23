@@ -177,8 +177,8 @@ export function EventForm({
         return;
       }
 
-      const [startH, startM] = recurStartTime.split(':').map(Number);
-      const [endH, endM] = recurEndTime.split(':').map(Number);
+      const [startH = 0, startM = 0] = recurStartTime.split(':').map(Number);
+      const [endH = 0, endM = 0] = recurEndTime.split(':').map(Number);
       const seriesId = crypto.randomUUID();
 
       const rows = dates.map((d) => {

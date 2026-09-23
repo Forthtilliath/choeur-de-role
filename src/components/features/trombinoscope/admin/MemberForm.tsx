@@ -25,6 +25,7 @@ import { ROLE_LABELS } from '../types';
 import { getMemberAuditHistory, saveMemberAdminAction } from './actions';
 
 const ROLE_RANK: Record<string, number> = { member: 0, ca: 1, admin: 2, super_admin: 3 };
+const rankOf = (role: string | null | undefined) => ROLE_RANK[role ?? 'member'] ?? 0;
 
 type Props = {
   member: AdminMemberWithSeasons | null;
@@ -116,13 +117,9 @@ export function MemberForm({
   const [passwordResetting, setPasswordResetting] = useState(false);
   const [passwordResetSuccess, setPasswordResetSuccess] = useState(false);
 
-  const canEditRole = member
-    ? ROLE_RANK[currentUserRole] > ROLE_RANK[member.role ?? 'member']
-    : false;
+  const canEditRole = member ? rankOf(currentUserRole) > rankOf(member.role) : false;
 
-  const availableRoles = Object.keys(ROLE_RANK).filter(
-    (r) => ROLE_RANK[r] < ROLE_RANK[currentUserRole],
-  );
+  const availableRoles = Object.keys(ROLE_RANK).filter((r) => rankOf(r) < rankOf(currentUserRole));
 
   async function handleEmailChange() {
     if (!member || !newEmail) return;

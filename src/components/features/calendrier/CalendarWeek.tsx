@@ -48,7 +48,7 @@ export function CalendarWeek({
     return d;
   });
 
-  const weekEnd = days[6];
+  const weekEnd = days[6] ?? weekStart;
   const weekLabel =
     weekStart.getMonth() === weekEnd.getMonth()
       ? `${weekStart.getDate()} – ${weekEnd.getDate()} ${MONTHS_SHORT[weekEnd.getMonth()]} ${weekEnd.getFullYear()}`

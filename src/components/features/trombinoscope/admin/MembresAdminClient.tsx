@@ -374,7 +374,12 @@ export function MembresAdminClient({
   function handleLockToggle(memberId: string, locked: boolean) {
     setLocalAuthMap((prev) => ({
       ...prev,
-      [memberId]: { ...prev[memberId], isLocked: locked },
+      [memberId]: {
+        emailConfirmedAt: undefined,
+        lastSignInAt: undefined,
+        ...prev[memberId],
+        isLocked: locked,
+      },
     }));
   }
 

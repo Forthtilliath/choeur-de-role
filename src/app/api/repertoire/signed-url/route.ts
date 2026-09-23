@@ -28,8 +28,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ url });
     }
 
-    const urlParts = path.split('/repertoire/');
-    const filePath = urlParts[urlParts.length - 1];
+    const filePath = path.split('/repertoire/').at(-1) ?? path;
     const { data, error } = await supabase.storage
       .from('repertoire')
       .createSignedUrl(filePath, 3600, { download: false });

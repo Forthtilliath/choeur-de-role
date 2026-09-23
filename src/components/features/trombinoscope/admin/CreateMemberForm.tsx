@@ -33,7 +33,7 @@ export function CreateMemberForm({ voiceParts, seasons, onCloseAction, onSuccess
     .filter((s) => s.active)
     .sort((a, b) => new Date(a.created_at ?? 0).getTime() - new Date(b.created_at ?? 0).getTime());
 
-  const defaultSeasonIds = activeSeasons.length >= 1 ? [activeSeasons[0].id] : [];
+  const defaultSeasonIds = activeSeasons[0] ? [activeSeasons[0].id] : [];
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

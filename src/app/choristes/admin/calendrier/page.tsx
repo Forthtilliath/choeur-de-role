@@ -36,8 +36,9 @@ export default async function AdminCalendrierPage() {
 
   const birthdayCountsByMonth: Record<number, number> = {};
   for (const m of birthdayMembers) {
-    if (m.birthday) {
-      const month = parseInt(m.birthday.split('-')[1], 10) - 1;
+    const monthPart = m.birthday?.split('-')[1];
+    if (monthPart) {
+      const month = parseInt(monthPart, 10) - 1;
       birthdayCountsByMonth[month] = (birthdayCountsByMonth[month] ?? 0) + 1;
     }
   }
