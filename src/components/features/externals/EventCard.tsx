@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { useNow } from '@/hooks/useNow';
 import { formatEventDateRange } from '@/utils/dateHelpers';
 
 import type { ExternalEvent } from './types';
@@ -203,7 +204,7 @@ export function EventCard({
   priority?: boolean;
 }) {
   const router = useRouter();
-  const now = new Date();
+  const now = new Date(useNow());
   const sortedDates = [...event.external_event_dates].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
