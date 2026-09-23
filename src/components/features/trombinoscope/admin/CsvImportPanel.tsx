@@ -13,6 +13,7 @@ import type { AdminMemberWithSeasons } from '../types';
 type VoicePart = Tables<'voice_parts'>;
 
 type ParsedRow = {
+  lineNumber: number; // ligne dans le fichier CSV (1 = en-tête)
   first_name: string;
   last_name: string;
   email: string;
@@ -146,7 +147,7 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
         return;
       }
 
-      const parsed: ParsedRow[] = dataLines.map((line) => {
+      const parsed: ParsedRow[] = dataLines.map((line, index) => {
         const values = parseCSVLine(line);
         const raw: Record<string, string> = {};
         headers.forEach((h, i) => {
@@ -192,6 +193,7 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
         }
 
         return {
+          lineNumber: index + 2,
           first_name,
           last_name,
           email,
@@ -298,8 +300,8 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
                     </tr>
                   </thead>
                   <tbody>
-                    {successRows.map((r, i) => (
-                      <tr key={i} className="border-b border-border last:border-0">
+                    {successRows.map((r) => (
+                      <tr key={r.email} className="border-b border-border last:border-0">
                         <td className="px-3 py-2 text-foreground">
                           {r.first_name} {r.last_name}
                         </td>
@@ -339,6 +341,8 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
             <div className="flex flex-col gap-1">
               {failedRows.map((r, i) => (
                 <div
+                  // Résultats en lecture seule, un même e-mail peut échouer plusieurs fois
+                  // eslint-disable-next-line @eslint-react/no-array-index-key
                   key={i}
                   className="flex items-center gap-3 text-xs px-3 py-2 bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-800 rounded-lg"
                 >
@@ -425,9 +429,9 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
               </tr>
             </thead>
             <tbody>
-              {rows.map((row, i) => (
+              {rows.map((row) => (
                 <tr
-                  key={i}
+                  key={row.lineNumber}
                   className={`border-b border-border last:border-0 ${row.errors.length > 0 ? 'bg-red-50/40 dark:bg-red-950/20' : ''}`}
                 >
                   <td className="px-3 py-2 text-foreground">

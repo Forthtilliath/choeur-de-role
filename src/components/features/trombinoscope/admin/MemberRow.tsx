@@ -326,8 +326,8 @@ function RoleBadge({ role, bureauRole }: { role: string; bureauRole?: string | n
             }}
           >
             <div className="bg-app-green text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-lg">
-              {lines.map((line, i) => (
-                <p key={i} className="m-0 whitespace-nowrap">
+              {lines.map((line) => (
+                <p key={line} className="m-0 whitespace-nowrap">
                   {line}
                 </p>
               ))}

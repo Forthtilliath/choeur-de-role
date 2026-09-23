@@ -200,6 +200,8 @@ function QuestionResultCard({
       {result.type === 'text' && result.text_answers && (
         <div className="flex flex-col gap-1.5 max-h-48 overflow-y-auto">
           {result.text_answers.map((t, i) => (
+            // Réponses libres en lecture seule, doublons possibles : l'index est la seule clé stable
+            // eslint-disable-next-line @eslint-react/no-array-index-key
             <p key={i} className="text-sm text-foreground/70 border-l-2 border-border pl-3">
               {t}
             </p>
@@ -224,6 +226,7 @@ function ChoiceChart({
   responses: PollResponse[];
 }) {
   const data = options.map((o) => ({
+    id: o.option_id,
     name: o.label,
     count: o.count,
     pct: total > 0 ? Math.round((o.count / total) * 100) : 0,
@@ -251,8 +254,8 @@ function ChoiceChart({
           <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 12 }} />
           <Tooltip formatter={formatAnswerCount} />
           <Bar dataKey="count" radius={[0, 4, 4, 0]}>
-            {data.map((_, i) => (
-              <Cell key={i} fill={COLORS[i % COLORS.length]} />
+            {data.map((d, i) => (
+              <Cell key={d.id} fill={COLORS[i % COLORS.length]} />
             ))}
           </Bar>
         </BarChart>
@@ -270,8 +273,8 @@ function ChoiceChart({
               outerRadius={80}
               label={({ percent }) => `${Math.round((percent ?? 0) * 100)}%`}
             >
-              {data.map((_, i) => (
-                <Cell key={i} fill={COLORS[i % COLORS.length]} />
+              {data.map((d, i) => (
+                <Cell key={d.id} fill={COLORS[i % COLORS.length]} />
               ))}
             </Pie>
             <Tooltip formatter={formatAnswerCount} />
@@ -279,7 +282,7 @@ function ChoiceChart({
         </ResponsiveContainer>
         <div className="flex flex-col gap-1.5 text-sm">
           {data.map((d, i) => (
-            <div key={i} className="flex items-center gap-2">
+            <div key={d.id} className="flex items-center gap-2">
               <span
                 className="w-3 h-3 rounded-sm shrink-0"
                 style={{ backgroundColor: COLORS[i % COLORS.length] }}

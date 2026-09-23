@@ -452,7 +452,7 @@ export function EventForm({
                   <div className="flex flex-wrap gap-1">
                     {WEEKDAYS.map((day, idx) => (
                       <button
-                        key={idx}
+                        key={day}
                         type="button"
                         onClick={() => setRecurDay(idx + 1)}
                         className={`text-xs px-2.5 py-1 rounded-lg border transition-all ${recurDay === idx + 1 ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
