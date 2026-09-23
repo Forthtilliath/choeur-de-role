@@ -78,8 +78,8 @@ function BureauRoleBadge({ bureauRole }: { bureauRole: string }) {
             }}
           >
             <div className="bg-app-green text-white text-xs font-semibold px-3 py-2 rounded-lg shadow-lg">
-              {roles.map((role, i) => (
-                <p key={i} className="m-0 whitespace-nowrap">
+              {roles.map((role) => (
+                <p key={role} className="m-0 whitespace-nowrap">
                   {role}
                 </p>
               ))}

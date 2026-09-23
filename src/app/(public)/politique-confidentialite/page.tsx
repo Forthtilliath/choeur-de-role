@@ -62,8 +62,8 @@ export default function PolitiqueConfidentialitePage() {
                   'Affichage du trombinoscope interne',
                   'Intérêt légitime — accès restreint aux membres',
                 ],
-              ].map(([finalite, base], i) => (
-                <tr key={i} className="border-t border-border">
+              ].map(([finalite, base]) => (
+                <tr key={finalite} className="border-t border-border">
                   <td className="px-4 py-2">{finalite}</td>
                   <td className="px-4 py-2 text-foreground/60">{base}</td>
                 </tr>
