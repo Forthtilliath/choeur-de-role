@@ -57,7 +57,7 @@ export function HomeBlocksAdmin({ initialBlocks }: Props) {
   }
 
   async function handleDelete(id: string) {
-    if (!await confirm({ message: 'Supprimer ce bloc ?', danger: true })) return;
+    if (!(await confirm({ message: 'Supprimer ce bloc ?', danger: true }))) return;
     await deleteBlock(id);
     setBlocks((prev) => prev.filter((b) => b.id !== id));
     toast.success('Bloc supprimé');

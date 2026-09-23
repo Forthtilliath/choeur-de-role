@@ -2,11 +2,7 @@
  * Compresse une image côté client via Canvas API et la convertit en WebP.
  * Les fichiers non-image sont retournés sans modification.
  */
-export async function compressImage(
-  file: File,
-  maxWidth = 2400,
-  quality = 0.82,
-): Promise<File> {
+export async function compressImage(file: File, maxWidth = 2400, quality = 0.82): Promise<File> {
   if (!file.type.startsWith('image/')) return file;
 
   return new Promise((resolve, reject) => {

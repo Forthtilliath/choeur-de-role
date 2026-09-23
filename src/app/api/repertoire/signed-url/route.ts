@@ -33,7 +33,11 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.storage
       .from('repertoire')
       .createSignedUrl(filePath, 3600, { download: false });
-    if (error) return NextResponse.json({ error: 'Erreur lors de la génération du lien de téléchargement.' }, { status: 400 });
+    if (error)
+      return NextResponse.json(
+        { error: 'Erreur lors de la génération du lien de téléchargement.' },
+        { status: 400 },
+      );
 
     return NextResponse.json({ url: data.signedUrl });
   } catch (e) {

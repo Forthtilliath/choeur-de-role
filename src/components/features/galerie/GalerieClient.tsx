@@ -5,7 +5,9 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const GalerieLightbox = dynamic(() => import('./GalerieLightbox').then(m => m.GalerieLightbox), { ssr: false });
+const GalerieLightbox = dynamic(() => import('./GalerieLightbox').then((m) => m.GalerieLightbox), {
+  ssr: false,
+});
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
 
 import type { GalleryAlbum } from './types';

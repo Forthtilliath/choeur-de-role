@@ -1,5 +1,5 @@
 import { getSeasonsQuery } from '@/components/features/concerts/queries';
-import { getAdminVoiceParts,getChoristerVoiceParts } from '@/components/features/pupitres/queries';
+import { getAdminVoiceParts, getChoristerVoiceParts } from '@/components/features/pupitres/queries';
 import { MembresAdminClient } from '@/components/features/trombinoscope/admin/MembresAdminClient';
 import { getMembersForTrombiAdmin } from '@/components/features/trombinoscope/queries';
 import { getUsers } from '@/components/features/trombinoscope/queries';

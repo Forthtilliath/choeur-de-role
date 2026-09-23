@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Saisons', () => {
   test.beforeEach(async ({ page }) => {
@@ -33,7 +33,9 @@ test.describe('Admin — Saisons', () => {
 
   test('le formulaire contient le champ Label et les boutons Annuler/Ajouter', async ({ page }) => {
     await page.getByRole('button', { name: /Ajouter une saison/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="2025-2026"]')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible();
     await expect(page.getByRole('button', { name: /^Ajouter$/ })).toBeVisible();
@@ -41,12 +43,18 @@ test.describe('Admin — Saisons', () => {
 
   test('Annuler ferme le formulaire sans créer de saison', async ({ page }) => {
     await page.getByRole('button', { name: /Ajouter une saison/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
-  test('chaque saison affiche les boutons Modifier, Activer/Désactiver et Supprimer', async ({ page }) => {
+  test('chaque saison affiche les boutons Modifier, Activer/Désactiver et Supprimer', async ({
+    page,
+  }) => {
     const items = page.locator('main .rounded-xl.border.border-border');
     if ((await items.count()) === 0) {
       test.skip(true, 'Aucune saison disponible');
@@ -64,11 +72,18 @@ test.describe('Admin — Saisons', () => {
       test.skip(true, 'Aucune saison disponible');
       return;
     }
-    await items.first().getByRole('button', { name: /Modifier/i }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier la saison' })).toBeVisible({ timeout: 3_000 });
+    await items
+      .first()
+      .getByRole('button', { name: /Modifier/i })
+      .click();
+    await expect(page.locator('h2', { hasText: 'Modifier la saison' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="2025-2026"]')).not.toHaveValue('');
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier la saison' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Modifier la saison' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('Supprimer affiche une confirmation et Annuler conserve la saison', async ({ page }) => {
@@ -92,7 +107,9 @@ test.describe('Admin — Saisons', () => {
 
     // Création
     await page.getByRole('button', { name: /Ajouter une saison/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter une saison' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.locator('input[placeholder="2025-2026"]').fill(label);
     await page.getByRole('button', { name: /^Ajouter$/ }).click();
 

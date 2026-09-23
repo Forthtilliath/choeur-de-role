@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect,useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { Search, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -157,9 +157,15 @@ export function Header({
               onClick={() => setMenuOuvert(!menuOuvert)}
               aria-label="Menu"
             >
-              <span className={`bg-foreground block w-6 h-0.5 transition-transform ${menuOuvert ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`bg-foreground block w-6 h-0.5 transition-opacity ${menuOuvert ? 'opacity-0' : ''}`} />
-              <span className={`bg-foreground block w-6 h-0.5 transition-transform ${menuOuvert ? '-rotate-45 -translate-y-2' : ''}`} />
+              <span
+                className={`bg-foreground block w-6 h-0.5 transition-transform ${menuOuvert ? 'rotate-45 translate-y-2' : ''}`}
+              />
+              <span
+                className={`bg-foreground block w-6 h-0.5 transition-opacity ${menuOuvert ? 'opacity-0' : ''}`}
+              />
+              <span
+                className={`bg-foreground block w-6 h-0.5 transition-transform ${menuOuvert ? '-rotate-45 -translate-y-2' : ''}`}
+              />
             </button>
           </div>
         </div>
@@ -172,7 +178,6 @@ export function Header({
       {/* Menu mobile/tablette — style palette */}
       {menuOuvert && (
         <nav className="fixed inset-0 z-40 lg:hidden bg-background-secondary px-2 pt-20 pb-4 flex flex-col overflow-y-auto overscroll-contain">
-
           {/* Accueil */}
           <button
             onClick={() => navigate('/')}
@@ -249,29 +254,30 @@ export function Header({
                 <span>Administration</span>
                 <span>{showAdminLinks ? '▲' : '▼'}</span>
               </button>
-              {showAdminLinks && (adminGroups ?? []).map((group) => (
-                <div key={group.label}>
-                  <p className="text-[10px] text-foreground/30 px-3 pt-2 pb-1 italic">
-                    {group.label}
-                  </p>
-                  {group.links.map((lien) => {
-                    const isActive =
-                      lien.href === '/choristes/admin'
-                        ? pathname === '/choristes/admin'
-                        : pathname.startsWith(lien.href);
-                    return (
-                      <button
-                        key={lien.href}
-                        onClick={() => navigate(lien.href)}
-                        className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm transition-colors ${isActive ? 'bg-secondary/10 text-secondary font-medium' : 'text-foreground/70 hover:text-foreground hover:bg-background-tertiary'}`}
-                      >
-                        <span className="text-base shrink-0">{adminIcons[lien.href] ?? '•'}</span>
-                        <span>{lien.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
+              {showAdminLinks &&
+                (adminGroups ?? []).map((group) => (
+                  <div key={group.label}>
+                    <p className="text-[10px] text-foreground/30 px-3 pt-2 pb-1 italic">
+                      {group.label}
+                    </p>
+                    {group.links.map((lien) => {
+                      const isActive =
+                        lien.href === '/choristes/admin'
+                          ? pathname === '/choristes/admin'
+                          : pathname.startsWith(lien.href);
+                      return (
+                        <button
+                          key={lien.href}
+                          onClick={() => navigate(lien.href)}
+                          className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm transition-colors ${isActive ? 'bg-secondary/10 text-secondary font-medium' : 'text-foreground/70 hover:text-foreground hover:bg-background-tertiary'}`}
+                        >
+                          <span className="text-base shrink-0">{adminIcons[lien.href] ?? '•'}</span>
+                          <span>{lien.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
             </>
           )}
 
@@ -324,7 +330,9 @@ export function Header({
             {isAdmin && (
               <Button
                 href="/choristes/admin/tableau-de-bord"
-                variant={pathname.startsWith('/choristes/admin') ? 'secondary' : 'outline-secondary'}
+                variant={
+                  pathname.startsWith('/choristes/admin') ? 'secondary' : 'outline-secondary'
+                }
                 size="sm"
                 className="flex gap-1 group"
               >

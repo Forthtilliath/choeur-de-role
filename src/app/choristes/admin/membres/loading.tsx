@@ -13,9 +13,15 @@ function MemberRowSkeleton() {
           </div>
         </div>
       </td>
-      <td className="px-4 py-3"><Skeleton className="h-5 w-16 rounded-full" /></td>
-      <td className="px-4 py-3 hidden sm:table-cell"><Skeleton className="h-3.5 w-20" /></td>
-      <td className="px-4 py-3 hidden md:table-cell"><Skeleton className="h-5 w-14 rounded-full" /></td>
+      <td className="px-4 py-3">
+        <Skeleton className="h-5 w-16 rounded-full" />
+      </td>
+      <td className="px-4 py-3 hidden sm:table-cell">
+        <Skeleton className="h-3.5 w-20" />
+      </td>
+      <td className="px-4 py-3 hidden md:table-cell">
+        <Skeleton className="h-5 w-14 rounded-full" />
+      </td>
       <td className="px-4 py-3">
         <div className="flex gap-1.5">
           <Skeleton className="h-7 w-16 rounded-lg" />
@@ -43,11 +49,21 @@ export default function AdminMembresLoading() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-border bg-muted/30">
-              <th className="px-4 py-3 text-left"><Skeleton className="h-3 w-20" /></th>
-              <th className="px-4 py-3 text-left"><Skeleton className="h-3 w-14" /></th>
-              <th className="px-4 py-3 text-left hidden sm:table-cell"><Skeleton className="h-3 w-16" /></th>
-              <th className="px-4 py-3 text-left hidden md:table-cell"><Skeleton className="h-3 w-10" /></th>
-              <th className="px-4 py-3 text-left"><Skeleton className="h-3 w-14" /></th>
+              <th className="px-4 py-3 text-left">
+                <Skeleton className="h-3 w-20" />
+              </th>
+              <th className="px-4 py-3 text-left">
+                <Skeleton className="h-3 w-14" />
+              </th>
+              <th className="px-4 py-3 text-left hidden sm:table-cell">
+                <Skeleton className="h-3 w-16" />
+              </th>
+              <th className="px-4 py-3 text-left hidden md:table-cell">
+                <Skeleton className="h-3 w-10" />
+              </th>
+              <th className="px-4 py-3 text-left">
+                <Skeleton className="h-3 w-14" />
+              </th>
             </tr>
           </thead>
           <tbody>

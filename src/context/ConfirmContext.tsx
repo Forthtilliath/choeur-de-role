@@ -25,8 +25,8 @@ type ConfirmState = ConfirmOptions & {
   resolve: (value: boolean) => void;
 };
 
-const ConfirmContext = createContext<(options: ConfirmOptions) => Promise<boolean>>(
-  () => Promise.resolve(false),
+const ConfirmContext = createContext<(options: ConfirmOptions) => Promise<boolean>>(() =>
+  Promise.resolve(false),
 );
 
 export function ConfirmProvider({ children }: { children: React.ReactNode }) {

@@ -1,6 +1,6 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-test.describe('Admin — Journal d\'audit', () => {
+test.describe("Admin — Journal d'audit", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/choristes/admin/audit-log');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
@@ -23,12 +23,12 @@ test.describe('Admin — Journal d\'audit', () => {
     await expect(page.getByRole('button', { name: 'Tout', exact: true })).toBeVisible();
   });
 
-  test('les filtres d\'action sont présents', async ({ page }) => {
+  test("les filtres d'action sont présents", async ({ page }) => {
     await expect(page.locator('span', { hasText: 'Action :' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Toutes' })).toBeVisible();
   });
 
-  test('le compteur d\'entrées est affiché', async ({ page }) => {
+  test("le compteur d'entrées est affiché", async ({ page }) => {
     // Le compteur et le message vide contiennent tous les deux "entrée" — on cible le premier
     await expect(page.locator('p', { hasText: /entrée/ }).first()).toBeVisible();
   });
@@ -36,7 +36,7 @@ test.describe('Admin — Journal d\'audit', () => {
   test('des entrées ou le message vide sont affichés', async ({ page }) => {
     const table = page.locator('table');
     const empty = page.locator('text=Aucune entrée');
-    const hasTable = await table.count() > 0;
+    const hasTable = (await table.count()) > 0;
     if (hasTable) {
       await expect(table).toBeVisible();
       await expect(page.locator('th', { hasText: 'Action' })).toBeVisible();
@@ -52,8 +52,8 @@ test.describe('Admin — Journal d\'audit', () => {
 
   test('filtrer par action "Connexion" met à jour l\'affichage', async ({ page }) => {
     const btn = page.getByRole('button', { name: 'Connexion' });
-    if (!await btn.isVisible({ timeout: 2_000 }).catch(() => false)) {
-      test.skip(true, 'Pas d\'entrées de type Connexion dans le journal');
+    if (!(await btn.isVisible({ timeout: 2_000 }).catch(() => false))) {
+      test.skip(true, "Pas d'entrées de type Connexion dans le journal");
       return;
     }
     await btn.click();

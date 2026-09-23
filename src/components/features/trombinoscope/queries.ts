@@ -44,9 +44,7 @@ export async function getMemberAuditHistory(memberId: string): Promise<MemberHis
   if (!logs?.length) return [];
 
   const userIds = [
-    ...new Set(
-      (logs as { user_id: string | null }[]).map((l) => l.user_id).filter(Boolean),
-    ),
+    ...new Set((logs as { user_id: string | null }[]).map((l) => l.user_id).filter(Boolean)),
   ] as string[];
   const memberMap = new Map<string, string>();
   if (userIds.length > 0) {
@@ -147,7 +145,11 @@ export async function getUsers() {
   return Object.fromEntries(
     data.users.map((u) => [
       u.id,
-      { emailConfirmedAt: u.email_confirmed_at, lastSignInAt: u.last_sign_in_at, isLocked: !!u.banned_until && new Date(u.banned_until) > new Date() },
+      {
+        emailConfirmedAt: u.email_confirmed_at,
+        lastSignInAt: u.last_sign_in_at,
+        isLocked: !!u.banned_until && new Date(u.banned_until) > new Date(),
+      },
     ]),
   );
 }

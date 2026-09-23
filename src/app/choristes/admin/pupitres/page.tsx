@@ -9,8 +9,12 @@ export default async function AdminPupitresPage() {
   const voiceParts = await getVoiceParts();
 
   return (
-    <Main variant="admin" title="Gestion des pupitres" breadcrumbs={[{ label: 'Espace choristes', href: '/choristes' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Gestion des pupitres"
+      breadcrumbs={[{ label: 'Espace choristes', href: '/choristes' }]}
+      breadcrumbCurrent="Administration"
+    >
       <PupitresAdminClient initialVoiceParts={voiceParts} />
     </Main>
   );

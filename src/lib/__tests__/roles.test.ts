@@ -1,6 +1,6 @@
-import { describe, expect,it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import { buildRoleInfo,isAdmin, isCa, isMember, isValidDbRole } from '../roles';
+import { buildRoleInfo, isAdmin, isCa, isMember, isValidDbRole } from '../roles';
 
 describe('isValidDbRole', () => {
   it.each(['member', 'ca', 'admin', 'super_admin'])('accepte le rôle valide "%s"', (role) => {
@@ -52,7 +52,13 @@ describe('buildRoleInfo', () => {
 
   it('member → choriste connecté sans privilèges', () => {
     const info = buildRoleInfo('member');
-    expect(info).toMatchObject({ role: 'member', isLoggedIn: true, isAdmin: false, isCa: false, isMember: true });
+    expect(info).toMatchObject({
+      role: 'member',
+      isLoggedIn: true,
+      isAdmin: false,
+      isCa: false,
+      isMember: true,
+    });
   });
 
   it('ca → accès CA mais pas admin', () => {

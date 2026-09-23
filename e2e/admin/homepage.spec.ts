@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Homepage', () => {
   test.beforeEach(async ({ page }) => {
@@ -13,7 +13,7 @@ test.describe('Admin — Homepage', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le hero avec l\'image de fond est affiché', async ({ page }) => {
+  test("le hero avec l'image de fond est affiché", async ({ page }) => {
     // La section hero contient une image Next.js
     await expect(page.locator('section').first().locator('img')).toBeVisible();
   });

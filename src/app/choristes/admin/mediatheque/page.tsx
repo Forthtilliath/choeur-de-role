@@ -15,8 +15,12 @@ export default async function AdminMediathequePage() {
   ]);
 
   return (
-    <Main variant="admin" title="Médiathèque" breadcrumbs={[{ label: 'Répertoire', href: '/choristes/repertoire' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Médiathèque"
+      breadcrumbs={[{ label: 'Répertoire', href: '/choristes/repertoire' }]}
+      breadcrumbCurrent="Administration"
+    >
       <MediathequeAdminClient
         initialSongs={songs}
         voiceParts={voiceParts}

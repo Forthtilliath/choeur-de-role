@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page Trombinoscope', () => {
   test.beforeEach(async ({ page }) => {
@@ -11,7 +11,7 @@ test.describe('Page Trombinoscope', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le panneau admin n\'est pas visible pour un membre', async ({ page }) => {
+  test("le panneau admin n'est pas visible pour un membre", async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();
   });
 
@@ -57,7 +57,7 @@ test.describe('Page Trombinoscope', () => {
     await expect(voicePartButtons.first()).toBeVisible();
   });
 
-  test('le menu de colonnes s\'ouvre et se ferme', async ({ page }) => {
+  test("le menu de colonnes s'ouvre et se ferme", async ({ page }) => {
     const colonnesBtn = page.getByRole('button', { name: /Colonnes/ });
     await colonnesBtn.click();
     await expect(page.locator('text=Colonnes affichées')).toBeVisible();
@@ -90,6 +90,8 @@ test.describe('Page Trombinoscope - visibilité admin', () => {
     await page.goto('/choristes/trombinoscope');
     await expect(page.locator('h1', { hasText: 'Trombinoscope' })).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('nav[aria-label="Administration"]')).toBeVisible();
-    await expect(page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/membres"]')).toBeVisible();
+    await expect(
+      page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/membres"]'),
+    ).toBeVisible();
   });
 });

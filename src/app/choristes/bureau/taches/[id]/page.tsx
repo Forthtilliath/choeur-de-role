@@ -2,11 +2,21 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { getAllTaskComments, getCaMembers, getCategories, getProject, getTasks } from '@/components/features/bureau/queries';
+import {
+  getAllTaskComments,
+  getCaMembers,
+  getCategories,
+  getProject,
+  getTasks,
+} from '@/components/features/bureau/queries';
 import { TaskBoard } from '@/components/features/bureau/TaskBoard';
 import { getUserQuery } from '@/lib/auth';
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
   const { id } = await params;
   const project = await getProject(id);
   return { title: project ? `${project.name} — Tâches` : 'Projet introuvable' };

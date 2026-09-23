@@ -5,7 +5,11 @@ import Link from 'next/link';
 import type { TaskProject } from '@/types/tasks';
 
 function formatDate(iso: string) {
-  return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(iso));
+  return new Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  }).format(new Date(iso));
 }
 
 export function ProjectList({ projects }: { projects: TaskProject[] }) {

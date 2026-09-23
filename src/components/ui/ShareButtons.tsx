@@ -27,8 +27,10 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)); }, []);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect, @eslint-react/set-state-in-effect
+    setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+  }, []);
 
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
@@ -41,7 +43,11 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
 
   const handleInstagram = async () => {
     if (typeof navigator.share === 'function') {
-      try { await navigator.share({ title, url }); } catch { /* annulé */ }
+      try {
+        await navigator.share({ title, url });
+      } catch {
+        /* annulé */
+      }
     }
   };
 

@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page Répertoire', () => {
   test.beforeEach(async ({ page }) => {
@@ -11,7 +11,7 @@ test.describe('Page Répertoire', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le panneau admin n\'est pas visible pour un membre', async ({ page }) => {
+  test("le panneau admin n'est pas visible pour un membre", async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();
   });
 
@@ -80,7 +80,7 @@ test.describe('Page Répertoire', () => {
     await expect(page.locator('text=Aucun chant trouvé')).not.toBeVisible({ timeout: 3_000 });
   });
 
-  test('le modal de téléchargement s\'ouvre et se ferme', async ({ page }) => {
+  test("le modal de téléchargement s'ouvre et se ferme", async ({ page }) => {
     const downloadBtn = page.getByRole('button', { name: /Tout télécharger/ });
     await downloadBtn.click();
 
@@ -99,6 +99,8 @@ test.describe('Page Répertoire - visibilité admin', () => {
     await page.goto('/choristes/repertoire');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('nav[aria-label="Administration"]')).toBeVisible();
-    await expect(page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/mediatheque"]')).toBeVisible();
+    await expect(
+      page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/mediatheque"]'),
+    ).toBeVisible();
   });
 });

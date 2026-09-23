@@ -61,5 +61,4 @@ export const ROLE_LABELS: Record<string, string> = {
   super_admin: 'Super Admin',
 };
 
-
-export type MemberInsert = TablesInsert<'members'>
+export type MemberInsert = TablesInsert<'members'>;

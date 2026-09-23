@@ -20,7 +20,6 @@ export default async function CAPage() {
         )
       }
     >
-
       {meetings.length === 0 && (
         <p className="text-foreground/50 text-center py-12">Aucun compte-rendu pour le moment.</p>
       )}

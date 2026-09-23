@@ -53,12 +53,14 @@ setup('connexion admin', async ({ page }) => {
             .map(({ name, value }) => [name, value]),
         ),
         body: !['GET', 'HEAD'].includes(req.method())
-          ? (req.postDataBuffer() ?? undefined) as BodyInit | undefined
+          ? ((req.postDataBuffer() ?? undefined) as BodyInit | undefined)
           : undefined,
       });
       const body = Buffer.from(await resp.arrayBuffer());
       const headers: Record<string, string> = {};
-      resp.headers.forEach((v, k) => { headers[k] = v; });
+      resp.headers.forEach((v, k) => {
+        headers[k] = v;
+      });
       headers['access-control-allow-origin'] = 'http://localhost:3000';
       headers['access-control-allow-credentials'] = 'true';
       await route.fulfill({ status: resp.status, headers, body });

@@ -48,9 +48,7 @@ export function AuditLogClient({ logs, hasMore }: Props) {
   const [now] = useState(() => Date.now());
 
   const filtered = useMemo(() => {
-    const since = selectedDays
-      ? new Date(now - selectedDays * 86_400_000).toISOString()
-      : null;
+    const since = selectedDays ? new Date(now - selectedDays * 86_400_000).toISOString() : null;
     return logs.filter((log) => {
       if (selectedAction && log.action !== selectedAction) return false;
       if (since && log.created_at < since) return false;

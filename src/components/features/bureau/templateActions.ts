@@ -13,11 +13,7 @@ async function getAdminAuth() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return null;
-  const { data: member } = await supabase
-    .from('members')
-    .select('role')
-    .eq('id', user.id)
-    .single();
+  const { data: member } = await supabase.from('members').select('role').eq('id', user.id).single();
   if (!member || !isAdmin(member.role as MemberRole)) return null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return { userId: user.id, db: supabase as any };

@@ -103,7 +103,9 @@ function addChoicePupitreTable(
   const body = pupitres.map((p) => {
     const counts = pupitreMap.get(p)!;
     const rowTotal = Object.values(counts).reduce((a, b) => a + b, 0);
-    const total = responses.filter((r) => r.member.voice_part?.name === p || (!r.member.voice_part && p === 'Non renseigné')).length;
+    const total = responses.filter(
+      (r) => r.member.voice_part?.name === p || (!r.member.voice_part && p === 'Non renseigné'),
+    ).length;
     return [
       p,
       ...options.map((o) => {
@@ -120,7 +122,12 @@ function addChoicePupitreTable(
     head,
     body,
     styles: { fontSize: 7, cellPadding: 1.5 },
-    headStyles: { fillColor: [230, 230, 245], textColor: [80, 80, 120], fontSize: 7, fontStyle: 'bold' },
+    headStyles: {
+      fillColor: [230, 230, 245],
+      textColor: [80, 80, 120],
+      fontSize: 7,
+      fontStyle: 'bold',
+    },
     columnStyles: { 0: { fontStyle: 'bold', cellWidth: 30 } },
     alternateRowStyles: { fillColor: [248, 248, 255] },
     margin: { left: margin + 2, right: margin },
@@ -152,7 +159,9 @@ function addRatingPupitreTable(
     const vals = pupitreMap.get(p)!;
     const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
     const dist: Record<number, number> = {};
-    vals.forEach((v) => { dist[v] = (dist[v] ?? 0) + 1; });
+    vals.forEach((v) => {
+      dist[v] = (dist[v] ?? 0) + 1;
+    });
     return [p, ...[1, 2, 3, 4, 5].map((n) => (dist[n] ? String(dist[n]) : '—')), avg.toFixed(1)];
   });
 
@@ -161,8 +170,16 @@ function addRatingPupitreTable(
     head,
     body,
     styles: { fontSize: 7, cellPadding: 1.5, halign: 'center' },
-    headStyles: { fillColor: [230, 230, 245], textColor: [80, 80, 120], fontSize: 7, fontStyle: 'bold' },
-    columnStyles: { 0: { halign: 'left', fontStyle: 'bold', cellWidth: 30 }, 6: { fontStyle: 'bold' } },
+    headStyles: {
+      fillColor: [230, 230, 245],
+      textColor: [80, 80, 120],
+      fontSize: 7,
+      fontStyle: 'bold',
+    },
+    columnStyles: {
+      0: { halign: 'left', fontStyle: 'bold', cellWidth: 30 },
+      6: { fontStyle: 'bold' },
+    },
     alternateRowStyles: { fillColor: [248, 248, 255] },
     margin: { left: margin + 2, right: margin },
   });
@@ -225,7 +242,10 @@ export async function exportResultsPdf(results: PollResults): Promise<void> {
     if ((qr.type === 'single_choice' || qr.type === 'multiple_choice') && qr.options) {
       const data = qr.options.map((o) => ({ label: o.label, count: o.count }));
       const chartHeight = data.length * 9;
-      if (y + chartHeight > 270) { doc.addPage(); y = 20; }
+      if (y + chartHeight > 270) {
+        doc.addPage();
+        y = 20;
+      }
       drawBarChart(doc, data, qr.total_responses, margin + 2, y, 176, 6);
       y += chartHeight + 4;
       y = addChoicePupitreTable(doc, y, margin, qr.question_id, qr.options, results.responses);
@@ -245,7 +265,10 @@ export async function exportResultsPdf(results: PollResults): Promise<void> {
       y = addRatingPupitreTable(doc, y, margin, qr.question_id, results.responses);
     } else if (qr.type === 'text' && qr.text_answers) {
       for (const ans of qr.text_answers) {
-        if (y > 270) { doc.addPage(); y = 20; }
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
         doc.setFontSize(8.5);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(60, 60, 60);
@@ -277,8 +300,7 @@ export async function exportResultsPdf(results: PollResults): Promise<void> {
     ];
 
     const rows = results.responses.map((resp) => {
-      const name =
-        [resp.member.first_name, resp.member.last_name].filter(Boolean).join(' ') || '—';
+      const name = [resp.member.first_name, resp.member.last_name].filter(Boolean).join(' ') || '—';
       const pupitre = resp.member.voice_part?.name ?? '—';
       const date = formatDate(resp.submitted_at);
       const answers = results.question_results.map((qr: QuestionResult) => {
@@ -307,6 +329,9 @@ export async function exportResultsPdf(results: PollResults): Promise<void> {
 
   addFooter(doc);
 
-  const slug = results.poll.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const slug = results.poll.title
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
   doc.save(`sondage-${slug}-resultats.pdf`);
 }

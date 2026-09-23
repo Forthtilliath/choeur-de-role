@@ -84,7 +84,10 @@ async function main() {
   }
 
   console.log(`Signing in as ${email}...`);
-  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
   if (signInError || !signInData.user) {
     console.error('Sign-in failed:', signInError?.message);
     process.exit(1);
@@ -116,7 +119,9 @@ async function main() {
   const code = generateTOTP(secret);
   console.log(`Generated TOTP code: ${code}`);
 
-  const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({ factorId });
+  const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({
+    factorId,
+  });
   if (challengeError || !challenge) {
     console.error('Challenge failed:', challengeError?.message);
     process.exit(1);

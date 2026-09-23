@@ -36,7 +36,9 @@ export function HomeBlocks({ blocks }: Props) {
                         className="mdx-content max-md:order-1"
                         dangerouslySetInnerHTML={{ __html: block.content }}
                       />
-                      <div className={`relative rounded-2xl overflow-hidden max-md:order-0 ${ratio}`}>
+                      <div
+                        className={`relative rounded-2xl overflow-hidden max-md:order-0 ${ratio}`}
+                      >
                         <Image
                           src={block.image_url}
                           alt=""
@@ -49,7 +51,9 @@ export function HomeBlocks({ blocks }: Props) {
                     </>
                   ) : (
                     <>
-                      <div className={`relative rounded-2xl overflow-hidden max-md:order-0 ${ratio}`}>
+                      <div
+                        className={`relative rounded-2xl overflow-hidden max-md:order-0 ${ratio}`}
+                      >
                         <Image
                           src={block.image_url}
                           alt=""

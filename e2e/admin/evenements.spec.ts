@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Évènements externes', () => {
   test.beforeEach(async ({ page }) => {
@@ -23,7 +23,7 @@ test.describe('Admin — Évènements externes', () => {
   test('des évènements ou un message vide sont affichés', async ({ page }) => {
     const upcoming = page.locator('p', { hasText: 'À venir' });
     const empty = page.locator('text=Aucun évènement pour le moment');
-    const hasUpcoming = await upcoming.count() > 0;
+    const hasUpcoming = (await upcoming.count()) > 0;
     if (!hasUpcoming) {
       await expect(empty).toBeVisible();
     } else {
@@ -45,14 +45,16 @@ test.describe('Admin — Évènements externes', () => {
     await expect(page.locator('form button[type="submit"]')).toBeVisible();
   });
 
-  test('Annuler ferme le formulaire sans créer d\'évènement', async ({ page }) => {
+  test("Annuler ferme le formulaire sans créer d'évènement", async ({ page }) => {
     await page.getByRole('button', { name: /Ajouter un évènement/i }).click();
     await expect(page.locator('form')).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).click();
     await expect(page.locator('form')).not.toBeVisible({ timeout: 3_000 });
   });
 
-  test('chaque évènement affiche les boutons Modifier, Publier/Dépublier et Supprimer', async ({ page }) => {
+  test('chaque évènement affiche les boutons Modifier, Publier/Dépublier et Supprimer', async ({
+    page,
+  }) => {
     const items = page.locator('main .rounded-xl.border').filter({ hasText: /Modifier/ });
     if ((await items.count()) === 0) {
       test.skip(true, 'Aucun évènement disponible');
@@ -70,20 +72,26 @@ test.describe('Admin — Évènements externes', () => {
       test.skip(true, 'Aucun évènement disponible');
       return;
     }
-    await items.first().getByRole('button', { name: /Modifier/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Modifier/i })
+      .click();
     await expect(page.locator('form')).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).click();
     await expect(page.locator('form')).not.toBeVisible({ timeout: 3_000 });
   });
 
-  test('Supprimer affiche une confirmation et Annuler conserve l\'évènement', async ({ page }) => {
+  test("Supprimer affiche une confirmation et Annuler conserve l'évènement", async ({ page }) => {
     const items = page.locator('main .rounded-xl.border').filter({ hasText: /Modifier/ });
     if ((await items.count()) === 0) {
       test.skip(true, 'Aucun évènement disponible');
       return;
     }
     const countBefore = await items.count();
-    await items.first().getByRole('button', { name: /Supprimer/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(items).toHaveCount(countBefore, { timeout: 3_000 });

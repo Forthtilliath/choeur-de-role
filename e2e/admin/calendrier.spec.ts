@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Calendrier', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,14 +16,24 @@ test.describe('Admin — Calendrier', () => {
     await expect(page.locator('h1', { hasText: 'Calendrier' })).toBeVisible();
   });
 
-  test('le bouton Types d\'évènements est présent', async ({ page }) => {
+  test("le bouton Types d'évènements est présent", async ({ page }) => {
     await expect(page.getByRole('link', { name: /Types d'évènements/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Types d'évènements/i })).toHaveAttribute('href', '/choristes/admin/calendrier/types');
+    await expect(page.getByRole('link', { name: /Types d'évènements/i })).toHaveAttribute(
+      'href',
+      '/choristes/admin/calendrier/types',
+    );
   });
 
   test('le calendrier mensuel est affiché', async ({ page }) => {
     // Le grid calendrier affiche une h2 avec le mois et l'année
-    await expect(page.locator('h2').filter({ hasText: /Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre/ })).toBeVisible();
+    await expect(
+      page
+        .locator('h2')
+        .filter({
+          hasText:
+            /Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre/,
+        }),
+    ).toBeVisible();
     // Les noms de jours
     await expect(page.locator('div', { hasText: /^Lun$/ }).first()).toBeVisible();
   });
@@ -33,12 +43,12 @@ test.describe('Admin — Calendrier', () => {
     await expect(page.getByRole('button', { name: 'Semaine' })).toBeVisible();
   });
 
-  test('le lien d\'export iCal est présent', async ({ page }) => {
+  test("le lien d'export iCal est présent", async ({ page }) => {
     await expect(page.locator('a[href="/api/calendrier/export-ical"]')).toBeVisible();
   });
 });
 
-test.describe('Admin — Types d\'évènements', () => {
+test.describe("Admin — Types d'évènements", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/choristes/admin/calendrier/types');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
@@ -57,7 +67,7 @@ test.describe('Admin — Types d\'évènements', () => {
     await expect(page.getByRole('button', { name: /Ajouter un type/i })).toBeVisible();
   });
 
-  test('des types d\'évènements sont affichés', async ({ page }) => {
+  test("des types d'évènements sont affichés", async ({ page }) => {
     // Il y a toujours des types par défaut (Répétition, Concert, etc.)
     const items = page.locator('.rounded-xl.border.border-border.bg-background');
     const count = await items.count();
@@ -85,11 +95,15 @@ test.describe('Admin — Types d\'évènements', () => {
     await page.getByRole('button', { name: /Ajouter un type/i }).click();
     await expect(page.locator('h2', { hasText: 'Nouveau type' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Nouveau type' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Nouveau type' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('chaque type affiche les boutons Modifier et Supprimer', async ({ page }) => {
-    const types = page.locator('.rounded-xl.border.border-border.bg-background').filter({ hasText: /./ });
+    const types = page
+      .locator('.rounded-xl.border.border-border.bg-background')
+      .filter({ hasText: /./ });
     if ((await types.count()) === 0) {
       test.skip(true, 'Aucun type disponible');
       return;
@@ -100,13 +114,18 @@ test.describe('Admin — Types d\'évènements', () => {
   });
 
   test('Supprimer affiche une confirmation et Annuler conserve le type', async ({ page }) => {
-    const types = page.locator('.rounded-xl.border.border-border.bg-background').filter({ hasText: /./ });
+    const types = page
+      .locator('.rounded-xl.border.border-border.bg-background')
+      .filter({ hasText: /./ });
     if ((await types.count()) === 0) {
       test.skip(true, 'Aucun type disponible');
       return;
     }
     const countBefore = await types.count();
-    await types.first().getByRole('button', { name: /Supprimer/i }).click();
+    await types
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(types).toHaveCount(countBefore, { timeout: 3_000 });
@@ -123,11 +142,16 @@ test.describe('Admin — Types d\'évènements', () => {
     await page.getByRole('button', { name: 'Ajouter', exact: true }).click();
 
     // Vérification
-    const newType = page.locator('.rounded-xl.border.border-border.bg-background').filter({ hasText: label });
+    const newType = page
+      .locator('.rounded-xl.border.border-border.bg-background')
+      .filter({ hasText: label });
     await expect(newType.first()).toBeVisible({ timeout: 5_000 });
 
     // Suppression
-    await newType.first().getByRole('button', { name: /Supprimer/i }).click();
+    await newType
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     const modal = page.locator('.fixed.inset-0');
     await expect(modal.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await modal.getByRole('button', { name: 'Confirmer' }).click();

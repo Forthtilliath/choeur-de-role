@@ -4,7 +4,9 @@ function adminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key)
-    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env.test.local');
+    throw new Error(
+      'Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env.test.local',
+    );
   return createClient(url, key, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
@@ -52,9 +54,7 @@ export async function createTestMember(params: {
     .limit(1)
     .maybeSingle();
   if (activeSeason) {
-    await supabase
-      .from('member_season')
-      .insert({ member_id: userId, season_id: activeSeason.id });
+    await supabase.from('member_season').insert({ member_id: userId, season_id: activeSeason.id });
   }
 
   return userId;

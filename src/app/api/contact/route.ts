@@ -32,7 +32,13 @@ export async function POST(request: Request) {
   }
 
   if (category === 'rejoindre') {
-    await sendCandidatureEmails({ firstName: first_name, lastName: last_name, email, phone, message });
+    await sendCandidatureEmails({
+      firstName: first_name,
+      lastName: last_name,
+      email,
+      phone,
+      message,
+    });
   } else {
     await sendContactEmail({ category, first_name, last_name, email, phone, message });
   }

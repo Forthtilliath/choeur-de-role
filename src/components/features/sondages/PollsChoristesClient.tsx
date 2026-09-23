@@ -16,7 +16,12 @@ type Props = {
 
 type View =
   | { type: 'list' }
-  | { type: 'answer'; poll: Poll; initialAnswers: Record<string, PollAnswer[]>; isEditing: boolean };
+  | {
+      type: 'answer';
+      poll: Poll;
+      initialAnswers: Record<string, PollAnswer[]>;
+      isEditing: boolean;
+    };
 
 function isPollOpen(poll: PollSummary) {
   if (!poll.is_active) return false;
@@ -53,9 +58,7 @@ export function PollsChoristesClient({ polls: initialPolls, memberId }: Props) {
   }
 
   function handleDone(pollId: string) {
-    setPolls((prev) =>
-      prev.map((p) => (p.id === pollId ? { ...p, has_responded: true } : p)),
-    );
+    setPolls((prev) => prev.map((p) => (p.id === pollId ? { ...p, has_responded: true } : p)));
     setView({ type: 'list' });
   }
 
@@ -90,7 +93,12 @@ export function PollsChoristesClient({ polls: initialPolls, memberId }: Props) {
             En attente de votre réponse
           </h2>
           {open.map((p) => (
-            <PollCard key={p.id} poll={p} loading={loading === p.id} onOpen={() => handleOpen(p.id)} />
+            <PollCard
+              key={p.id}
+              poll={p}
+              loading={loading === p.id}
+              onOpen={() => handleOpen(p.id)}
+            />
           ))}
         </div>
       )}

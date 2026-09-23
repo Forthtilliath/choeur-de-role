@@ -58,7 +58,11 @@ function Spinner() {
       aria-hidden="true"
     >
       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 22 6.477 22 12h-4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 22 6.477 22 12h-4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
     </svg>
   );
 }
@@ -81,14 +85,27 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={classes} target={target} rel={rel} title={title} onClick={onClick}>
+      <Link
+        href={href}
+        className={classes}
+        target={target}
+        rel={rel}
+        title={title}
+        onClick={onClick}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} disabled={disabled || loading} title={title}>
+    <button
+      type={type}
+      className={classes}
+      onClick={onClick}
+      disabled={disabled || loading}
+      title={title}
+    >
       {loading && <Spinner />}
       {children}
     </button>
