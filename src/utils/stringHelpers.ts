@@ -5,7 +5,9 @@ export function toUpperCase(s: string | null | undefined): string {
 /** Capitalise chaque mot (après espace, tiret ou apostrophe). */
 export function toTitleCase(s: string | null | undefined): string {
   if (!s) return '';
-  return s.toLowerCase().replace(/(^|[\s\-'])(\S)/g, (_, sep, char) => sep + char.toUpperCase());
+  return s
+    .toLowerCase()
+    .replace(/(^|[\s\-'])(\S)/g, (_, sep: string, char: string) => sep + char.toUpperCase());
 }
 
 /** Échappe les caractères HTML dangereux pour insertion sûre dans innerHTML. */

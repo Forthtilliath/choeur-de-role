@@ -33,8 +33,7 @@ export async function getMemberAuditHistory(memberId: string): Promise<MemberHis
   const admin = createAdminClient();
   const supabase = await createServerClient();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: logs } = await (admin as any)
+  const { data: logs } = await admin
     .from('audit_logs')
     .select('id, action, details, created_at, user_id')
     .eq('target_id', memberId)

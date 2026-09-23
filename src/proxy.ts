@@ -5,11 +5,12 @@ import {
   getMemberAdminOnboarding,
   getMemberOnboarding,
 } from '@/components/features/membres/queries';
+import type { Database } from '@/types/database';
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {

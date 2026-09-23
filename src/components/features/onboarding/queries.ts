@@ -38,8 +38,8 @@ export type OnboardingPayload = {
 
 export async function getMemberForOnboarding(userId: string): Promise<MemberForOnboarding | null> {
   const supabase = await createServerClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = await (supabase.from('members') as any)
+  const { data } = await supabase
+    .from('members')
     .select(
       'first_name, phone, birthday, address, zip_code, city, photo_url, visibility_email, visibility_phone, visibility_address, visibility_birthday, onboarded_at',
     )
@@ -53,8 +53,7 @@ export async function updateMemberOnboarding(
   payload: OnboardingPayload,
 ): Promise<boolean> {
   const supabase = await createServerClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase.from('members') as any).update(payload).eq('id', userId);
+  const { error } = await supabase.from('members').update(payload).eq('id', userId);
   return !error;
 }
 
@@ -62,8 +61,8 @@ export async function getMemberForAdminOnboarding(
   userId: string,
 ): Promise<MemberForAdminOnboarding | null> {
   const supabase = await createServerClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = await (supabase.from('members') as any)
+  const { data } = await supabase
+    .from('members')
     .select('first_name, role, admin_onboarded_at')
     .eq('id', userId)
     .single();
@@ -78,8 +77,8 @@ export async function getMemberRoleForOnboarding(userId: string): Promise<string
 
 export async function updateAdminOnboarding(userId: string): Promise<boolean> {
   const supabase = await createServerClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase.from('members') as any)
+  const { error } = await supabase
+    .from('members')
     .update({ admin_onboarded_at: new Date().toISOString() })
     .eq('id', userId);
   return !error;
