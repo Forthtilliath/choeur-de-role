@@ -38,12 +38,8 @@ export default function CalendrierLoading() {
               <div key={col} className="min-h-[80px] p-1.5 border-r border-border/50 last:border-0">
                 <Skeleton className="h-5 w-5 rounded mb-1" />
                 {/* Occasional event blobs */}
-                {(row * 7 + col) % 4 === 0 && (
-                  <Skeleton className="h-5 w-full rounded-md" />
-                )}
-                {(row * 7 + col) % 7 === 2 && (
-                  <Skeleton className="h-5 w-full rounded-md mt-1" />
-                )}
+                {(row * 7 + col) % 4 === 0 && <Skeleton className="h-5 w-full rounded-md" />}
+                {(row * 7 + col) % 7 === 2 && <Skeleton className="h-5 w-full rounded-md mt-1" />}
               </div>
             ))}
           </div>

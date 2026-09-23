@@ -7,7 +7,9 @@ import { createAdminClient, createServerClient } from '@/lib/supabase.server';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
 
   const role = await getMemberRole(user.id);
@@ -25,7 +27,10 @@ export async function POST(request: Request) {
 
   const targetRole = await getMemberRole(memberId);
   if (targetRole === 'super_admin') {
-    return NextResponse.json({ error: 'Impossible de verrouiller un super admin' }, { status: 403 });
+    return NextResponse.json(
+      { error: 'Impossible de verrouiller un super admin' },
+      { status: 403 },
+    );
   }
 
   try {
@@ -34,7 +39,11 @@ export async function POST(request: Request) {
       ban_duration: lock ? '876000h' : 'none',
     });
 
-    if (error) return NextResponse.json({ error: 'Erreur lors de la modification du statut du compte.' }, { status: 500 });
+    if (error)
+      return NextResponse.json(
+        { error: 'Erreur lors de la modification du statut du compte.' },
+        { status: 500 },
+      );
 
     await logAudit({
       actorId: user.id,

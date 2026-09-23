@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Pupitres', () => {
   test.beforeEach(async ({ page }) => {
@@ -28,7 +28,9 @@ test.describe('Admin — Pupitres', () => {
 
   test('le formulaire contient les champs Nom et Groupe', async ({ page }) => {
     await page.getByRole('button', { name: /Ajouter un pupitre/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="Ténor"]')).toBeVisible();
     await expect(page.locator('input[placeholder="Hommes"]')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible();
@@ -37,9 +39,13 @@ test.describe('Admin — Pupitres', () => {
 
   test('Annuler ferme le formulaire sans créer de pupitre', async ({ page }) => {
     await page.getByRole('button', { name: /Ajouter un pupitre/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('chaque pupitre affiche les boutons Modifier et Supprimer', async ({ page }) => {
@@ -51,17 +57,27 @@ test.describe('Admin — Pupitres', () => {
 
   test('Modifier ouvre le formulaire pré-rempli avec le nom du pupitre', async ({ page }) => {
     const items = page.locator('main .rounded-xl.border.border-border.bg-background');
-    await items.first().getByRole('button', { name: /Modifier/i }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier le pupitre' })).toBeVisible({ timeout: 3_000 });
+    await items
+      .first()
+      .getByRole('button', { name: /Modifier/i })
+      .click();
+    await expect(page.locator('h2', { hasText: 'Modifier le pupitre' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="Ténor"]')).not.toHaveValue('');
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier le pupitre' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Modifier le pupitre' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('Supprimer affiche une confirmation et Annuler conserve le pupitre', async ({ page }) => {
     const items = page.locator('main .rounded-xl.border.border-border.bg-background');
     const countBefore = await items.count();
-    await items.first().getByRole('button', { name: /Supprimer/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(items).toHaveCount(countBefore, { timeout: 3_000 });
@@ -73,12 +89,16 @@ test.describe('Admin — Pupitres', () => {
 
     // Création
     await page.getByRole('button', { name: /Ajouter un pupitre/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un pupitre' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.locator('input[placeholder="Ténor"]').fill(name);
     await page.getByRole('button', { name: /^Ajouter$/ }).click();
 
     // Vérification dans la liste
-    const newItem = page.locator('main .rounded-xl.border.border-border.bg-background').filter({ hasText: name });
+    const newItem = page
+      .locator('main .rounded-xl.border.border-border.bg-background')
+      .filter({ hasText: name });
     await expect(newItem).toBeVisible({ timeout: 5_000 });
 
     // Suppression

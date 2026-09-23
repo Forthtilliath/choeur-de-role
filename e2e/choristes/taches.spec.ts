@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 // La page Tâches est réservée aux membres CA (layout bureau vérifie isCa)
 
@@ -34,7 +34,9 @@ test.describe('Page Tâches', () => {
 
   test('le panneau admin est visible pour un admin', async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).toBeVisible();
-    await expect(page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/bureau/projets"]')).toBeVisible();
+    await expect(
+      page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/bureau/projets"]'),
+    ).toBeVisible();
   });
 
   test('des projets sont affichés ou un message vide est présent', async ({ page }) => {
@@ -42,7 +44,7 @@ test.describe('Page Tâches', () => {
     const count = await projectCards.count();
 
     if (count === 0) {
-      await expect(page.locator('text=Aucun projet pour l\'instant')).toBeVisible();
+      await expect(page.locator("text=Aucun projet pour l'instant")).toBeVisible();
     } else {
       await expect(projectCards.first()).toBeVisible();
     }

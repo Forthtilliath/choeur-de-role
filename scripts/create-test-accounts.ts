@@ -125,18 +125,16 @@ async function createAccount(
   await supabase.from('members').delete().eq('email', email).neq('id', userId);
 
   // Always upsert members row — the DB trigger may not exist in local Docker
-  const { error: upsertError } = await supabase
-    .from('members')
-    .upsert({
-      id: userId,
-      first_name: cfg.firstName,
-      last_name: cfg.lastName,
-      email,
-      role: cfg.role,
-      onboarded_at: new Date().toISOString(),
-      is_test_account: true,
-      ...(defaultVoicePartId ? { voice_part_id: defaultVoicePartId } : {}),
-    });
+  const { error: upsertError } = await supabase.from('members').upsert({
+    id: userId,
+    first_name: cfg.firstName,
+    last_name: cfg.lastName,
+    email,
+    role: cfg.role,
+    onboarded_at: new Date().toISOString(),
+    is_test_account: true,
+    ...(defaultVoicePartId ? { voice_part_id: defaultVoicePartId } : {}),
+  });
   if (upsertError) throw new Error(`members.upsert(${cfg.role}) failed: ${upsertError.message}`);
 
   if (defaultVoicePartId) console.log(`  ✓ Pupitre assigné`);
@@ -154,7 +152,8 @@ async function createAccount(
       const { error: enrollError } = await supabase
         .from('member_season')
         .insert({ member_id: userId, season_id: activeSeasonId });
-      if (enrollError) throw new Error(`member_season.insert(${cfg.role}) failed: ${enrollError.message}`);
+      if (enrollError)
+        throw new Error(`member_season.insert(${cfg.role}) failed: ${enrollError.message}`);
       console.log(`  ✓ Inscrit à la saison active`);
     } else {
       console.log(`  ↺ Déjà inscrit à la saison active`);

@@ -3,7 +3,9 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 function ConcertCardSkeleton({ large = false }: { large?: boolean }) {
   return (
-    <div className={`border border-border rounded-2xl bg-background-secondary overflow-hidden flex ${large ? 'flex-col sm:flex-row' : 'flex-col'}`}>
+    <div
+      className={`border border-border rounded-2xl bg-background-secondary overflow-hidden flex ${large ? 'flex-col sm:flex-row' : 'flex-col'}`}
+    >
       {large && <Skeleton className="w-full sm:w-48 h-48 shrink-0" />}
       <div className="flex flex-col gap-3 p-5 flex-1">
         <div className="flex items-center gap-2">

@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page CA', () => {
   test.beforeEach(async ({ page }) => {
@@ -11,11 +11,11 @@ test.describe('Page CA', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le panneau admin n\'est pas visible pour un membre', async ({ page }) => {
+  test("le panneau admin n'est pas visible pour un membre", async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();
   });
 
-  test('le bouton de gestion n\'est pas visible pour un membre', async ({ page }) => {
+  test("le bouton de gestion n'est pas visible pour un membre", async ({ page }) => {
     await expect(page.locator('a[href="/choristes/admin/ca"]')).not.toBeAttached();
   });
 
@@ -30,7 +30,7 @@ test.describe('Page CA', () => {
     }
   });
 
-  test('cliquer sur un compte-rendu l\'ouvre', async ({ page }) => {
+  test("cliquer sur un compte-rendu l'ouvre", async ({ page }) => {
     const meetings = page.locator('details.border.border-border');
     if ((await meetings.count()) === 0) {
       test.skip(true, 'Aucun compte-rendu disponible — test non pertinent');
@@ -52,7 +52,9 @@ test.describe('Page CA - visibilité admin', () => {
     await page.goto('/choristes/ca');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('nav[aria-label="Administration"]')).toBeVisible();
-    await expect(page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/ca"]')).toBeVisible();
+    await expect(
+      page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/ca"]'),
+    ).toBeVisible();
   });
 
   test('le bouton de gestion est visible pour un admin', async ({ page }) => {

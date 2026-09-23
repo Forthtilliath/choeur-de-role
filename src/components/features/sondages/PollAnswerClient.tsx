@@ -16,7 +16,14 @@ type Props = {
   onCancelAction: () => void;
 };
 
-export function PollAnswerClient({ poll, memberId, initialAnswers, isEditing = false, onDoneAction, onCancelAction }: Props) {
+export function PollAnswerClient({
+  poll,
+  memberId,
+  initialAnswers,
+  isEditing = false,
+  onDoneAction,
+  onCancelAction,
+}: Props) {
   const [answers, setAnswers] = useState<Record<string, PollAnswer[]>>(initialAnswers ?? {});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -24,7 +31,9 @@ export function PollAnswerClient({ poll, memberId, initialAnswers, isEditing = f
   function setSingleChoice(questionId: string, optionId: string) {
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: [{ question_id: questionId, option_id: optionId, text_value: null, number_value: null }],
+      [questionId]: [
+        { question_id: questionId, option_id: optionId, text_value: null, number_value: null },
+      ],
     }));
   }
 
@@ -36,7 +45,15 @@ export function PollAnswerClient({ poll, memberId, initialAnswers, isEditing = f
         ...prev,
         [questionId]: exists
           ? current.filter((a) => a.option_id !== optionId)
-          : [...current, { question_id: questionId, option_id: optionId, text_value: null, number_value: null }],
+          : [
+              ...current,
+              {
+                question_id: questionId,
+                option_id: optionId,
+                text_value: null,
+                number_value: null,
+              },
+            ],
       };
     });
   }
@@ -44,14 +61,18 @@ export function PollAnswerClient({ poll, memberId, initialAnswers, isEditing = f
   function setText(questionId: string, text: string) {
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: [{ question_id: questionId, option_id: null, text_value: text, number_value: null }],
+      [questionId]: [
+        { question_id: questionId, option_id: null, text_value: text, number_value: null },
+      ],
     }));
   }
 
   function setRating(questionId: string, value: number) {
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: [{ question_id: questionId, option_id: null, text_value: null, number_value: value }],
+      [questionId]: [
+        { question_id: questionId, option_id: null, text_value: null, number_value: value },
+      ],
     }));
   }
 
@@ -90,12 +111,15 @@ export function PollAnswerClient({ poll, memberId, initialAnswers, isEditing = f
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div>
         <h2 className="text-lg font-semibold text-foreground">{poll.title}</h2>
-        {poll.description && (
-          <p className="text-sm text-foreground/60 mt-1">{poll.description}</p>
-        )}
+        {poll.description && <p className="text-sm text-foreground/60 mt-1">{poll.description}</p>}
         {poll.closes_at && (
           <p className="text-xs text-foreground/40 mt-1">
-            Clôture le {new Date(poll.closes_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}
+            Clôture le{' '}
+            {new Date(poll.closes_at).toLocaleDateString('fr-FR', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })}
           </p>
         )}
       </div>
@@ -113,9 +137,7 @@ export function PollAnswerClient({ poll, memberId, initialAnswers, isEditing = f
         />
       ))}
 
-      {error && (
-        <p className="text-sm text-danger bg-danger/10 rounded-xl px-4 py-3">{error}</p>
-      )}
+      {error && <p className="text-sm text-danger bg-danger/10 rounded-xl px-4 py-3">{error}</p>}
 
       <div className="flex gap-3 justify-end">
         <Button type="button" variant="ghost" onClick={onCancelAction}>
@@ -139,7 +161,15 @@ type QuestionInputProps = {
   onRating: (val: number) => void;
 };
 
-function QuestionInput({ question, index, currentAnswers, onSingleChoice, onMultiChoice, onText, onRating }: QuestionInputProps) {
+function QuestionInput({
+  question,
+  index,
+  currentAnswers,
+  onSingleChoice,
+  onMultiChoice,
+  onText,
+  onRating,
+}: QuestionInputProps) {
   const selectedOptionIds = currentAnswers.map((a) => a.option_id).filter(Boolean) as string[];
   const textValue = currentAnswers[0]?.text_value ?? '';
   const ratingValue = currentAnswers[0]?.number_value ?? 0;
@@ -147,7 +177,10 @@ function QuestionInput({ question, index, currentAnswers, onSingleChoice, onMult
   return (
     <div className="border border-border rounded-2xl p-4 bg-background-secondary flex flex-col gap-3">
       <div>
-        <p className="text-xs text-foreground/40 mb-0.5">Question {index + 1}{question.required ? ' *' : ''}</p>
+        <p className="text-xs text-foreground/40 mb-0.5">
+          Question {index + 1}
+          {question.required ? ' *' : ''}
+        </p>
         <p className="text-sm font-medium text-foreground">{question.text}</p>
         {question.type === 'multiple_choice' && (
           <p className="text-xs text-foreground/40 mt-0.5">Plusieurs choix possibles</p>
@@ -158,12 +191,21 @@ function QuestionInput({ question, index, currentAnswers, onSingleChoice, onMult
         <div className="flex flex-col gap-2">
           {question.poll_options.map((opt) => (
             <label key={opt.id} className="flex items-center gap-3 cursor-pointer group">
-              <div className={`w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${selectedOptionIds.includes(opt.id) ? 'border-primary bg-primary' : 'border-border group-hover:border-primary/50'}`}>
+              <div
+                className={`w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center transition-colors ${selectedOptionIds.includes(opt.id) ? 'border-primary bg-primary' : 'border-border group-hover:border-primary/50'}`}
+              >
                 {selectedOptionIds.includes(opt.id) && (
                   <div className="w-1.5 h-1.5 rounded-full bg-white" />
                 )}
               </div>
-              <input type="radio" name={`q-${question.id}`} value={opt.id} checked={selectedOptionIds.includes(opt.id)} onChange={() => onSingleChoice(opt.id)} className="sr-only" />
+              <input
+                type="radio"
+                name={`q-${question.id}`}
+                value={opt.id}
+                checked={selectedOptionIds.includes(opt.id)}
+                onChange={() => onSingleChoice(opt.id)}
+                className="sr-only"
+              />
               <span className="text-sm text-foreground">{opt.label}</span>
             </label>
           ))}
@@ -174,14 +216,28 @@ function QuestionInput({ question, index, currentAnswers, onSingleChoice, onMult
         <div className="flex flex-col gap-2">
           {question.poll_options.map((opt) => (
             <label key={opt.id} className="flex items-center gap-3 cursor-pointer group">
-              <div className={`w-4 h-4 rounded border-2 shrink-0 flex items-center justify-center transition-colors ${selectedOptionIds.includes(opt.id) ? 'border-primary bg-primary' : 'border-border group-hover:border-primary/50'}`}>
+              <div
+                className={`w-4 h-4 rounded border-2 shrink-0 flex items-center justify-center transition-colors ${selectedOptionIds.includes(opt.id) ? 'border-primary bg-primary' : 'border-border group-hover:border-primary/50'}`}
+              >
                 {selectedOptionIds.includes(opt.id) && (
-                  <svg viewBox="0 0 10 10" className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg
+                    viewBox="0 0 10 10"
+                    className="w-2.5 h-2.5 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
                     <path d="M1.5 5l2.5 2.5 4.5-4.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )}
               </div>
-              <input type="checkbox" value={opt.id} checked={selectedOptionIds.includes(opt.id)} onChange={() => onMultiChoice(opt.id)} className="sr-only" />
+              <input
+                type="checkbox"
+                value={opt.id}
+                checked={selectedOptionIds.includes(opt.id)}
+                onChange={() => onMultiChoice(opt.id)}
+                className="sr-only"
+              />
               <span className="text-sm text-foreground">{opt.label}</span>
             </label>
           ))}

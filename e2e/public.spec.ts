@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 // ─── Navigation principale ────────────────────────────────────────────────────
 
@@ -15,13 +15,21 @@ test.describe('Navigation principale', () => {
 
   test('cliquer Concerts depuis le header navigue vers /concerts', async ({ page }) => {
     await page.goto('/');
-    await page.locator('header').getByRole('link', { name: /concerts/i }).first().click();
+    await page
+      .locator('header')
+      .getByRole('link', { name: /concerts/i })
+      .first()
+      .click();
     await expect(page).toHaveURL('/concerts');
   });
 
   test('cliquer Contact depuis le header navigue vers /contact', async ({ page }) => {
     await page.goto('/');
-    await page.locator('header').getByRole('link', { name: /contact/i }).first().click();
+    await page
+      .locator('header')
+      .getByRole('link', { name: /contact/i })
+      .first()
+      .click();
     await expect(page).toHaveURL('/contact');
   });
 });
@@ -38,12 +46,18 @@ test.describe('Homepage', () => {
   });
 
   test('le CTA "Nos concerts" navigue vers /concerts', async ({ page }) => {
-    await page.getByRole('link', { name: /nos concerts/i }).first().click();
+    await page
+      .getByRole('link', { name: /nos concerts/i })
+      .first()
+      .click();
     await expect(page).toHaveURL('/concerts');
   });
 
   test('le CTA "Nous contacter" navigue vers /contact', async ({ page }) => {
-    await page.getByRole('link', { name: /nous contacter/i }).first().click();
+    await page
+      .getByRole('link', { name: /nous contacter/i })
+      .first()
+      .click();
     await expect(page).toHaveURL('/contact');
   });
 });
@@ -59,7 +73,7 @@ test.describe('Page Concerts', () => {
     await expect(page.getByPlaceholder('Rechercher un concert...')).toBeVisible();
   });
 
-  test('la recherche met à jour le paramètre q dans l\'URL', async ({ page }) => {
+  test("la recherche met à jour le paramètre q dans l'URL", async ({ page }) => {
     await page.getByPlaceholder('Rechercher un concert...').fill('Requiem');
     await page.waitForURL(/[?&]q=Requiem/, { timeout: 3_000 });
     expect(new URL(page.url()).searchParams.get('q')).toBe('Requiem');
@@ -68,12 +82,12 @@ test.describe('Page Concerts', () => {
   test('une recherche sans résultat affiche un message', async ({ page }) => {
     await page.getByPlaceholder('Rechercher un concert...').fill('xxxxxx_inexistant_xxxxxx');
     await page.waitForURL(/q=xxxxxx/, { timeout: 3_000 });
-    await expect(
-      page.getByText('Aucun concert ne correspond à cette recherche.'),
-    ).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByText('Aucun concert ne correspond à cette recherche.')).toBeVisible({
+      timeout: 5_000,
+    });
   });
 
-  test('effacer la recherche supprime le paramètre q de l\'URL', async ({ page }) => {
+  test("effacer la recherche supprime le paramètre q de l'URL", async ({ page }) => {
     await page.goto('/concerts?q=test');
     const input = page.getByPlaceholder('Rechercher un concert...');
     await expect(input).toHaveValue('test');
@@ -103,9 +117,12 @@ test.describe('Page Galerie', () => {
 
     await photo.click();
     // La lightbox est présente (plein écran) — on vérifie qu'une image s'affiche en grand
-    await expect(page.locator('[role="dialog"], [data-lightbox], .lightbox, [aria-modal]').or(
-      page.locator('img[style*="object-fit"]').or(page.locator('.fixed img'))
-    ).first()).toBeVisible({ timeout: 5_000 });
+    await expect(
+      page
+        .locator('[role="dialog"], [data-lightbox], .lightbox, [aria-modal]')
+        .or(page.locator('img[style*="object-fit"]').or(page.locator('.fixed img')))
+        .first(),
+    ).toBeVisible({ timeout: 5_000 });
   });
 });
 
@@ -186,10 +203,8 @@ test.describe('Formulaire de contact', () => {
     await expect(page.getByText('Message envoyé !')).toBeVisible({ timeout: 8_000 });
   });
 
-  test('une erreur serveur affiche le message d\'erreur', async ({ page }) => {
-    await page.route('**/api/contact', (route) =>
-      route.fulfill({ status: 500 }),
-    );
+  test("une erreur serveur affiche le message d'erreur", async ({ page }) => {
+    await page.route('**/api/contact', (route) => route.fulfill({ status: 500 }));
 
     await page.goto('/contact');
     await page.getByPlaceholder('Marie', { exact: true }).fill('Alice');
@@ -252,10 +267,9 @@ test.describe('Événement — Page de détail', () => {
     }
     const href = await links.first().getAttribute('href');
     await links.first().click();
-    await expect(page).toHaveURL(
-      new RegExp(href!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')),
-      { timeout: 10_000 },
-    );
+    await expect(page).toHaveURL(new RegExp(href!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), {
+      timeout: 10_000,
+    });
     await expect(page.locator('main')).toBeVisible();
   });
 });

@@ -94,7 +94,14 @@ export async function sendCandidatureEmails({
       from: 'onboarding@resend.dev',
       to: env.NEXT_MAIL_CONTACT!,
       subject: `[Candidature] ${firstName} ${lastName} souhaite rejoindre la chorale`,
-      html: candidatureNotificationEmailHtml({ firstName, lastName, email, phone, message, adminUrl }),
+      html: candidatureNotificationEmailHtml({
+        firstName,
+        lastName,
+        email,
+        phone,
+        message,
+        adminUrl,
+      }),
     }),
     resend().emails.send({
       from: 'onboarding@resend.dev',
@@ -132,7 +139,15 @@ export async function sendSuspiciousLoginEmail({
     from: 'onboarding@resend.dev',
     to: adminEmails,
     subject: `[Alerte] Connexion inhabituelle — ${memberName}`,
-    html: suspiciousLoginEmailHtml({ memberName, memberEmail, previousCountry, newCountry, city, ip, date }),
+    html: suspiciousLoginEmailHtml({
+      memberName,
+      memberEmail,
+      previousCountry,
+      newCountry,
+      city,
+      ip,
+      date,
+    }),
   });
 }
 

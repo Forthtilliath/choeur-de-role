@@ -30,8 +30,8 @@ GitHub (push main)  ──►  Vercel (build + hébergement Next.js)
    ```
 
 3. **Auth → URL Configuration** :
-   - *Site URL* : `https://<domaine-vercel>`
-   - *Redirect URLs* : `https://<domaine-vercel>/**`
+   - _Site URL_ : `https://<domaine-vercel>`
+   - _Redirect URLs_ : `https://<domaine-vercel>/**`
 4. **Project Settings → API** : relever `URL`, `anon key`, `service_role key`.
 5. Créer un compte de démonstration (voir §5).
 
@@ -46,7 +46,7 @@ GitHub (push main)  ──►  Vercel (build + hébergement Next.js)
 1. Cloudflare dashboard → **R2** → créer deux buckets : `cdr-repertoire` et
    `cdr-images`.
 2. Sur `cdr-images` : **Settings → Public access** → activer le domaine `r2.dev`.
-3. **Manage R2 API Tokens** → créer un token *Object Read & Write*.
+3. **Manage R2 API Tokens** → créer un token _Object Read & Write_.
 4. Relever : endpoint S3, Access Key ID, Secret Access Key, URL publique.
 
 > Sans R2, l'app peut fonctionner sur le fallback Supabase Storage — mais prévoir
@@ -67,25 +67,25 @@ GitHub (push main)  ──►  Vercel (build + hébergement Next.js)
 1. [vercel.com](https://vercel.com) → **Add New → Project** → importer le dépôt
    GitHub `choeur-de-role`.
 2. Framework : **Next.js** (détecté). Build command et output par défaut.
-3. Renseigner les variables d'environnement (onglet *Settings → Environment
-   Variables*), pour *Production* **et** *Preview* :
+3. Renseigner les variables d'environnement (onglet _Settings → Environment
+   Variables_), pour _Production_ **et** _Preview_ :
 
-   | Variable | Source |
-   | --- | --- |
-   | `NEXT_PUBLIC_SITE_URL` | URL Vercel (`https://choeur-de-role.vercel.app`) |
-   | `AUTH_SECRET` | `openssl rand -hex 32` |
-   | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → API |
-   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → API |
-   | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → API (secret) |
-   | `RESEND_API_KEY` | Resend |
-   | `NEXT_MAIL_CONTACT` | adresse destinataire du formulaire |
-   | `YOUTUBE_API_KEY` | Google Cloud Console (API YouTube Data v3) |
-   | `CLOUDFLARE_R2_ENDPOINT` | Cloudflare R2 |
-   | `CLOUDFLARE_R2_ACCESS_KEY_ID` | Cloudflare R2 (secret) |
-   | `CLOUDFLARE_R2_SECRET_ACCESS_KEY` | Cloudflare R2 (secret) |
-   | `CLOUDFLARE_R2_BUCKET_NAME` | `cdr-repertoire` |
-   | `CLOUDFLARE_R2_IMAGES_BUCKET_NAME` | `cdr-images` |
-   | `CLOUDFLARE_R2_PUBLIC_URL` | URL publique `r2.dev` |
+   | Variable                           | Source                                           |
+   | ---------------------------------- | ------------------------------------------------ |
+   | `NEXT_PUBLIC_SITE_URL`             | URL Vercel (`https://choeur-de-role.vercel.app`) |
+   | `AUTH_SECRET`                      | `openssl rand -hex 32`                           |
+   | `NEXT_PUBLIC_SUPABASE_URL`         | Supabase → API                                   |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY`    | Supabase → API                                   |
+   | `SUPABASE_SERVICE_ROLE_KEY`        | Supabase → API (secret)                          |
+   | `RESEND_API_KEY`                   | Resend                                           |
+   | `NEXT_MAIL_CONTACT`                | adresse destinataire du formulaire               |
+   | `YOUTUBE_API_KEY`                  | Google Cloud Console (API YouTube Data v3)       |
+   | `CLOUDFLARE_R2_ENDPOINT`           | Cloudflare R2                                    |
+   | `CLOUDFLARE_R2_ACCESS_KEY_ID`      | Cloudflare R2 (secret)                           |
+   | `CLOUDFLARE_R2_SECRET_ACCESS_KEY`  | Cloudflare R2 (secret)                           |
+   | `CLOUDFLARE_R2_BUCKET_NAME`        | `cdr-repertoire`                                 |
+   | `CLOUDFLARE_R2_IMAGES_BUCKET_NAME` | `cdr-images`                                     |
+   | `CLOUDFLARE_R2_PUBLIC_URL`         | URL publique `r2.dev`                            |
 
    Optionnel : `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT`,
    `SENTRY_AUTH_TOKEN`, `NEXT_PUBLIC_UMAMI_WEBSITE_ID`.
@@ -97,7 +97,7 @@ GitHub (push main)  ──►  Vercel (build + hébergement Next.js)
    obtient une URL de preview.
 5. Une fois l'URL connue, revenir mettre à jour :
    - `NEXT_PUBLIC_SITE_URL` sur Vercel,
-   - *Site URL* / *Redirect URLs* sur Supabase.
+   - _Site URL_ / _Redirect URLs_ sur Supabase.
 
 ---
 

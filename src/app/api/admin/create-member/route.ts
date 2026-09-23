@@ -64,7 +64,10 @@ export async function POST(request: Request) {
       .single();
 
     if (memberError) {
-      return NextResponse.json({ error: 'Erreur lors de la mise à jour du membre.' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Erreur lors de la mise à jour du membre.' },
+        { status: 400 },
+      );
     }
 
     const seasonIds: string[] = Array.isArray(season_ids) ? season_ids : [];
@@ -73,7 +76,10 @@ export async function POST(request: Request) {
         .from('member_season')
         .insert(seasonIds.map((season_id) => ({ member_id: newUser.user.id, season_id })));
       if (seasonError) {
-        return NextResponse.json({ error: "Erreur lors de l'inscription à la saison." }, { status: 400 });
+        return NextResponse.json(
+          { error: "Erreur lors de l'inscription à la saison." },
+          { status: 400 },
+        );
       }
     }
 
@@ -100,7 +106,10 @@ export async function POST(request: Request) {
     });
 
     if (linkError) {
-      return NextResponse.json({ error: "Erreur lors de la génération du lien d'invitation." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Erreur lors de la génération du lien d'invitation." },
+        { status: 400 },
+      );
     }
 
     const confirmationUrl =

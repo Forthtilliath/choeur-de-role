@@ -14,7 +14,9 @@ export function CalendarSidebar({ events }: { events: CalendarEvent[] }) {
     <div className="flex flex-col gap-3">
       <div>
         <h3 className="text-sm font-medium text-foreground">5 prochains évènements</h3>
-        <p className="text-xs text-foreground/40">à partir d&apos;aujourd&apos;hui, indépendant de la navigation</p>
+        <p className="text-xs text-foreground/40">
+          à partir d&apos;aujourd&apos;hui, indépendant de la navigation
+        </p>
       </div>
       {upcoming.length === 0 && (
         <p className="text-xs text-foreground/40">Aucun évènement à venir.</p>
@@ -33,7 +35,8 @@ export function CalendarSidebar({ events }: { events: CalendarEvent[] }) {
             <div className="min-w-0">
               <p className="text-xs font-medium text-foreground truncate">{event.title}</p>
               <p className="text-xs text-foreground/50">
-                {dateStr}{isBirthday ? ' · Toute la journée' : ` · ${timeStr}`}
+                {dateStr}
+                {isBirthday ? ' · Toute la journée' : ` · ${timeStr}`}
               </p>
               {event.location && <LocationMap location={event.location} />}
             </div>

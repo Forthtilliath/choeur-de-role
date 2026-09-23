@@ -19,7 +19,16 @@ import { Button } from '@/components/ui/Button';
 import { exportResultsPdf } from '../pdfExport';
 import type { PollResponse, PollResults, QuestionResult } from '../types';
 
-const COLORS = ['#6366f1', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#84cc16'];
+const COLORS = [
+  '#6366f1',
+  '#8b5cf6',
+  '#06b6d4',
+  '#10b981',
+  '#f59e0b',
+  '#ef4444',
+  '#ec4899',
+  '#84cc16',
+];
 
 type Props = {
   results: PollResults;
@@ -67,7 +76,12 @@ export function PollResultsClient({ results, onBackAction }: Props) {
       ) : (
         <div className="flex flex-col gap-6">
           {results.question_results.map((qr, i) => (
-            <QuestionResultCard key={qr.question_id} result={qr} index={i} responses={results.responses} />
+            <QuestionResultCard
+              key={qr.question_id}
+              result={qr}
+              index={i}
+              responses={results.responses}
+            />
           ))}
 
           {/* Table des réponses individuelles */}
@@ -93,7 +107,9 @@ export function PollResultsClient({ results, onBackAction }: Props) {
                   {results.responses.map((resp) => (
                     <tr key={resp.id} className="border-b border-border/50 hover:bg-muted/30">
                       <td className="px-4 py-2 whitespace-nowrap">
-                        {[resp.member.first_name, resp.member.last_name].filter(Boolean).join(' ') || '—'}
+                        {[resp.member.first_name, resp.member.last_name]
+                          .filter(Boolean)
+                          .join(' ') || '—'}
                       </td>
                       <td className="px-4 py-2 whitespace-nowrap text-foreground/60">
                         {resp.member.voice_part?.name ?? '—'}
@@ -102,7 +118,9 @@ export function PollResultsClient({ results, onBackAction }: Props) {
                         {new Date(resp.submitted_at).toLocaleDateString('fr-FR')}
                       </td>
                       {results.question_results.map((qr) => {
-                        const ans = resp.poll_answers.filter((a) => a.question_id === qr.question_id);
+                        const ans = resp.poll_answers.filter(
+                          (a) => a.question_id === qr.question_id,
+                        );
                         const text =
                           qr.type === 'text'
                             ? (ans[0]?.text_value ?? '—')
@@ -111,7 +129,11 @@ export function PollResultsClient({ results, onBackAction }: Props) {
                               : ans.length === 0
                                 ? '—'
                                 : ans
-                                    .map((a) => qr.options?.find((o) => o.option_id === a.option_id)?.label ?? '?')
+                                    .map(
+                                      (a) =>
+                                        qr.options?.find((o) => o.option_id === a.option_id)
+                                          ?.label ?? '?',
+                                    )
                                     .join(', ');
                         return (
                           <td key={qr.question_id} className="px-4 py-2">
@@ -131,21 +153,42 @@ export function PollResultsClient({ results, onBackAction }: Props) {
   );
 }
 
-function QuestionResultCard({ result, index, responses }: { result: QuestionResult; index: number; responses: PollResponse[] }) {
+function QuestionResultCard({
+  result,
+  index,
+  responses,
+}: {
+  result: QuestionResult;
+  index: number;
+  responses: PollResponse[];
+}) {
   return (
     <div className="border border-border rounded-2xl p-5 bg-background-secondary flex flex-col gap-4">
       <div>
         <p className="text-xs font-medium text-foreground/40 mb-0.5">Question {index + 1}</p>
         <p className="text-sm font-semibold text-foreground">{result.text}</p>
-        <p className="text-xs text-foreground/40 mt-0.5">{result.total_responses} réponse{result.total_responses !== 1 ? 's' : ''}</p>
+        <p className="text-xs text-foreground/40 mt-0.5">
+          {result.total_responses} réponse{result.total_responses !== 1 ? 's' : ''}
+        </p>
       </div>
 
       {(result.type === 'single_choice' || result.type === 'multiple_choice') && result.options && (
-        <ChoiceChart options={result.options} total={result.total_responses} questionId={result.question_id} responses={responses} />
+        <ChoiceChart
+          options={result.options}
+          total={result.total_responses}
+          questionId={result.question_id}
+          responses={responses}
+        />
       )}
 
       {result.type === 'rating' && result.rating_distribution !== undefined && (
-        <RatingChart distribution={result.rating_distribution} average={result.average ?? 0} total={result.total_responses} questionId={result.question_id} responses={responses} />
+        <RatingChart
+          distribution={result.rating_distribution}
+          average={result.average ?? 0}
+          total={result.total_responses}
+          questionId={result.question_id}
+          responses={responses}
+        />
       )}
 
       {result.type === 'text' && result.text_answers && (
@@ -212,7 +255,15 @@ function ChoiceChart({
       <div className="flex flex-col sm:flex-row items-center gap-6">
         <ResponsiveContainer width={200} height={200}>
           <PieChart>
-            <Pie data={data} dataKey="count" nameKey="name" cx="50%" cy="50%" outerRadius={80} label={({ percent }) => `${Math.round((percent ?? 0) * 100)}%`}>
+            <Pie
+              data={data}
+              dataKey="count"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              label={({ percent }) => `${Math.round((percent ?? 0) * 100)}%`}
+            >
               {data.map((_, i) => (
                 <Cell key={i} fill={COLORS[i % COLORS.length]} />
               ))}
@@ -223,9 +274,14 @@ function ChoiceChart({
         <div className="flex flex-col gap-1.5 text-sm">
           {data.map((d, i) => (
             <div key={i} className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
+              <span
+                className="w-3 h-3 rounded-sm shrink-0"
+                style={{ backgroundColor: COLORS[i % COLORS.length] }}
+              />
               <span className="text-foreground/70">{d.name}</span>
-              <span className="text-foreground/40 ml-auto pl-4">{d.count} ({d.pct}%)</span>
+              <span className="text-foreground/40 ml-auto pl-4">
+                {d.count} ({d.pct}%)
+              </span>
             </div>
           ))}
         </div>
@@ -243,7 +299,11 @@ function ChoiceChart({
               <tr className="border-b border-border bg-muted/40">
                 <th className="px-3 py-2 text-left font-medium text-foreground/50">Pupitre</th>
                 {options.map((o, i) => (
-                  <th key={o.option_id} className="px-3 py-2 text-center font-medium" style={{ color: COLORS[i % COLORS.length] }}>
+                  <th
+                    key={o.option_id}
+                    className="px-3 py-2 text-center font-medium"
+                    style={{ color: COLORS[i % COLORS.length] }}
+                  >
                     {o.label}
                   </th>
                 ))}
@@ -262,11 +322,20 @@ function ChoiceChart({
                       const pct = rowTotal > 0 ? Math.round((n / rowTotal) * 100) : 0;
                       return (
                         <td key={o.option_id} className="px-3 py-2 text-center text-foreground/70">
-                          {n > 0 ? <><span className="font-medium">{n}</span><span className="text-foreground/40"> ({pct}%)</span></> : <span className="text-foreground/25">—</span>}
+                          {n > 0 ? (
+                            <>
+                              <span className="font-medium">{n}</span>
+                              <span className="text-foreground/40"> ({pct}%)</span>
+                            </>
+                          ) : (
+                            <span className="text-foreground/25">—</span>
+                          )}
                         </td>
                       );
                     })}
-                    <td className="px-3 py-2 text-center font-medium text-foreground/50">{rowTotal}</td>
+                    <td className="px-3 py-2 text-center font-medium text-foreground/50">
+                      {rowTotal}
+                    </td>
                   </tr>
                 );
               })}
@@ -310,7 +379,8 @@ function RatingChart({
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-foreground/60">
-        Moyenne : <span className="font-semibold text-foreground">{average.toFixed(1)}</span> / 5 ({total} réponse{total !== 1 ? 's' : ''})
+        Moyenne : <span className="font-semibold text-foreground">{average.toFixed(1)}</span> / 5 (
+        {total} réponse{total !== 1 ? 's' : ''})
       </p>
       <ResponsiveContainer width="100%" height={140}>
         <BarChart data={data} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
@@ -329,7 +399,9 @@ function RatingChart({
               <tr className="border-b border-border bg-muted/40">
                 <th className="px-3 py-2 text-left font-medium text-foreground/50">Pupitre</th>
                 {[1, 2, 3, 4, 5].map((n) => (
-                  <th key={n} className="px-3 py-2 text-center font-medium text-foreground/50">{n} ★</th>
+                  <th key={n} className="px-3 py-2 text-center font-medium text-foreground/50">
+                    {n} ★
+                  </th>
                 ))}
                 <th className="px-3 py-2 text-center font-medium text-foreground/50">Moy.</th>
               </tr>
@@ -339,16 +411,24 @@ function RatingChart({
                 const vals = pupitreMap.get(pupitre)!;
                 const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
                 const dist: Record<number, number> = {};
-                vals.forEach((v) => { dist[v] = (dist[v] ?? 0) + 1; });
+                vals.forEach((v) => {
+                  dist[v] = (dist[v] ?? 0) + 1;
+                });
                 return (
                   <tr key={pupitre} className="border-b border-border/50 hover:bg-muted/20">
                     <td className="px-3 py-2 font-medium text-foreground/70">{pupitre}</td>
                     {[1, 2, 3, 4, 5].map((n) => (
                       <td key={n} className="px-3 py-2 text-center text-foreground/70">
-                        {dist[n] ? <span className="font-medium">{dist[n]}</span> : <span className="text-foreground/25">—</span>}
+                        {dist[n] ? (
+                          <span className="font-medium">{dist[n]}</span>
+                        ) : (
+                          <span className="text-foreground/25">—</span>
+                        )}
                       </td>
                     ))}
-                    <td className="px-3 py-2 text-center font-semibold text-foreground">{avg.toFixed(1)}</td>
+                    <td className="px-3 py-2 text-center font-semibold text-foreground">
+                      {avg.toFixed(1)}
+                    </td>
                   </tr>
                 );
               })}

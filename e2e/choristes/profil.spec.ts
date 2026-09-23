@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page Mon profil', () => {
   test.beforeEach(async ({ page }) => {
@@ -11,7 +11,7 @@ test.describe('Page Mon profil', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le panneau admin n\'est pas affiché (page sans breadcrumb admin)', async ({ page }) => {
+  test("le panneau admin n'est pas affiché (page sans breadcrumb admin)", async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();
   });
 
@@ -33,12 +33,14 @@ test.describe('Page Mon profil', () => {
     await expect(page.locator('h2', { hasText: 'Double authentification' })).toBeVisible();
   });
 
-  test('le bouton d\'export de données est présent', async ({ page }) => {
+  test("le bouton d'export de données est présent", async ({ page }) => {
     await expect(page.getByRole('button', { name: /Télécharger mes données/i })).toBeVisible();
   });
 
   test('le bouton Enregistrer est désactivé sans modification', async ({ page }) => {
-    await expect(page.getByRole('button', { name: /Enregistrer les modifications/i })).toBeDisabled();
+    await expect(
+      page.getByRole('button', { name: /Enregistrer les modifications/i }),
+    ).toBeDisabled();
   });
 
   test('modifier un champ active le bouton Enregistrer', async ({ page }) => {
@@ -59,7 +61,7 @@ test.describe('Page Mon profil', () => {
     await expect(page.getByText(/Numéro de téléphone/)).toBeVisible();
   });
 
-  test('les options de partage d\'anniversaire sont présentes', async ({ page }) => {
+  test("les options de partage d'anniversaire sont présentes", async ({ page }) => {
     await expect(page.getByRole('button', { name: 'Ne pas partager', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Date uniquement', exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Date et âge', exact: true })).toBeVisible();

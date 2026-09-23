@@ -43,7 +43,8 @@ async function migrate() {
   }
 
   console.log(`📦 ${files.length} fichiers à migrer vers R2`);
-  if (shouldDelete) console.log('🗑  Mode --delete activé : suppression Supabase après migration\n');
+  if (shouldDelete)
+    console.log('🗑  Mode --delete activé : suppression Supabase après migration\n');
   else console.log('ℹ️  Sans --delete : les fichiers Supabase seront conservés\n');
 
   let success = 0;
@@ -103,7 +104,8 @@ async function migrate() {
   console.log(`✅ Réussis  : ${success}`);
   if (failed > 0) console.log(`❌ Échecs   : ${failed}`);
   console.log(`─────────────────────────────────`);
-  if (failed > 0) console.log('\nRelance le script pour re-tenter les échecs (les succès sont ignorés).');
+  if (failed > 0)
+    console.log('\nRelance le script pour re-tenter les échecs (les succès sont ignorés).');
 }
 
 migrate().catch((err) => {

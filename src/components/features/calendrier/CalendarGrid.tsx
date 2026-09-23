@@ -100,7 +100,8 @@ export function CalendarGrid({
           </h2>
           {birthdayCountsByMonth?.[month] ? (
             <span className="text-xs text-foreground/40">
-              🎂 {birthdayCountsByMonth[month]} anniversaire{birthdayCountsByMonth[month] > 1 ? 's' : ''}
+              🎂 {birthdayCountsByMonth[month]} anniversaire
+              {birthdayCountsByMonth[month] > 1 ? 's' : ''}
             </span>
           ) : null}
         </div>
@@ -161,7 +162,9 @@ export function CalendarGrid({
                           borderLeftColor: event.event_types.color,
                         }}
                       >
-                        <span className="font-medium truncate block text-foreground">{event.title}</span>
+                        <span className="font-medium truncate block text-foreground">
+                          {event.title}
+                        </span>
                         {!event.id.startsWith('birthday-') && (
                           <span className="text-foreground/50">{timeStr}</span>
                         )}

@@ -5,13 +5,17 @@ import type { ExternalEvent } from './types';
 
 const SELECT = `*, external_event_dates (*), external_event_files (*)`;
 
-export async function getSitemapExternalEvents(): Promise<{ slug: string; updated_at: string | null }[]> {
+export async function getSitemapExternalEvents(): Promise<
+  { slug: string; updated_at: string | null }[]
+> {
   const supabase = await createServerClient();
   const { data } = await supabase
     .from('external_events')
     .select('slug, updated_at')
     .eq('published', true);
-  return (data ?? []).filter((e): e is { slug: string; updated_at: string | null } => e.slug !== null);
+  return (data ?? []).filter(
+    (e): e is { slug: string; updated_at: string | null } => e.slug !== null,
+  );
 }
 
 export async function getExternalEventsQuery(): Promise<ExternalEvent[]> {

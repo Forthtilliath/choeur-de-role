@@ -6,7 +6,15 @@ import { toApiError } from '@/lib/apiError';
 import { getUserQuery } from '@/lib/auth';
 import { r2, R2_IMAGES_BUCKET, R2_PUBLIC_URL } from '@/lib/r2';
 
-const ADMIN_PREFIXES = ['home/', 'gallery/', 'concerts/', 'events/', 'editor/', 'documents/', 'partners/'];
+const ADMIN_PREFIXES = [
+  'home/',
+  'gallery/',
+  'concerts/',
+  'events/',
+  'editor/',
+  'documents/',
+  'partners/',
+];
 
 export function isValidKey(key: string, userId: string, isAdmin: boolean): boolean {
   if (!key || key.includes('..') || key.startsWith('/') || key.includes('\0')) return false;

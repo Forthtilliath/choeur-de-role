@@ -9,7 +9,11 @@ function scheduledFilter() {
   return `scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`;
 }
 
-export async function getNewsQuery(): Promise<{ pinned: News[]; regular: News[]; hasMore: boolean }> {
+export async function getNewsQuery(): Promise<{
+  pinned: News[];
+  regular: News[];
+  hasMore: boolean;
+}> {
   const supabase = await createServerClient();
 
   const [pinnedResult, regularResult] = await Promise.all([
@@ -30,8 +34,10 @@ export async function getNewsQuery(): Promise<{ pinned: News[]; regular: News[];
       .range(0, NEWS_PAGE_SIZE - 1),
   ]);
 
-  if (pinnedResult.error) throw new AppError('DB_ERROR', 'Erreur lors de la récupération des actualités.');
-  if (regularResult.error) throw new AppError('DB_ERROR', 'Erreur lors de la récupération des actualités.');
+  if (pinnedResult.error)
+    throw new AppError('DB_ERROR', 'Erreur lors de la récupération des actualités.');
+  if (regularResult.error)
+    throw new AppError('DB_ERROR', 'Erreur lors de la récupération des actualités.');
 
   return {
     pinned: (pinnedResult.data ?? []) as unknown as News[],

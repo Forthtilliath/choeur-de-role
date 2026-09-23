@@ -75,7 +75,10 @@ export function ConcertsClient({ performances }: { performances: PerformanceDate
           />
           {searchInput && (
             <button
-              onClick={() => { setSearchInput(''); setParams({ q: null }); }}
+              onClick={() => {
+                setSearchInput('');
+                setParams({ q: null });
+              }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground transition"
             >
               <X className="w-4 h-4" />

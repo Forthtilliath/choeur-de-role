@@ -54,7 +54,10 @@ function extractSupabasePath(url: string, bucket: string): string {
   return decodeURIComponent(url.slice(idx + marker.length));
 }
 
-async function downloadFromSupabase(url: string, bucket: string): Promise<{ buffer: Buffer; contentType: string }> {
+async function downloadFromSupabase(
+  url: string,
+  bucket: string,
+): Promise<{ buffer: Buffer; contentType: string }> {
   let fetchUrl: string;
 
   if (bucket === 'repertoire') {
@@ -74,13 +77,31 @@ async function downloadFromSupabase(url: string, bucket: string): Promise<{ buff
   return { buffer, contentType };
 }
 
-async function uploadToR2Private(key: string, buffer: Buffer, contentType: string): Promise<string> {
-  await r2.send(new PutObjectCommand({ Bucket: R2_PRIVATE_BUCKET, Key: key, Body: buffer, ContentType: contentType }));
+async function uploadToR2Private(
+  key: string,
+  buffer: Buffer,
+  contentType: string,
+): Promise<string> {
+  await r2.send(
+    new PutObjectCommand({
+      Bucket: R2_PRIVATE_BUCKET,
+      Key: key,
+      Body: buffer,
+      ContentType: contentType,
+    }),
+  );
   return `r2://${key}`;
 }
 
 async function uploadToR2Public(key: string, buffer: Buffer, contentType: string): Promise<string> {
-  await r2.send(new PutObjectCommand({ Bucket: R2_PUBLIC_BUCKET, Key: key, Body: buffer, ContentType: contentType }));
+  await r2.send(
+    new PutObjectCommand({
+      Bucket: R2_PUBLIC_BUCKET,
+      Key: key,
+      Body: buffer,
+      ContentType: contentType,
+    }),
+  );
   return `${R2_PUBLIC_URL}/${key}`;
 }
 
@@ -98,16 +119,23 @@ async function migrateSongFiles() {
     .select('id, file_url, label, type')
     .not('file_url', 'like', 'r2://%');
   if (error) throw error;
-  if (!files?.length) { console.log('  ✅ Rien à migrer'); return; }
+  if (!files?.length) {
+    console.log('  ✅ Rien à migrer');
+    return;
+  }
   console.log(`  ${files.length} fichier(s) à migrer`);
 
-  let ok = 0, ko = 0;
+  let ok = 0,
+    ko = 0;
   for (const file of files) {
     try {
       const path = extractSupabasePath(file.file_url, 'repertoire');
       const { buffer, contentType } = await downloadFromSupabase(file.file_url, 'repertoire');
       const newUrl = await uploadToR2Private(path, buffer, contentType);
-      const { error: upErr } = await supabase.from('song_files').update({ file_url: newUrl }).eq('id', file.id);
+      const { error: upErr } = await supabase
+        .from('song_files')
+        .update({ file_url: newUrl })
+        .eq('id', file.id);
       if (upErr) throw upErr;
       if (shouldDelete) await deleteFromSupabase('repertoire', file.file_url);
       ok++;
@@ -127,17 +155,24 @@ async function migrateNewsFiles() {
     .select('id, file_url, label')
     .like('file_url', '%supabase.co%');
   if (error) throw error;
-  if (!files?.length) { console.log('  ✅ Rien à migrer'); return; }
+  if (!files?.length) {
+    console.log('  ✅ Rien à migrer');
+    return;
+  }
   console.log(`  ${files.length} fichier(s) à migrer`);
 
-  let ok = 0, ko = 0;
+  let ok = 0,
+    ko = 0;
   for (const file of files) {
     try {
       const path = extractSupabasePath(file.file_url, 'documents');
       const key = `documents/${path}`;
       const { buffer, contentType } = await downloadFromSupabase(file.file_url, 'documents');
       const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase.from('news_files').update({ file_url: newUrl }).eq('id', file.id);
+      const { error: upErr } = await supabase
+        .from('news_files')
+        .update({ file_url: newUrl })
+        .eq('id', file.id);
       if (upErr) throw upErr;
       if (shouldDelete) await deleteFromSupabase('documents', file.file_url);
       ok++;
@@ -157,17 +192,24 @@ async function migrateEventFiles() {
     .select('id, file_url, label')
     .like('file_url', '%supabase.co%');
   if (error) throw error;
-  if (!files?.length) { console.log('  ✅ Rien à migrer'); return; }
+  if (!files?.length) {
+    console.log('  ✅ Rien à migrer');
+    return;
+  }
   console.log(`  ${files.length} fichier(s) à migrer`);
 
-  let ok = 0, ko = 0;
+  let ok = 0,
+    ko = 0;
   for (const file of files) {
     try {
       const path = extractSupabasePath(file.file_url, 'documents');
       const key = `documents/${path}`;
       const { buffer, contentType } = await downloadFromSupabase(file.file_url, 'documents');
       const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase.from('external_event_files').update({ file_url: newUrl }).eq('id', file.id);
+      const { error: upErr } = await supabase
+        .from('external_event_files')
+        .update({ file_url: newUrl })
+        .eq('id', file.id);
       if (upErr) throw upErr;
       if (shouldDelete) await deleteFromSupabase('documents', file.file_url);
       ok++;
@@ -187,17 +229,24 @@ async function migratePartnerLogos() {
     .select('id, logo_url, name')
     .like('logo_url', '%supabase.co%');
   if (error) throw error;
-  if (!partners?.length) { console.log('  ✅ Rien à migrer'); return; }
+  if (!partners?.length) {
+    console.log('  ✅ Rien à migrer');
+    return;
+  }
   console.log(`  ${partners.length} logo(s) à migrer`);
 
-  let ok = 0, ko = 0;
+  let ok = 0,
+    ko = 0;
   for (const p of partners) {
     try {
       const path = extractSupabasePath(p.logo_url, 'partners');
       const key = `partners/${path}`;
       const { buffer, contentType } = await downloadFromSupabase(p.logo_url, 'partners');
       const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase.from('partners').update({ logo_url: newUrl }).eq('id', p.id);
+      const { error: upErr } = await supabase
+        .from('partners')
+        .update({ logo_url: newUrl })
+        .eq('id', p.id);
       if (upErr) throw upErr;
       if (shouldDelete) await deleteFromSupabase('partners', p.logo_url);
       ok++;
@@ -217,17 +266,24 @@ async function migrateCaMeetings() {
     .select('id, pdf_url, title')
     .like('pdf_url', '%supabase.co%');
   if (error) throw error;
-  if (!meetings?.length) { console.log('  ✅ Rien à migrer'); return; }
+  if (!meetings?.length) {
+    console.log('  ✅ Rien à migrer');
+    return;
+  }
   console.log(`  ${meetings.length} PV(s) à migrer`);
 
-  let ok = 0, ko = 0;
+  let ok = 0,
+    ko = 0;
   for (const m of meetings) {
     try {
       const path = extractSupabasePath(m.pdf_url, 'documents');
       const key = `documents/${path}`;
       const { buffer, contentType } = await downloadFromSupabase(m.pdf_url, 'documents');
       const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase.from('ca_meetings').update({ pdf_url: newUrl }).eq('id', m.id);
+      const { error: upErr } = await supabase
+        .from('ca_meetings')
+        .update({ pdf_url: newUrl })
+        .eq('id', m.id);
       if (upErr) throw upErr;
       if (shouldDelete) await deleteFromSupabase('documents', m.pdf_url);
       ok++;
@@ -248,8 +304,14 @@ async function migrateSponsorDossier() {
     .eq('page', 'partners')
     .eq('block_key', 'sponsor_dossier_url')
     .single();
-  if (error || !block) { console.log('  ✅ Rien à migrer'); return; }
-  if (!isSupabaseUrl(block.content)) { console.log('  ✅ Déjà sur R2'); return; }
+  if (error || !block) {
+    console.log('  ✅ Rien à migrer');
+    return;
+  }
+  if (!isSupabaseUrl(block.content)) {
+    console.log('  ✅ Déjà sur R2');
+    return;
+  }
 
   try {
     const path = extractSupabasePath(block.content, 'documents');
@@ -282,7 +344,10 @@ const ALL_TASKS: Record<string, () => Promise<void>> = {
 async function main() {
   const tasks = onlyTables
     ? onlyTables.map((t) => {
-        if (!ALL_TASKS[t]) throw new Error(`Table inconnue : ${t}. Valeurs valides : ${Object.keys(ALL_TASKS).join(', ')}`);
+        if (!ALL_TASKS[t])
+          throw new Error(
+            `Table inconnue : ${t}. Valeurs valides : ${Object.keys(ALL_TASKS).join(', ')}`,
+          );
         return ALL_TASKS[t];
       })
     : Object.values(ALL_TASKS);

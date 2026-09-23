@@ -10,7 +10,12 @@ interface ErrorPageProps {
   backLabel?: string;
 }
 
-export function ErrorPage({ error, reset, backHref = '/', backLabel = "Retour à l'accueil" }: ErrorPageProps) {
+export function ErrorPage({
+  error,
+  reset,
+  backHref = '/',
+  backLabel = "Retour à l'accueil",
+}: ErrorPageProps) {
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);

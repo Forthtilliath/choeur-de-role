@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 import { createTestMember, deleteTestMember } from './helpers/supabase';
 

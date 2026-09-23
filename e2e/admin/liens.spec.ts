@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Liens choristes', () => {
   test.beforeEach(async ({ page }) => {
@@ -31,9 +31,13 @@ test.describe('Admin — Liens choristes', () => {
     }
   });
 
-  test('le formulaire contient les champs Label, URL, Description et Visibilité', async ({ page }) => {
+  test('le formulaire contient les champs Label, URL, Description et Visibilité', async ({
+    page,
+  }) => {
     await page.getByRole('button', { name: /Ajouter un lien/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="Google Drive"]')).toBeVisible();
     await expect(page.locator('input[placeholder="https://drive.google.com/..."]')).toBeVisible();
     await expect(page.locator('input[placeholder="Partitions et fichiers audio"]')).toBeVisible();
@@ -43,12 +47,18 @@ test.describe('Admin — Liens choristes', () => {
 
   test('Annuler ferme le formulaire sans créer de lien', async ({ page }) => {
     await page.getByRole('button', { name: /Ajouter un lien/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
-  test('chaque lien affiche les boutons Modifier, Activer/Désactiver et Supprimer', async ({ page }) => {
+  test('chaque lien affiche les boutons Modifier, Activer/Désactiver et Supprimer', async ({
+    page,
+  }) => {
     const items = page.locator('main .p-4.rounded-xl.border.border-border.bg-background');
     if ((await items.count()) === 0) {
       test.skip(true, 'Aucun lien disponible');
@@ -66,11 +76,18 @@ test.describe('Admin — Liens choristes', () => {
       test.skip(true, 'Aucun lien disponible');
       return;
     }
-    await items.first().getByRole('button', { name: /Modifier/i }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier le lien' })).toBeVisible({ timeout: 3_000 });
+    await items
+      .first()
+      .getByRole('button', { name: /Modifier/i })
+      .click();
+    await expect(page.locator('h2', { hasText: 'Modifier le lien' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="Google Drive"]')).not.toHaveValue('');
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier le lien' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Modifier le lien' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('Supprimer affiche une confirmation et Annuler conserve le lien', async ({ page }) => {
@@ -80,7 +97,10 @@ test.describe('Admin — Liens choristes', () => {
       return;
     }
     const countBefore = await items.count();
-    await items.first().getByRole('button', { name: /Supprimer/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(items).toHaveCount(countBefore, { timeout: 3_000 });
@@ -93,13 +113,17 @@ test.describe('Admin — Liens choristes', () => {
 
     // Création
     await page.getByRole('button', { name: /Ajouter un lien/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un lien' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.locator('input[placeholder="Google Drive"]').fill(label);
     await page.locator('input[placeholder="https://drive.google.com/..."]').fill(url);
     await page.getByRole('button', { name: /^Ajouter$/ }).click();
 
     // Vérification dans la liste
-    const newItem = page.locator('main .p-4.rounded-xl.border.border-border.bg-background').filter({ hasText: label });
+    const newItem = page
+      .locator('main .p-4.rounded-xl.border.border-border.bg-background')
+      .filter({ hasText: label });
     await expect(newItem).toBeVisible({ timeout: 5_000 });
 
     // Suppression

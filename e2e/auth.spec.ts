@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 import { LoginPage } from './pages/login.page';
 
@@ -10,7 +10,7 @@ test.describe('Authentification', () => {
     await expect(page).toHaveURL(/\/choristes/, { timeout: 15_000 });
   });
 
-  test('mauvais identifiants affichent le message d\'erreur', async ({ page }) => {
+  test("mauvais identifiants affichent le message d'erreur", async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login('aucun@exemple.com', 'mauvaisMotDePasse');

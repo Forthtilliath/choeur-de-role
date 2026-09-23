@@ -28,12 +28,14 @@ export async function POST(request: Request) {
   // Upload PDF
   const key = `documents/ca/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
   try {
-    await r2.send(new PutObjectCommand({
-      Bucket: R2_IMAGES_BUCKET,
-      Key: key,
-      Body: buffer,
-      ContentType: 'application/pdf',
-    }));
+    await r2.send(
+      new PutObjectCommand({
+        Bucket: R2_IMAGES_BUCKET,
+        Key: key,
+        Body: buffer,
+        ContentType: 'application/pdf',
+      }),
+    );
   } catch {
     return NextResponse.json({ error: 'Erreur upload PDF' }, { status: 500 });
   }

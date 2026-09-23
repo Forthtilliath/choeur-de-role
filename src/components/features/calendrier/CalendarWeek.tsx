@@ -5,8 +5,18 @@ import { formatTime } from '@/utils/dateHelpers';
 import type { CalendarEvent } from './types';
 
 const MONTHS_SHORT = [
-  'jan', 'fév', 'mar', 'avr', 'mai', 'juin',
-  'juil', 'août', 'sep', 'oct', 'nov', 'déc',
+  'jan',
+  'fév',
+  'mar',
+  'avr',
+  'mai',
+  'juin',
+  'juil',
+  'août',
+  'sep',
+  'oct',
+  'nov',
+  'déc',
 ];
 const DAYS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
@@ -119,9 +129,13 @@ export function CalendarWeek({
                           borderLeftColor: event.event_types.color,
                         }}
                       >
-                        <span className="font-medium block truncate text-foreground">{event.title}</span>
+                        <span className="font-medium block truncate text-foreground">
+                          {event.title}
+                        </span>
                         {!event.id.startsWith('birthday-') && (
-                          <span className="text-foreground/50">{formatTime(start)}–{formatTime(end)}</span>
+                          <span className="text-foreground/50">
+                            {formatTime(start)}–{formatTime(end)}
+                          </span>
                         )}
                       </button>
                       {event.description && (
@@ -199,7 +213,9 @@ export function CalendarWeek({
                             borderLeftColor: event.event_types.color,
                           }}
                         >
-                          <span className="text-sm font-medium block text-foreground">{event.title}</span>
+                          <span className="text-sm font-medium block text-foreground">
+                            {event.title}
+                          </span>
                           {!event.id.startsWith('birthday-') && (
                             <span className="text-xs text-foreground/50">
                               {formatTime(start)}–{formatTime(end)}

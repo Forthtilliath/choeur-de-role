@@ -116,8 +116,8 @@ export function AdminOnboarding({ firstName }: Props) {
               Bienvenue, {firstName}&nbsp;!
             </h1>
             <p className="text-foreground/60 leading-relaxed">
-              Vous disposez des droits d&apos;administration. Ce guide vous présente l&apos;ordre de mise en
-              place recommandé pour démarrer efficacement.
+              Vous disposez des droits d&apos;administration. Ce guide vous présente l&apos;ordre de
+              mise en place recommandé pour démarrer efficacement.
             </p>
           </div>
 
@@ -135,7 +135,10 @@ export function AdminOnboarding({ firstName }: Props) {
                 { icon: '📊', text: 'Créer des sondages et analyser les réponses' },
                 { icon: '🔍', text: `Consulter le journal d'activité et les messages de contact` },
               ].map(({ icon, text }) => (
-                <div key={text} className="flex items-center gap-3 px-5 py-3 text-sm text-foreground/70">
+                <div
+                  key={text}
+                  className="flex items-center gap-3 px-5 py-3 text-sm text-foreground/70"
+                >
                   <span>{icon}</span>
                   {text}
                 </div>
@@ -162,14 +165,15 @@ export function AdminOnboarding({ firstName }: Props) {
 
           <div className="flex flex-col gap-3">
             {SETUP_FLOW.map(({ icon, title, why, path, href }, i) => (
-              <div key={title} className="flex gap-4 p-4 rounded-2xl border border-border bg-background">
+              <div
+                key={title}
+                className="flex gap-4 p-4 rounded-2xl border border-border bg-background"
+              >
                 <div className="flex flex-col items-center gap-1 shrink-0">
                   <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-xs font-semibold text-primary">
                     {i + 1}
                   </div>
-                  {i < SETUP_FLOW.length - 1 && (
-                    <div className="w-px flex-1 bg-border min-h-3" />
-                  )}
+                  {i < SETUP_FLOW.length - 1 && <div className="w-px flex-1 bg-border min-h-3" />}
                 </div>
                 <div className="flex flex-col gap-1 min-w-0 pb-1">
                   <div className="flex items-center gap-2">

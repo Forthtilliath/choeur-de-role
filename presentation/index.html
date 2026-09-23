@@ -6,8 +6,15 @@
     <title>Chœur de Rôle — présentation</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" id="theme" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css"
+      id="theme"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css"
+    />
 
     <style>
       :root {
@@ -15,7 +22,7 @@
         --cdr-accent-2: #7db8a6;
       }
       .reveal {
-        font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       }
       .reveal h1,
       .reveal h2,
@@ -24,8 +31,12 @@
         letter-spacing: -0.01em;
         font-weight: 700;
       }
-      .reveal h1 { color: var(--cdr-accent); }
-      .reveal h2 { color: var(--cdr-accent); }
+      .reveal h1 {
+        color: var(--cdr-accent);
+      }
+      .reveal h2 {
+        color: var(--cdr-accent);
+      }
       .reveal section img.shot {
         border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.12);
@@ -37,16 +48,25 @@
         color: var(--cdr-accent-2);
         font-size: 0.9em;
       }
-      .reveal .lead { font-size: 0.95em; line-height: 1.5; }
-      .reveal ul { display: block; }
-      .reveal li { margin: 0.35em 0; }
+      .reveal .lead {
+        font-size: 0.95em;
+        line-height: 1.5;
+      }
+      .reveal ul {
+        display: block;
+      }
+      .reveal li {
+        margin: 0.35em 0;
+      }
       .reveal .cols {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.4em;
         align-items: center;
       }
-      .reveal .cols.text-left { text-align: left; }
+      .reveal .cols.text-left {
+        text-align: left;
+      }
       .reveal .tag {
         display: inline-block;
         background: rgba(232, 176, 75, 0.14);
@@ -57,9 +77,16 @@
         margin: 0.2em;
         font-size: 0.62em;
       }
-      .reveal .muted { color: #9aa0a6; font-size: 0.75em; }
-      .reveal section { text-align: left; }
-      .reveal section.center { text-align: center; }
+      .reveal .muted {
+        color: #9aa0a6;
+        font-size: 0.75em;
+      }
+      .reveal section {
+        text-align: left;
+      }
+      .reveal section.center {
+        text-align: center;
+      }
       .reveal .footer-note {
         position: absolute;
         bottom: 12px;
@@ -74,13 +101,16 @@
   <body>
     <div class="reveal">
       <div class="slides">
-
         <!-- 1 — Titre -->
         <section class="center" data-background-color="#141518">
           <h1>Chœur de Rôle</h1>
-          <p class="subtitle">Site vitrine &amp; espace membres d'une chorale — projet de démonstration</p>
+          <p class="subtitle">
+            Site vitrine &amp; espace membres d'une chorale — projet de démonstration
+          </p>
           <p class="muted">Next.js · TypeScript · Supabase · Tailwind CSS</p>
-          <p class="footer-note">← → pour naviguer · <span>S</span> pour les notes · <span>F</span> plein écran</p>
+          <p class="footer-note">
+            ← → pour naviguer · <span>S</span> pour les notes · <span>F</span> plein écran
+          </p>
         </section>
 
         <!-- 2 — Le projet -->
@@ -97,8 +127,8 @@
             <li>🛠️ un <strong>back-office d'administration</strong> complet</li>
           </ul>
           <aside class="notes">
-            Objectif portfolio : montrer une app réaliste, pas une simple landing page.
-            L'univers « chorale + jeu de rôle » sert de fil rouge thématique.
+            Objectif portfolio : montrer une app réaliste, pas une simple landing page. L'univers «
+            chorale + jeu de rôle » sert de fil rouge thématique.
           </aside>
         </section>
 
@@ -126,8 +156,9 @@
             </div>
           </div>
           <p style="margin-top: 0.8em">
-            <span class="tag">Leaflet</span><span class="tag">Tiptap</span><span class="tag">jsPDF</span>
-            <span class="tag">JSZip</span><span class="tag">Recharts</span><span class="tag">dnd-kit</span>
+            <span class="tag">Leaflet</span><span class="tag">Tiptap</span
+            ><span class="tag">jsPDF</span> <span class="tag">JSZip</span
+            ><span class="tag">Recharts</span><span class="tag">dnd-kit</span>
             <span class="tag">YouTube Data API</span><span class="tag">MDX</span>
           </p>
         </section>
@@ -144,8 +175,14 @@ Navigateur ──► Next.js (App Router, RSC + Server Actions)
                  └─► YouTube Data API   playlist vidéos synchronisée
           </code></pre>
           <ul>
-            <li>Rendu serveur par défaut, <strong>Row Level Security</strong> comme socle d'autorisation</li>
-            <li>Schéma &amp; données de démo versionnés dans <code>supabase/migrations/</code> (~75 migrations)</li>
+            <li>
+              Rendu serveur par défaut, <strong>Row Level Security</strong> comme socle
+              d'autorisation
+            </li>
+            <li>
+              Schéma &amp; données de démo versionnés dans <code>supabase/migrations/</code> (~75
+              migrations)
+            </li>
           </ul>
         </section>
 
@@ -153,16 +190,22 @@ Navigateur ──► Next.js (App Router, RSC + Server Actions)
         <section class="center">
           <h2>Site public — accueil</h2>
           <img class="shot" src="assets/hero.webp" alt="Page d'accueil du Chœur de Rôle" />
-          <p class="muted">Page d'accueil entièrement éditable par <strong>blocs de contenu</strong> depuis l'admin
-            (héro, histoire, raison d'être, direction artistique, pianiste).</p>
+          <p class="muted">
+            Page d'accueil entièrement éditable par <strong>blocs de contenu</strong> depuis l'admin
+            (héro, histoire, raison d'être, direction artistique, pianiste).
+          </p>
         </section>
 
         <!-- 6 — Site public : contenus -->
         <section>
           <h2>Site public — contenus</h2>
           <ul>
-            <li><strong>Concerts</strong> à venir / passés, affiche et détail par représentation</li>
-            <li><strong>Galerie</strong> photos (albums) et vidéos (playlist YouTube synchronisée)</li>
+            <li>
+              <strong>Concerts</strong> à venir / passés, affiche et détail par représentation
+            </li>
+            <li>
+              <strong>Galerie</strong> photos (albums) et vidéos (playlist YouTube synchronisée)
+            </li>
             <li><strong>Partenaires</strong>, <strong>événements externes</strong></li>
             <li><strong>Formulaire de contact</strong> (Resend)</li>
             <li>Mentions légales, CGU, politique de confidentialité</li>
@@ -179,8 +222,10 @@ Navigateur ──► Next.js (App Router, RSC + Server Actions)
         <!-- 8 — Espace choristes -->
         <section>
           <h2>Espace choristes</h2>
-          <p class="lead">Accès réservé aux membres connectés — authentification Supabase,
-            <strong>double facteur (TOTP)</strong>.</p>
+          <p class="lead">
+            Accès réservé aux membres connectés — authentification Supabase,
+            <strong>double facteur (TOTP)</strong>.
+          </p>
           <ul>
             <li>Actualités, calendrier des répétitions, liens utiles</li>
             <li>Sondages internes</li>
@@ -193,8 +238,10 @@ Navigateur ──► Next.js (App Router, RSC + Server Actions)
         <section class="center">
           <h2>Trombinoscope</h2>
           <img class="shot" src="assets/trombinoscope.webp" alt="Trombinoscope des choristes" />
-          <p class="muted">Filtrable par pupitre · export · respect de la <strong>visibilité choisie</strong>
-            par chaque choriste (email / téléphone / adresse).</p>
+          <p class="muted">
+            Filtrable par pupitre · export · respect de la <strong>visibilité choisie</strong> par
+            chaque choriste (email / téléphone / adresse).
+          </p>
         </section>
 
         <!-- 10 — Carte -->
@@ -270,7 +317,9 @@ cp .env.local.example .env.local
 npm run dev:e2e   # Supabase local (Docker) + serveur Next.js
                   # → http://localhost:3000
           </code></pre>
-          <p class="muted">Données de démo incluses dans les migrations. Détails complets : <code>SETUP.md</code>.</p>
+          <p class="muted">
+            Données de démo incluses dans les migrations. Détails complets : <code>SETUP.md</code>.
+          </p>
         </section>
 
         <!-- 15 — Fin -->
@@ -282,7 +331,6 @@ npm run dev:e2e   # Supabase local (Docker) + serveur Next.js
             Code : github.com/forthtilliath/choeur-de-role
           </p>
         </section>
-
       </div>
     </div>
 

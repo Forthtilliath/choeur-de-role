@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 // La palette de recherche (Ctrl+K) est accessible depuis toutes les pages choristes
 
@@ -8,15 +8,19 @@ test.describe('Recherche globale (CommandPalette)', () => {
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
   });
 
-  test('s\'ouvre avec Ctrl+K', async ({ page }) => {
+  test("s'ouvre avec Ctrl+K", async ({ page }) => {
     await page.keyboard.press('Control+k');
-    await expect(page.locator('input[placeholder*="Rechercher"]').last()).toBeVisible({ timeout: 6_000 });
+    await expect(page.locator('input[placeholder*="Rechercher"]').last()).toBeVisible({
+      timeout: 6_000,
+    });
   });
 
-  test('s\'ouvre via le bouton dans le header', async ({ page }) => {
+  test("s'ouvre via le bouton dans le header", async ({ page }) => {
     const searchBtn = page.locator('button[aria-label*="Recherche"]').first();
     await searchBtn.click();
-    await expect(page.locator('input[placeholder*="Rechercher"]').last()).toBeVisible({ timeout: 6_000 });
+    await expect(page.locator('input[placeholder*="Rechercher"]').last()).toBeVisible({
+      timeout: 6_000,
+    });
   });
 
   test('se ferme avec Escape', async ({ page }) => {
@@ -28,7 +32,7 @@ test.describe('Recherche globale (CommandPalette)', () => {
     await expect(searchInput).not.toBeVisible({ timeout: 6_000 });
   });
 
-  test('se ferme en cliquant sur l\'overlay', async ({ page }) => {
+  test("se ferme en cliquant sur l'overlay", async ({ page }) => {
     await page.keyboard.press('Control+k');
     const searchInput = page.locator('input[placeholder*="Rechercher"]').last();
     await expect(searchInput).toBeVisible({ timeout: 6_000 });

@@ -11,7 +11,9 @@ import { createServerClient } from '@/lib/supabase.server';
 async function buildSignedUrl(fileUrl: string): Promise<string | null> {
   if (fileUrl.startsWith('r2://')) {
     const key = fileUrl.slice(5);
-    return getSignedUrl(r2, new GetObjectCommand({ Bucket: R2_BUCKET, Key: key }), { expiresIn: 3600 });
+    return getSignedUrl(r2, new GetObjectCommand({ Bucket: R2_BUCKET, Key: key }), {
+      expiresIn: 3600,
+    });
   }
   // Legacy Supabase
   const supabase = await createServerClient();
@@ -41,7 +43,8 @@ export default async function FichierPage({ params }: { params: Promise<{ id: st
         <div className="rounded-xl border border-border p-5 flex flex-col gap-1">
           <span className="text-xs text-foreground/40 uppercase tracking-wide">Fichier</span>
           <p className="text-foreground font-medium">
-            {typeLabel}{fileLabel}
+            {typeLabel}
+            {fileLabel}
           </p>
         </div>
 
@@ -55,7 +58,9 @@ export default async function FichierPage({ params }: { params: Promise<{ id: st
             Ouvrir le fichier ↗
           </a>
         ) : (
-          <p className="text-sm text-foreground/50 text-center">Ce fichier n&apos;est pas accessible.</p>
+          <p className="text-sm text-foreground/50 text-center">
+            Ce fichier n&apos;est pas accessible.
+          </p>
         )}
       </div>
     </Main>

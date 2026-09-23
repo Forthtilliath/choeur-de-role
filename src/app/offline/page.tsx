@@ -7,7 +7,8 @@ export default function OfflinePage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-medium text-foreground">Vous êtes hors-ligne</h1>
         <p className="text-foreground/60 max-w-sm">
-          Cette page n&apos;est pas disponible sans connexion. Reconnectez-vous pour accéder au site.
+          Cette page n&apos;est pas disponible sans connexion. Reconnectez-vous pour accéder au
+          site.
         </p>
       </div>
       <button

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef,useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 
@@ -68,29 +68,15 @@ export function HeroAdmin({ heroTitle, heroSubtitle, heroImage }: Props) {
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         {heroIsPending ? (
           <>
-            <Button
-              variant="primary"
-              size="sm"
-              disabled={heroUploading}
-              onClick={confirmHero}
-            >
+            <Button variant="primary" size="sm" disabled={heroUploading} onClick={confirmHero}>
               {heroUploading ? 'Upload...' : '✓ Valider'}
             </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              disabled={heroUploading}
-              onClick={cancelHero}
-            >
+            <Button variant="danger" size="sm" disabled={heroUploading} onClick={cancelHero}>
               Annuler
             </Button>
           </>
         ) : (
-          <Button
-            variant="white"
-            size="sm"
-            onClick={() => heroInputRef.current?.click()}
-          >
+          <Button variant="white" size="sm" onClick={() => heroInputRef.current?.click()}>
             📷 Changer la photo
           </Button>
         )}

@@ -23,8 +23,12 @@ export default async function AdminConcertEditPage({
   ]);
 
   return (
-    <Main variant="admin" title="Programmation" breadcrumbs={[{ label: 'Concerts', href: '/concerts' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Programmation"
+      breadcrumbs={[{ label: 'Concerts', href: '/concerts' }]}
+      breadcrumbCurrent="Administration"
+    >
       <ConcertsAdminClient
         initialSeasons={seasons}
         initialOrphaned={orphaned}

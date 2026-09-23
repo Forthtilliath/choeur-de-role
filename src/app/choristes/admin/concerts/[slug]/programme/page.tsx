@@ -76,7 +76,6 @@ export default async function ConcertProgrammePage({
         breadcrumbClassName="no-print"
       >
         <div className="font-serif text-foreground">
-
           {/* En-tête */}
           <div className="text-center mb-10 print:mb-8">
             <p className="text-xs tracking-widest uppercase text-foreground/50 print:text-gray-500 mb-3">
@@ -118,7 +117,8 @@ export default async function ConcertProgrammePage({
                         {song!.title}
                         {song!.composer && (
                           <span className="text-foreground/50 print:text-gray-500 text-sm italic">
-                            {' '}— {song!.composer}
+                            {' '}
+                            — {song!.composer}
                           </span>
                         )}
                       </span>

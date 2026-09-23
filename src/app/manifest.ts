@@ -52,14 +52,14 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: '1280x800',
         type: 'image/png',
         form_factor: 'wide',
-        label: 'Page d\'accueil — Chœur de Rôle',
+        label: "Page d'accueil — Chœur de Rôle",
       },
       {
         src: '/screenshots/screenshot-mobile.png',
         sizes: '390x844',
         type: 'image/png',
         form_factor: 'narrow',
-        label: 'Page d\'accueil sur mobile',
+        label: "Page d'accueil sur mobile",
       },
     ],
   };

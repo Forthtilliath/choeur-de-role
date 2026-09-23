@@ -32,7 +32,13 @@ export const getUserQuery = cache(async (): Promise<UserRoleInfo> => {
     error: errorUser,
   } = await supabase.auth.getUser();
 
-  const notLoggedIn: UserNotLoggedInfo = { id: null, role: null, isLoggedIn: false, isAdmin: false, isCa: false };
+  const notLoggedIn: UserNotLoggedInfo = {
+    id: null,
+    role: null,
+    isLoggedIn: false,
+    isAdmin: false,
+    isCa: false,
+  };
 
   if (errorUser || !user) return notLoggedIn;
 

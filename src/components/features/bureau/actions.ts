@@ -13,11 +13,7 @@ async function getCaAuth() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return null;
-  const { data: member } = await supabase
-    .from('members')
-    .select('role')
-    .eq('id', user.id)
-    .single();
+  const { data: member } = await supabase.from('members').select('role').eq('id', user.id).single();
   const role = member?.role as MemberRole | undefined;
   if (!role || !isCa(role)) return null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,9 +69,9 @@ export async function createTask(input: {
   if (error || !task) return { error: error?.message ?? 'Erreur' };
 
   if (input.assignee_ids.length > 0) {
-    await auth.db.from('task_assignees').insert(
-      input.assignee_ids.map((mid) => ({ task_id: task.id, member_id: mid })),
-    );
+    await auth.db
+      .from('task_assignees')
+      .insert(input.assignee_ids.map((mid) => ({ task_id: task.id, member_id: mid })));
   }
 
   REVALIDATE();
@@ -114,9 +110,9 @@ export async function updateTask(
   if (input.assignee_ids !== undefined) {
     await auth.db.from('task_assignees').delete().eq('task_id', taskId);
     if (input.assignee_ids.length > 0) {
-      await auth.db.from('task_assignees').insert(
-        input.assignee_ids.map((mid) => ({ task_id: taskId, member_id: mid })),
-      );
+      await auth.db
+        .from('task_assignees')
+        .insert(input.assignee_ids.map((mid) => ({ task_id: taskId, member_id: mid })));
     }
   }
 

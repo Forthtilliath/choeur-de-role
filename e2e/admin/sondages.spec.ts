@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Sondages', () => {
   test.beforeEach(async ({ page }) => {
@@ -22,25 +22,39 @@ test.describe('Admin — Sondages', () => {
 
   test('cliquer sur "Nouveau sondage" affiche le formulaire', async ({ page }) => {
     await page.getByRole('button', { name: /Nouveau sondage/i }).click();
-    await expect(page.locator('h2', { hasText: 'Nouveau sondage' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Nouveau sondage' })).toBeVisible({
+      timeout: 3_000,
+    });
   });
 
-  test('le formulaire de création contient les champs Titre, Description et Date de clôture', async ({ page }) => {
+  test('le formulaire de création contient les champs Titre, Description et Date de clôture', async ({
+    page,
+  }) => {
     await page.getByRole('button', { name: /Nouveau sondage/i }).click();
-    await expect(page.locator('h2', { hasText: 'Nouveau sondage' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Nouveau sondage' })).toBeVisible({
+      timeout: 3_000,
+    });
     // PollForm contient un champ titre et une description
-    await expect(page.locator('input[placeholder*="Titre"], input[name*="title"]').or(
-      page.locator('label', { hasText: /Titre/i }).locator('..').locator('input')
-    ).first()).toBeVisible();
+    await expect(
+      page
+        .locator('input[placeholder*="Titre"], input[name*="title"]')
+        .or(page.locator('label', { hasText: /Titre/i }).locator('..').locator('input'))
+        .first(),
+    ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible();
-    await expect(page.getByRole('button', { name: /← Retour/ }).or(
-      page.getByRole('button', { name: 'Annuler' })
-    ).first()).toBeVisible();
+    await expect(
+      page
+        .getByRole('button', { name: /← Retour/ })
+        .or(page.getByRole('button', { name: 'Annuler' }))
+        .first(),
+    ).toBeVisible();
   });
 
   test('le bouton ← Retour ferme le formulaire et revient à la liste', async ({ page }) => {
     await page.getByRole('button', { name: /Nouveau sondage/i }).click();
-    await expect(page.locator('h2', { hasText: 'Nouveau sondage' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Nouveau sondage' })).toBeVisible({
+      timeout: 3_000,
+    });
     // PollsAdminClient uses "← Retour" link or button to go back
     const retour = page.locator('button', { hasText: /← Retour/ });
     if (await retour.isVisible()) {
@@ -48,7 +62,9 @@ test.describe('Admin — Sondages', () => {
     } else {
       await page.getByRole('button', { name: 'Annuler' }).click();
     }
-    await expect(page.getByRole('button', { name: /Nouveau sondage/i })).toBeVisible({ timeout: 3_000 });
+    await expect(page.getByRole('button', { name: /Nouveau sondage/i })).toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('chaque sondage affiche les boutons Résultats, Modifier et Supprimer', async ({ page }) => {
@@ -78,15 +94,22 @@ test.describe('Admin — Sondages', () => {
       test.skip(true, 'Aucun sondage disponible');
       return;
     }
-    await items.first().getByRole('button', { name: /Modifier/i }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier le sondage' })).toBeVisible({ timeout: 3_000 });
+    await items
+      .first()
+      .getByRole('button', { name: /Modifier/i })
+      .click();
+    await expect(page.locator('h2', { hasText: 'Modifier le sondage' })).toBeVisible({
+      timeout: 3_000,
+    });
     const retour = page.locator('button', { hasText: /← Retour/ });
     if (await retour.isVisible()) {
       await retour.click();
     } else {
       await page.getByRole('button', { name: 'Annuler' }).click();
     }
-    await expect(page.getByRole('button', { name: /Nouveau sondage/i })).toBeVisible({ timeout: 3_000 });
+    await expect(page.getByRole('button', { name: /Nouveau sondage/i })).toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('Supprimer affiche une confirmation et Annuler conserve le sondage', async ({ page }) => {
@@ -96,7 +119,10 @@ test.describe('Admin — Sondages', () => {
       return;
     }
     const countBefore = await items.count();
-    await items.first().getByRole('button', { name: /Supprimer/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(items).toHaveCount(countBefore, { timeout: 3_000 });

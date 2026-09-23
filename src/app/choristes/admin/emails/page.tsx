@@ -59,7 +59,8 @@ export default async function EmailsPreviewPage() {
         lastName: 'Dupont',
         email: 'marie.dupont@email.fr',
         phone: '06 12 34 56 78',
-        message: "Bonjour, je suis soprano et je chante depuis 10 ans. Je serais ravie de rejoindre votre chorale. Seriez-vous disponible pour une audition ?",
+        message:
+          'Bonjour, je suis soprano et je chante depuis 10 ans. Je serais ravie de rejoindre votre chorale. Seriez-vous disponible pour une audition ?',
         adminUrl: 'https://choeur-de-role.fr/choristes/admin/messages',
       }),
     },

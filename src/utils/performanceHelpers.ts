@@ -1,4 +1,4 @@
-import { filterBy, getMaxDate,getMinDate, sortBy } from '@/utils/arrayHelpers';
+import { filterBy, getMaxDate, getMinDate, sortBy } from '@/utils/arrayHelpers';
 
 type WithDates<T> = T & {
   performance_dates: { date: string }[];

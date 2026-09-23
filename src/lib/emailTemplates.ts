@@ -110,11 +110,7 @@ export function candidatureNotificationEmailHtml({
 </html>`;
 }
 
-export function candidatureAcknowledgementEmailHtml({
-  firstName,
-}: {
-  firstName: string;
-}) {
+export function candidatureAcknowledgementEmailHtml({ firstName }: { firstName: string }) {
   return `<html>
 <body style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #1a1a1a;">
   <div style="text-align: center; margin-bottom: 32px;">

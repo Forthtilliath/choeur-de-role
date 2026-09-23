@@ -33,7 +33,10 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Réservé au super administrateur' }, { status: 403 });
       }
       if (!checkRateLimit(`reset-all:${user.id}`, 1, 5 * 60 * 1000)) {
-        return NextResponse.json({ error: 'Déjà exécuté récemment, attendez 5 minutes.' }, { status: 429 });
+        return NextResponse.json(
+          { error: 'Déjà exécuté récemment, attendez 5 minutes.' },
+          { status: 429 },
+        );
       }
       const { data: allMembers } = await supabase
         .from('members')
@@ -46,9 +49,7 @@ export async function POST(request: Request) {
         data: { users: authUsers },
       } = await adminClient.auth.admin.listUsers({ perPage: 1000 });
 
-      const confirmedIds = new Set(
-        authUsers.filter((u) => u.email_confirmed_at).map((u) => u.id),
-      );
+      const confirmedIds = new Set(authUsers.filter((u) => u.email_confirmed_at).map((u) => u.id));
 
       const confirmed = allMembers.filter((m) => confirmedIds.has(m.id) && m.email);
 
@@ -75,7 +76,10 @@ export async function POST(request: Request) {
     }
 
     if (!checkRateLimit(`reset-single:${user.id}`, 10, 60 * 1000)) {
-      return NextResponse.json({ error: 'Trop de réinitialisations, attendez une minute.' }, { status: 429 });
+      return NextResponse.json(
+        { error: 'Trop de réinitialisations, attendez une minute.' },
+        { status: 429 },
+      );
     }
 
     const { memberId } = body;
@@ -95,7 +99,11 @@ export async function POST(request: Request) {
     const { error: authError } = await adminClient.auth.admin.updateUserById(memberId, {
       password: passphrase,
     });
-    if (authError) return NextResponse.json({ error: 'Erreur lors de la réinitialisation du mot de passe.' }, { status: 400 });
+    if (authError)
+      return NextResponse.json(
+        { error: 'Erreur lors de la réinitialisation du mot de passe.' },
+        { status: 400 },
+      );
 
     await sendPasswordResetEmail({
       to: targetMember.email,

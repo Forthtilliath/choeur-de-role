@@ -41,7 +41,11 @@ export async function POST(request: Request) {
       email_confirm: false,
     });
 
-    if (authError) return NextResponse.json({ error: "Erreur lors de la mise à jour de l'adresse email." }, { status: 400 });
+    if (authError)
+      return NextResponse.json(
+        { error: "Erreur lors de la mise à jour de l'adresse email." },
+        { status: 400 },
+      );
 
     const ok = await updateMemberEmail(memberId, email);
     if (!ok) return NextResponse.json({ error: 'Erreur base de données' }, { status: 400 });

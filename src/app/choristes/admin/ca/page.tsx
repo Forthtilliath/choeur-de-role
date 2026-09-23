@@ -8,8 +8,12 @@ export default async function AdminCAPage() {
   const meetings = await getCaMeetingsAdminQuery();
 
   return (
-    <Main variant="admin" title="Gestion des comptes-rendus CA" breadcrumbs={[{ label: 'Espace CA', href: '/choristes/ca' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Gestion des comptes-rendus CA"
+      breadcrumbs={[{ label: 'Espace CA', href: '/choristes/ca' }]}
+      breadcrumbCurrent="Administration"
+    >
       <CAAdminClient initialMeetings={meetings} />
     </Main>
   );

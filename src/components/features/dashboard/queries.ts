@@ -123,25 +123,24 @@ async function getCurrentSeasonStats(
 
   if (!season) return null;
 
-  const [choristesResult, performancesResult, membersVoiceParts, allVoiceParts] = await Promise.all([
-    supabase
-      .from('member_season')
-      .select('*', { count: 'exact', head: true })
-      .eq('season_id', season.id),
-    supabase
-      .from('performances')
-      .select('id')
-      .eq('season_id', season.id),
-    supabase
-      .from('member_season')
-      .select('members!inner(voice_part_id, voice_parts(id, name, order_index))')
-      .eq('season_id', season.id),
-    supabase
-      .from('voice_parts')
-      .select('id, name, order_index')
-      .eq('is_voice_part', true)
-      .order('order_index', { ascending: true }),
-  ]);
+  const [choristesResult, performancesResult, membersVoiceParts, allVoiceParts] = await Promise.all(
+    [
+      supabase
+        .from('member_season')
+        .select('*', { count: 'exact', head: true })
+        .eq('season_id', season.id),
+      supabase.from('performances').select('id').eq('season_id', season.id),
+      supabase
+        .from('member_season')
+        .select('members!inner(voice_part_id, voice_parts(id, name, order_index))')
+        .eq('season_id', season.id),
+      supabase
+        .from('voice_parts')
+        .select('id, name, order_index')
+        .eq('is_voice_part', true)
+        .order('order_index', { ascending: true }),
+    ],
+  );
 
   const perfIds = (performancesResult.data ?? []).map((p) => p.id);
 
@@ -156,7 +155,10 @@ async function getCurrentSeasonStats(
 
   const voicePartCounts = new Map<string, number>();
   for (const row of membersVoiceParts.data ?? []) {
-    const member = row.members as { voice_part_id: string | null; voice_parts: { id: string } | null } | null;
+    const member = row.members as {
+      voice_part_id: string | null;
+      voice_parts: { id: string } | null;
+    } | null;
     const vpId = member?.voice_parts?.id;
     if (!vpId) continue;
     voicePartCounts.set(vpId, (voicePartCounts.get(vpId) ?? 0) + 1);
@@ -192,11 +194,20 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     pollsResult,
     currentSeason,
   ] = await Promise.all([
-    supabase.from('members').select('*', { count: 'exact', head: true }).eq('is_test_account', false),
-    supabase.from('performance_dates').select('*', { count: 'exact', head: true }).gte('date', today),
+    supabase
+      .from('members')
+      .select('*', { count: 'exact', head: true })
+      .eq('is_test_account', false),
+    supabase
+      .from('performance_dates')
+      .select('*', { count: 'exact', head: true })
+      .gte('date', today),
     supabase.from('songs').select('*', { count: 'exact', head: true }),
     supabase.from('song_files').select('*', { count: 'exact', head: true }),
-    supabase.from('gallery_albums').select('*', { count: 'exact', head: true }).eq('published', true),
+    supabase
+      .from('gallery_albums')
+      .select('*', { count: 'exact', head: true })
+      .eq('published', true),
     supabase.from('gallery_photos').select('*', { count: 'exact', head: true }),
     supabase.from('news').select('*', { count: 'exact', head: true }).eq('published', true),
     supabase.from('news').select('*', { count: 'exact', head: true }).eq('published', false),

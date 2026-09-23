@@ -3,7 +3,7 @@ export async function openSignedUrl(fileUrl: string) {
   const res = await fetch(`/api/repertoire/signed-url?path=${encodeURIComponent(fileUrl)}`);
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    throw new Error(data.error ?? 'Impossible d\'ouvrir le fichier');
+    throw new Error(data.error ?? "Impossible d'ouvrir le fichier");
   }
   const data = await res.json();
   if (data.url) window.open(data.url, '_blank');

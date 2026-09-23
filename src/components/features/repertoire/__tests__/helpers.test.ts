@@ -1,4 +1,4 @@
-import { describe, expect,it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { buildFileLabel, getVoicePartDisplay } from '../helpers';
 import type { SongFile, VoicePart } from '../types';

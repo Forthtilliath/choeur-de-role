@@ -21,12 +21,14 @@ setup('connexion membre', async ({ page }) => {
             .map(({ name, value }) => [name, value]),
         ),
         body: !['GET', 'HEAD'].includes(req.method())
-          ? (req.postDataBuffer() ?? undefined) as BodyInit | undefined
+          ? ((req.postDataBuffer() ?? undefined) as BodyInit | undefined)
           : undefined,
       });
       const body = Buffer.from(await resp.arrayBuffer());
       const headers: Record<string, string> = {};
-      resp.headers.forEach((v, k) => { headers[k] = v; });
+      resp.headers.forEach((v, k) => {
+        headers[k] = v;
+      });
       headers['access-control-allow-origin'] = 'http://localhost:3000';
       headers['access-control-allow-credentials'] = 'true';
       await route.fulfill({ status: resp.status, headers, body });
@@ -44,9 +46,9 @@ setup('connexion membre', async ({ page }) => {
   await page.waitForURL(/\/choristes/, { timeout: 15_000 });
   // Inject onboarding cookies so subsequent tests never hit the onboarding wizard
   const url = new URL(page.url());
-  await page.context().addCookies([
-    { name: 'mbr_onboarded', value: '1', domain: url.hostname, path: '/' },
-  ]);
+  await page
+    .context()
+    .addCookies([{ name: 'mbr_onboarded', value: '1', domain: url.hostname, path: '/' }]);
   // storageState({ path }) triggers a Playwright IPC bug on Node.js v22 — write manually instead
   const cookies = await page.context().cookies();
   fs.mkdirSync(path.dirname(AUTH_FILE), { recursive: true });

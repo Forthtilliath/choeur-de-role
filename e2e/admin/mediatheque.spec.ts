@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Médiathèque', () => {
   test.beforeEach(async ({ page }) => {
@@ -27,7 +27,7 @@ test.describe('Admin — Médiathèque', () => {
   test('des chants ou un message vide sont affichés', async ({ page }) => {
     const songs = page.locator('main [data-song-card]');
     const empty = page.locator('text=Aucun chant pour le moment');
-    const hasContent = await songs.count() > 0;
+    const hasContent = (await songs.count()) > 0;
     if (!hasContent) {
       await expect(empty).toBeVisible();
     } else {
@@ -41,9 +41,13 @@ test.describe('Admin — Médiathèque', () => {
     await expect(page.locator('text=Aucun chant trouvé')).toBeVisible({ timeout: 3_000 });
   });
 
-  test('le formulaire "Ajouter un chant" contient les champs Titre, Compositeur et Label', async ({ page }) => {
+  test('le formulaire "Ajouter un chant" contient les champs Titre, Compositeur et Label', async ({
+    page,
+  }) => {
     await page.getByRole('button', { name: /Ajouter un chant/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="Alors on danse"]')).toBeVisible();
     await expect(page.locator('input[placeholder="Stromae"]')).toBeVisible();
     await expect(page.locator('input[placeholder="Version concert 2026"]')).toBeVisible();
@@ -53,9 +57,13 @@ test.describe('Admin — Médiathèque', () => {
 
   test('Annuler ferme le formulaire sans créer de chant', async ({ page }) => {
     await page.getByRole('button', { name: /Ajouter un chant/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('chaque chant affiche les boutons Modifier et Supprimer', async ({ page }) => {
@@ -75,11 +83,18 @@ test.describe('Admin — Médiathèque', () => {
       test.skip(true, 'Aucun chant disponible');
       return;
     }
-    await songs.first().getByRole('button', { name: /Modifier/i }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier le chant' })).toBeVisible({ timeout: 3_000 });
+    await songs
+      .first()
+      .getByRole('button', { name: /Modifier/i })
+      .click();
+    await expect(page.locator('h2', { hasText: 'Modifier le chant' })).toBeVisible({
+      timeout: 3_000,
+    });
     await expect(page.locator('input[placeholder="Alors on danse"]')).not.toHaveValue('');
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('h2', { hasText: 'Modifier le chant' })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Modifier le chant' })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('Supprimer affiche une confirmation et Annuler conserve le chant', async ({ page }) => {
@@ -89,7 +104,10 @@ test.describe('Admin — Médiathèque', () => {
       return;
     }
     const countBefore = await songs.count();
-    await songs.first().getByRole('button', { name: /Supprimer/i }).click();
+    await songs
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(songs).toHaveCount(countBefore, { timeout: 3_000 });
@@ -101,7 +119,9 @@ test.describe('Admin — Médiathèque', () => {
 
     // Création
     await page.getByRole('button', { name: /Ajouter un chant/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.locator('input[placeholder="Alors on danse"]').fill(title);
     await page.getByRole('button', { name: /^Ajouter$/ }).click();
 
@@ -110,7 +130,10 @@ test.describe('Admin — Médiathèque', () => {
     await expect(newSong.first()).toBeVisible({ timeout: 5_000 });
 
     // Suppression
-    await newSong.first().getByRole('button', { name: /Supprimer/i }).click();
+    await newSong
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Confirmer' }).click();
 
@@ -128,10 +151,14 @@ test.describe.serial('Admin — Médiathèque — Gestion des fichiers', () => {
     await page.goto('/choristes/admin/mediatheque');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: /Ajouter un chant/i }).click();
-    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: 'Ajouter un chant' })).toBeVisible({
+      timeout: 3_000,
+    });
     await page.locator('input[placeholder="Alors on danse"]').fill(FILE_SONG_TITLE);
     await page.getByRole('button', { name: /^Ajouter$/ }).click();
-    await expect(page.locator('[data-song-card]').filter({ hasText: FILE_SONG_TITLE })).toBeVisible({ timeout: 8_000 });
+    await expect(page.locator('[data-song-card]').filter({ hasText: FILE_SONG_TITLE })).toBeVisible(
+      { timeout: 8_000 },
+    );
   });
 
   test('ajouter un fichier PDF au chant (upload R2 mocké)', async ({ page }) => {
@@ -160,7 +187,11 @@ test.describe.serial('Admin — Médiathèque — Gestion des fichiers', () => {
       buffer: pdfBuffer,
     });
 
-    await page.locator('h3', { hasText: 'Ajouter un fichier' }).locator('..').getByRole('button', { name: 'Ajouter' }).click();
+    await page
+      .locator('h3', { hasText: 'Ajouter un fichier' })
+      .locator('..')
+      .getByRole('button', { name: 'Ajouter' })
+      .click();
     await expect(page.locator('[data-testid="file-item"]')).toBeVisible({ timeout: 10_000 });
   });
 

@@ -172,8 +172,7 @@ const envLocal = parseEnvFile('.env.local');
 const envExample = parseEnvFile('.env.local.example');
 const envTest = parseEnvFile('.env.test.local');
 
-const SUPABASE_URL =
-  envLocal?.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321';
+const SUPABASE_URL = envLocal?.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321';
 const ANON_KEY = envLocal?.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const SERVICE_KEY = envLocal?.SUPABASE_SERVICE_ROLE_KEY || '';
 
@@ -269,7 +268,7 @@ async function section3Env() {
       ok: !isPlaceholder,
       warn: isPlaceholder,
       detail: isPlaceholder
-        ? 'valeur d\'exemple — OK pour un test local, à régénérer pour un usage réel'
+        ? "valeur d'exemple — OK pour un test local, à régénérer pour un usage réel"
         : undefined,
     };
   });
@@ -409,7 +408,7 @@ async function section5Comptes() {
   await check('TEST_TOTP_SECRET renseigné', () => Boolean(totpSecret));
 
   if (totpSecret) {
-    await check('Génération d\'un code TOTP (npm run totp)', () => {
+    await check("Génération d'un code TOTP (npm run totp)", () => {
       const code = totp(totpSecret);
       return { ok: /^\d{6}$/.test(code), detail: code };
     });
@@ -452,7 +451,7 @@ async function section5Comptes() {
           const ver = await verRes.json();
           if (verRes.ok && ver.access_token) return { ok: true, detail: 'AAL2 obtenu' };
         }
-        return { ok: false, warn: true, detail: 'échec de vérification (problème d\'horloge ?)' };
+        return { ok: false, warn: true, detail: "échec de vérification (problème d'horloge ?)" };
       });
     }
   }
@@ -535,7 +534,10 @@ async function section9E2E() {
 async function main() {
   console.log(`${C.bold}Vérification du setup — Chœur de Rôle${C.reset}`);
   console.log(`${C.gray}Suit les étapes de SETUP.md${C.reset}`);
-  if (!RUN_FULL) console.log(`${C.gray}(ajouter --full pour type-check/lint/tests/build, --e2e pour Playwright)${C.reset}`);
+  if (!RUN_FULL)
+    console.log(
+      `${C.gray}(ajouter --full pour type-check/lint/tests/build, --e2e pour Playwright)${C.reset}`,
+    );
 
   await section1Prerequis();
   await section2Projet();
@@ -559,7 +561,9 @@ async function main() {
   );
 
   if (fail > 0) {
-    console.log(`${C.red}Le projet n'est pas prêt — voir les ✗ ci-dessus (section Dépannage de SETUP.md).${C.reset}`);
+    console.log(
+      `${C.red}Le projet n'est pas prêt — voir les ✗ ci-dessus (section Dépannage de SETUP.md).${C.reset}`,
+    );
     process.exit(1);
   }
   console.log(`${C.green}Environnement prêt : un recruteur peut lancer le projet.${C.reset}`);

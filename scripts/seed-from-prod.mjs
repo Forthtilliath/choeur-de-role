@@ -25,10 +25,10 @@ console.log('Connexion à la prod et dump en cours...');
 console.log('(peut prendre quelques secondes)\n');
 
 try {
-  const sql = execSync(
-    `npx supabase db dump --linked --data-only --schema public ${excludeArgs}`,
-    { encoding: 'utf-8', maxBuffer: 50 * 1024 * 1024 },
-  );
+  const sql = execSync(`npx supabase db dump --linked --data-only --schema public ${excludeArgs}`, {
+    encoding: 'utf-8',
+    maxBuffer: 50 * 1024 * 1024,
+  });
 
   const wrapped = [
     '-- Production data seed (public schema only, no auth users)',
@@ -40,8 +40,8 @@ try {
     '',
     '-- Truncate all public tables to avoid conflicts with data inserted by migrations',
     'DO $$ DECLARE r RECORD; BEGIN',
-    '  FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = \'public\') LOOP',
-    '    EXECUTE \'TRUNCATE TABLE public.\' || quote_ident(r.tablename) || \' CASCADE\';',
+    "  FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP",
+    "    EXECUTE 'TRUNCATE TABLE public.' || quote_ident(r.tablename) || ' CASCADE';",
     '  END LOOP;',
     'END $$;',
     '',

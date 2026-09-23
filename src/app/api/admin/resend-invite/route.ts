@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { getMemberEmailAndFirstName,getMemberRole } from '@/components/features/membres/queries';
+import { getMemberEmailAndFirstName, getMemberRole } from '@/components/features/membres/queries';
 import { env } from '@/env';
 import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';

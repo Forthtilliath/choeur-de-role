@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Documentation', () => {
   test.beforeEach(async ({ page }) => {
@@ -22,6 +22,6 @@ test.describe('Admin — Documentation', () => {
   });
 
   test('la section "Page d\'accueil" est présente', async ({ page }) => {
-    await expect(page.locator('text=Page d\'accueil').first()).toBeVisible();
+    await expect(page.locator("text=Page d'accueil").first()).toBeVisible();
   });
 });

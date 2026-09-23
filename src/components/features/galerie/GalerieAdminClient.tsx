@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { closestCenter, DndContext, type DragEndEvent } from '@dnd-kit/core';
-import { arrayMove,SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -82,7 +82,9 @@ export function GalerieAdminClient({ initialAlbums, performances }: Props) {
     );
     setUploadingAlbumId(null);
     if (uploaded.length > 0) {
-      toast.success(`${uploaded.length} photo${uploaded.length > 1 ? 's' : ''} ajoutée${uploaded.length > 1 ? 's' : ''}`);
+      toast.success(
+        `${uploaded.length} photo${uploaded.length > 1 ? 's' : ''} ajoutée${uploaded.length > 1 ? 's' : ''}`,
+      );
     } else {
       toast.error("Erreur lors de l'upload des photos");
     }
@@ -108,88 +110,91 @@ export function GalerieAdminClient({ initialAlbums, performances }: Props) {
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={albums.map((a) => a.id)} strategy={verticalListSortingStrategy}>
           {albums.map((album) => (
-        <AlbumCard
-          key={album.id}
-          album={album}
-          expanded={expandedId === album.id}
-          performances={performances}
-          uploading={uploadingAlbumId === album.id}
-          onToggleExpandAction={() => setExpandedId(expandedId === album.id ? null : album.id)}
-          onTogglePublishAction={async () => {
-            const ok = await toggleAlbumPublished(album.id, !album.published);
-            if (ok) {
-              updateAlbum(album.id, { published: !album.published });
-              toast.success(album.published ? 'Album dépublié' : 'Album publié');
-            } else {
-              toast.error('Erreur lors de la mise à jour');
-            }
-          }}
-          onDeleteAction={async () => {
-            if (!await confirm({
-              message: 'Supprimer cet album et toutes ses photos ?',
-              danger: true,
-              details: { icon: '🖼️', label: album.title },
-            })) return;
-            const ok = await deleteAlbum(album.id);
-            if (ok) {
-              setAlbums((prev) => prev.filter((a) => a.id !== album.id));
-              toast.success('Album supprimé');
-            } else {
-              toast.error("Erreur lors de la suppression de l'album");
-            }
-          }}
-          onUpdateAlbumAction={async (fields) => {
-            const ok = await updateAlbumFields(album.id, fields);
-            if (ok) {
-              updateAlbum(album.id, fields);
-              toast.success('Album mis à jour');
-            } else {
-              toast.error("Erreur lors de la mise à jour de l'album");
-            }
-          }}
-          onUploadCoverAction={async (file) => {
-            const url = await uploadAlbumCover(album.id, file);
-            if (url) {
-              updateAlbum(album.id, { cover_url: url });
-              toast.success('Couverture mise à jour');
-            } else {
-              toast.error("Erreur lors de l'upload de la couverture");
-            }
-          }}
-          onRemoveCoverAction={async () => {
-            const ok = await removeAlbumCover(album.id);
-            if (ok) {
-              updateAlbum(album.id, { cover_url: null });
-              toast.success('Couverture supprimée');
-            } else {
-              toast.error('Erreur lors de la suppression de la couverture');
-            }
-          }}
-          onUploadPhotosAction={(files) => handleUploadPhotos(album.id, files)}
-          onDeletePhotoAction={async (photoId) => {
-            if (!await confirm({ message: 'Supprimer cette photo ?', danger: true })) return;
-            const ok = await deletePhoto(photoId);
-            if (ok) {
-              updateAlbum(album.id, {
-                gallery_photos: album.gallery_photos.filter((p) => p.id !== photoId),
-              });
-              toast.success('Photo supprimée');
-            } else {
-              toast.error('Erreur lors de la suppression de la photo');
-            }
-          }}
-          onReorderPhotosAction={(photos: GalleryPhoto[]) =>
-            updateAlbum(album.id, { gallery_photos: photos })
-          }
-          onUpdateCaptionAction={async (photoId, caption) => {
-            await updatePhotoCaption(photoId, caption);
-            updateAlbum(album.id, {
-              gallery_photos: album.gallery_photos.map((p) =>
-                p.id === photoId ? { ...p, caption } : p,
-              ),
-            });
-          }}
-        />
+            <AlbumCard
+              key={album.id}
+              album={album}
+              expanded={expandedId === album.id}
+              performances={performances}
+              uploading={uploadingAlbumId === album.id}
+              onToggleExpandAction={() => setExpandedId(expandedId === album.id ? null : album.id)}
+              onTogglePublishAction={async () => {
+                const ok = await toggleAlbumPublished(album.id, !album.published);
+                if (ok) {
+                  updateAlbum(album.id, { published: !album.published });
+                  toast.success(album.published ? 'Album dépublié' : 'Album publié');
+                } else {
+                  toast.error('Erreur lors de la mise à jour');
+                }
+              }}
+              onDeleteAction={async () => {
+                if (
+                  !(await confirm({
+                    message: 'Supprimer cet album et toutes ses photos ?',
+                    danger: true,
+                    details: { icon: '🖼️', label: album.title },
+                  }))
+                )
+                  return;
+                const ok = await deleteAlbum(album.id);
+                if (ok) {
+                  setAlbums((prev) => prev.filter((a) => a.id !== album.id));
+                  toast.success('Album supprimé');
+                } else {
+                  toast.error("Erreur lors de la suppression de l'album");
+                }
+              }}
+              onUpdateAlbumAction={async (fields) => {
+                const ok = await updateAlbumFields(album.id, fields);
+                if (ok) {
+                  updateAlbum(album.id, fields);
+                  toast.success('Album mis à jour');
+                } else {
+                  toast.error("Erreur lors de la mise à jour de l'album");
+                }
+              }}
+              onUploadCoverAction={async (file) => {
+                const url = await uploadAlbumCover(album.id, file);
+                if (url) {
+                  updateAlbum(album.id, { cover_url: url });
+                  toast.success('Couverture mise à jour');
+                } else {
+                  toast.error("Erreur lors de l'upload de la couverture");
+                }
+              }}
+              onRemoveCoverAction={async () => {
+                const ok = await removeAlbumCover(album.id);
+                if (ok) {
+                  updateAlbum(album.id, { cover_url: null });
+                  toast.success('Couverture supprimée');
+                } else {
+                  toast.error('Erreur lors de la suppression de la couverture');
+                }
+              }}
+              onUploadPhotosAction={(files) => handleUploadPhotos(album.id, files)}
+              onDeletePhotoAction={async (photoId) => {
+                if (!(await confirm({ message: 'Supprimer cette photo ?', danger: true }))) return;
+                const ok = await deletePhoto(photoId);
+                if (ok) {
+                  updateAlbum(album.id, {
+                    gallery_photos: album.gallery_photos.filter((p) => p.id !== photoId),
+                  });
+                  toast.success('Photo supprimée');
+                } else {
+                  toast.error('Erreur lors de la suppression de la photo');
+                }
+              }}
+              onReorderPhotosAction={(photos: GalleryPhoto[]) =>
+                updateAlbum(album.id, { gallery_photos: photos })
+              }
+              onUpdateCaptionAction={async (photoId, caption) => {
+                await updatePhotoCaption(photoId, caption);
+                updateAlbum(album.id, {
+                  gallery_photos: album.gallery_photos.map((p) =>
+                    p.id === photoId ? { ...p, caption } : p,
+                  ),
+                });
+              }}
+            />
           ))}
         </SortableContext>
       </DndContext>

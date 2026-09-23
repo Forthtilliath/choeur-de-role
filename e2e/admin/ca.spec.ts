@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Comptes-rendus CA', () => {
   test.beforeEach(async ({ page }) => {
@@ -34,7 +34,11 @@ test.describe('Admin — Comptes-rendus CA', () => {
     await page.getByRole('button', { name: /Ajouter un compte-rendu/i }).click();
     await expect(page.locator('form')).toBeVisible({ timeout: 3_000 });
     // Champ titre
-    await expect(page.locator('input[name="title"], input[placeholder*="Titre"], input[placeholder*="CA"]').first()).toBeVisible();
+    await expect(
+      page
+        .locator('input[name="title"], input[placeholder*="Titre"], input[placeholder*="CA"]')
+        .first(),
+    ).toBeVisible();
     // Champ date
     await expect(page.locator('input[type="date"]')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible();
@@ -47,7 +51,9 @@ test.describe('Admin — Comptes-rendus CA', () => {
     await expect(page.locator('form')).not.toBeVisible({ timeout: 3_000 });
   });
 
-  test('chaque compte-rendu affiche les boutons Modifier, Publier/Dépublier et Supprimer', async ({ page }) => {
+  test('chaque compte-rendu affiche les boutons Modifier, Publier/Dépublier et Supprimer', async ({
+    page,
+  }) => {
     const items = page.locator('main .flex.items-center.gap-4.p-4.rounded-xl.border');
     if ((await items.count()) === 0) {
       test.skip(true, 'Aucun compte-rendu disponible');
@@ -65,20 +71,28 @@ test.describe('Admin — Comptes-rendus CA', () => {
       test.skip(true, 'Aucun compte-rendu disponible');
       return;
     }
-    await items.first().getByRole('button', { name: /Modifier/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Modifier/i })
+      .click();
     await expect(page.locator('form')).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).click();
     await expect(page.locator('form')).not.toBeVisible({ timeout: 3_000 });
   });
 
-  test('Supprimer affiche une confirmation et Annuler conserve le compte-rendu', async ({ page }) => {
+  test('Supprimer affiche une confirmation et Annuler conserve le compte-rendu', async ({
+    page,
+  }) => {
     const items = page.locator('main .flex.items-center.gap-4.p-4.rounded-xl.border');
     if ((await items.count()) === 0) {
       test.skip(true, 'Aucun compte-rendu disponible');
       return;
     }
     const countBefore = await items.count();
-    await items.first().getByRole('button', { name: /Supprimer/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(items).toHaveCount(countBefore, { timeout: 3_000 });
@@ -90,7 +104,10 @@ test.describe('Admin — Comptes-rendus CA', () => {
       test.skip(true, 'Aucun compte-rendu disponible');
       return;
     }
-    const badge = items.first().locator('.rounded-full').filter({ hasText: /Publié|Brouillon/i });
+    const badge = items
+      .first()
+      .locator('.rounded-full')
+      .filter({ hasText: /Publié|Brouillon/i });
     await expect(badge).toBeVisible();
   });
 });

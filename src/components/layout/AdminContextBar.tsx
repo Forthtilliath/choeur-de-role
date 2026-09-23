@@ -34,8 +34,7 @@ function resolveAdminLink(pathname: string): AdminLink | null {
     const slug = pathname.slice('/concerts/'.length);
     return { href: `/choristes/admin/concerts/${slug}`, currentLabel: 'Concerts' };
   }
-  if (pathname === '/galerie')
-    return { href: '/choristes/admin/galerie', currentLabel: 'Galerie' };
+  if (pathname === '/galerie') return { href: '/choristes/admin/galerie', currentLabel: 'Galerie' };
   if (pathname === '/evenements')
     return { href: '/choristes/admin/evenements', currentLabel: 'Évènements' };
   if (pathname.startsWith('/evenements/'))

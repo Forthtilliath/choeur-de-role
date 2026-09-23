@@ -7,11 +7,11 @@ import { useState } from 'react';
  * specific offset or delay to the current time if needed.
  * @returns The `useNow` custom hook is returning the current timestamp (`now`) with an optional
  * threshold added to it.
- * 
+ *
  * @example
  * ```tsx
  * import { useNow } from '@/hooks/useNow';
- * 
+ *
  * function MyComponent() {
  *   const now = useNow();
  *   return <div>Current timestamp: {now}</div>;
@@ -19,11 +19,11 @@ import { useState } from 'react';
  * ```
  * In this example, the `useNow` hook is used to get the current timestamp, which is then displayed in a `div`.
  * You can also pass a `threshold_ms` value to adjust the timestamp as needed.
- * 
+ *
  * @example
  * ```tsx
  * import { useNow } from '@/hooks/useNow';
- * 
+ *
  * function MyComponent() {
  *   const nowWithOffset = useNow(5000); // Get current timestamp with a 5-second offset
  *   return <div>Current timestamp with offset: {nowWithOffset}</div>;

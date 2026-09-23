@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Galerie', () => {
   test.beforeEach(async ({ page }) => {
@@ -31,23 +31,29 @@ test.describe('Admin — Galerie', () => {
     await expect(page.locator('input').first()).toBeVisible({ timeout: 3_000 });
   });
 
-  test('le formulaire d\'ajout contient un champ titre et les boutons Créer/Annuler', async ({ page }) => {
+  test("le formulaire d'ajout contient un champ titre et les boutons Créer/Annuler", async ({
+    page,
+  }) => {
     await page.getByRole('button', { name: /Nouvel album/i }).click();
     await expect(page.locator('input').first()).toBeVisible({ timeout: 3_000 });
     await expect(page.getByRole('button', { name: /Annuler/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /Créer|Ajouter/i })).toBeVisible();
   });
 
-  test('Annuler ferme le formulaire d\'ajout', async ({ page }) => {
+  test("Annuler ferme le formulaire d'ajout", async ({ page }) => {
     await page.getByRole('button', { name: /Nouvel album/i }).click();
     await expect(page.locator('input').first()).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: /Annuler/i }).click();
-    await expect(page.getByRole('button', { name: /Nouvel album/i })).toBeVisible({ timeout: 3_000 });
+    await expect(page.getByRole('button', { name: /Nouvel album/i })).toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('chaque album affiche les boutons Publier/Dépublier et Supprimer', async ({ page }) => {
     // Les albums sont des AlbumCard avec DnD
-    const albums = page.locator('main .rounded-2xl.border').filter({ hasText: /Publier|Dépublier/ });
+    const albums = page
+      .locator('main .rounded-2xl.border')
+      .filter({ hasText: /Publier|Dépublier/ });
     if ((await albums.count()) === 0) {
       test.skip(true, 'Aucun album disponible');
       return;
@@ -57,14 +63,21 @@ test.describe('Admin — Galerie', () => {
     await expect(first.getByRole('button', { name: /Supprimer/i })).toBeVisible();
   });
 
-  test('Supprimer un album affiche une confirmation et Annuler conserve l\'album', async ({ page }) => {
-    const albums = page.locator('main .rounded-2xl.border').filter({ hasText: /Publier|Dépublier/ });
+  test("Supprimer un album affiche une confirmation et Annuler conserve l'album", async ({
+    page,
+  }) => {
+    const albums = page
+      .locator('main .rounded-2xl.border')
+      .filter({ hasText: /Publier|Dépublier/ });
     if ((await albums.count()) === 0) {
       test.skip(true, 'Aucun album disponible');
       return;
     }
     const countBefore = await albums.count();
-    await albums.first().getByRole('button', { name: /Supprimer/i }).click();
+    await albums
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).first().click();
     await expect(albums).toHaveCount(countBefore, { timeout: 3_000 });
@@ -85,11 +98,16 @@ test.describe('Admin — Galerie', () => {
     await expect(albumCard.first()).toBeVisible({ timeout: 5_000 });
 
     // Suppression
-    await albumCard.first().getByRole('button', { name: /Supprimer/i }).click();
+    await albumCard
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     await expect(page.getByRole('button', { name: 'Confirmer' })).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Confirmer' }).click();
 
     // Vérification suppression
-    await expect(page.locator('main .rounded-2xl.border', { hasText: title })).not.toBeVisible({ timeout: 5_000 });
+    await expect(page.locator('main .rounded-2xl.border', { hasText: title })).not.toBeVisible({
+      timeout: 5_000,
+    });
   });
 });

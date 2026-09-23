@@ -5,14 +5,12 @@ import { createAdminClient, createServerClient } from '@/lib/supabase.server';
 
 export async function POST(request: Request) {
   const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
 
-  const { data: caller } = await supabase
-    .from('members')
-    .select('role')
-    .eq('id', user.id)
-    .single();
+  const { data: caller } = await supabase.from('members').select('role').eq('id', user.id).single();
   if (!['admin', 'super_admin'].includes(caller?.role ?? '')) {
     return NextResponse.json({ error: 'Non autorisé' }, { status: 403 });
   }
@@ -29,7 +27,11 @@ export async function POST(request: Request) {
       .update({ photo_url: photoUrl })
       .eq('id', memberId);
 
-    if (error) return NextResponse.json({ error: 'Erreur lors de la mise à jour de la photo.' }, { status: 400 });
+    if (error)
+      return NextResponse.json(
+        { error: 'Erreur lors de la mise à jour de la photo.' },
+        { status: 400 },
+      );
     return NextResponse.json({ success: true });
   } catch (e) {
     return toApiError(e);

@@ -61,8 +61,8 @@ export default function CGUPage() {
 
       <Section title="5. Responsabilité">
         <p>
-          Chœur de Rôle ne saurait être tenu responsable des dommages directs ou indirects
-          résultant de l&apos;utilisation du site ou de l&apos;impossibilité d&apos;y accéder.
+          Chœur de Rôle ne saurait être tenu responsable des dommages directs ou indirects résultant
+          de l&apos;utilisation du site ou de l&apos;impossibilité d&apos;y accéder.
         </p>
         <p>
           L&apos;association se réserve le droit de modifier, suspendre ou interrompre l&apos;accès

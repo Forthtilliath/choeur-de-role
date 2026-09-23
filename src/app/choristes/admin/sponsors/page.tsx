@@ -9,8 +9,12 @@ export default async function AdminPartenairesPage() {
   const partners = await getPartners();
 
   return (
-    <Main variant="admin" title="Gestion des sponsors" breadcrumbs={[{ label: 'Partenaires', href: '/partenaires' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Gestion des sponsors"
+      breadcrumbs={[{ label: 'Partenaires', href: '/partenaires' }]}
+      breadcrumbCurrent="Administration"
+    >
       <PartenairesAdminClient initialPartners={partners} />
     </Main>
   );

@@ -17,11 +17,7 @@ export async function migratePerformanceImagesToR2(): Promise<{
   } = await supabase.auth.getUser();
   if (!user) return { migrated: 0, errors: ['Non authentifié'] };
 
-  const { data: member } = await supabase
-    .from('members')
-    .select('role')
-    .eq('id', user.id)
-    .single();
+  const { data: member } = await supabase.from('members').select('role').eq('id', user.id).single();
   if (!member || !isAdmin(member.role as MemberRole))
     return { migrated: 0, errors: ['Non autorisé'] };
 
@@ -30,7 +26,8 @@ export async function migratePerformanceImagesToR2(): Promise<{
     .select('id, image_url')
     .like('image_url', '%supabase.co%');
 
-  if (error || !performances) return { migrated: 0, errors: [error?.message ?? 'Erreur de requête'] };
+  if (error || !performances)
+    return { migrated: 0, errors: [error?.message ?? 'Erreur de requête'] };
   if (performances.length === 0) return { migrated: 0, errors: [] };
 
   let migrated = 0;

@@ -1,4 +1,4 @@
-import { beforeEach,describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // ── Mocks (hoisted pour être disponibles dans vi.mock) ───────────
 
@@ -108,6 +108,8 @@ describe('POST /api/repertoire/upload-file', () => {
 
   it('retourne 500 si R2 échoue', async () => {
     mockSend.mockRejectedValueOnce(new Error('R2 error'));
-    await expect(POST(makeRequest({ file: validFile, key: 'songs/song-1/123.pdf' }))).rejects.toThrow();
+    await expect(
+      POST(makeRequest({ file: validFile, key: 'songs/song-1/123.pdf' })),
+    ).rejects.toThrow();
   });
 });

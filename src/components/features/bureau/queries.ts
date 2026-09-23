@@ -1,5 +1,13 @@
 import { createServerClient } from '@/lib/supabase.server';
-import type { CaMember, Task, TaskCategory, TaskComment, TaskProject, TaskTemplate, TaskTemplateItem } from '@/types/tasks';
+import type {
+  CaMember,
+  Task,
+  TaskCategory,
+  TaskComment,
+  TaskProject,
+  TaskTemplate,
+  TaskTemplateItem,
+} from '@/types/tasks';
 
 // ─── Tasks ────────────────────────────────────────────────────────────────────
 
@@ -18,12 +26,14 @@ export async function getTasks(projectId: string): Promise<Task[]> {
   const supabase = (await createServerClient()) as any;
   const { data } = await supabase
     .from('tasks')
-    .select(`
+    .select(
+      `
       id, title, description, status, priority, due_date, duration_value, duration_unit,
       category_id, position, project_id, created_by, created_at, updated_at,
       task_assignees(member_id, members(first_name, last_name)),
       task_categories(id, name, color, position)
-    `)
+    `,
+    )
     .eq('project_id', projectId)
     .order('position', { ascending: true });
 
@@ -44,7 +54,12 @@ export async function getTasks(projectId: string): Promise<Task[]> {
     created_by: t.created_by ?? null,
     created_at: t.created_at,
     updated_at: t.updated_at,
-    assignees: ((t.task_assignees ?? []) as { member_id: string; members: { first_name: string | null; last_name: string | null } | null }[]).map((a) => ({
+    assignees: (
+      (t.task_assignees ?? []) as {
+        member_id: string;
+        members: { first_name: string | null; last_name: string | null } | null;
+      }[]
+    ).map((a) => ({
       member_id: a.member_id,
       first_name: a.members?.first_name ?? null,
       last_name: a.members?.last_name ?? null,
@@ -57,11 +72,22 @@ export async function getAllTaskComments(projectId: string): Promise<TaskComment
   const supabase = (await createServerClient()) as any;
   const { data } = await supabase
     .from('task_comments')
-    .select('id, task_id, author_id, content, created_at, members(first_name, last_name), tasks!inner(project_id)')
+    .select(
+      'id, task_id, author_id, content, created_at, members(first_name, last_name), tasks!inner(project_id)',
+    )
     .eq('tasks.project_id', projectId)
     .order('created_at', { ascending: true });
 
-  return ((data ?? []) as { id: string; task_id: string; author_id: string | null; content: string; created_at: string; members: { first_name: string | null; last_name: string | null } | null }[]).map((c) => ({
+  return (
+    (data ?? []) as {
+      id: string;
+      task_id: string;
+      author_id: string | null;
+      content: string;
+      created_at: string;
+      members: { first_name: string | null; last_name: string | null } | null;
+    }[]
+  ).map((c) => ({
     id: c.id,
     task_id: c.task_id,
     author_id: c.author_id ?? null,
@@ -153,19 +179,24 @@ export async function getTemplates(): Promise<TaskTemplate[]> {
   }));
 }
 
-export async function getTemplateWithItems(id: string): Promise<{ template: TaskTemplate; items: TaskTemplateItem[] } | null> {
+export async function getTemplateWithItems(
+  id: string,
+): Promise<{ template: TaskTemplate; items: TaskTemplateItem[] } | null> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const supabase = (await createServerClient()) as any;
   const { data } = await supabase
     .from('task_templates')
-    .select('id, name, description, created_by, created_at, task_template_items(id, title, description, priority, status, duration_value, duration_unit, category_id, position, task_categories(id, name, color, position))')
+    .select(
+      'id, name, description, created_by, created_at, task_template_items(id, title, description, priority, status, duration_value, duration_unit, category_id, position, task_categories(id, name, color, position))',
+    )
     .eq('id', id)
     .single();
 
   if (!data) return null;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const items: TaskTemplateItem[] = (data.task_template_items ?? []).map((i: any) => ({
+  const items: TaskTemplateItem[] = (data.task_template_items ?? [])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .map((i: any) => ({
       id: i.id,
       template_id: id,
       title: i.title,

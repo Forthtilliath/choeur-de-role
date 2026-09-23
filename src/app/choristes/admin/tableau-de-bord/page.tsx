@@ -1,12 +1,4 @@
-import {
-  Calendar,
-  ImageIcon,
-  Mic2,
-  Music,
-  Newspaper,
-  Users,
-  Vote,
-} from 'lucide-react';
+import { Calendar, ImageIcon, Mic2, Music, Newspaper, Users, Vote } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 

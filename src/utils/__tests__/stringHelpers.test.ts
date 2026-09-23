@@ -1,6 +1,6 @@
-import { describe, expect,it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import { escapeHtml,toTitleCase, toUpperCase } from '../stringHelpers';
+import { escapeHtml, toTitleCase, toUpperCase } from '../stringHelpers';
 
 describe('toUpperCase', () => {
   it('met en majuscules', () => expect(toUpperCase('hello')).toBe('HELLO'));
@@ -31,8 +31,8 @@ describe('escapeHtml', () => {
   it('échappe les guillemets doubles', () => {
     expect(escapeHtml('"quoted"')).toBe('&quot;quoted&quot;');
   });
-  it("échappe les guillemets simples (prévention XSS)", () => {
-    expect(escapeHtml("it's")).toBe("it&#x27;s");
+  it('échappe les guillemets simples (prévention XSS)', () => {
+    expect(escapeHtml("it's")).toBe('it&#x27;s');
   });
   it('chaîne sans caractères spéciaux → inchangée', () => {
     expect(escapeHtml('hello world')).toBe('hello world');

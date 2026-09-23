@@ -78,7 +78,7 @@ const SECTIONS: Section[] = [
       {
         title: 'Ajouter des notes choristes',
         content:
-          'Dans le formulaire de représentation, le champ "Notes choristes" permet d\'ajouter des informations visibles uniquement dans le répertoire choristes. Utilisez l\'éditeur riche pour formater le texte, ajouter des liens Drive, un planning de répétitions, etc.\n\nCes notes s\'affichent automatiquement quand un choriste sélectionne cette représentation dans le filtre du répertoire.',
+          "Dans le formulaire de représentation, le champ \"Notes choristes\" permet d'ajouter des informations visibles uniquement dans le répertoire choristes. Utilisez l'éditeur riche pour formater le texte, ajouter des liens Drive, un planning de répétitions, etc.\n\nCes notes s'affichent automatiquement quand un choriste sélectionne cette représentation dans le filtre du répertoire.",
         tip: 'Idéal pour partager un lien Google Drive ou la liste des répétitions prévues pour un concert.',
       },
       {
@@ -241,7 +241,7 @@ const SECTIONS: Section[] = [
       {
         title: 'Partager un lien direct vers un chant',
         content:
-          'Chaque chant a une URL directe : /choristes/repertoire/{id}. Ce lien ouvre le répertoire avec l\'accordéon du chant déplié et un scroll automatique jusqu\'à lui. Les choristes peuvent aussi trouver n\'importe quel chant via la palette de recherche (⌘K).',
+          "Chaque chant a une URL directe : /choristes/repertoire/{id}. Ce lien ouvre le répertoire avec l'accordéon du chant déplié et un scroll automatique jusqu'à lui. Les choristes peuvent aussi trouver n'importe quel chant via la palette de recherche (⌘K).",
         tip: 'Utile pour signaler un chant spécifique à un choriste par message.',
       },
     ],
@@ -270,8 +270,8 @@ const SECTIONS: Section[] = [
       {
         title: 'Partager un lien direct vers un article',
         content:
-          'Chaque article a un lien d\'ancre stable : /choristes#news-{id}. Ce lien ouvre la page Actualités et scrolle directement jusqu\'à l\'article. Les choristes peuvent aussi retrouver n\'importe quel article via la palette de recherche (⌘K).',
-        tip: 'Le lien est stable même si d\'autres articles sont ajoutés — il ne change pas.',
+          "Chaque article a un lien d'ancre stable : /choristes#news-{id}. Ce lien ouvre la page Actualités et scrolle directement jusqu'à l'article. Les choristes peuvent aussi retrouver n'importe quel article via la palette de recherche (⌘K).",
+        tip: "Le lien est stable même si d'autres articles sont ajoutés — il ne change pas.",
       },
     ],
   },
@@ -296,7 +296,7 @@ const SECTIONS: Section[] = [
       {
         title: "Gérer les types d'évènements",
         content:
-          'Administration → Calendrier → Types d\'évènements. Vous pouvez créer, modifier et supprimer les types (Répétition, Concert, Anniversaire...). Chaque type a un label, une couleur, une description optionnelle et une option "Spécial" pour le mettre en avant.\n\nGlissez-déposez les lignes avec la poignée ⠿ pour changer l\'ordre d\'affichage.',
+          "Administration → Calendrier → Types d'évènements. Vous pouvez créer, modifier et supprimer les types (Répétition, Concert, Anniversaire...). Chaque type a un label, une couleur, une description optionnelle et une option \"Spécial\" pour le mettre en avant.\n\nGlissez-déposez les lignes avec la poignée ⠿ pour changer l'ordre d'affichage.",
         tip: 'La couleur du type "Anniversaire" est utilisée pour tous les anniversaires générés automatiquement — changer la couleur ici met à jour tout le calendrier.',
       },
       {
@@ -307,8 +307,8 @@ const SECTIONS: Section[] = [
       {
         title: 'Partager un lien direct vers un évènement',
         content:
-          'Chaque évènement a une URL directe : /choristes/calendrier/{id}. Ce lien ouvre le calendrier positionné sur le mois de l\'évènement et affiche sa fiche automatiquement. Les choristes peuvent aussi trouver n\'importe quel évènement via la palette de recherche (⌘K).',
-        tip: 'Pratique pour partager les détails d\'une répétition ou d\'un concert par message.',
+          "Chaque évènement a une URL directe : /choristes/calendrier/{id}. Ce lien ouvre le calendrier positionné sur le mois de l'évènement et affiche sa fiche automatiquement. Les choristes peuvent aussi trouver n'importe quel évènement via la palette de recherche (⌘K).",
+        tip: "Pratique pour partager les détails d'une répétition ou d'un concert par message.",
       },
     ],
   },
@@ -427,12 +427,12 @@ const SECTIONS: Section[] = [
     id: 'recherche',
     icon: '🔍',
     title: 'Palette de recherche (⌘K)',
-    description: 'Naviguer rapidement vers n\'importe quelle page, chant, choriste ou évènement.',
+    description: "Naviguer rapidement vers n'importe quelle page, chant, choriste ou évènement.",
     steps: [
       {
         title: 'Ouvrir la palette',
         content:
-          'Appuyez sur ⌘K (Mac) ou Ctrl+K (Windows/Linux) depuis n\'importe quelle page. Vous pouvez aussi cliquer sur l\'icône loupe dans la barre de navigation.',
+          "Appuyez sur ⌘K (Mac) ou Ctrl+K (Windows/Linux) depuis n'importe quelle page. Vous pouvez aussi cliquer sur l'icône loupe dans la barre de navigation.",
         tip: 'La palette fonctionne sur toutes les pages du site, connecté ou non.',
       },
       {

@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page Carte', () => {
   test.beforeEach(async ({ page }) => {
@@ -39,12 +39,10 @@ test.describe('Page Carte - vue CA', () => {
   test('la vue CA affiche le message administrateur', async ({ page }) => {
     await page.goto('/choristes/carte');
     await page.waitForSelector('.leaflet-container', { timeout: 15_000 });
-    await expect(
-      page.locator('p', { hasText: 'Vue CA' }),
-    ).toBeVisible();
+    await expect(page.locator('p', { hasText: 'Vue CA' })).toBeVisible();
   });
 
-  test('le panneau admin n\'est pas affiché (page sans breadcrumb admin)', async ({ page }) => {
+  test("le panneau admin n'est pas affiché (page sans breadcrumb admin)", async ({ page }) => {
     await page.goto('/choristes/carte');
     await page.waitForSelector('.leaflet-container', { timeout: 15_000 });
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();

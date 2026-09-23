@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useRef,useState, useTransition } from 'react';
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 
-import { type ContactMessage,deleteContactMessage, toggleMessageRead } from './actions';
+import { type ContactMessage, deleteContactMessage, toggleMessageRead } from './actions';
 
 const CATEGORY_LABELS: Record<string, string> = {
   rejoindre: 'Candidature',
@@ -108,7 +108,10 @@ export function ContactMessagesClient({ messages: initial }: Props) {
           const count = messages.filter((m) => m.category === cat).length;
           if (!count) return null;
           return (
-            <div key={cat} className="bg-background-secondary border border-border rounded-xl px-4 py-3 text-center">
+            <div
+              key={cat}
+              className="bg-background-secondary border border-border rounded-xl px-4 py-3 text-center"
+            >
               <p className="text-2xl font-semibold text-foreground">{count}</p>
               <p className="text-xs text-foreground/50 mt-0.5">{CATEGORY_LABELS[cat]}</p>
             </div>
@@ -201,7 +204,9 @@ export function ContactMessagesClient({ messages: initial }: Props) {
                 <span className="font-medium text-sm text-foreground truncate">
                   {msg.first_name} {msg.last_name}
                 </span>
-                <span className="text-xs text-foreground/40 truncate hidden sm:block">{msg.email}</span>
+                <span className="text-xs text-foreground/40 truncate hidden sm:block">
+                  {msg.email}
+                </span>
                 <span className="ml-auto shrink-0 text-xs text-foreground/40 whitespace-nowrap">
                   {formatDate(msg.created_at)}
                 </span>
@@ -231,7 +236,9 @@ export function ContactMessagesClient({ messages: initial }: Props) {
                   </div>
                   <div>
                     <span className="text-foreground/50 text-xs">Message</span>
-                    <p className="mt-1 text-sm whitespace-pre-wrap leading-relaxed">{msg.message}</p>
+                    <p className="mt-1 text-sm whitespace-pre-wrap leading-relaxed">
+                      {msg.message}
+                    </p>
                   </div>
                   <div className="flex gap-2 flex-wrap pt-1">
                     <button

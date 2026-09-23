@@ -22,7 +22,10 @@ export async function POST(request: Request) {
       );
 
     if (error) {
-      return NextResponse.json({ error: 'Erreur lors de la mise à jour du contenu.' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Erreur lors de la mise à jour du contenu.' },
+        { status: 400 },
+      );
     }
 
     return NextResponse.json({ success: true });

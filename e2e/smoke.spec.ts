@@ -4,7 +4,7 @@
  * Les tests admin utilisent le storage state admin.
  */
 import type { Page } from '@playwright/test';
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 async function expectPageLoads(page: Page, url: string) {
   await page.goto(url);
@@ -13,9 +13,11 @@ async function expectPageLoads(page: Page, url: string) {
   await expect(page).not.toHaveURL(/\/error/);
   // Pas d'overlay d'erreur Turbopack ("Element type is invalid" etc.)
   const errorOverlay = page.locator('nextjs-portal').or(page.locator('[data-nextjs-dialog]'));
-  await expect(errorOverlay).not.toBeAttached({ timeout: 3_000 }).catch(() => {
-    // L'overlay n'existe pas toujours dans le DOM — on ignore l'absence
-  });
+  await expect(errorOverlay)
+    .not.toBeAttached({ timeout: 3_000 })
+    .catch(() => {
+      // L'overlay n'existe pas toujours dans le DOM — on ignore l'absence
+    });
   // La page a rendu quelque chose. `.first()` : un loading.tsx peut exposer
   // brièvement 2 <main> pendant le streaming. Timeout large = compile Turbopack.
   await expect(page.locator('main').first()).toBeVisible({ timeout: 30_000 });
@@ -91,12 +93,12 @@ test.describe('Smoke — pages admin', () => {
     { url: '/choristes/admin/liens', name: 'Liens admin' },
     { url: '/choristes/admin/sondages', name: 'Sondages admin' },
     { url: '/choristes/admin/ca', name: 'CA admin' },
-    { url: '/choristes/admin/audit-log', name: 'Journal d\'audit' },
+    { url: '/choristes/admin/audit-log', name: "Journal d'audit" },
     { url: '/choristes/admin/messages', name: 'Messages de contact' },
     { url: '/choristes/admin/emails', name: 'Emails' },
     { url: '/choristes/admin/bureau/projets', name: 'Projets (bureau)' },
     { url: '/choristes/admin/bureau/templates', name: 'Templates (bureau)' },
-    { url: '/choristes/admin/homepage', name: 'Page d\'accueil admin' },
+    { url: '/choristes/admin/homepage', name: "Page d'accueil admin" },
     { url: '/choristes/admin/mentions-legales', name: 'Mentions légales admin' },
   ];
 

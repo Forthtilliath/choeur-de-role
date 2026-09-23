@@ -12,8 +12,12 @@ export default async function AdminEvenementsPage({
   const [{ edit }, events] = await Promise.all([searchParams, getExternalEventsAdminQuery()]);
 
   return (
-    <Main variant="admin" title="Évènements externes" breadcrumbs={[{ label: 'Évènements', href: '/evenements' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Évènements externes"
+      breadcrumbs={[{ label: 'Évènements', href: '/evenements' }]}
+      breadcrumbCurrent="Administration"
+    >
       <EvenementsAdminClient initialEvents={events} editEventId={edit} />
     </Main>
   );

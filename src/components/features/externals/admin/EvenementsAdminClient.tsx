@@ -102,11 +102,14 @@ export function EvenementsAdminClient({
                 setShowForm(true);
               }}
               onDelete={async () => {
-                if (!await confirm({
-                  message: 'Supprimer cet évènement ?',
-                  danger: true,
-                  details: { icon: '📅', label: event.title },
-                })) return;
+                if (
+                  !(await confirm({
+                    message: 'Supprimer cet évènement ?',
+                    danger: true,
+                    details: { icon: '📅', label: event.title },
+                  }))
+                )
+                  return;
                 const ok = await deleteEvent(event.id);
                 if (ok) {
                   setEvents((prev) => prev.filter((e) => e.id !== event.id));
@@ -143,11 +146,14 @@ export function EvenementsAdminClient({
                 setShowForm(true);
               }}
               onDelete={async () => {
-                if (!await confirm({
-                  message: 'Supprimer cet évènement ?',
-                  danger: true,
-                  details: { icon: '📅', label: event.title },
-                })) return;
+                if (
+                  !(await confirm({
+                    message: 'Supprimer cet évènement ?',
+                    danger: true,
+                    details: { icon: '📅', label: event.title },
+                  }))
+                )
+                  return;
                 const ok = await deleteEvent(event.id);
                 if (ok) {
                   setEvents((prev) => prev.filter((e) => e.id !== event.id));

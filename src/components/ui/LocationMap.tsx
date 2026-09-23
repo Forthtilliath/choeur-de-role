@@ -15,7 +15,9 @@ export function LocationMap({ location }: { location: string }) {
       >
         <span className="shrink-0 mt-px">📍</span>
         <span className="wrap-break-word min-w-0 flex-1">{location}</span>
-        <span className="text-foreground/30 ml-1 text-[10px] shrink-0 mt-px">{open ? '▲' : '▼'}</span>
+        <span className="text-foreground/30 ml-1 text-[10px] shrink-0 mt-px">
+          {open ? '▲' : '▼'}
+        </span>
       </button>
 
       {open && (

@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Bienvenue (onboarding)', () => {
   test('la page se charge sans erreur', async ({ page }) => {
@@ -10,7 +10,7 @@ test.describe('Admin — Bienvenue (onboarding)', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('affiche la page d\'onboarding ou redirige', async ({ page }) => {
+  test("affiche la page d'onboarding ou redirige", async ({ page }) => {
     await page.goto('/choristes/admin/bienvenue');
     const currentUrl = page.url();
     if (currentUrl.includes('/tableau-de-bord')) {

@@ -1,11 +1,11 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 
 const COLS = [
-  { header: 'w-6', cell: 'h-5 w-5 rounded-sm' },          // CA
-  { header: 'w-14', cell: 'h-5 w-20 rounded-full' },       // Pupitre
-  { header: 'w-10', cell: 'h-8 w-8 rounded-full' },        // Photo
-  { header: 'w-16', cell: 'h-4 w-24' },                    // Prénom
-  { header: 'w-20', cell: 'h-4 w-28' },                    // Nom
+  { header: 'w-6', cell: 'h-5 w-5 rounded-sm' }, // CA
+  { header: 'w-14', cell: 'h-5 w-20 rounded-full' }, // Pupitre
+  { header: 'w-10', cell: 'h-8 w-8 rounded-full' }, // Photo
+  { header: 'w-16', cell: 'h-4 w-24' }, // Prénom
+  { header: 'w-20', cell: 'h-4 w-28' }, // Nom
   { header: 'w-24', cell: 'h-4 w-44', hidden: 'hidden sm:table-cell' }, // Adresse
   { header: 'w-20', cell: 'h-4 w-36', hidden: 'hidden md:table-cell' }, // Courriel
   { header: 'w-24', cell: 'h-4 w-28', hidden: 'hidden lg:table-cell' }, // Téléphone

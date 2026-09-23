@@ -9,8 +9,12 @@ export default async function AdminSaisonsPage() {
   const seasons = await getSeasonsQuery();
 
   return (
-    <Main variant="admin" title="Gestion des saisons" breadcrumbs={[{ label: 'Concerts', href: '/concerts' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Gestion des saisons"
+      breadcrumbs={[{ label: 'Concerts', href: '/concerts' }]}
+      breadcrumbCurrent="Administration"
+    >
       <SaisonsAdminClient initialSeasons={seasons} />
     </Main>
   );

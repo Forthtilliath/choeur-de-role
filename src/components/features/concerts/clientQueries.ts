@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase.client';
 import { getCurrentTimestampString } from '@/lib/utils';
 import { uploadImageToR2 } from '@/utils/uploadImageToR2';
 
-import type { Performance, PerformanceInsert,PerformanceUpdate, Season } from './types';
+import type { Performance, PerformanceInsert, PerformanceUpdate, Season } from './types';
 
 // — Saisons —
 
@@ -116,7 +116,12 @@ export async function uploadRepresentationFile({
 
   const { data, error } = await supabase
     .from('representation_files')
-    .insert({ performance_id: performanceId, file_url: `r2://${key}`, label, order_index: orderIndex })
+    .insert({
+      performance_id: performanceId,
+      file_url: `r2://${key}`,
+      label,
+      order_index: orderIndex,
+    })
     .select()
     .single();
   if (error || !data) return null;
