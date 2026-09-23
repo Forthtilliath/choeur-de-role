@@ -48,8 +48,7 @@ export async function getAllAuditLogs(): Promise<{ logs: AuditLogEntry[]; hasMor
       .eq('is_test_account', true);
     const testIds = (testMembers ?? []).map((m) => m.id);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let logsQuery = (admin as any)
+    let logsQuery = admin
       .from('audit_logs')
       .select('id, action, target_id, details, ip, created_at, user_id')
       .neq('action', 'member_login')
@@ -58,8 +57,7 @@ export async function getAllAuditLogs(): Promise<{ logs: AuditLogEntry[]; hasMor
     if (testIds.length > 0) {
       logsQuery = logsQuery.not('user_id', 'in', `(${testIds.join(',')})`);
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: rawLogs } = await (logsQuery as any);
+    const { data: rawLogs } = await logsQuery;
 
     if (!rawLogs?.length) return { logs: [], hasMore: false };
 
