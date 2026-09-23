@@ -220,7 +220,7 @@ function AudioFileRow({
   const audioRef = useRef<HTMLAudioElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const volumePopupRef = useRef<HTMLDivElement>(null);
-  const volumeCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const volumeCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
@@ -276,22 +276,24 @@ function AudioFileRow({
       audio.removeEventListener('pause', onPause);
       audio.removeEventListener('ended', onEnded);
     };
-  }, [audioUrl]); // eslint-disable-line react-hooks/exhaustive-deps
+    // volume exclu : il n'est appliqué qu'au chargement (un changement ne doit pas réinscrire les écouteurs)
+    // eslint-disable-next-line react-hooks/exhaustive-deps, @eslint-react/exhaustive-deps
+  }, [audioUrl]);
 
   function closeVolumePopup() {
-    if (volumeCloseTimer.current) clearTimeout(volumeCloseTimer.current);
+    if (volumeCloseTimerRef.current) clearTimeout(volumeCloseTimerRef.current);
     setVolumeClosing(true);
-    volumeCloseTimer.current = setTimeout(() => {
+    volumeCloseTimerRef.current = setTimeout(() => {
       setShowVolumePopup(false);
       setVolumeClosing(false);
-      volumeCloseTimer.current = null;
+      volumeCloseTimerRef.current = null;
     }, 240);
   }
 
   function openVolumePopup() {
-    if (volumeCloseTimer.current) {
-      clearTimeout(volumeCloseTimer.current);
-      volumeCloseTimer.current = null;
+    if (volumeCloseTimerRef.current) {
+      clearTimeout(volumeCloseTimerRef.current);
+      volumeCloseTimerRef.current = null;
     }
     setVolumeClosing(false);
     setShowVolumePopup(true);

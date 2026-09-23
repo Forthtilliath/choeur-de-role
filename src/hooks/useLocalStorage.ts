@@ -14,7 +14,7 @@ export function useLocalStorage<T>(
   const deserialize = options?.deserialize ?? ((raw: string) => JSON.parse(raw) as T);
   const serializeRef = useRef(serialize);
   const deserializeRef = useRef(deserialize);
-  const initialized = useRef(false);
+  const initializedRef = useRef(false);
   useEffect(() => {
     serializeRef.current = serialize;
     deserializeRef.current = deserialize;
@@ -29,14 +29,14 @@ export function useLocalStorage<T>(
     } catch {
       // localStorage indisponible (quota, navigation privée...) : ignoré volontairement.
     }
-    initialized.current = true;
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    initializedRef.current = true;
+  }, [key]);
 
   const set = useCallback(
     (update: T | ((prev: T) => T)) => {
       setValue((prev) => {
         const next = typeof update === 'function' ? (update as (prev: T) => T)(prev) : update;
-        if (initialized.current) {
+        if (initializedRef.current) {
           try {
             localStorage.setItem(key, serializeRef.current(next));
           } catch {
