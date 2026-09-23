@@ -8,9 +8,11 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
 
+import type { Database } from '../src/types/database';
+
 dotenv.config({ path: '.env.local' });
 
-const supabase = createClient(
+const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
@@ -54,8 +56,7 @@ async function migrate() {
     const label = file.label || file.id;
     try {
       // Extraire le chemin relatif depuis l'URL publique Supabase
-      const urlParts = file.file_url.split('/repertoire/');
-      const storagePath = urlParts[urlParts.length - 1];
+      const storagePath = file.file_url.split('/repertoire/').at(-1) ?? file.file_url;
 
       // Générer une URL signée pour télécharger depuis Supabase
       const { data: signed, error: signErr } = await supabase.storage

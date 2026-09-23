@@ -165,8 +165,7 @@ export function CarteClient({ membres, center }: Props) {
       },
       onRemove() {},
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new (FullscreenCtrl as any)({ position: 'topleft' }).addTo(map);
+    new FullscreenCtrl({ position: 'topleft' }).addTo(map);
 
     return () => {
       mapInstanceRef.current?.remove();

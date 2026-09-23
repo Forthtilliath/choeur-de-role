@@ -19,6 +19,12 @@ import { Button } from '@/components/ui/Button';
 import { exportResultsPdf } from '../pdfExport';
 import type { PollResponse, PollResults, QuestionResult } from '../types';
 
+// Infobulle Recharts : « N réponse(s) »
+const formatAnswerCount = (value: unknown): [string, string] => {
+  const n = Number(value ?? 0);
+  return [`${n} réponse${n !== 1 ? 's' : ''}`, ''];
+};
+
 const COLORS = [
   '#6366f1',
   '#8b5cf6',
@@ -243,7 +249,7 @@ function ChoiceChart({
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
           <XAxis type="number" domain={[0, total]} tickCount={Math.min(total + 1, 6)} />
           <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 12 }} />
-          <Tooltip formatter={(v) => [`${v} réponse${Number(v) !== 1 ? 's' : ''}`, '']} />
+          <Tooltip formatter={formatAnswerCount} />
           <Bar dataKey="count" radius={[0, 4, 4, 0]}>
             {data.map((_, i) => (
               <Cell key={i} fill={COLORS[i % COLORS.length]} />
@@ -268,7 +274,7 @@ function ChoiceChart({
                 <Cell key={i} fill={COLORS[i % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip formatter={(v) => [`${v} réponse${Number(v) !== 1 ? 's' : ''}`, '']} />
+            <Tooltip formatter={formatAnswerCount} />
           </PieChart>
         </ResponsiveContainer>
         <div className="flex flex-col gap-1.5 text-sm">
@@ -387,7 +393,7 @@ function RatingChart({
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="name" tick={{ fontSize: 12 }} />
           <YAxis allowDecimals={false} />
-          <Tooltip formatter={(v) => [`${v} réponse${Number(v) !== 1 ? 's' : ''}`, '']} />
+          <Tooltip formatter={formatAnswerCount} />
           <Bar dataKey="count" fill={COLORS[0]} radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
