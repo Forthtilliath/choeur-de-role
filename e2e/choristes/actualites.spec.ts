@@ -36,8 +36,8 @@ test.describe('Page Actualités', () => {
     let lastPinnedIndex = -1;
     let firstUnpinnedIndex = -1;
 
-    for (let i = 0; i < cards.length; i++) {
-      const isPinned = (await cards[i].locator('p:text("📌 Épinglée")').count()) > 0;
+    for (const [i, card] of cards.entries()) {
+      const isPinned = (await card.locator('p:text("📌 Épinglée")').count()) > 0;
       if (isPinned) lastPinnedIndex = i;
       else if (firstUnpinnedIndex === -1) firstUnpinnedIndex = i;
     }
