@@ -95,7 +95,7 @@ export function MembresAdminClient({
     const el = tableScrollRef.current;
     const inner = tableInnerRef.current;
     if (!el) return;
-    updateScrollState();
+    // ResizeObserver appelle updateScrollState dès l'observation initiale
     const ro = new ResizeObserver(updateScrollState);
     ro.observe(el);
     if (inner) ro.observe(inner);
