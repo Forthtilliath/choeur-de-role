@@ -35,10 +35,19 @@ const eslintConfig = defineConfig([
     },
   },
   {
-    // autoFocus is used deliberately throughout (MFA code input, rename
-    // fields, form panels on open) — a recurring UX choice, not an oversight.
+    // autoFocus only on fields revealed by a user action (MFA code step,
+    // link/image URL inputs, in-place renaming) — never on page load, so focus
+    // follows the user's intent.
     rules: {
-      'jsx-a11y/no-autofocus': 'warn',
+      'jsx-a11y/no-autofocus': 'off',
+    },
+  },
+  {
+    // Loading skeletons: static lists of placeholders, never reordered — the
+    // index is the key.
+    files: ['src/app/**/loading.tsx'],
+    rules: {
+      '@eslint-react/no-array-index-key': 'off',
     },
   },
   // Fichiers générés par la CLI Supabase locale (`npx supabase start`).

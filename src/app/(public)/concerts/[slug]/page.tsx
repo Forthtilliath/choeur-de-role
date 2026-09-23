@@ -219,6 +219,8 @@ export default async function ConcertPage({ params }: { params: Promise<{ slug: 
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
               {Array.from({ length: 8 }).map((_, i) => (
+                // Squelette statique : l'index est la clé
+                // eslint-disable-next-line @eslint-react/no-array-index-key
                 <Skeleton key={i} className="aspect-square" />
               ))}
             </div>
