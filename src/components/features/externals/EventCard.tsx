@@ -1,9 +1,9 @@
 'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { SafeHtml } from '@/components/ui/SafeHtml';
 import { useNow } from '@/hooks/useNow';
 import { formatEventDateRange } from '@/utils/dateHelpers';
 
@@ -277,9 +277,9 @@ export function EventCard({
           </div>
 
           {event.description && (
-            <div
+            <SafeHtml
               className="text-xs text-foreground/45 line-clamp-2 mdx-content"
-              dangerouslySetInnerHTML={{ __html: event.description }}
+              html={event.description}
             />
           )}
 

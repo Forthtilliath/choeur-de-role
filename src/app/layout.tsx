@@ -11,6 +11,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { SwRegister } from '@/components/layout/SwRegister';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
+import { JsonLd } from '@/components/ui/JsonLd';
 import { PageTransition } from '@/components/ui/PageTransition';
 import { CommandPaletteProvider } from '@/context/CommandPaletteContext';
 import { ConfirmProvider } from '@/context/ConfirmContext';
@@ -90,10 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="fr">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
+        <JsonLd data={organizationJsonLd} />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <meta name="theme-color" content="#5b3fa8" />
       </head>
