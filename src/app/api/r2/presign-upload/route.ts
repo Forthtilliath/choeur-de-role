@@ -1,6 +1,4 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { NextResponse } from 'next/server';
+import { createPresignHandler, isSafeKey } from '@forthtilliath/r2/server';
 
 import { toApiError } from '@/lib/apiError';
 import { getUserQuery } from '@/lib/auth';
@@ -17,7 +15,7 @@ const ADMIN_PREFIXES = [
 ];
 
 export function isValidKey(key: string, userId: string, isAdmin: boolean): boolean {
-  if (!key || key.includes('..') || key.startsWith('/') || key.includes('\0')) return false;
+  if (!isSafeKey(key)) return false;
 
   if (/^members\/[^/]+\.webp$/.test(key)) {
     return key === `members/${userId}.webp` || isAdmin;
@@ -26,30 +24,15 @@ export function isValidKey(key: string, userId: string, isAdmin: boolean): boole
   return isAdmin && ADMIN_PREFIXES.some((prefix) => key.startsWith(prefix));
 }
 
-export async function POST(request: Request) {
-  const userQuery = await getUserQuery();
-  if (!userQuery.isLoggedIn) {
-    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
-  }
-
-  const { key, contentType } = await request.json();
-  if (!key || !contentType) {
-    return NextResponse.json({ error: 'Paramètres manquants' }, { status: 400 });
-  }
-
-  if (!isValidKey(key, userQuery.id, userQuery.isAdmin)) {
-    return NextResponse.json({ error: 'Clé non autorisée' }, { status: 403 });
-  }
-
-  try {
-    const presignUrl = await getSignedUrl(
-      r2,
-      new PutObjectCommand({ Bucket: R2_IMAGES_BUCKET, Key: key, ContentType: contentType }),
-      { expiresIn: 300 },
-    );
-
-    return NextResponse.json({ presignUrl, publicUrl: `${R2_PUBLIC_URL}/${key}` });
-  } catch (e) {
-    return toApiError(e);
-  }
-}
+export const POST = createPresignHandler({
+  client: r2,
+  bucket: R2_IMAGES_BUCKET,
+  publicBaseUrl: R2_PUBLIC_URL,
+  authorize: async (key) => {
+    const user = await getUserQuery();
+    if (!user.isLoggedIn) return { status: 401, error: 'Non autorisé' };
+    if (!isValidKey(key, user.id, user.isAdmin)) return { status: 403, error: 'Clé non autorisée' };
+    return null;
+  },
+  onError: toApiError,
+});
