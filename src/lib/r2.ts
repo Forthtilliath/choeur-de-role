@@ -1,17 +1,11 @@
-import { S3Client } from '@aws-sdk/client-s3';
+import { createR2Client } from '@forthtilliath/r2/server';
 
 import { env } from '@/env';
 
-export const r2 = new S3Client({
-  region: 'auto',
+export const r2 = createR2Client({
   endpoint: env.CLOUDFLARE_R2_ENDPOINT,
-  credentials: {
-    accessKeyId: env.CLOUDFLARE_R2_ACCESS_KEY_ID,
-    secretAccessKey: env.CLOUDFLARE_R2_SECRET_ACCESS_KEY,
-  },
-  // Désactive les checksums automatiques — R2 ne supporte pas les paramètres x-amz-checksum-* dans les PUT signés via navigateur
-  requestChecksumCalculation: 'WHEN_REQUIRED',
-  responseChecksumValidation: 'WHEN_REQUIRED',
+  accessKeyId: env.CLOUDFLARE_R2_ACCESS_KEY_ID,
+  secretAccessKey: env.CLOUDFLARE_R2_SECRET_ACCESS_KEY,
 });
 
 export const R2_BUCKET = env.CLOUDFLARE_R2_BUCKET_NAME;
