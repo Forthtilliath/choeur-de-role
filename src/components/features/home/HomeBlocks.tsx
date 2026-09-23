@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/Button';
+import { SafeHtml } from '@/components/ui/SafeHtml';
 
 import type { Block } from './types';
 
@@ -32,10 +33,7 @@ export function HomeBlocks({ blocks }: Props) {
                 <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
                   {photoOnRight ? (
                     <>
-                      <div
-                        className="mdx-content max-md:order-1"
-                        dangerouslySetInnerHTML={{ __html: block.content }}
-                      />
+                      <SafeHtml className="mdx-content max-md:order-1" html={block.content} />
                       <div
                         className={`relative rounded-2xl overflow-hidden max-md:order-0 ${ratio}`}
                       >
@@ -63,18 +61,12 @@ export function HomeBlocks({ blocks }: Props) {
                           priority={isFirst}
                         />
                       </div>
-                      <div
-                        className="mdx-content max-md:order-1"
-                        dangerouslySetInnerHTML={{ __html: block.content }}
-                      />
+                      <SafeHtml className="mdx-content max-md:order-1" html={block.content} />
                     </>
                   )}
                 </div>
               ) : (
-                <div
-                  className="mdx-content max-w-3xl mx-auto"
-                  dangerouslySetInnerHTML={{ __html: block.content }}
-                />
+                <SafeHtml className="mdx-content max-w-3xl mx-auto" html={block.content} />
               )}
             </div>
           </section>
@@ -87,7 +79,7 @@ export function HomeBlocks({ blocks }: Props) {
           className={`py-10 md:py-20 px-4 ${contentBlocks.length % 2 ? 'bg-background-secondary' : 'bg-background'}`}
         >
           <div className="max-w-2xl mx-auto text-center">
-            <div className="mdx-content" dangerouslySetInnerHTML={{ __html: joinBlock.content }} />
+            <SafeHtml className="mdx-content" html={joinBlock.content} />
             <div className="mt-8 flex gap-4 justify-center">
               <Button href="/contact">Nous contacter</Button>
               <Button href="/concerts" variant="outline">

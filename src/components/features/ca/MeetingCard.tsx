@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { SafeHtml } from '@/components/ui/SafeHtml';
 import { formatDate } from '@/utils/dateHelpers';
 
 import type { CaMeeting } from './types';
@@ -30,9 +31,9 @@ export function MeetingCard({ meeting }: { meeting: CaMeeting }) {
           </span>
         </div>
       </summary>
-      <div
+      <SafeHtml
         className="px-6 pb-6 pt-4 mdx-content border-t border-border"
-        dangerouslySetInnerHTML={{ __html: meeting.content }}
+        html={meeting.content}
       />
     </details>
   );

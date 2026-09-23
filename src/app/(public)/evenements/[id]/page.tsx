@@ -5,7 +5,9 @@ import Link from 'next/link';
 
 import { getExternalEventBySlugQuery } from '@/components/features/externals/queries';
 import { Button } from '@/components/ui/Button';
+import { JsonLd } from '@/components/ui/JsonLd';
 import { LocationMap } from '@/components/ui/LocationMap';
+import { SafeHtml } from '@/components/ui/SafeHtml';
 import { ShareButtons } from '@/components/ui/ShareButtons';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
 import { withNotFound } from '@/lib/withNotFound';
@@ -95,10 +97,7 @@ export default async function EvenementPage({ params }: { params: Promise<{ id: 
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 md:py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
-      />
+      <JsonLd data={eventJsonLd} />
       <div className="flex flex-wrap items-center justify-between gap-2 mb-8">
         <Button href="/evenements" variant="link" className="p-0">
           <ArrowLeft className="w-5 h-5 sm:mr-2" />
@@ -196,10 +195,7 @@ export default async function EvenementPage({ params }: { params: Promise<{ id: 
       {event.description && (
         <section className="mt-8 md:mt-16">
           <div className="border-t border-border mb-5 md:mb-10" />
-          <div
-            className="mdx-content max-w-3xl"
-            dangerouslySetInnerHTML={{ __html: event.description }}
-          />
+          <SafeHtml className="mdx-content max-w-3xl" html={event.description} />
         </section>
       )}
     </main>

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { HomeBlocks } from '@/components/features/home/HomeBlocks';
 import { getHomeBlocks } from '@/components/features/home/queries';
 import { Button } from '@/components/ui/Button';
+import { SafeHtml } from '@/components/ui/SafeHtml';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { getUserQuery } from '@/lib/auth';
 import { getContentBlocks } from '@/lib/content';
@@ -31,11 +32,8 @@ async function HeroSection() {
       <div className="absolute inset-0 bg-backdrop/25" />
       <div className="relative z-10 max-w-2xl mx-auto px-4 text-center">
         <div className="px-8 py-10 rounded-2xl backdrop-contrast-50 bg-backdrop/35 border border-white/15">
-          <div dangerouslySetInnerHTML={{ __html: heroTitle }} className="text-white mdx-content" />
-          <div
-            dangerouslySetInnerHTML={{ __html: heroSubtitle }}
-            className="mt-2 text-white/90 mdx-content"
-          />
+          <SafeHtml className="text-white mdx-content" html={heroTitle} />
+          <SafeHtml className="mt-2 text-white/90 mdx-content" html={heroSubtitle} />
           <div className="flex gap-4 justify-center mt-8">
             <Button href="/concerts">Nos concerts</Button>
             <Button href="/contact" variant="white">

@@ -1,7 +1,7 @@
 'use client';
-
 import { useEffect, useRef, useState } from 'react';
 
+import { SafeHtml } from '@/components/ui/SafeHtml';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useNow } from '@/hooks/useNow';
 import { formatDateShort } from '@/utils/dateHelpers';
@@ -216,9 +216,9 @@ export function RepertoireClient({
 
         {/* Notes de la représentation sélectionnée */}
         {effectivePerformanceId && selectedPerformance?.notes && (
-          <div
+          <SafeHtml
             className="rounded-xl border border-border bg-background-secondary px-4 py-3 mdx-content text-sm"
-            dangerouslySetInnerHTML={{ __html: selectedPerformance.notes }}
+            html={selectedPerformance.notes}
           />
         )}
 

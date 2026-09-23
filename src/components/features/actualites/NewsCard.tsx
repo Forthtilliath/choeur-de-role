@@ -1,3 +1,4 @@
+import { SafeHtml } from '@/components/ui/SafeHtml';
 import { formatDateTimeShort } from '@/utils/dateHelpers';
 
 import type { News } from './types';
@@ -40,7 +41,7 @@ export function NewsCard({ news }: { news: News }) {
           <h2 className="text-base font-medium text-foreground line-clamp-2">{news.title}</h2>
           <p className="text-xs text-foreground/60 shrink-0">{displayDate}</p>
         </div>
-        <div className="mdx-content text-sm" dangerouslySetInnerHTML={{ __html: news.content }} />
+        <SafeHtml className="mdx-content text-sm" html={news.content} />
 
         {news.news_files.length > 0 && (
           <div className="mt-4 pt-3 border-t border-border flex flex-col gap-2">

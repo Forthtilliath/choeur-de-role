@@ -10,6 +10,7 @@ import {
 } from '@/components/features/concerts';
 import { GalerieClient } from '@/components/features/galerie/GalerieClient';
 import { Button } from '@/components/ui/Button';
+import { JsonLd } from '@/components/ui/JsonLd';
 import { ShareButtons } from '@/components/ui/ShareButtons';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { getUserQuery } from '@/lib/auth';
@@ -117,10 +118,7 @@ export default async function ConcertPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 md:py-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
-      />
+      <JsonLd data={eventJsonLd} />
       <div className="flex flex-wrap items-center justify-between gap-2 mb-8">
         <Button href="/concerts" variant="link" className="p-0">
           <ArrowLeft className="w-5 h-5 sm:mr-2" />
