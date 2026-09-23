@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { isAdmin } from '@/lib/auth';
 import type { MemberRole } from '@/lib/roles';
 import { createServerClient } from '@/lib/supabase.server';
+import type { TablesUpdate } from '@/types/database';
 
 async function getAdminAuth() {
   const supabase = await createServerClient();
@@ -14,8 +15,7 @@ async function getAdminAuth() {
   if (!user) return null;
   const { data: member } = await supabase.from('members').select('role').eq('id', user.id).single();
   if (!member || !isAdmin(member.role as MemberRole)) return null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return { userId: user.id, db: supabase as any };
+  return { userId: user.id, db: supabase };
 }
 
 const REVALIDATE = () => {
@@ -84,7 +84,7 @@ export async function updateProject(
   const auth = await getAdminAuth();
   if (!auth) return { error: 'Non autorisé' };
 
-  const updates: Record<string, unknown> = {};
+  const updates: TablesUpdate<'task_projects'> = {};
   if (input.name !== undefined) updates.name = input.name;
   if (input.description !== undefined) updates.description = input.description;
 
