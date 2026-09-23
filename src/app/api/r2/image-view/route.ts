@@ -15,7 +15,7 @@ const EXT_TYPES: Record<string, string> = {
 };
 
 function contentTypeFromUrl(url: string): string | null {
-  const ext = url.split('?')[0].split('.').pop()?.toLowerCase();
+  const ext = url.split('?')[0]?.split('.').pop()?.toLowerCase();
   return EXT_TYPES[ext ?? ''] ?? null;
 }
 

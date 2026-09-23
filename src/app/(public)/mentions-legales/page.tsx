@@ -37,15 +37,19 @@ export default async function MentionsLegalesPage() {
           Ce site est hébergé par <strong>{legalData.hebergeur_name}</strong>
           <br />
           {legalData.hebergeur_address}
-          <br />
-          <Link
-            href={legalData.hebergeur_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:opacity-70"
-          >
-            {legalData.hebergeur_url}
-          </Link>
+          {legalData.hebergeur_url && (
+            <>
+              <br />
+              <Link
+                href={legalData.hebergeur_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:opacity-70"
+              >
+                {legalData.hebergeur_url}
+              </Link>
+            </>
+          )}
         </p>
       </Section>
 

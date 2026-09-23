@@ -47,9 +47,9 @@ export function VoicePartFilter({ voiceParts, selectedIds, onToggleAction }: Pro
     <div className="flex gap-2 flex-wrap items-center">
       {/* Boutons groupés */}
       {Array.from(grouped.entries()).map(([groupName, parts]) => {
-        if (parts.length === 1) {
+        const [vp] = parts;
+        if (parts.length === 1 && vp) {
           // Groupe avec 1 seul pupitre → bouton simple
-          const vp = parts[0];
           const active = selectedIds.has(vp.id);
           return (
             <button

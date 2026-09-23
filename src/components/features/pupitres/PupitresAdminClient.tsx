@@ -262,16 +262,15 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
           dstItemIdx = 0;
         } else {
           dstGroupIdx = prev.findIndex((g) => g.items.some((i) => i.id === overStr));
-          if (dstGroupIdx === -1) return prev;
-          dstItemIdx = prev[dstGroupIdx].items.findIndex((i) => i.id === overStr);
+          dstItemIdx = prev[dstGroupIdx]?.items.findIndex((i) => i.id === overStr) ?? -1;
         }
 
         if (dstGroupIdx === -1) return prev;
 
         if (srcGroupIdx === dstGroupIdx) {
           // Same group: reorder within
-          const srcItemIdx = prev[srcGroupIdx].items.findIndex((i) => i.id === activeStr);
-          if (srcItemIdx === dstItemIdx) return prev;
+          const srcItemIdx = prev[srcGroupIdx]?.items.findIndex((i) => i.id === activeStr) ?? -1;
+          if (srcItemIdx === -1 || srcItemIdx === dstItemIdx) return prev;
           return prev.map((g, gi) =>
             gi === srcGroupIdx ? { ...g, items: arrayMove(g.items, srcItemIdx, dstItemIdx) } : g,
           );
@@ -279,11 +278,15 @@ export function PupitresAdminClient({ initialVoiceParts }: { initialVoiceParts: 
 
         // Cross-group move
         const newGroups = prev.map((g) => ({ ...g, items: [...g.items] }));
-        const [movedItem] = newGroups[srcGroupIdx].items.splice(
-          newGroups[srcGroupIdx].items.findIndex((i) => i.id === activeStr),
+        const srcItems = newGroups[srcGroupIdx]?.items;
+        const dstItems = newGroups[dstGroupIdx]?.items;
+        if (!srcItems || !dstItems) return prev;
+        const [movedItem] = srcItems.splice(
+          srcItems.findIndex((i) => i.id === activeStr),
           1,
         );
-        newGroups[dstGroupIdx].items.splice(dstItemIdx, 0, movedItem);
+        if (!movedItem) return prev;
+        dstItems.splice(dstItemIdx, 0, movedItem);
         return newGroups;
       });
     }

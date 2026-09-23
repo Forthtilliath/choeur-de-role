@@ -121,7 +121,7 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
   const fileRef = useRef<HTMLInputElement>(null);
 
   const activeSeasons = seasons.filter((s) => s.active);
-  const defaultSeasonIds = activeSeasons.length > 0 ? [activeSeasons[0].id] : [];
+  const defaultSeasonIds = activeSeasons[0] ? [activeSeasons[0].id] : [];
 
   function parseFile(file: File) {
     const reader = new FileReader();
@@ -133,7 +133,8 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
         return;
       }
 
-      const rawHeaders = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/\s+/g, '_'));
+      const [headerLine = '', ...dataLines] = lines;
+      const rawHeaders = parseCSVLine(headerLine).map((h) => h.toLowerCase().replace(/\s+/g, '_'));
       const headers = rawHeaders.map((h) => COLUMN_MAP[h] ?? h);
 
       if (
@@ -145,7 +146,7 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
         return;
       }
 
-      const parsed: ParsedRow[] = lines.slice(1).map((line) => {
+      const parsed: ParsedRow[] = dataLines.map((line) => {
         const values = parseCSVLine(line);
         const raw: Record<string, string> = {};
         headers.forEach((h, i) => {
@@ -220,8 +221,7 @@ export function CsvImportPanel({ voiceParts, seasons, onCloseAction, onSuccessAc
     setProgress(0);
 
     const batchResults: ImportRowResult[] = [];
-    for (let i = 0; i < validRows.length; i++) {
-      const row = validRows[i];
+    for (const [i, row] of validRows.entries()) {
       const res = await fetch('/api/admin/bulk-import-members', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -109,7 +109,7 @@ export default async function ConcertPage({ params }: { params: Promise<{ slug: 
         address: { '@type': 'PostalAddress', addressLocality: 'Angers', addressCountry: 'FR' },
       },
     }),
-    ...(dates.length > 0 && { startDate: dates[0].date }),
+    ...(dates[0] && { startDate: dates[0].date }),
     performer: { '@type': 'MusicGroup', name: SITE_NAME, url: SITE_URL },
     organizer: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
   };

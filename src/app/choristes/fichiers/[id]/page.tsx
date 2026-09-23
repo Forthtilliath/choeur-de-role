@@ -17,8 +17,7 @@ async function buildSignedUrl(fileUrl: string): Promise<string | null> {
   }
   // Legacy Supabase
   const supabase = await createServerClient();
-  const urlParts = fileUrl.split('/repertoire/');
-  const filePath = urlParts[urlParts.length - 1];
+  const filePath = fileUrl.split('/repertoire/').at(-1) ?? fileUrl;
   const { data } = await supabase.storage.from('repertoire').createSignedUrl(filePath, 3600);
   return data?.signedUrl ?? null;
 }
