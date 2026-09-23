@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, use, useState } from 'react';
 
 type CommandPaletteContextType = {
   isOpen: boolean;
@@ -17,12 +17,12 @@ const CommandPaletteContext = createContext<CommandPaletteContextType>({
 export function CommandPaletteProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <CommandPaletteContext.Provider
+    <CommandPaletteContext
       value={{ isOpen, open: () => setIsOpen(true), close: () => setIsOpen(false) }}
     >
       {children}
-    </CommandPaletteContext.Provider>
+    </CommandPaletteContext>
   );
 }
 
-export const useCommandPalette = () => useContext(CommandPaletteContext);
+export const useCommandPalette = () => use(CommandPaletteContext);

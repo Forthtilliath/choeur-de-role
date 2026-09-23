@@ -250,7 +250,7 @@ function PartnerForm({
   const [saving, setSaving] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
-  const initial = useRef({
+  const initialRef = useRef({
     name: partner?.name ?? '',
     websiteUrl: partner?.website_url ?? '',
     isCurrent: !partner?.size?.startsWith('past'),
@@ -265,10 +265,10 @@ function PartnerForm({
 
   useEffect(() => {
     const dirty =
-      name !== initial.current.name ||
-      websiteUrl !== initial.current.websiteUrl ||
-      isCurrent !== initial.current.isCurrent ||
-      isLarge !== initial.current.isLarge ||
+      name !== initialRef.current.name ||
+      websiteUrl !== initialRef.current.websiteUrl ||
+      isCurrent !== initialRef.current.isCurrent ||
+      isLarge !== initialRef.current.isLarge ||
       logoFile !== null;
     onDirtyChange(dirty);
   }, [name, websiteUrl, isCurrent, isLarge, logoFile, onDirtyChange]);
