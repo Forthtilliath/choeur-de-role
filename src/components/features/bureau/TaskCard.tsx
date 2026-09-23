@@ -5,6 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
 
 import { DURATION_UNIT_LABELS } from '@/components/ui/DurationInput';
+import { useNow } from '@/hooks/useNow';
 import type { Task, TaskPriority } from '@/types/tasks';
 
 const PRIORITY_BADGE: Record<TaskPriority, { label: string; className: string }> = {
@@ -46,9 +47,10 @@ export function TaskCard({ task, overlay = false, onClickAction }: Props) {
   };
 
   const badge = PRIORITY_BADGE[task.priority];
+  const now = new Date(useNow());
   const isOverdue =
     task.due_date &&
-    new Date(task.due_date) < new Date() &&
+    new Date(task.due_date) < now &&
     task.status !== 'done' &&
     task.status !== 'on_hold';
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { useNow } from '@/hooks/useNow';
 import { formatTime } from '@/utils/dateHelpers';
 
 import type { CalendarEvent } from './types';
@@ -39,7 +40,7 @@ export function CalendarWeek({
   onClickEventAction,
   onClickAddDayAction,
 }: Props) {
-  const today = new Date();
+  const today = new Date(useNow());
   today.setHours(0, 0, 0, 0);
 
   const days = Array.from({ length: 7 }, (_, i) => {

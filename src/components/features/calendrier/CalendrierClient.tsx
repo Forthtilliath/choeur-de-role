@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useConfirm } from '@/context/ConfirmContext';
+import { useNow } from '@/hooks/useNow';
 
 import { CalendarGrid } from './CalendarGrid';
 import { CalendarSidebar } from './CalendarSidebar';
@@ -35,7 +36,7 @@ export function CalendrierClient({
   initialEventId,
   birthdayCountsByMonth,
 }: Props) {
-  const today = new Date();
+  const today = new Date(useNow());
   const initialEvent = initialEventId
     ? (initialEvents.find((e) => e.id === initialEventId) ?? null)
     : null;

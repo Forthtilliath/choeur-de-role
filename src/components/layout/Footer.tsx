@@ -2,7 +2,10 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { useNow } from '@/hooks/useNow';
+
 export function Footer() {
+  const year = new Date(useNow()).getFullYear();
   const pathname = usePathname();
 
   if (pathname === '/choristes/carte') return null;
@@ -13,7 +16,7 @@ export function Footer() {
     <footer className={`border-t border-border bg-background mt-auto${isAdmin ? ' md:pl-52' : ''}`}>
       <div className="max-w-5xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs text-foreground/70">
-          © {new Date().getFullYear()} Chœur de Rôle — Association loi 1901
+          © {year} Chœur de Rôle — Association loi 1901
         </p>
         <div className="flex gap-6">
           <Link

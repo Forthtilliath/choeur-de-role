@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
 import { useDndSensors } from '@/hooks/useDndSensors';
 import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+import { useNow } from '@/hooks/useNow';
 import { toLocalDatetimeInput } from '@/lib/utils';
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
 import { formatDate, formatDateTimeShort } from '@/utils/dateHelpers';
@@ -297,6 +298,7 @@ function NewsForm({
   const [uploading, setUploading] = useState(false);
   const [newFileLabel, setNewFileLabel] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const now = new Date(useNow());
   const formRef = useFormShortcuts(onClose);
   const confirm = useConfirm();
 
@@ -408,10 +410,10 @@ function NewsForm({
             type="datetime-local"
             value={scheduledAt}
             onChange={(e) => setScheduledAt(e.target.value)}
-            min={toLocalDatetimeInput(new Date().toISOString())}
+            min={toLocalDatetimeInput(now.toISOString())}
             className="border border-border rounded-lg px-4 py-2 text-sm bg-background"
           />
-          {scheduledAt && new Date(scheduledAt) > new Date() && (
+          {scheduledAt && new Date(scheduledAt) > now && (
             <p className="text-xs text-amber-600 dark:text-amber-400">
               L&apos;actualité sera visible automatiquement le{' '}
               {formatDateTimeShort(new Date(scheduledAt).toISOString())}.

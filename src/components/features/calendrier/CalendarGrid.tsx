@@ -1,5 +1,6 @@
 'use client';
 
+import { useNow } from '@/hooks/useNow';
 import { formatTime } from '@/utils/dateHelpers';
 
 import type { CalendarEvent } from './types';
@@ -45,7 +46,7 @@ export function CalendarGrid({
   onClickAddDayAction,
   birthdayCountsByMonth,
 }: Props) {
-  const today = new Date();
+  const today = new Date(useNow());
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayRaw = new Date(year, month, 1).getDay();

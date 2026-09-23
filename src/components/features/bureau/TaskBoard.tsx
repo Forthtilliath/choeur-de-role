@@ -7,6 +7,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import { Plus } from 'lucide-react';
 
 import { useDndSensors } from '@/hooks/useDndSensors';
+import { useNow } from '@/hooks/useNow';
 import type {
   CaMember,
   Task,
@@ -171,9 +172,10 @@ function TaskColumn({
 }
 
 function PriorityCard({ task, onClickAction }: { task: Task; onClickAction: () => void }) {
+  const now = new Date(useNow());
   const isOverdue =
     task.due_date &&
-    new Date(task.due_date) < new Date() &&
+    new Date(task.due_date) < now &&
     task.status !== 'done' &&
     task.status !== 'on_hold';
 

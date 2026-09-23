@@ -9,6 +9,7 @@ import { RepresentationFileManager } from '@/components/features/concerts/admin/
 import { updatePerformanceNotes } from '@/components/features/concerts/clientQueries';
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
+import { useNow } from '@/hooks/useNow';
 
 import { deleteSong } from '../clientQueries';
 import type { FileType, Performance, Song, SongFile, VoicePart } from '../types';
@@ -38,7 +39,7 @@ export function MediathequeAdminClient({
   const [addingFileForSong, setAddingFileForSong] = useState<string | null>(null);
   const confirm = useConfirm();
 
-  const now = new Date();
+  const now = new Date(useNow());
   const upcomingPerfs = performances
     .filter((p) => p.performance_dates?.some((d) => new Date(d.date) >= now))
     .sort((a, b) => {

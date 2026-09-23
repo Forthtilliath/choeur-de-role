@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
+import { useNow } from '@/hooks/useNow';
 
 import { deleteEvent, toggleEventPublished } from '../clientQueries';
 import type { ExternalEvent } from '../types';
@@ -44,7 +45,7 @@ export function EvenementsAdminClient({
     setEditingEvent(null);
   }
 
-  const now = new Date();
+  const now = new Date(useNow());
 
   const sortedEvents = [...events].sort((a, b) => {
     const aDate = a.external_event_dates[0]?.date ?? '';

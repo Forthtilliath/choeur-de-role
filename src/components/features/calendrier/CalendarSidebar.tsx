@@ -1,10 +1,11 @@
+import { useNow } from '@/hooks/useNow';
 import { formatDayMonthShort, formatTime } from '@/utils/dateHelpers';
 
 import { LocationMap } from './LocationMap';
 import type { CalendarEvent } from './types';
 
 export function CalendarSidebar({ events }: { events: CalendarEvent[] }) {
-  const today = new Date();
+  const today = new Date(useNow());
   const upcoming = events
     .filter((e) => new Date(e.starts_at) > today)
     .sort((a, b) => new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime())
