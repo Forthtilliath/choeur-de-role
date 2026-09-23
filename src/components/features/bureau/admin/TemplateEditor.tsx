@@ -16,6 +16,7 @@ import type {
   TaskTemplate,
   TaskTemplateItem,
 } from '@/types/tasks';
+import { swapItems } from '@/utils/swapItems';
 
 import {
   addTemplateItem,
@@ -120,10 +121,9 @@ export function TemplateEditor({ template, initialItems, categories }: Props) {
   }
 
   async function handleMove(index: number, direction: -1 | 1) {
-    const newItems = [...items];
     const swapIndex = index + direction;
-    if (swapIndex < 0 || swapIndex >= newItems.length) return;
-    [newItems[index], newItems[swapIndex]] = [newItems[swapIndex], newItems[index]];
+    if (swapIndex < 0 || swapIndex >= items.length) return;
+    const newItems = swapItems(items, index, swapIndex);
     const updates = newItems.map((item, i) => ({ id: item.id, position: (i + 1) * 1000 }));
     setItems(newItems.map((item, i) => ({ ...item, position: (i + 1) * 1000 })));
     await reorderTemplateItems(updates);
