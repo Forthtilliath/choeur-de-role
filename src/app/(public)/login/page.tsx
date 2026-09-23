@@ -382,9 +382,13 @@ export default function LoginPage() {
               </ol>
 
               <form onSubmit={handleEnrollSubmit} className="flex flex-col gap-5">
-                <img
+                {/* URL data: générée par Supabase — rien à optimiser */}
+                <Image
                   src={enrollQrCode}
                   alt="QR code 2FA"
+                  width={176}
+                  height={176}
+                  unoptimized
                   className="w-44 h-44 mx-auto bg-white p-2 rounded-xl"
                 />
 

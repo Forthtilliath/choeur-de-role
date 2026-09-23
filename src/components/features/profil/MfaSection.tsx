@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ShieldCheck, ShieldOff } from 'lucide-react';
+import Image from 'next/image';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/Button';
@@ -179,9 +180,13 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
             </li>
           </ol>
 
-          <img
+          {/* URL data: générée par Supabase — rien à optimiser */}
+          <Image
             src={qrCode}
             alt="QR code 2FA"
+            width={176}
+            height={176}
+            unoptimized
             className="w-44 h-44 mx-auto bg-white p-2 rounded-xl"
           />
 
