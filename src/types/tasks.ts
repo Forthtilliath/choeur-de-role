@@ -38,8 +38,8 @@ export type Task = {
   position: number;
   project_id: string;
   created_by: string | null;
-  created_at: string;
-  updated_at: string;
+  created_at: string | null;
+  updated_at: string | null;
   assignees: TaskAssignee[];
 };
 
@@ -55,8 +55,8 @@ export type TaskProject = {
   description: string | null;
   is_active: boolean;
   created_by: string | null;
-  created_at: string;
-  updated_at: string;
+  created_at: string | null;
+  updated_at: string | null;
   task_count: number;
 };
 
@@ -65,7 +65,7 @@ export type TaskTemplate = {
   name: string;
   description: string | null;
   created_by: string | null;
-  created_at: string;
+  created_at: string | null;
   item_count: number;
 };
 

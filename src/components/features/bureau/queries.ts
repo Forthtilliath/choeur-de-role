@@ -12,8 +12,7 @@ import type {
 // ─── Tasks ────────────────────────────────────────────────────────────────────
 
 export async function getCategories(): Promise<TaskCategory[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supabase = (await createServerClient()) as any;
+  const supabase = await createServerClient();
   const { data } = await supabase
     .from('task_categories')
     .select('id, name, color, position')
@@ -22,8 +21,7 @@ export async function getCategories(): Promise<TaskCategory[]> {
 }
 
 export async function getTasks(projectId: string): Promise<Task[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supabase = (await createServerClient()) as any;
+  const supabase = await createServerClient();
   const { data } = await supabase
     .from('tasks')
     .select(
@@ -37,8 +35,7 @@ export async function getTasks(projectId: string): Promise<Task[]> {
     .eq('project_id', projectId)
     .order('position', { ascending: true });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (data ?? []).map((t: any) => ({
+  return (data ?? []).map((t) => ({
     id: t.id,
     title: t.title,
     description: t.description ?? null,
@@ -46,7 +43,7 @@ export async function getTasks(projectId: string): Promise<Task[]> {
     priority: t.priority as Task['priority'],
     due_date: t.due_date ?? null,
     duration_value: t.duration_value ?? null,
-    duration_unit: t.duration_unit ?? null,
+    duration_unit: (t.duration_unit ?? null) as Task['duration_unit'],
     category_id: t.category_id ?? null,
     category: t.task_categories ?? null,
     position: t.position,
@@ -68,8 +65,7 @@ export async function getTasks(projectId: string): Promise<Task[]> {
 }
 
 export async function getAllTaskComments(projectId: string): Promise<TaskComment[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supabase = (await createServerClient()) as any;
+  const supabase = await createServerClient();
   const { data } = await supabase
     .from('task_comments')
     .select(
@@ -116,15 +112,13 @@ export async function getCaMembers(): Promise<CaMember[]> {
 // ─── Projects ────────────────────────────────────────────────────────────────
 
 export async function getProjects(): Promise<TaskProject[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supabase = (await createServerClient()) as any;
+  const supabase = await createServerClient();
   const { data } = await supabase
     .from('task_projects')
     .select('id, name, description, is_active, created_by, created_at, updated_at, tasks(count)')
     .order('created_at', { ascending: false });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (data ?? []).map((p: any) => ({
+  return (data ?? []).map((p) => ({
     id: p.id,
     name: p.name,
     description: p.description ?? null,
@@ -137,8 +131,7 @@ export async function getProjects(): Promise<TaskProject[]> {
 }
 
 export async function getProject(id: string): Promise<TaskProject | null> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supabase = (await createServerClient()) as any;
+  const supabase = await createServerClient();
   const { data } = await supabase
     .from('task_projects')
     .select('id, name, description, is_active, created_by, created_at, updated_at, tasks(count)')
@@ -161,15 +154,13 @@ export async function getProject(id: string): Promise<TaskProject | null> {
 // ─── Templates ───────────────────────────────────────────────────────────────
 
 export async function getTemplates(): Promise<TaskTemplate[]> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supabase = (await createServerClient()) as any;
+  const supabase = await createServerClient();
   const { data } = await supabase
     .from('task_templates')
     .select('id, name, description, created_by, created_at, task_template_items(count)')
     .order('created_at', { ascending: false });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (data ?? []).map((t: any) => ({
+  return (data ?? []).map((t) => ({
     id: t.id,
     name: t.name,
     description: t.description ?? null,
@@ -182,8 +173,7 @@ export async function getTemplates(): Promise<TaskTemplate[]> {
 export async function getTemplateWithItems(
   id: string,
 ): Promise<{ template: TaskTemplate; items: TaskTemplateItem[] } | null> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const supabase = (await createServerClient()) as any;
+  const supabase = await createServerClient();
   const { data } = await supabase
     .from('task_templates')
     .select(
@@ -195,8 +185,7 @@ export async function getTemplateWithItems(
   if (!data) return null;
 
   const items: TaskTemplateItem[] = (data.task_template_items ?? [])
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .map((i: any) => ({
+    .map((i) => ({
       id: i.id,
       template_id: id,
       title: i.title,
@@ -204,7 +193,7 @@ export async function getTemplateWithItems(
       priority: i.priority as TaskTemplateItem['priority'],
       status: i.status as TaskTemplateItem['status'],
       duration_value: i.duration_value ?? null,
-      duration_unit: i.duration_unit ?? null,
+      duration_unit: (i.duration_unit ?? null) as TaskTemplateItem['duration_unit'],
       category_id: i.category_id ?? null,
       category: i.task_categories ?? null,
       position: i.position,
