@@ -15,6 +15,7 @@ import { Main } from '@/components/ui/Main';
 export default async function EvenementsPage() {
   const events = await getExternalEventsQuery();
 
+  // eslint-disable-next-line @eslint-react/purity -- Server Component : évalué une fois par requête
   const now = new Date();
   const upcoming = events.filter((e) =>
     e.external_event_dates.some((d) => new Date(d.date) >= now),

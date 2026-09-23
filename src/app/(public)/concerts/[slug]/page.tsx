@@ -93,6 +93,7 @@ export default async function ConcertPage({ params }: { params: Promise<{ slug: 
   const shareUrl = `${SITE_URL}/concerts/${slug}`;
 
   const dates = sortPerformanceDates(performance.performance_dates);
+  // eslint-disable-next-line @eslint-react/purity -- Server Component : évalué une fois par requête
   const now = new Date();
   const isUpcoming = dates.some((d) => new Date(d.date) >= now);
 
