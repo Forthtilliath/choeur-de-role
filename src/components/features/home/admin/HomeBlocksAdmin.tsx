@@ -8,6 +8,7 @@ import { EditableSection } from '@/components/editor/EditableSection';
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
+import { swapItems } from '@/utils/swapItems';
 
 import {
   deleteBlock,
@@ -41,9 +42,8 @@ export function HomeBlocksAdmin({ initialBlocks }: Props) {
     if (direction === 'up' && index === 0) return;
     if (direction === 'down' && index === contentOnly.length - 1) return;
 
-    const newBlocks = [...contentOnly];
     const swapIndex = direction === 'up' ? index - 1 : index + 1;
-    [newBlocks[index], newBlocks[swapIndex]] = [newBlocks[swapIndex], newBlocks[index]];
+    const newBlocks = swapItems(contentOnly, index, swapIndex);
     const updated = newBlocks.map((b, i) => ({ ...b, order_index: i }));
 
     setBlocks([...updated, ...(joinBlock ? [joinBlock] : [])]);

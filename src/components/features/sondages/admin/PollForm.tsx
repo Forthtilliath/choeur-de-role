@@ -15,6 +15,7 @@ import { GripVertical, Plus, Trash2, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useDndSensors } from '@/hooks/useDndSensors';
 import { useFormShortcuts } from '@/hooks/useFormShortcuts';
+import { swapItems } from '@/utils/swapItems';
 
 import type { PollDraft, PollOptionDraft, PollQuestionDraft, QuestionType } from '../types';
 
@@ -80,11 +81,9 @@ export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }:
 
   function moveQuestion(i: number, dir: -1 | 1) {
     setDraft((d) => {
-      const qs = [...d.questions];
       const target = i + dir;
-      if (target < 0 || target >= qs.length) return d;
-      [qs[i], qs[target]] = [qs[target], qs[i]];
-      return { ...d, questions: qs };
+      if (target < 0 || target >= d.questions.length) return d;
+      return { ...d, questions: swapItems(d.questions, i, target) };
     });
   }
 
@@ -263,10 +262,8 @@ function QuestionCard({
   function handleOptionDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-    const from = question.options.findIndex(
-      (_, i) => optionId(question.options[i], i) === active.id,
-    );
-    const to = question.options.findIndex((_, i) => optionId(question.options[i], i) === over.id);
+    const from = question.options.findIndex((opt, i) => optionId(opt, i) === active.id);
+    const to = question.options.findIndex((opt, i) => optionId(opt, i) === over.id);
     if (from !== -1 && to !== -1) onReorderOptions(from, to);
   }
 

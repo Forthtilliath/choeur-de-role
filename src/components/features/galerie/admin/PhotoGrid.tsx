@@ -5,6 +5,7 @@ import { closestCenter, DndContext } from '@dnd-kit/core';
 import { arrayMove, rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 
 import { useDndSensors } from '@/hooks/useDndSensors';
+import { swapItems } from '@/utils/swapItems';
 
 import { updatePhotosOrder } from '../clientQueries';
 import type { GalleryPhoto } from '../types';
@@ -48,8 +49,7 @@ export function PhotoGrid({
     if (dir === 'right' && idx === photos.length - 1) return;
 
     const swapIdx = dir === 'left' ? idx - 1 : idx + 1;
-    const reordered = [...photos];
-    [reordered[idx], reordered[swapIdx]] = [reordered[swapIdx], reordered[idx]];
+    const reordered = swapItems(photos, idx, swapIdx);
     const updated = reordered.map((p, i) => ({ ...p, order_index: i }));
 
     onReorderAction(updated);
