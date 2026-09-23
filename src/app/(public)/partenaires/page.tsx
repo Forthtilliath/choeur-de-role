@@ -70,8 +70,8 @@ export default async function PartenairesPage() {
           Vous souhaitez nous soutenir ?
         </h2>
         <p className="mb-8 text-foreground/70">
-          Rejoignez nos partenaires et participez à l&apos;aventure du Chœur de Rôle.
-          Contactez-nous pour en savoir plus sur nos offres de partenariat.
+          Rejoignez nos partenaires et participez à l&apos;aventure du Chœur de Rôle. Contactez-nous
+          pour en savoir plus sur nos offres de partenariat.
         </p>
         <Button href="/contact?sujet=partenariat">Nous contacter</Button>
       </div>

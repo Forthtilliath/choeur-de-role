@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page Calendrier', () => {
   test.beforeEach(async ({ page }) => {
@@ -13,7 +13,7 @@ test.describe('Page Calendrier', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le panneau admin n\'est pas visible pour un membre', async ({ page }) => {
+  test("le panneau admin n'est pas visible pour un membre", async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();
   });
 
@@ -24,22 +24,28 @@ test.describe('Page Calendrier', () => {
     await expect(page.getByRole('button', { name: 'Semaine' })).not.toHaveClass(/bg-primary/);
   });
 
-  test('l\'en-tête affiche le mois et l\'année courants', async ({ page }) => {
+  test("l'en-tête affiche le mois et l'année courants", async ({ page }) => {
     // Le h2 contient "{Mois} {Année}" — on vérifie juste qu'une année récente est présente
     const header = page.locator('h2').filter({ hasText: /20\d\d/ });
     await expect(header).toBeVisible();
   });
 
-  test('naviguer au mois précédent met à jour l\'en-tête', async ({ page }) => {
-    const header = page.locator('h2').filter({ hasText: /20\d\d/ }).first();
+  test("naviguer au mois précédent met à jour l'en-tête", async ({ page }) => {
+    const header = page
+      .locator('h2')
+      .filter({ hasText: /20\d\d/ })
+      .first();
     const headerBefore = (await header.textContent())?.trim() ?? '';
     await page.getByRole('button', { name: '←' }).click();
     // toHaveText réessaie jusqu'à ce que l'en-tête change (évite la course DOM).
     await expect(header).not.toHaveText(headerBefore);
   });
 
-  test('naviguer au mois suivant met à jour l\'en-tête', async ({ page }) => {
-    const header = page.locator('h2').filter({ hasText: /20\d\d/ }).first();
+  test("naviguer au mois suivant met à jour l'en-tête", async ({ page }) => {
+    const header = page
+      .locator('h2')
+      .filter({ hasText: /20\d\d/ })
+      .first();
     const headerBefore = (await header.textContent())?.trim() ?? '';
     await page.getByRole('button', { name: '→' }).click();
     await expect(header).not.toHaveText(headerBefore);
@@ -57,7 +63,7 @@ test.describe('Page Calendrier', () => {
     await expect(page.getByRole('button', { name: 'Mois' })).toHaveClass(/bg-primary/);
   });
 
-  test('le lien d\'export .ics est présent et correct', async ({ page }) => {
+  test("le lien d'export .ics est présent et correct", async ({ page }) => {
     const exportLink = page.locator('a[href="/api/calendrier/export-ical"]');
     await expect(exportLink).toBeVisible();
     await expect(exportLink).toHaveAttribute('download', 'calendrier-cda.ics');
@@ -69,7 +75,9 @@ test.describe('Page Calendrier', () => {
 
     // Les boutons d'évènements ont un style inline borderLeftColor unique
     // .filter({ visible: true }) exclut les boutons cachés par overflow dans les cellules
-    const eventButtons = page.locator('button[style*="border-left-color"]').filter({ visible: true });
+    const eventButtons = page
+      .locator('button[style*="border-left-color"]')
+      .filter({ visible: true });
     const count = await eventButtons.count();
     if (count === 0) {
       test.skip(true, 'Aucun évènement visible — vérifier les données de seed');
@@ -83,7 +91,9 @@ test.describe('Page Calendrier', () => {
     // Naviguer au mois précédent pour trouver des évènements
     await page.getByRole('button', { name: '←' }).click();
 
-    const eventButtons = page.locator('button[style*="border-left-color"]').filter({ visible: true });
+    const eventButtons = page
+      .locator('button[style*="border-left-color"]')
+      .filter({ visible: true });
     if ((await eventButtons.count()) === 0) {
       test.skip(true, 'Aucun évènement — test non pertinent');
       return;
@@ -102,6 +112,8 @@ test.describe('Page Calendrier - visibilité admin', () => {
     await page.goto('/choristes/calendrier');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('nav[aria-label="Administration"]')).toBeVisible();
-    await expect(page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/calendrier"]')).toBeVisible();
+    await expect(
+      page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/calendrier"]'),
+    ).toBeVisible();
   });
 });

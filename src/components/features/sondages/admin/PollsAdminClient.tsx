@@ -8,20 +8,21 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
 
-import {
-  createPoll,
-  deletePoll,
-  togglePollActive,
-  updatePoll,
-} from '../clientQueries';
+import { createPoll, deletePoll, togglePollActive, updatePoll } from '../clientQueries';
 import { getPollResults } from '../queries.client';
 import type { Poll, PollDraft, PollResults } from '../types';
 
 import { PollForm } from './PollForm';
 
-const PollResultsClient = dynamic(() => import('./PollResultsClient').then(m => m.PollResultsClient), { ssr: false });
+const PollResultsClient = dynamic(
+  () => import('./PollResultsClient').then((m) => m.PollResultsClient),
+  { ssr: false },
+);
 
-type View = { type: 'list' } | { type: 'form'; poll: Poll | null } | { type: 'results'; results: PollResults };
+type View =
+  | { type: 'list' }
+  | { type: 'form'; poll: Poll | null }
+  | { type: 'results'; results: PollResults };
 
 type Props = {
   initialPolls: Poll[];
@@ -62,11 +63,14 @@ export function PollsAdminClient({ initialPolls, memberId }: Props) {
 
   async function handleDelete(id: string) {
     const item = polls.find((p) => p.id === id);
-    if (!await confirm({
-      message: 'Supprimer ce sondage ? Toutes les réponses seront perdues.',
-      danger: true,
-      details: item ? { icon: '📊', label: item.title } : undefined,
-    })) return;
+    if (
+      !(await confirm({
+        message: 'Supprimer ce sondage ? Toutes les réponses seront perdues.',
+        danger: true,
+        details: item ? { icon: '📊', label: item.title } : undefined,
+      }))
+    )
+      return;
     const ok = await deletePoll(id);
     if (ok) {
       setPolls((prev) => prev.filter((p) => p.id !== id));
@@ -145,10 +149,7 @@ export function PollsAdminClient({ initialPolls, memberId }: Props) {
 
   if (view.type === 'results') {
     return (
-      <PollResultsClient
-        results={view.results}
-        onBackAction={() => setView({ type: 'list' })}
-      />
+      <PollResultsClient results={view.results} onBackAction={() => setView({ type: 'list' })} />
     );
   }
 
@@ -156,9 +157,7 @@ export function PollsAdminClient({ initialPolls, memberId }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <Button onClick={() => setView({ type: 'form', poll: null })}>
-          + Nouveau sondage
-        </Button>
+        <Button onClick={() => setView({ type: 'form', poll: null })}>+ Nouveau sondage</Button>
       </div>
 
       {polls.length === 0 ? (
@@ -178,20 +177,22 @@ export function PollsAdminClient({ initialPolls, memberId }: Props) {
                     <h3 className="text-sm font-semibold text-foreground">{poll.title}</h3>
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                        poll.is_active
-                          ? 'bg-green-700 text-white'
-                          : 'bg-muted text-foreground/40'
+                        poll.is_active ? 'bg-green-700 text-white' : 'bg-muted text-foreground/40'
                       }`}
                     >
                       {poll.is_active ? 'Actif' : 'Inactif'}
                     </span>
                   </div>
                   {poll.description && (
-                    <p className="text-xs text-foreground/50 mt-0.5 line-clamp-2">{poll.description}</p>
+                    <p className="text-xs text-foreground/50 mt-0.5 line-clamp-2">
+                      {poll.description}
+                    </p>
                   )}
                   <p className="text-xs text-foreground/40 mt-1">
-                    {poll.poll_questions.length} question{poll.poll_questions.length !== 1 ? 's' : ''}
-                    {poll.closes_at && ` · Clôture le ${new Date(poll.closes_at).toLocaleDateString('fr-FR')}`}
+                    {poll.poll_questions.length} question
+                    {poll.poll_questions.length !== 1 ? 's' : ''}
+                    {poll.closes_at &&
+                      ` · Clôture le ${new Date(poll.closes_at).toLocaleDateString('fr-FR')}`}
                   </p>
                 </div>
               </div>
@@ -225,19 +226,11 @@ export function PollsAdminClient({ initialPolls, memberId }: Props) {
                     </>
                   )}
                 </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setView({ type: 'form', poll })}
-                >
+                <Button size="sm" variant="ghost" onClick={() => setView({ type: 'form', poll })}>
                   <Edit className="w-3.5 h-3.5 sm:hidden" />
                   <span className="hidden sm:inline">Modifier</span>
                 </Button>
-                <Button
-                  size="sm"
-                  variant="danger"
-                  onClick={() => handleDelete(poll.id)}
-                >
+                <Button size="sm" variant="danger" onClick={() => handleDelete(poll.id)}>
                   <Trash2 className="w-3.5 h-3.5 sm:hidden" />
                   <span className="hidden sm:inline">Supprimer</span>
                 </Button>

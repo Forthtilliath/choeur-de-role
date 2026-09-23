@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Prévisualisation des emails', () => {
   test.beforeEach(async ({ page }) => {
@@ -22,7 +22,7 @@ test.describe('Admin — Prévisualisation des emails', () => {
     await expect(page.getByRole('button', { name: /Réinit|mot de passe/i })).toBeVisible();
   });
 
-  test('l\'aperçu de l\'email est affiché dans un iframe', async ({ page }) => {
+  test("l'aperçu de l'email est affiché dans un iframe", async ({ page }) => {
     await expect(page.locator('iframe[title*="Aperçu"]')).toBeVisible();
   });
 });

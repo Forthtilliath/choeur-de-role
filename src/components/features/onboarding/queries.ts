@@ -36,9 +36,7 @@ export type OnboardingPayload = {
   self_updated_at: string;
 };
 
-export async function getMemberForOnboarding(
-  userId: string,
-): Promise<MemberForOnboarding | null> {
+export async function getMemberForOnboarding(userId: string): Promise<MemberForOnboarding | null> {
   const supabase = await createServerClient();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = await (supabase.from('members') as any)

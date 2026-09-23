@@ -39,7 +39,14 @@ export function AuthButton({ onClickAction, initialLoggedIn }: Props = {}) {
 
   if (loggedIn)
     return (
-      <Button onClick={() => { onClickAction?.(); handleSignOut(); }} variant="outline" size="sm">
+      <Button
+        onClick={() => {
+          onClickAction?.();
+          handleSignOut();
+        }}
+        variant="outline"
+        size="sm"
+      >
         Se déconnecter
       </Button>
     );

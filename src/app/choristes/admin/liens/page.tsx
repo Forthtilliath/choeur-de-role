@@ -8,8 +8,12 @@ export default async function AdminLiensPage() {
   const links = await getMemberLinksAdminQuery();
 
   return (
-    <Main variant="admin" title="Gestion des liens" breadcrumbs={[{ label: 'Liens choristes', href: '/choristes/liens' }]}
-      breadcrumbCurrent="Administration">
+    <Main
+      variant="admin"
+      title="Gestion des liens"
+      breadcrumbs={[{ label: 'Liens choristes', href: '/choristes/liens' }]}
+      breadcrumbCurrent="Administration"
+    >
       <LiensAdminClient initialLinks={links ?? []} />
     </Main>
   );

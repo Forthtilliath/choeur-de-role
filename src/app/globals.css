@@ -23,8 +23,12 @@
 }
 
 @keyframes slide-down {
-  from { transform: translateY(0); }
-  to   { transform: translateY(100%); }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
 }
 
 .animate-slide-down {
@@ -54,7 +58,6 @@
       inherits: true;
       initial-value: 0px;
     }
-
   }
 
   :focus-visible {
@@ -121,7 +124,6 @@
 
   --aspect-poster: 875 / 1241;
 }
-
 
 .text-shadow-outline {
   --tw-text-shadow-outline:
@@ -213,7 +215,9 @@ button {
 
 /* iOS Safari zooms in on focus when font-size < 16px — prevent that */
 @media (pointer: coarse) {
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     font-size: 16px !important;
   }
 }

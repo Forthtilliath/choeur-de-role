@@ -22,7 +22,11 @@ type Props = {
   performances: Performance[];
 };
 
-export function MediathequeAdminClient({ initialSongs, voiceParts, performances: initialPerformances }: Props) {
+export function MediathequeAdminClient({
+  initialSongs,
+  voiceParts,
+  performances: initialPerformances,
+}: Props) {
   const [songs, setSongs] = useState<Song[]>(initialSongs);
   const [performances, setPerformances] = useState<Performance[]>(initialPerformances);
   const [showForm, setShowForm] = useState(false);
@@ -60,11 +64,14 @@ export function MediathequeAdminClient({ initialSongs, voiceParts, performances:
 
   async function handleDelete(id: string) {
     const item = songs.find((s) => s.id === id);
-    if (!await confirm({
-      message: 'Supprimer ce chant et tous ses fichiers ?',
-      danger: true,
-      details: item ? { icon: '🎵', label: item.title } : undefined,
-    })) return;
+    if (
+      !(await confirm({
+        message: 'Supprimer ce chant et tous ses fichiers ?',
+        danger: true,
+        details: item ? { icon: '🎵', label: item.title } : undefined,
+      }))
+    )
+      return;
     const ok = await deleteSong(id);
     if (ok) {
       setSongs((prev) => prev.filter((s) => s.id !== id));
@@ -111,7 +118,9 @@ export function MediathequeAdminClient({ initialSongs, voiceParts, performances:
             {upcomingPerfs.map((p) => (
               <button
                 key={p.id}
-                onClick={() => setSelectedPerformanceId(selectedPerformanceId === p.id ? null : p.id)}
+                onClick={() =>
+                  setSelectedPerformanceId(selectedPerformanceId === p.id ? null : p.id)
+                }
                 className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
                   selectedPerformanceId === p.id
                     ? 'bg-primary text-white border-primary'
@@ -176,7 +185,11 @@ export function MediathequeAdminClient({ initialSongs, voiceParts, performances:
             song.song_performance.some((sp) => sp.performance_id === p.id),
           );
           return (
-            <div key={song.id} data-song-card className="border border-border rounded-2xl overflow-hidden">
+            <div
+              key={song.id}
+              data-song-card
+              className="border border-border rounded-2xl overflow-hidden"
+            >
               <div className="flex items-start gap-3 px-4 py-4 bg-background-secondary">
                 {/* Info cliquable pour ouvrir/fermer */}
                 <button
@@ -185,9 +198,7 @@ export function MediathequeAdminClient({ initialSongs, voiceParts, performances:
                 >
                   <div className="flex items-baseline gap-2 flex-wrap">
                     <p className="text-sm font-medium text-foreground">{song.title}</p>
-                    {song.composer && (
-                      <p className="text-xs text-foreground/50">{song.composer}</p>
-                    )}
+                    {song.composer && <p className="text-xs text-foreground/50">{song.composer}</p>}
                     {song.label && (
                       <p className="text-xs text-foreground/40 italic">{song.label}</p>
                     )}
@@ -229,13 +240,21 @@ export function MediathequeAdminClient({ initialSongs, voiceParts, performances:
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => { setEditingSong(song); setShowForm(true); }}
+                      onClick={() => {
+                        setEditingSong(song);
+                        setShowForm(true);
+                      }}
                       className="gap-1.5"
                     >
                       <Pencil size={13} />
                       <span className="hidden sm:inline">Modifier</span>
                     </Button>
-                    <Button size="sm" variant="danger" onClick={() => handleDelete(song.id)} className="gap-1.5">
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      onClick={() => handleDelete(song.id)}
+                      className="gap-1.5"
+                    >
                       <Trash2 size={13} />
                       <span className="hidden sm:inline">Supprimer</span>
                     </Button>
@@ -314,7 +333,10 @@ function PerformancePanel({
         <span className="flex items-center gap-2 font-medium text-foreground">
           📝 Notes pour les choristes
           {performance.notes && (
-            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" title="Notes existantes" />
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-primary shrink-0"
+              title="Notes existantes"
+            />
           )}
         </span>
         <ChevronDown

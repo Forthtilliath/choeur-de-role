@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Gestion des membres', () => {
   test.beforeEach(async ({ page }) => {
@@ -25,19 +25,30 @@ test.describe('Admin — Gestion des membres', () => {
     // Il y a toujours au moins un membre (le compte admin)
     const rows = page.locator('table tbody tr, [data-member-row]');
     if ((await rows.count()) === 0) {
-      await expect(page.locator('main').getByRole('button', { name: /Modifier|Inviter/i }).first()).toBeVisible({ timeout: 5_000 });
+      await expect(
+        page
+          .locator('main')
+          .getByRole('button', { name: /Modifier|Inviter/i })
+          .first(),
+      ).toBeVisible({ timeout: 5_000 });
     } else {
       await expect(rows.first()).toBeVisible();
     }
   });
 
   test('le bouton "Ajouter un membre" est présent', async ({ page }) => {
-    await expect(page.getByRole('button', { name: /Ajouter|Nouveau membre|Créer/i }).first()).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /Ajouter|Nouveau membre|Créer/i }).first(),
+    ).toBeVisible();
   });
 
   test('le filtre par saison est présent', async ({ page }) => {
     // Select "Toutes les saisons"
-    await expect(page.locator('select').filter({ has: page.locator('option', { hasText: /Toutes les saisons/i }) })).toBeVisible();
+    await expect(
+      page
+        .locator('select')
+        .filter({ has: page.locator('option', { hasText: /Toutes les saisons/i }) }),
+    ).toBeVisible();
   });
 
   test('la recherche filtre les membres affichés', async ({ page }) => {
@@ -56,7 +67,10 @@ test.describe('Admin — Gestion des membres', () => {
     const editBtns = page.locator('main').getByRole('button', { name: /Modifier|edit/i });
     if ((await editBtns.count()) === 0) {
       // Les boutons sont dans un row, peut utiliser des icônes
-      const pencilBtns = page.locator('main button').filter({ has: page.locator('svg') }).first();
+      const pencilBtns = page
+        .locator('main button')
+        .filter({ has: page.locator('svg') })
+        .first();
       await expect(pencilBtns).toBeVisible();
     } else {
       await expect(editBtns.first()).toBeVisible();
@@ -64,17 +78,27 @@ test.describe('Admin — Gestion des membres', () => {
   });
 
   test('cliquer sur "Ajouter un membre" ouvre le formulaire de création', async ({ page }) => {
-    await page.getByRole('button', { name: /Ajouter|Nouveau membre|Créer/i }).first().click();
+    await page
+      .getByRole('button', { name: /Ajouter|Nouveau membre|Créer/i })
+      .first()
+      .click();
     // CreateMemberForm : sélection pupitre, saison, rôle
-    await expect(page.locator('form').or(page.locator('[role="dialog"]')).first()).toBeVisible({ timeout: 5_000 });
+    await expect(page.locator('form').or(page.locator('[role="dialog"]')).first()).toBeVisible({
+      timeout: 5_000,
+    });
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible();
   });
 
   test('Annuler ferme le formulaire de création', async ({ page }) => {
-    await page.getByRole('button', { name: /Ajouter|Nouveau membre|Créer/i }).first().click();
+    await page
+      .getByRole('button', { name: /Ajouter|Nouveau membre|Créer/i })
+      .first()
+      .click();
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible({ timeout: 5_000 });
     await page.getByRole('button', { name: 'Annuler' }).click();
     // Le formulaire disparaît
-    await expect(page.locator('h2', { hasText: /Nouveau membre|Ajouter/i })).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('h2', { hasText: /Nouveau membre|Ajouter/i })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 });

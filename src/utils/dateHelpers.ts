@@ -54,16 +54,13 @@ export const formatDateShort = (dateStr: string) => fmtDateShort.format(new Date
 export const formatDayMonth = (dateStr: string) => fmtDayMonth.format(new Date(dateStr));
 
 /** "1 janv." — sans année, mois court */
-export const formatDayMonthShort = (dateStr: string) =>
-  fmtDayMonthShort.format(new Date(dateStr));
+export const formatDayMonthShort = (dateStr: string) => fmtDayMonthShort.format(new Date(dateStr));
 
 /** "lundi 1 janvier 2025 à 20:00" */
-export const formatLongDateTime = (dateStr: string) =>
-  fmtLongDateTime.format(new Date(dateStr));
+export const formatLongDateTime = (dateStr: string) => fmtLongDateTime.format(new Date(dateStr));
 
 /** "1 janv. 2025 à 20:00" */
-export const formatDateTimeShort = (dateStr: string) =>
-  fmtDateTimeShort.format(new Date(dateStr));
+export const formatDateTimeShort = (dateStr: string) => fmtDateTimeShort.format(new Date(dateStr));
 
 /** "1 janv. à 20:00" — sans année */
 export const formatDateTimeCompact = (dateStr: string) =>
@@ -104,8 +101,7 @@ export function formatEventDateRange(dateStr: string, endDateStr?: string | null
 
   if (sameDayEnd) {
     const base = fmtDate.format(start);
-    if (hasStartTime && hasEndTime)
-      return `${base} · ${formatTime(start)} à ${formatTime(end)}`;
+    if (hasStartTime && hasEndTime) return `${base} · ${formatTime(start)} à ${formatTime(end)}`;
     if (hasStartTime) return `${base} · à partir de ${formatTime(start)}`;
     return base;
   }

@@ -1,10 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 
-import {
-  ConcertsClient,
-  getPerformancesQuery,
-} from '@/components/features/concerts';
+import { ConcertsClient, getPerformancesQuery } from '@/components/features/concerts';
 import { Main } from '@/components/ui/Main';
 
 export const metadata: Metadata = {

@@ -1,8 +1,8 @@
 'use client';
 
 import type { DragEndEvent } from '@dnd-kit/core';
-import { closestCenter,DndContext } from '@dnd-kit/core';
-import { arrayMove,rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
+import { closestCenter, DndContext } from '@dnd-kit/core';
+import { arrayMove, rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 
 import { useDndSensors } from '@/hooks/useDndSensors';
 
@@ -19,7 +19,12 @@ type Props = {
   onUpdateCaptionAction: (photoId: string, caption: string) => void;
 };
 
-export function PhotoGrid({ photos, onReorderAction, onDeleteAction, onUpdateCaptionAction }: Props) {
+export function PhotoGrid({
+  photos,
+  onReorderAction,
+  onDeleteAction,
+  onUpdateCaptionAction,
+}: Props) {
   const sensors = useDndSensors();
 
   async function handleDragEnd(event: DragEndEvent) {

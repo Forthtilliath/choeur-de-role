@@ -11,7 +11,9 @@ export default async function AdminProjetsPage() {
     <main className="px-6 py-8 max-w-4xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-medium text-foreground">Projets</h1>
-        <p className="text-sm text-foreground/50 mt-1">Créer, activer ou archiver les projets du tableau de tâches.</p>
+        <p className="text-sm text-foreground/50 mt-1">
+          Créer, activer ou archiver les projets du tableau de tâches.
+        </p>
       </div>
       <ProjectsAdmin projects={projects} templates={templates} />
     </main>

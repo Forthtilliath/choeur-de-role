@@ -9,12 +9,12 @@ recréé automatiquement en local.
 
 ## 1. Prérequis
 
-| Outil | Version | Notes |
-| --- | --- | --- |
-| **Node.js** | 22 LTS | même version que la CI |
-| **npm** | 11+ | `npm install -g npm@11` |
-| **Docker Desktop** | récent | requis par la CLI Supabase (Postgres, Auth, Storage locaux) |
-| **Git** | — | |
+| Outil              | Version | Notes                                                       |
+| ------------------ | ------- | ----------------------------------------------------------- |
+| **Node.js**        | 22 LTS  | même version que la CI                                      |
+| **npm**            | 11+     | `npm install -g npm@11`                                     |
+| **Docker Desktop** | récent  | requis par la CLI Supabase (Postgres, Auth, Storage locaux) |
+| **Git**            | —       |                                                             |
 
 La CLI Supabase est utilisée via `npx` (`npx supabase ...`), rien à installer
 globalement.
@@ -87,11 +87,11 @@ pour contourner CORS/CSP côté navigateur — c'est voulu.
 
 ### Services annexes de la stack locale
 
-| Service | URL |
-| --- | --- |
-| API Supabase | http://127.0.0.1:54321 |
-| Base Postgres | `postgresql://postgres:postgres@127.0.0.1:54322/postgres` |
-| Boîte mail de test (Inbucket) | http://127.0.0.1:54324 |
+| Service                       | URL                                                       |
+| ----------------------------- | --------------------------------------------------------- |
+| API Supabase                  | http://127.0.0.1:54321                                    |
+| Base Postgres                 | `postgresql://postgres:postgres@127.0.0.1:54322/postgres` |
+| Boîte mail de test (Inbucket) | http://127.0.0.1:54324                                    |
 
 ---
 
@@ -107,11 +107,11 @@ npm run test:e2e:setup
 Ce script (`create-test-accounts.ts` + `enroll-test-admin-mfa.ts`) crée 3 comptes
 et écrit leurs identifiants dans `.env.test.local` :
 
-| Rôle | Email | Accès |
-| --- | --- | --- |
-| Choriste | `e2e.member@test.cda.invalid` | espace membres |
-| Membre du bureau (CA) | `e2e.ca@test.cda.invalid` | + comptes-rendus, tâches |
-| Admin | `e2e.admin@test.cda.invalid` | + back-office complet (2FA activé) |
+| Rôle                  | Email                         | Accès                              |
+| --------------------- | ----------------------------- | ---------------------------------- |
+| Choriste              | `e2e.member@test.cda.invalid` | espace membres                     |
+| Membre du bureau (CA) | `e2e.ca@test.cda.invalid`     | + comptes-rendus, tâches           |
+| Admin                 | `e2e.admin@test.cda.invalid`  | + back-office complet (2FA activé) |
 
 Les mots de passe générés se trouvent dans `.env.test.local` après exécution.
 
@@ -180,14 +180,14 @@ npm run verify:setup
 Le script (`scripts/verify-setup.mjs`) rejoue les étapes de ce guide sous forme
 de checklist :
 
-| Section | Contrôles |
-| --- | --- |
-| 1. Prérequis | Node ≥ 22, npm ≥ 11, Git, Docker CLI + démon démarré |
-| 2. Projet | `node_modules/` et modules clés résolus |
-| 3. Env | `.env.local` présent, variables requises, mode local |
-| 4. Stack | API Supabase, Postgres, Inbucket joignables ; migrations + données de démo |
-| 5. Comptes | `.env.test.local`, connexion des 3 comptes, `is_test_account`, cycle 2FA admin complet |
-| 6. Reset | scripts et migrations présents |
+| Section      | Contrôles                                                                              |
+| ------------ | -------------------------------------------------------------------------------------- |
+| 1. Prérequis | Node ≥ 22, npm ≥ 11, Git, Docker CLI + démon démarré                                   |
+| 2. Projet    | `node_modules/` et modules clés résolus                                                |
+| 3. Env       | `.env.local` présent, variables requises, mode local                                   |
+| 4. Stack     | API Supabase, Postgres, Inbucket joignables ; migrations + données de démo             |
+| 5. Comptes   | `.env.test.local`, connexion des 3 comptes, `is_test_account`, cycle 2FA admin complet |
+| 6. Reset     | scripts et migrations présents                                                         |
 
 Options :
 
@@ -207,14 +207,14 @@ Sortie `0` si tout passe (les avertissements ne bloquent pas), `1` si un contrô
 
 ## Dépannage
 
-| Symptôme | Piste |
-| --- | --- |
-| `supabase start` échoue | Docker Desktop non démarré, ou ports 54321-54324 déjà pris |
-| Page blanche / erreurs Supabase dans la console | stack locale arrêtée → `npx supabase start` |
-| `Invalid environment variables` au build | variable manquante ou `SKIP_ENV_VALIDATION` non défini |
-| Connexion admin refusée | code TOTP expiré → régénérer avec `npm run totp` |
-| Images/fichiers du répertoire cassés | normal sans R2 configuré en mode local |
-| Réinitialiser complètement | `npx supabase stop --no-backup` puis `npm run dev:e2e` |
+| Symptôme                                        | Piste                                                      |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| `supabase start` échoue                         | Docker Desktop non démarré, ou ports 54321-54324 déjà pris |
+| Page blanche / erreurs Supabase dans la console | stack locale arrêtée → `npx supabase start`                |
+| `Invalid environment variables` au build        | variable manquante ou `SKIP_ENV_VALIDATION` non défini     |
+| Connexion admin refusée                         | code TOTP expiré → régénérer avec `npm run totp`           |
+| Images/fichiers du répertoire cassés            | normal sans R2 configuré en mode local                     |
+| Réinitialiser complètement                      | `npx supabase stop --no-backup` puis `npm run dev:e2e`     |
 
 ---
 

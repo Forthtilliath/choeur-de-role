@@ -64,11 +64,7 @@ export async function getMemberFirstName(
   memberId: string,
 ): Promise<{ first_name: string | null } | null> {
   const supabase = await createServerClient();
-  const { data } = await supabase
-    .from('members')
-    .select('first_name')
-    .eq('id', memberId)
-    .single();
+  const { data } = await supabase.from('members').select('first_name').eq('id', memberId).single();
   return data ?? null;
 }
 

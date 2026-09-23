@@ -19,7 +19,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: *.supabase.co *.r2.dev i.ytimg.com *.tile.openstreetmap.org randomuser.me",
   `media-src 'self' *.r2.cloudflarestorage.com${isDev ? ' http://localhost:54321 http://127.0.0.1:54321' : ''}`,
-  "frame-src maps.google.com www.google.com www.youtube.com",
+  'frame-src maps.google.com www.google.com www.youtube.com',
   "worker-src 'self'",
   `connect-src 'self' https://*.supabase.co wss://*.supabase.co cloud.umami.is https://gateway.umami.is https://*.r2.cloudflarestorage.com https://*.ingest.sentry.io${isDev ? ' ws: http://localhost:54321 http://127.0.0.1:54321' : ''}`,
   "font-src 'self'",
@@ -86,13 +86,19 @@ const nextConfig: NextConfig = {
             {
               source: '/icons/(.*)',
               headers: [
-                { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=86400, stale-while-revalidate=604800',
+                },
               ],
             },
             {
               source: '/images/(.*)',
               headers: [
-                { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=86400, stale-while-revalidate=604800',
+                },
               ],
             },
           ]),
@@ -129,9 +135,9 @@ export default withSentryConfig(withPwa(withMDX(nextConfig)), {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: "choeur-de-role",
+  org: 'choeur-de-role',
 
-  project: "choeur-de-role",
+  project: 'choeur-de-role',
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
@@ -151,7 +157,7 @@ export default withSentryConfig(withPwa(withMDX(nextConfig)), {
   // This can increase your server load as well as your hosting bill.
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
   // side errors will fail.
-  tunnelRoute: "/monitoring",
+  tunnelRoute: '/monitoring',
 
   webpack: {
     // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)

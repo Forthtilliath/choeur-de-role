@@ -12,11 +12,7 @@ async function getAdminAuth() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return null;
-  const { data: member } = await supabase
-    .from('members')
-    .select('role')
-    .eq('id', user.id)
-    .single();
+  const { data: member } = await supabase.from('members').select('role').eq('id', user.id).single();
   if (!member || !isAdmin(member.role as MemberRole)) return null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return { userId: user.id, db: supabase as any };
@@ -56,15 +52,23 @@ export async function createProject(input: {
 
     if (items && items.length > 0) {
       await auth.db.from('tasks').insert(
-        items.map((item: { title: string; description: string | null; priority: string; status: string; position: number }) => ({
-          project_id: project.id,
-          title: item.title,
-          description: item.description,
-          priority: item.priority,
-          status: item.status,
-          position: item.position,
-          created_by: auth.userId,
-        })),
+        items.map(
+          (item: {
+            title: string;
+            description: string | null;
+            priority: string;
+            status: string;
+            position: number;
+          }) => ({
+            project_id: project.id,
+            title: item.title,
+            description: item.description,
+            priority: item.priority,
+            status: item.status,
+            position: item.position,
+            created_by: auth.userId,
+          }),
+        ),
       );
     }
   }

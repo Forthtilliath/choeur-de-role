@@ -3,7 +3,7 @@ export type QuestionType = 'single_choice' | 'multiple_choice' | 'text' | 'ratin
 // ── Formulaire admin ─────────────────────────────────────────────────────────
 
 export type PollOptionDraft = {
-  id?: string;    // présent si déjà en DB
+  id?: string; // présent si déjà en DB
   label: string;
   order_index: number;
 };
@@ -14,13 +14,13 @@ export type PollQuestionDraft = {
   type: QuestionType;
   required: boolean;
   order_index: number;
-  options: PollOptionDraft[];   // vide pour text/rating
+  options: PollOptionDraft[]; // vide pour text/rating
 };
 
 export type PollDraft = {
   title: string;
   description: string;
-  closes_at: string;            // datetime-local string, '' si vide
+  closes_at: string; // datetime-local string, '' si vide
   is_active: boolean;
   questions: PollQuestionDraft[];
 };
@@ -101,7 +101,7 @@ export type QuestionResult = {
   text_answers?: string[];
   // rating
   average?: number;
-  rating_distribution?: Record<number, number>;  // {1:2, 2:5, ...}
+  rating_distribution?: Record<number, number>; // {1:2, 2:5, ...}
 };
 
 export type PollResults = {

@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page Actualités', () => {
   test.beforeEach(async ({ page }) => {
@@ -12,7 +12,7 @@ test.describe('Page Actualités', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le panneau admin n\'est pas visible pour un membre', async ({ page }) => {
+  test("le panneau admin n'est pas visible pour un membre", async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();
   });
 
@@ -72,6 +72,8 @@ test.describe('Page Actualités - visibilité admin', () => {
     await page.goto('/choristes');
     await expect(page).toHaveURL('/choristes', { timeout: 15_000 });
     await expect(page.locator('nav[aria-label="Administration"]')).toBeVisible();
-    await expect(page.locator('nav[aria-label="Administration"] a[href="/choristes/admin"]')).toBeVisible();
+    await expect(
+      page.locator('nav[aria-label="Administration"] a[href="/choristes/admin"]'),
+    ).toBeVisible();
   });
 });

@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Messages de contact', () => {
   test.beforeEach(async ({ page }) => {
@@ -20,7 +20,9 @@ test.describe('Admin — Messages de contact', () => {
     await expect(page.locator('p', { hasText: 'Total' })).toBeVisible();
   });
 
-  test('les filtres de catégorie sont présents (Tous, Candidature, Partenariat, Autre)', async ({ page }) => {
+  test('les filtres de catégorie sont présents (Tous, Candidature, Partenariat, Autre)', async ({
+    page,
+  }) => {
     // Two "Tous" buttons exist (category + status) — target the first (category row)
     await expect(page.getByRole('button', { name: 'Tous' }).first()).toBeVisible();
     await expect(page.getByRole('button', { name: 'Candidature', exact: true })).toBeVisible();
@@ -46,17 +48,21 @@ test.describe('Admin — Messages de contact', () => {
     expect(filteredCount).toBeLessThanOrEqual(total);
   });
 
-  test('cliquer sur un message l\'ouvre et affiche son contenu', async ({ page }) => {
+  test("cliquer sur un message l'ouvre et affiche son contenu", async ({ page }) => {
     const messages = page.locator('main .border.rounded-2xl');
     if ((await messages.count()) === 0) {
       test.skip(true, 'Aucun message disponible');
       return;
     }
     await messages.first().locator('button').first().click();
-    await expect(messages.first().locator('.border-t.border-border')).toBeVisible({ timeout: 3_000 });
+    await expect(messages.first().locator('.border-t.border-border')).toBeVisible({
+      timeout: 3_000,
+    });
   });
 
-  test('un message ouvert affiche les boutons "Marquer traité/non traité" et "Supprimer"', async ({ page }) => {
+  test('un message ouvert affiche les boutons "Marquer traité/non traité" et "Supprimer"', async ({
+    page,
+  }) => {
     const messages = page.locator('main .border.rounded-2xl');
     if ((await messages.count()) === 0) {
       test.skip(true, 'Aucun message disponible');
@@ -64,7 +70,9 @@ test.describe('Admin — Messages de contact', () => {
     }
     await messages.first().locator('button').first().click();
     await expect(messages.first().locator('.border-t')).toBeVisible({ timeout: 3_000 });
-    await expect(page.getByRole('button', { name: /Marquer traité|Marquer non traité/i })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /Marquer traité|Marquer non traité/i }),
+    ).toBeVisible();
     await expect(page.getByRole('button', { name: /^Supprimer$/ })).toBeVisible();
   });
 
@@ -95,9 +103,16 @@ test.describe('Admin — Messages de contact', () => {
     await expect(messages.first().locator('.border-t')).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: /^Supprimer$/ }).click();
     // Confirmation inline : "Confirmer la suppression" apparaît
-    await expect(page.getByRole('button', { name: /Confirmer la suppression/i })).toBeVisible({ timeout: 3_000 });
+    await expect(page.getByRole('button', { name: /Confirmer la suppression/i })).toBeVisible({
+      timeout: 3_000,
+    });
     // Annuler la confirmation
-    await page.getByRole('button', { name: /^Annuler$/ }).last().click();
-    await expect(page.getByRole('button', { name: /Confirmer la suppression/i })).not.toBeVisible({ timeout: 3_000 });
+    await page
+      .getByRole('button', { name: /^Annuler$/ })
+      .last()
+      .click();
+    await expect(page.getByRole('button', { name: /Confirmer la suppression/i })).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 });

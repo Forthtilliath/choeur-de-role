@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Bureau / Templates', () => {
   test.beforeEach(async ({ page }) => {
@@ -26,7 +26,7 @@ test.describe('Admin — Bureau / Templates', () => {
     await expect(page.getByRole('button', { name: /Créer et éditer/i })).toBeDisabled();
   });
 
-  test('le bouton Créer s\'active avec un nom', async ({ page }) => {
+  test("le bouton Créer s'active avec un nom", async ({ page }) => {
     await page.locator('input[placeholder*="Concert standard"]').fill('Template test');
     await expect(page.getByRole('button', { name: /Créer et éditer/i })).toBeEnabled();
   });
@@ -52,21 +52,28 @@ test.describe('Admin — Bureau / Templates', () => {
     await expect(items.first().getByRole('button', { name: /Supprimer/i })).toBeVisible();
   });
 
-  test('Supprimer un template affiche une confirmation et Annuler conserve le template', async ({ page }) => {
+  test('Supprimer un template affiche une confirmation et Annuler conserve le template', async ({
+    page,
+  }) => {
     const items = page.locator('section').nth(1).locator('.rounded-xl.border');
     if ((await items.count()) === 0) {
       test.skip(true, 'Aucun template disponible');
       return;
     }
     const countBefore = await items.count();
-    await items.first().getByRole('button', { name: /Supprimer/i }).click();
+    await items
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     const modal = page.locator('.fixed.inset-0');
     await expect(modal.getByRole('button', { name: 'Supprimer' })).toBeVisible({ timeout: 3_000 });
     await modal.getByRole('button', { name: 'Annuler' }).click();
     await expect(items).toHaveCount(countBefore, { timeout: 3_000 });
   });
 
-  test('cycle CRUD complet : créer un template → éditeur → retour → supprimer', async ({ page }) => {
+  test('cycle CRUD complet : créer un template → éditeur → retour → supprimer', async ({
+    page,
+  }) => {
     test.slow();
     const name = `Template E2E ${Date.now()}`;
 
@@ -85,7 +92,10 @@ test.describe('Admin — Bureau / Templates', () => {
     await expect(newItem.first()).toBeVisible({ timeout: 5_000 });
 
     // Suppression
-    await newItem.first().getByRole('button', { name: /Supprimer/i }).click();
+    await newItem
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     const modal = page.locator('.fixed.inset-0');
     await expect(modal.getByRole('button', { name: 'Supprimer' })).toBeVisible({ timeout: 3_000 });
     await modal.getByRole('button', { name: 'Supprimer' }).click();

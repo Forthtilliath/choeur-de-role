@@ -65,7 +65,13 @@ export async function generateMetadata({
   }
 }
 
-async function AlbumsSection({ performanceId, canEdit }: { performanceId: string; canEdit: boolean }) {
+async function AlbumsSection({
+  performanceId,
+  canEdit,
+}: {
+  performanceId: string;
+  canEdit: boolean;
+}) {
   const albums = await getAlbumsForPerformance(performanceId);
   const sortedAlbums = sortAlbumPhotos(albums);
   if (sortedAlbums.length === 0) return null;

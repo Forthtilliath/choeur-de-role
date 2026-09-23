@@ -2,10 +2,14 @@ import { createClient } from '@/lib/supabase.client';
 
 import type { MemberLink, Visibility } from './types';
 
-export async function updateLinksOrder(items: { id: string; order_index: number }[]): Promise<void> {
+export async function updateLinksOrder(
+  items: { id: string; order_index: number }[],
+): Promise<void> {
   const supabase = createClient();
   await Promise.all(
-    items.map((l) => supabase.from('member_links').update({ order_index: l.order_index }).eq('id', l.id)),
+    items.map((l) =>
+      supabase.from('member_links').update({ order_index: l.order_index }).eq('id', l.id),
+    ),
   );
 }
 

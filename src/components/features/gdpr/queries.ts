@@ -45,9 +45,7 @@ export async function getMemberGdprData(memberId: string): Promise<GdprExportDat
 
   const pollIds = [
     ...new Set(
-      (responsesRes.data ?? [])
-        .map((r: { poll_id: string }) => r.poll_id)
-        .filter(Boolean),
+      (responsesRes.data ?? []).map((r: { poll_id: string }) => r.poll_id).filter(Boolean),
     ),
   ];
   const seasonIds = (seasonIdsRes.data ?? [])
@@ -66,8 +64,10 @@ export async function getMemberGdprData(memberId: string): Promise<GdprExportDat
       : Promise.resolve({ data: [] as { id: string; label: string }[] }),
   ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pollMap = new Map<string, RawPoll>((pollsRes.data ?? []).map((p: any) => [p.id as string, p as RawPoll]));
+  const pollMap = new Map<string, RawPoll>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (pollsRes.data ?? []).map((p: any) => [p.id as string, p as RawPoll]),
+  );
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const profile = profileRes.data as any;
 

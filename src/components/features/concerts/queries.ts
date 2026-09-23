@@ -117,13 +117,17 @@ export async function getPerformanceFromSeasons(seasonIds: string[]) {
 
 // — Sitemap —
 
-export async function getSitemapPerformances(): Promise<{ slug: string; updated_at: string | null }[]> {
+export async function getSitemapPerformances(): Promise<
+  { slug: string; updated_at: string | null }[]
+> {
   const supabase = await createServerClient();
   const { data } = await supabase
     .from('performances')
     .select('slug, updated_at')
     .order('created_at', { ascending: false });
-  return (data ?? []).filter((p): p is { slug: string; updated_at: string | null } => p.slug !== null);
+  return (data ?? []).filter(
+    (p): p is { slug: string; updated_at: string | null } => p.slug !== null,
+  );
 }
 
 // — Saisons —

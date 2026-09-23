@@ -115,24 +115,31 @@ export function CAAdminClient({ initialMeetings }: { initialMeetings: CaMeeting[
                           m.id === meeting.id ? { ...m, published: !m.published } : m,
                         ),
                       );
-                      toast.success(meeting.published ? 'Compte-rendu dépublié' : 'Compte-rendu publié');
+                      toast.success(
+                        meeting.published ? 'Compte-rendu dépublié' : 'Compte-rendu publié',
+                      );
                     } else {
                       toast.error('Erreur lors de la mise à jour');
                     }
                   }}
                 >
                   <span className="sm:hidden">{meeting.published ? '🙈' : '👁️'}</span>
-                  <span className="hidden sm:inline">{meeting.published ? 'Dépublier' : 'Publier'}</span>
+                  <span className="hidden sm:inline">
+                    {meeting.published ? 'Dépublier' : 'Publier'}
+                  </span>
                 </Button>
                 <Button
                   size="sm"
                   variant="danger"
                   onClick={async () => {
-                    if (!await confirm({
-                      message: 'Supprimer ce compte-rendu ?',
-                      danger: true,
-                      details: { icon: '📋', label: meeting.title, sublabel: date },
-                    })) return;
+                    if (
+                      !(await confirm({
+                        message: 'Supprimer ce compte-rendu ?',
+                        danger: true,
+                        details: { icon: '📋', label: meeting.title, sublabel: date },
+                      }))
+                    )
+                      return;
                     const ok = await deleteMeeting(meeting.id);
                     if (ok) {
                       setMeetings((prev) => prev.filter((m) => m.id !== meeting.id));

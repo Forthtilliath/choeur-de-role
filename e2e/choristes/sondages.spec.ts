@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Page Sondages', () => {
   test.beforeEach(async ({ page }) => {
@@ -11,7 +11,7 @@ test.describe('Page Sondages', () => {
     await expect(page).not.toHaveURL(/\/error/);
   });
 
-  test('le panneau admin n\'est pas visible pour un membre', async ({ page }) => {
+  test("le panneau admin n'est pas visible pour un membre", async ({ page }) => {
     await expect(page.locator('nav[aria-label="Administration"]')).not.toBeAttached();
   });
 
@@ -67,7 +67,9 @@ test.describe('Page Sondages', () => {
       return;
     }
     await repondreBtn.first().click();
-    await expect(page.getByRole('button', { name: /Soumettre mes réponses/i })).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByRole('button', { name: /Soumettre mes réponses/i })).toBeVisible({
+      timeout: 5_000,
+    });
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible();
   });
 
@@ -81,7 +83,9 @@ test.describe('Page Sondages', () => {
     await expect(page.getByRole('button', { name: 'Annuler' })).toBeVisible({ timeout: 5_000 });
     await page.getByRole('button', { name: 'Annuler' }).click();
     // Retour à la liste : le bouton Répondre réapparaît
-    await expect(page.getByRole('button', { name: 'Répondre' }).first()).toBeVisible({ timeout: 3_000 });
+    await expect(page.getByRole('button', { name: 'Répondre' }).first()).toBeVisible({
+      timeout: 3_000,
+    });
   });
 });
 
@@ -92,6 +96,8 @@ test.describe('Page Sondages - visibilité admin', () => {
     await page.goto('/choristes/sondages');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('nav[aria-label="Administration"]')).toBeVisible();
-    await expect(page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/sondages"]')).toBeVisible();
+    await expect(
+      page.locator('nav[aria-label="Administration"] a[href="/choristes/admin/sondages"]'),
+    ).toBeVisible();
   });
 });

@@ -25,7 +25,11 @@ type RawResponse = {
   poll_id: string;
   member_id: string;
   submitted_at: string;
-  member: { first_name: string | null; last_name: string | null; voice_part: { name: string } | null };
+  member: {
+    first_name: string | null;
+    last_name: string | null;
+    voice_part: { name: string } | null;
+  };
   poll_answers: RawAnswer[];
 };
 
@@ -113,11 +117,11 @@ export async function getPollResults(pollId: string): Promise<PollResults> {
     }
 
     if (q.type === 'rating') {
-      const nums = qAnswers
-        .map((a) => a.number_value)
-        .filter((n): n is number => n !== null);
+      const nums = qAnswers.map((a) => a.number_value).filter((n): n is number => n !== null);
       const dist: Record<number, number> = {};
-      nums.forEach((n) => { dist[n] = (dist[n] ?? 0) + 1; });
+      nums.forEach((n) => {
+        dist[n] = (dist[n] ?? 0) + 1;
+      });
       return {
         question_id: q.id,
         text: q.text,
@@ -131,7 +135,9 @@ export async function getPollResults(pollId: string): Promise<PollResults> {
     return {
       question_id: q.id,
       text: q.text,
-      type: (q.type === 'multiple_choice' ? 'multiple_choice' : 'single_choice') as 'single_choice' | 'multiple_choice',
+      type: (q.type === 'multiple_choice' ? 'multiple_choice' : 'single_choice') as
+        | 'single_choice'
+        | 'multiple_choice',
       total_responses: qAnswers.length,
       options: q.poll_options.map((opt) => ({
         option_id: opt.id,

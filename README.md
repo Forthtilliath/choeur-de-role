@@ -17,9 +17,9 @@ Site vitrine et espace membres d'une chorale **fictive** à Angers, mêlant chan
 - **Galerie** photos (albums) et vidéos (playlist YouTube synchronisée)
 - **Partenaires**, **événements externes**, formulaire de **contact**
 
-|                                                    |                                                          |
-| -------------------------------------------------- | -------------------------------------------------------- |
-| ![Galerie photos et vidéos](docs/galerie.webp)     | ![Trombinoscope des choristes](docs/trombinoscope.webp) |
+|                                                      |                                                         |
+| ---------------------------------------------------- | ------------------------------------------------------- |
+| ![Galerie photos et vidéos](docs/galerie.webp)       | ![Trombinoscope des choristes](docs/trombinoscope.webp) |
 | ![Carte des choristes géolocalisés](docs/carte.webp) | Répertoire, sondages, carte, tâches de bureau...        |
 
 ### Espace choristes
@@ -57,15 +57,15 @@ Ouvrir [http://localhost:3000](http://localhost:3000). Guide détaillé (préreq
 
 ## Scripts disponibles
 
-| Commande                | Description                                     |
-| ------------------------ | ------------------------------------------------ |
-| `npm run dev`            | Serveur de développement                        |
-| `npm run dev:e2e`        | Démarre Supabase local puis le serveur          |
-| `npm run build` / `start` | Build et lancement en production               |
-| `npm run lint` / `type-check` | Qualité de code                            |
-| `npm run test` / `test:watch` | Tests unitaires (Vitest)                   |
-| `npm run test:e2e`       | Tests end-to-end (Playwright)                   |
-| `npm run db:reset`       | Réinitialise la DB locale (migrations + comptes de test) |
+| Commande                      | Description                                              |
+| ----------------------------- | -------------------------------------------------------- |
+| `npm run dev`                 | Serveur de développement                                 |
+| `npm run dev:e2e`             | Démarre Supabase local puis le serveur                   |
+| `npm run build` / `start`     | Build et lancement en production                         |
+| `npm run lint` / `type-check` | Qualité de code                                          |
+| `npm run test` / `test:watch` | Tests unitaires (Vitest)                                 |
+| `npm run test:e2e`            | Tests end-to-end (Playwright)                            |
+| `npm run db:reset`            | Réinitialise la DB locale (migrations + comptes de test) |
 
 ## Structure du projet
 

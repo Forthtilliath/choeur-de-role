@@ -50,10 +50,27 @@ export async function POST(request: Request) {
     const results: ImportRowResult[] = [];
 
     for (const row of rows) {
-      const { first_name, last_name, email, voice_part_id, season_ids = [], phone, address, zip_code, city, birthday } = row;
+      const {
+        first_name,
+        last_name,
+        email,
+        voice_part_id,
+        season_ids = [],
+        phone,
+        address,
+        zip_code,
+        city,
+        birthday,
+      } = row;
 
       if (!first_name || !last_name || !email) {
-        results.push({ first_name, last_name, email, success: false, error: 'Champs requis manquants' });
+        results.push({
+          first_name,
+          last_name,
+          email,
+          success: false,
+          error: 'Champs requis manquants',
+        });
         continue;
       }
 
@@ -68,7 +85,13 @@ export async function POST(request: Request) {
       });
 
       if (authError) {
-        results.push({ first_name, last_name, email, success: false, error: 'Erreur lors de la création du compte' });
+        results.push({
+          first_name,
+          last_name,
+          email,
+          success: false,
+          error: 'Erreur lors de la création du compte',
+        });
         continue;
       }
 
@@ -90,7 +113,13 @@ export async function POST(request: Request) {
         .eq('id', newUser.user.id);
 
       if (memberError) {
-        results.push({ first_name, last_name, email, success: false, error: 'Erreur lors de la mise à jour du membre' });
+        results.push({
+          first_name,
+          last_name,
+          email,
+          success: false,
+          error: 'Erreur lors de la mise à jour du membre',
+        });
         continue;
       }
 

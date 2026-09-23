@@ -9,10 +9,7 @@ import { getUserQuery } from '@/lib/auth';
 import { getContentBlocks } from '@/lib/content';
 
 async function HeroSection() {
-  const [userInfo, contentBlocks] = await Promise.all([
-    getUserQuery(),
-    getContentBlocks('home'),
-  ]);
+  const [userInfo, contentBlocks] = await Promise.all([getUserQuery(), getContentBlocks('home')]);
 
   const heroImage = contentBlocks.hero_image ?? '/images/chorale-groupe.jpg';
   const heroTitle = contentBlocks.hero_title ?? '';
@@ -20,7 +17,9 @@ async function HeroSection() {
   const heroHeight = userInfo.isLoggedIn ? 'h-main-chorister' : 'h-main-visitor';
 
   return (
-    <section className={`relative flex items-center justify-center h-main-visitor lg:${heroHeight}`}>
+    <section
+      className={`relative flex items-center justify-center h-main-visitor lg:${heroHeight}`}
+    >
       <Image
         src={heroImage}
         alt="Le Chœur de Rôle"
@@ -58,11 +57,7 @@ async function HomeBlocksSection() {
 export default function HomePage() {
   return (
     <main>
-      <Suspense
-        fallback={
-          <div className="relative h-main-visitor bg-muted/20 animate-pulse" />
-        }
-      >
+      <Suspense fallback={<div className="relative h-main-visitor bg-muted/20 animate-pulse" />}>
         <HeroSection />
       </Suspense>
       <Suspense

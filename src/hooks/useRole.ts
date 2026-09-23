@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Subscription } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 
-import type {RoleInfo } from '@/lib/roles';
+import type { RoleInfo } from '@/lib/roles';
 import { buildRoleInfo, isValidDbRole } from '@/lib/roles';
 import { createClient } from '@/lib/supabase.client';
 

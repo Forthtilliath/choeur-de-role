@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Programmation concerts', () => {
   test.beforeEach(async ({ page }) => {
@@ -47,7 +47,9 @@ test.describe('Admin — Programmation concerts', () => {
     await page.getByRole('button', { name: /Nouvelle saison/i }).click();
     await expect(page.locator('input[placeholder="2026-2027"]')).toBeVisible({ timeout: 3_000 });
     await page.getByRole('button', { name: 'Annuler' }).click();
-    await expect(page.locator('input[placeholder="2026-2027"]')).not.toBeVisible({ timeout: 3_000 });
+    await expect(page.locator('input[placeholder="2026-2027"]')).not.toBeVisible({
+      timeout: 3_000,
+    });
   });
 
   test('chaque saison affiche les boutons Renommer et Supprimer', async ({ page }) => {
@@ -70,7 +72,11 @@ test.describe('Admin — Programmation concerts', () => {
       return;
     }
     const countBefore = await seasons.count();
-    await seasons.first().getByRole('button', { name: /Supprimer/i }).first().click();
+    await seasons
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .first()
+      .click();
     // ConcertsAdminClient uses confirmLabel: 'Supprimer' (not default 'Confirmer')
     const modal = page.locator('.fixed.inset-0');
     await expect(modal.getByRole('button', { name: 'Supprimer' })).toBeVisible({ timeout: 3_000 });
@@ -93,13 +99,18 @@ test.describe('Admin — Programmation concerts', () => {
     await expect(row.first()).toBeVisible({ timeout: 5_000 });
 
     // Suppression
-    await row.first().getByRole('button', { name: /Supprimer/i }).click();
+    await row
+      .first()
+      .getByRole('button', { name: /Supprimer/i })
+      .click();
     // confirmLabel: 'Supprimer' → target the modal overlay to avoid ambiguity
     const modal = page.locator('.fixed.inset-0');
     await expect(modal.getByRole('button', { name: 'Supprimer' })).toBeVisible({ timeout: 3_000 });
     await modal.getByRole('button', { name: 'Supprimer' }).click();
 
     // Vérification suppression
-    await expect(page.locator('main .border.border-border.rounded-2xl').filter({ hasText: label })).not.toBeVisible({ timeout: 5_000 });
+    await expect(
+      page.locator('main .border.border-border.rounded-2xl').filter({ hasText: label }),
+    ).not.toBeVisible({ timeout: 5_000 });
   });
 });

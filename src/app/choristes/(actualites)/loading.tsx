@@ -3,7 +3,9 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 function NewsCardSkeleton({ pinned = false }: { pinned?: boolean }) {
   return (
-    <div className={`border border-border rounded-2xl p-5 bg-background-secondary flex flex-col gap-3 ${pinned ? 'ring-1 ring-primary/30' : ''}`}>
+    <div
+      className={`border border-border rounded-2xl p-5 bg-background-secondary flex flex-col gap-3 ${pinned ? 'ring-1 ring-primary/30' : ''}`}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-2 flex-1 min-w-0">
           <Skeleton className="h-5 w-64" />

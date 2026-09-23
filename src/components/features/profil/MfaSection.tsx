@@ -40,7 +40,9 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
   async function handleEnroll() {
     setLoading(true);
     const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     const { data, error } = await supabase.auth.mfa.enroll({
       factorType: 'totp',
       friendlyName: `CDR (${user?.email ?? 'compte'})`,
@@ -116,13 +118,21 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
             Double authentification (2FA)
           </h2>
           <p className="text-xs text-foreground/50 mt-0.5">
-            {status === 'enrolled' && "Activée — un code vous sera demandé à chaque connexion."}
-            {status !== 'enrolled' && isAdmin && "Requise pour les comptes administrateur."}
-            {status !== 'enrolled' && !isAdmin && "Désactivée — protégez votre compte avec Google Authenticator, Authy, etc."}
+            {status === 'enrolled' && 'Activée — un code vous sera demandé à chaque connexion.'}
+            {status !== 'enrolled' && isAdmin && 'Requise pour les comptes administrateur.'}
+            {status !== 'enrolled' &&
+              !isAdmin &&
+              'Désactivée — protégez votre compte avec Google Authenticator, Authy, etc.'}
           </p>
         </div>
         {status === 'enrolled' ? (
-          <Button size="sm" variant="danger" onClick={handleUnenroll} loading={loading} disabled={loading}>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={handleUnenroll}
+            loading={loading}
+            disabled={loading}
+          >
             Désactiver
           </Button>
         ) : enrollStep === 'idle' ? (
@@ -136,22 +146,35 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
         <div className="flex flex-col gap-5 pt-4 border-t border-border">
           <ol className="flex flex-col gap-2">
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">1</span>
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+                1
+              </span>
               <span>
                 Installez une application d&apos;authentification sur votre téléphone :{' '}
-                <strong>Google Authenticator</strong> ou <strong>Authy</strong> (gratuites, App Store / Google Play).
+                <strong>Google Authenticator</strong> ou <strong>Authy</strong> (gratuites, App
+                Store / Google Play).
               </span>
             </li>
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">2</span>
-              <span>Ouvrez l&apos;app, appuyez sur <strong>+</strong> ou <strong>Ajouter un compte</strong>, puis choisissez <strong>Scanner un QR code</strong>.</span>
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+                2
+              </span>
+              <span>
+                Ouvrez l&apos;app, appuyez sur <strong>+</strong> ou{' '}
+                <strong>Ajouter un compte</strong>, puis choisissez{' '}
+                <strong>Scanner un QR code</strong>.
+              </span>
             </li>
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">3</span>
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+                3
+              </span>
               <span>Scannez le code ci-dessous avec votre téléphone.</span>
             </li>
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">4</span>
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+                4
+              </span>
               <span>Entrez le code à 6 chiffres affiché dans l&apos;app pour confirmer.</span>
             </li>
           </ol>
@@ -164,8 +187,13 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
 
           <details className="text-xs text-foreground/40 cursor-pointer">
             <summary>Pas de caméra ? Saisie manuelle</summary>
-            <p className="mt-1 text-foreground/40">Dans l&apos;app, choisissez &laquo;&nbsp;Entrer une clé de configuration&nbsp;&raquo; et collez ce code :</p>
-            <code className="block mt-1 font-mono break-all select-all bg-background-secondary px-2 py-1 rounded">{secret}</code>
+            <p className="mt-1 text-foreground/40">
+              Dans l&apos;app, choisissez &laquo;&nbsp;Entrer une clé de configuration&nbsp;&raquo;
+              et collez ce code :
+            </p>
+            <code className="block mt-1 font-mono break-all select-all bg-background-secondary px-2 py-1 rounded">
+              {secret}
+            </code>
           </details>
 
           <div className="flex gap-3">
@@ -180,7 +208,11 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
               autoFocus
               className="flex-1 border border-border rounded-lg px-4 py-2 text-sm bg-background text-center tracking-widest font-mono focus:outline-none focus:border-primary transition-colors"
             />
-            <Button onClick={handleConfirm} disabled={code.length !== 6 || loading} loading={loading}>
+            <Button
+              onClick={handleConfirm}
+              disabled={code.length !== 6 || loading}
+              loading={loading}
+            >
               Confirmer
             </Button>
             <Button

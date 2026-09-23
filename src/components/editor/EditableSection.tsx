@@ -33,7 +33,10 @@ export function EditableSection({
   const cancelRef = useRef<() => void>(() => {});
   useEffect(() => {
     handleSaveRef.current = handleSave;
-    cancelRef.current = () => { setEditing(false); setValue(content); };
+    cancelRef.current = () => {
+      setEditing(false);
+      setValue(content);
+    };
   });
 
   useEffect(() => {

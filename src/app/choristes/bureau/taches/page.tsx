@@ -13,7 +13,9 @@ export default async function TachesPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-medium text-foreground">Tâches</h1>
         <p className="text-sm text-foreground/50 mt-1">
-          {projects.filter((p) => p.is_active).length} projet{projects.filter((p) => p.is_active).length !== 1 ? 's' : ''} actif{projects.filter((p) => p.is_active).length !== 1 ? 's' : ''}
+          {projects.filter((p) => p.is_active).length} projet
+          {projects.filter((p) => p.is_active).length !== 1 ? 's' : ''} actif
+          {projects.filter((p) => p.is_active).length !== 1 ? 's' : ''}
         </p>
       </div>
       <ProjectList projects={projects} />

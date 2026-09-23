@@ -1,4 +1,4 @@
-import { expect,test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Admin — Mentions légales', () => {
   test.beforeEach(async ({ page }) => {
@@ -27,7 +27,9 @@ test.describe('Admin — Mentions légales', () => {
   });
 
   test('les champs du formulaire sont éditables', async ({ page }) => {
-    const inputs = page.locator('form input[type="text"], form input:not([type="submit"]):not([type="file"])');
+    const inputs = page.locator(
+      'form input[type="text"], form input:not([type="submit"]):not([type="file"])',
+    );
     const count = await inputs.count();
     expect(count).toBeGreaterThan(0);
     const firstInput = inputs.first();
@@ -39,14 +41,17 @@ test.describe('Admin — Mentions légales', () => {
     await firstInput.fill(original);
   });
 
-  test('le bouton Enregistrer soumet le formulaire et affiche une confirmation', async ({ page }) => {
+  test('le bouton Enregistrer soumet le formulaire et affiche une confirmation', async ({
+    page,
+  }) => {
     test.slow();
     await page.getByRole('button', { name: /Enregistrer|Sauvegarder/i }).click();
     // Après soumission : toast Sonner OU message de succès inline
     await expect(
-      page.locator('[data-sonner-toast]').or(
-        page.locator('p', { hasText: /Informations mises à jour|✓/ })
-      ).first()
+      page
+        .locator('[data-sonner-toast]')
+        .or(page.locator('p', { hasText: /Informations mises à jour|✓/ }))
+        .first(),
     ).toBeVisible({ timeout: 8_000 });
   });
 

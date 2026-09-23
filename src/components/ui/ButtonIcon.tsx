@@ -9,7 +9,8 @@ const buttonIconVariants = cva(
       variant: {
         default: 'border-border hover:border-primary',
         primary: 'border-primary text-white bg-primary hover:bg-primary/80',
-        outline: 'border-border border-primary/80 hover:border-primary bg-transparent hover:bg-primary/10',
+        outline:
+          'border-border border-primary/80 hover:border-primary bg-transparent hover:bg-primary/10',
         danger:
           'border-red-500 bg-red-500 text-white hover:text-white transition-opacity hover:opacity-80',
       },
