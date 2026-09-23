@@ -2,6 +2,7 @@
 import { createClient } from '@/lib/supabase.client';
 import { getCurrentTimestampString } from '@/lib/utils';
 import { uploadImageToR2 } from '@/utils/uploadImageToR2';
+import { uploadPrivateFileToR2 } from '@/utils/uploadPrivateFileToR2';
 
 import type { Performance, PerformanceInsert, PerformanceUpdate, Season } from './types';
 
@@ -101,11 +102,11 @@ export async function uploadRepresentationFile({
   const ext = file.name.split('.').pop();
   const key = `representations/${performanceId}/${Date.now()}.${ext}`;
 
-  const body = new FormData();
-  body.append('file', file);
-  body.append('key', key);
-  const res = await fetch('/api/repertoire/upload-file', { method: 'POST', body });
-  if (!res.ok) return null;
+  const uploaded = await uploadPrivateFileToR2(file, key).then(
+    () => true,
+    () => false,
+  );
+  if (!uploaded) return null;
 
   const supabase = createClient();
   const { data: existing } = await supabase

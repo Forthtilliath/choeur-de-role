@@ -162,8 +162,13 @@ test.describe.serial('Admin — Médiathèque — Gestion des fichiers', () => {
   });
 
   test('ajouter un fichier PDF au chant (upload R2 mocké)', async ({ page }) => {
-    await page.route('**/api/repertoire/upload-file', async (route) => {
-      await route.fulfill({ json: { success: true } });
+    // L'URL du PUT doit respecter la CSP (connect-src *.r2.cloudflarestorage.com) ; elle reste interceptée
+    const mockUploadUrl = 'https://e2e-mock.r2.cloudflarestorage.com/upload';
+    await page.route('**/api/repertoire/r2-presign-upload', async (route) => {
+      await route.fulfill({ json: { uploadUrl: mockUploadUrl } });
+    });
+    await page.route(mockUploadUrl, async (route) => {
+      await route.fulfill({ status: 200, headers: { 'Access-Control-Allow-Origin': '*' } });
     });
     await page.goto('/choristes/admin/mediatheque');
     await expect(page.locator('main h1')).toBeVisible({ timeout: 15_000 });
