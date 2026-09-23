@@ -125,24 +125,24 @@ export function CalendarGrid({
         {cells.map((cell) => {
           if (cell.type === 'empty') return <div key={cell.key} />;
           const dayEvents = getEventsForDay(cell.day);
-          const today_ = isToday(cell.day);
-          const next_ = isNextEvent(cell.day);
+          const isCurrentDay = isToday(cell.day);
+          const isNextEventDay = isNextEvent(cell.day);
 
           return (
             <div
               key={cell.key}
               className={`min-h-16 rounded-xl p-1.5 border transition-colors relative group
                 ${
-                  today_
+                  isCurrentDay
                     ? 'bg-primary/10 border-primary'
-                    : next_
+                    : isNextEventDay
                       ? 'border-primary border-2 border-dashed bg-background'
                       : 'border-border bg-background hover:bg-background-secondary'
                 }`}
             >
               <div
                 className={`text-xs font-medium mb-1 w-5 h-5 flex items-center justify-center rounded-full
-                ${today_ ? 'bg-primary text-white' : 'text-foreground/60'}`}
+                ${isCurrentDay ? 'bg-primary text-white' : 'text-foreground/60'}`}
               >
                 {cell.day}
               </div>
