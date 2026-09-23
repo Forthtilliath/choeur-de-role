@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { useIsClient } from '@/hooks/useIsClient';
 import { cn } from '@/lib/utils';
 
 const groups = [
@@ -61,9 +61,7 @@ export const adminLinks = adminGroups.flatMap((g) => g.links);
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setMounted(true), []);
+  const mounted = useIsClient();
 
   return (
     <aside className="w-60 fixed left-0 top-header-visitor lg:top-header-chorister h-main-visitor lg:h-main-chorister border-r border-border bg-background-secondary hidden md:flex flex-col overflow-y-auto z-20">
