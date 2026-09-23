@@ -1,10 +1,10 @@
 'use client';
-
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import { RichEditor } from '@/components/editor/RichEditor';
 import { Button } from '@/components/ui/Button';
+import { SafeHtml } from '@/components/ui/SafeHtml';
 
 type Props = {
   page: string;
@@ -90,7 +90,7 @@ export function EditableSection({
     <div className="relative group">
       {!editing ? (
         <>
-          <div className="mdx-content" dangerouslySetInnerHTML={{ __html: content }} />
+          <SafeHtml className="mdx-content" html={content} />
           {canEdit && (
             <button
               onClick={() => setEditing(true)}
