@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, use, useCallback, useState } from 'react';
 
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
@@ -49,7 +49,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ConfirmContext.Provider value={openConfirm}>
+    <ConfirmContext value={openConfirm}>
       {children}
       {state && (
         <ConfirmModal
@@ -65,10 +65,10 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
           onCancel={handleCancel}
         />
       )}
-    </ConfirmContext.Provider>
+    </ConfirmContext>
   );
 }
 
 export function useConfirm() {
-  return useContext(ConfirmContext);
+  return use(ConfirmContext);
 }
