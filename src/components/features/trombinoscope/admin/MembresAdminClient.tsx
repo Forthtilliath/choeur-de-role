@@ -61,7 +61,7 @@ export function MembresAdminClient({
   const [localAuthMap, setLocalAuthMap] = useState<Record<string, AuthInfo>>(authMap);
   const [search, setSearch] = useState('');
   const [selectedVoicePartIds, setSelectedVoicePartIds] = useState<Set<string>>(
-    new Set(voiceParts.map((vp) => vp.id)),
+    () => new Set(voiceParts.map((vp) => vp.id)),
   );
   const [showForm, setShowForm] = useState(false);
   const [showCsvImport, setShowCsvImport] = useState(false);
@@ -74,10 +74,10 @@ export function MembresAdminClient({
   const [filterSeasonId, setFilterSeasonId] = useState('');
   const [showLocked, setShowLocked] = useState(false);
   const [selectedRoleGroups, setSelectedRoleGroups] = useState<Set<string>>(
-    new Set(ROLE_GROUPS.map((g) => g.key)),
+    () => new Set(ROLE_GROUPS.map((g) => g.key)),
   );
   const [selectionMode, setSelectionMode] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
   const selectAllRef = useRef<HTMLInputElement>(null);
   const tableScrollRef = useRef<HTMLDivElement>(null);
   const tableInnerRef = useRef<HTMLTableElement>(null);

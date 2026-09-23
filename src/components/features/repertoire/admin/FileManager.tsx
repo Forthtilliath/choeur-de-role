@@ -38,7 +38,7 @@ export function FileManager({
   const [files, setFiles] = useState<SongFile[]>(song.song_files);
   const [showFileForm, setShowFileForm] = useState(false);
   const [editingFile, setEditingFile] = useState<SongFile | null>(null);
-  const [loadingFile, setLoading] = useState(false);
+  const [loadingFile, setLoadingFile] = useState(false);
   const [prevTrigger, setPrevTrigger] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
   const confirm = useConfirm();
@@ -129,11 +129,11 @@ export function FileManager({
   }
 
   async function openFile(file: SongFile) {
-    setLoading(true);
+    setLoadingFile(true);
     try {
       await openSignedUrl(file.file_url);
     } finally {
-      setLoading(false);
+      setLoadingFile(false);
     }
   }
 

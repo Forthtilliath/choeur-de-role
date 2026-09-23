@@ -29,7 +29,7 @@ import type { MemberLink, Visibility } from './types';
 import { VISIBILITY_BADGE, VISIBILITY_LABEL, VISIBILITY_OPTIONS } from './types';
 
 export function LiensAdminClient({ initialLinks }: { initialLinks: MemberLink[] }) {
-  const [links, setLinks] = useState<MemberLink[]>(sortByOrderIndex(initialLinks));
+  const [links, setLinks] = useState<MemberLink[]>(() => sortByOrderIndex(initialLinks));
   const [showForm, setShowForm] = useState(false);
   const [editingLink, setEditingLink] = useState<MemberLink | null>(null);
   const confirm = useConfirm();

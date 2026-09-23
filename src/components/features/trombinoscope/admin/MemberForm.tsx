@@ -51,7 +51,7 @@ export function MemberForm({
   const [firstName, setFirstName] = useState(member?.first_name ?? '');
   const [lastName, setLastName] = useState(member?.last_name ?? '');
   const [email, setEmail] = useState(member?.email ?? '');
-  const [phone, setPhone] = useState(
+  const [phone, setPhone] = useState(() =>
     member?.phone ? formatPhone(member.phone.replace(/\D/g, '')) : '',
   );
   const [birthday, setBirthday] = useState(member?.birthday?.slice(0, 10) ?? '');

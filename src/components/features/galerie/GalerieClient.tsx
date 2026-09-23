@@ -23,7 +23,7 @@ const MAX_VISIBLE_PHOTOS = 11;
 export function GalerieClient({ albums, canEdit = false }: Props) {
   const [lightboxAlbum, setLightboxAlbum] = useState<GalleryAlbum | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  const [expandedAlbums, setExpandedAlbums] = useState<Set<string>>(new Set());
+  const [expandedAlbums, setExpandedAlbums] = useState<Set<string>>(() => new Set());
 
   function toggleAlbum(id: string) {
     setExpandedAlbums((prev) => {

@@ -75,7 +75,7 @@ export function EventForm({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(event?.image_url ?? '');
   const [dates, setDates] = useState<DateEntry[]>(
-    event?.external_event_dates.map(dateEntryFromRecord) ?? [emptyEntry()],
+    () => event?.external_event_dates.map(dateEntryFromRecord) ?? [emptyEntry()],
   );
   const [newFileLabel, setNewFileLabel] = useState('');
   const [newFileInput, setNewFileInput] = useState<File | null>(null);

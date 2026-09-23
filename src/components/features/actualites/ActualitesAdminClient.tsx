@@ -48,7 +48,7 @@ function isScheduledFuture(item: News): boolean {
 }
 
 export function ActualitesAdminClient({ initialNews }: { initialNews: News[] }) {
-  const [news, setNews] = useState<News[]>(sortByOrderIndex(initialNews));
+  const [news, setNews] = useState<News[]>(() => sortByOrderIndex(initialNews));
   const [showForm, setShowForm] = useState(false);
   const [editingNews, setEditingNews] = useState<News | null>(null);
   const confirm = useConfirm();
@@ -290,7 +290,7 @@ function NewsForm({
 }) {
   const [title, setTitle] = useState(news?.title ?? '');
   const [content, setContent] = useState(news?.content ?? '');
-  const [scheduledAt, setScheduledAt] = useState(
+  const [scheduledAt, setScheduledAt] = useState(() =>
     news?.scheduled_at ? toLocalDatetimeInput(news.scheduled_at) : '',
   );
   const [files, setFiles] = useState<NewsFile[]>(news?.news_files ?? []);
