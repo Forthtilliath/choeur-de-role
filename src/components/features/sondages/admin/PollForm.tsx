@@ -12,6 +12,8 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Plus, Trash2, X } from 'lucide-react';
 
+import { randomId } from '@forthtilliath/ts-kit';
+
 import { Button } from '@/components/ui/Button';
 import { useDndSensors } from '@/hooks/useDndSensors';
 import { useFormShortcuts } from '@/hooks/useFormShortcuts';
@@ -28,11 +30,12 @@ const QUESTION_TYPES: { value: QuestionType; label: string }[] = [
 
 function emptyQuestion(index: number): PollQuestionDraft {
   return {
+    key: randomId(),
     text: '',
     type: 'single_choice',
     required: true,
     order_index: index,
-    options: [{ label: '', order_index: 0 }],
+    options: [{ key: randomId(), label: '', order_index: 0 }],
   };
 }
 
@@ -104,7 +107,7 @@ export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }:
         if (idx !== qi) return q;
         return {
           ...q,
-          options: [...q.options, { label: '', order_index: q.options.length }],
+          options: [...q.options, { key: randomId(), label: '', order_index: q.options.length }],
         };
       });
       return { ...d, questions };
@@ -196,7 +199,7 @@ export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }:
       <div className="flex flex-col gap-3">
         {draft.questions.map((q, qi) => (
           <QuestionCard
-            key={qi}
+            key={q.key}
             question={q}
             index={qi}
             total={draft.questions.length}
@@ -262,13 +265,9 @@ function QuestionCard({
   function handleOptionDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
-    const from = question.options.findIndex((opt, i) => optionId(opt, i) === active.id);
-    const to = question.options.findIndex((opt, i) => optionId(opt, i) === over.id);
+    const from = question.options.findIndex((opt) => opt.key === active.id);
+    const to = question.options.findIndex((opt) => opt.key === over.id);
     if (from !== -1 && to !== -1) onReorderOptions(from, to);
-  }
-
-  function optionId(opt: PollOptionDraft, i: number): string {
-    return opt.id ?? `new-${i}`;
   }
 
   return (
@@ -326,7 +325,7 @@ function QuestionCard({
                   type: t.value,
                   options:
                     hasOpts && question.options.length === 0
-                      ? [{ label: '', order_index: 0 }]
+                      ? [{ key: randomId(), label: '', order_index: 0 }]
                       : question.options,
                 });
               }}
@@ -360,13 +359,13 @@ function QuestionCard({
             onDragEnd={handleOptionDragEnd}
           >
             <SortableContext
-              items={question.options.map((o, i) => optionId(o, i))}
+              items={question.options.map((o) => o.key)}
               strategy={verticalListSortingStrategy}
             >
               {question.options.map((opt, oi) => (
                 <SortableOption
-                  key={optionId(opt, oi)}
-                  id={optionId(opt, oi)}
+                  key={opt.key}
+                  id={opt.key}
                   opt={opt}
                   index={oi}
                   canRemove={question.options.length > 1}

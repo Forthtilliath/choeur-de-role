@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 
+import { randomId } from '@forthtilliath/ts-kit';
+
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
@@ -28,6 +30,7 @@ const isSameDay = (a: Date, b: Date) =>
   a.getDate() === b.getDate();
 
 type DateEntry = {
+  key: string; // identifiant client stable (clé React) — non enregistré
   startDate: string; // "YYYY-MM-DD"
   startTime: string; // "HH:MM" or ""
   endTime: string; // "HH:MM" or "" — heure de fin le même jour
@@ -39,6 +42,7 @@ function dateEntryFromRecord(d: ExternalEventDate): DateEntry {
   const end = d.end_date ? new Date(d.end_date) : null;
   const sameDayEnd = end && isSameDay(start, end);
   return {
+    key: d.id,
     startDate: fmtDate(start),
     startTime: fmtTime(start),
     endTime: sameDayEnd ? fmtTime(end!) : '',
@@ -57,7 +61,13 @@ function dateEntryToPayload(e: DateEntry): { date: string; end_date: string | nu
   return { date, end_date };
 }
 
-const emptyEntry = (): DateEntry => ({ startDate: '', startTime: '', endTime: '', endDate: '' });
+const emptyEntry = (): DateEntry => ({
+  key: randomId(),
+  startDate: '',
+  startTime: '',
+  endTime: '',
+  endDate: '',
+});
 
 export function EventForm({
   event,
@@ -190,7 +200,7 @@ export function EventForm({
                 setDates((prev) => prev.map((e, i) => (i === idx ? { ...e, ...patch } : e)));
               return (
                 <div
-                  key={idx}
+                  key={entry.key}
                   className="flex flex-col gap-1.5 p-3 border border-border rounded-xl bg-background"
                 >
                   {/* Ligne 1 : date début + heures */}

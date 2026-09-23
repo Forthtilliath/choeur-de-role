@@ -15,6 +15,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
+import { randomId } from '@forthtilliath/ts-kit';
+
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
@@ -600,10 +602,12 @@ function PerformanceForm({
   );
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState(performance?.image_url ?? '');
-  const [dates, setDates] = useState<{ date: string }[]>(
-    performance?.performance_dates.map((d) => ({
-      date: toLocalDatetimeInput(d.date),
-    })) ?? [{ date: '' }],
+  const [dates, setDates] = useState<{ key: string; date: string }[]>(
+    () =>
+      performance?.performance_dates.map((d) => ({
+        key: randomId(),
+        date: toLocalDatetimeInput(d.date),
+      })) ?? [{ key: randomId(), date: '' }],
   );
   const [ticketUrl, setTicketUrl] = useState(performance?.ticket_url ?? '');
   const [externalUrl, setExternalUrl] = useState(performance?.external_url ?? '');
@@ -618,7 +622,7 @@ function PerformanceForm({
   }
 
   function addDate() {
-    setDates((prev) => [...prev, { date: '' }]);
+    setDates((prev) => [...prev, { key: randomId(), date: '' }]);
   }
 
   function removeDate(index: number) {
@@ -626,7 +630,7 @@ function PerformanceForm({
   }
 
   function updateDate(index: number, value: string) {
-    setDates((prev) => prev.map((d, i) => (i === index ? { date: value } : d)));
+    setDates((prev) => prev.map((d, i) => (i === index ? { ...d, date: value } : d)));
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -815,7 +819,7 @@ function PerformanceForm({
         <div className="flex flex-col gap-3">
           <span className="text-sm font-medium text-foreground">Dates</span>
           {dates.map((date, index) => (
-            <div key={index} className="flex gap-3 items-center">
+            <div key={date.key} className="flex gap-3 items-center">
               <input
                 type="datetime-local"
                 value={date.date}

@@ -283,9 +283,9 @@ export function AlbumCard({
             {pendingPhotos.length > 0 ? (
               <div className="flex flex-col gap-3">
                 <div className="flex gap-2 flex-wrap">
-                  {pendingPhotos.map((p, i) => (
+                  {pendingPhotos.map((p) => (
                     <div
-                      key={i}
+                      key={p.previewUrl}
                       className="relative w-16 h-16 rounded-lg overflow-hidden bg-background-tertiary"
                     >
                       <Image src={p.previewUrl} alt="" fill className="object-cover" sizes="64px" />
