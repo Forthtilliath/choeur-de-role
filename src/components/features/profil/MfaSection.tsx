@@ -34,7 +34,6 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadFactors();
   }, []);
 

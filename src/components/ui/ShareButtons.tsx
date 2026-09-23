@@ -28,7 +28,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect, @eslint-react/set-state-in-effect
+    // eslint-disable-next-line @eslint-react/set-state-in-effect
     setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
   }, []);
 
