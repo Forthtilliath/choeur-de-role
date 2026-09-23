@@ -525,7 +525,7 @@ export function DocumentationClient() {
           {openId === section.id && (
             <div className="divide-y divide-border">
               {section.steps.map((step, index) => (
-                <div key={index} className="px-6 py-4 flex gap-4">
+                <div key={step.title} className="px-6 py-4 flex gap-4">
                   {/* Numéro */}
                   <div className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center shrink-0 mt-0.5">
                     {index + 1}

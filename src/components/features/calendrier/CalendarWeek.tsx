@@ -101,7 +101,7 @@ export function CalendarWeek({
           const isCurrentDay = isToday(day);
           return (
             <div
-              key={i}
+              key={day.toISOString()}
               className={`rounded-xl border p-2 min-h-28 flex flex-col gap-1 ${
                 isCurrentDay ? 'bg-primary/10 border-primary' : 'border-border bg-background'
               }`}
@@ -168,7 +168,7 @@ export function CalendarWeek({
           const isCurrentDay = isToday(day);
           return (
             <div
-              key={i}
+              key={day.toISOString()}
               className={`rounded-xl border p-3 ${
                 isCurrentDay
                   ? 'bg-primary/10 border-primary'
