@@ -97,19 +97,19 @@ export function CalendarWeek({
       <div className="hidden md:grid grid-cols-4 gap-2">
         {days.map((day, i) => {
           const dayEvents = getEventsForDay(day);
-          const today_ = isToday(day);
+          const isCurrentDay = isToday(day);
           return (
             <div
               key={i}
               className={`rounded-xl border p-2 min-h-28 flex flex-col gap-1 ${
-                today_ ? 'bg-primary/10 border-primary' : 'border-border bg-background'
+                isCurrentDay ? 'bg-primary/10 border-primary' : 'border-border bg-background'
               }`}
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs text-foreground/40">{DAYS[i]}</span>
                 <span
                   className={`text-xs font-medium w-5 h-5 flex items-center justify-center rounded-full ${
-                    today_ ? 'bg-primary text-white' : 'text-foreground/70'
+                    isCurrentDay ? 'bg-primary text-white' : 'text-foreground/70'
                   }`}
                 >
                   {day.getDate()}
@@ -164,12 +164,12 @@ export function CalendarWeek({
       <div className="md:hidden flex flex-col gap-2">
         {days.map((day, i) => {
           const dayEvents = getEventsForDay(day);
-          const today_ = isToday(day);
+          const isCurrentDay = isToday(day);
           return (
             <div
               key={i}
               className={`rounded-xl border p-3 ${
-                today_
+                isCurrentDay
                   ? 'bg-primary/10 border-primary'
                   : dayEvents.length > 0
                     ? 'border-border bg-background'
@@ -180,7 +180,7 @@ export function CalendarWeek({
                 <div className="flex items-center gap-2">
                   <span
                     className={`text-sm font-medium w-7 h-7 flex items-center justify-center rounded-full ${
-                      today_ ? 'bg-primary text-white' : 'text-foreground/70'
+                      isCurrentDay ? 'bg-primary text-white' : 'text-foreground/70'
                     }`}
                   >
                     {day.getDate()}
