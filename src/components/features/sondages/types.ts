@@ -3,12 +3,14 @@ export type QuestionType = 'single_choice' | 'multiple_choice' | 'text' | 'ratin
 // ── Formulaire admin ─────────────────────────────────────────────────────────
 
 export type PollOptionDraft = {
+  key: string; // identifiant client stable (clé React, glisser-déposer) — non enregistré
   id?: string; // présent si déjà en DB
   label: string;
   order_index: number;
 };
 
 export type PollQuestionDraft = {
+  key: string; // identifiant client stable (clé React) — non enregistré
   id?: string;
   text: string;
   type: QuestionType;

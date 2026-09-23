@@ -109,12 +109,14 @@ export function PollsAdminClient({ initialPolls, memberId }: Props) {
           closes_at: editingPoll.closes_at?.slice(0, 16) ?? '',
           is_active: editingPoll.is_active,
           questions: editingPoll.poll_questions.map((q) => ({
+            key: q.id,
             id: q.id,
             text: q.text,
             type: q.type,
             required: q.required,
             order_index: q.order_index,
             options: q.poll_options.map((o) => ({
+              key: o.id,
               id: o.id,
               label: o.label,
               order_index: o.order_index,
