@@ -68,6 +68,7 @@ export default async function EvenementPage({ params }: { params: Promise<{ id: 
   const sortedDates = [...event.external_event_dates].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   );
+  // eslint-disable-next-line @eslint-react/purity -- Server Component : évalué une fois par requête
   const now = new Date();
   const isUpcoming = sortedDates.some((d) => new Date(d.date) >= now);
 

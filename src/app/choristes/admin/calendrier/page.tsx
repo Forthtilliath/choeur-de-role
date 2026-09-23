@@ -19,6 +19,7 @@ export default async function AdminCalendrierPage() {
   ]);
 
   const birthdayType = eventTypes.find((et) => et.label === 'Anniversaire');
+  // eslint-disable-next-line @eslint-react/purity -- Server Component : évalué une fois par requête
   const now = new Date();
   const currentYear = now.getFullYear();
 
