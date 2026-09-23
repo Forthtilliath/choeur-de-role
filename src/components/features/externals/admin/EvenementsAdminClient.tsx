@@ -29,12 +29,12 @@ export function EvenementsAdminClient({
   const confirm = useConfirm();
 
   useEffect(() => {
-    if (editEventId && formRef.current) {
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 100);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!editEventId || !formRef.current) return;
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [editEventId]);
 
   function handleSave(event: ExternalEvent) {
     setEvents((prev) => {

@@ -314,8 +314,7 @@ function SongCard({
       cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 300);
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialOpen]);
 
   const getFilesForVoicePart = (files: SongFile[]) => {
     if (selectedVoicePartId === null) return files;
