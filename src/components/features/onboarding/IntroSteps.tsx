@@ -103,7 +103,7 @@ export function DiscoverStep({
         ))}
       </div>
 
-      <Button onClick={onCompleteAction} loading={completing} size="lg" className="w-full">
+      <Button onClick={() => onCompleteAction()} loading={completing} size="lg" className="w-full">
         {completing ? 'Enregistrement...' : "C'est parti — accéder à l'espace choriste"}
       </Button>
     </div>
