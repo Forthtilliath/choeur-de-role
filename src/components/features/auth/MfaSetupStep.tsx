@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import { Button } from '@/components/ui/Button';
 
-import { BackToLoginButton, CodeInput, FormError, StepTitle } from './LoginSteps';
+import { CodeInput, FormError, RestartButton, StepTitle } from './LoginSteps';
 
 const STEP_BADGE_CLASS =
   'shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs';
@@ -17,7 +17,7 @@ type Props = {
   loading: boolean;
   error: string;
   onSubmitAction: () => void;
-  onBackAction: () => void;
+  onRestartAction: () => void;
 };
 
 // Étape 2 bis — activation obligatoire de la 2FA pour un compte administrateur
@@ -29,7 +29,7 @@ export function MfaSetupStep({
   loading,
   error,
   onSubmitAction,
-  onBackAction,
+  onRestartAction,
 }: Props) {
   return (
     <>
@@ -104,7 +104,7 @@ export function MfaSetupStep({
         </Button>
       </form>
 
-      <BackToLoginButton onClick={onBackAction} />
+      <RestartButton loading={loading} onClick={onRestartAction} />
     </>
   );
 }
