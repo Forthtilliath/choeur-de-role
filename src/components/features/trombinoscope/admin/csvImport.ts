@@ -1,4 +1,4 @@
-import { downloadCsv, parseCsvLine } from '@/utils/csv';
+import { downloadCsv, parseCsvLine } from '@forthtilliath/ts-kit';
 
 import type { Season } from '../../concerts';
 import type { VoicePart } from '../types';
@@ -65,8 +65,8 @@ function isValidEmail(email: string): boolean {
 
 export function downloadImportTemplate() {
   downloadCsv(
-    'prénom,nom,email,pupitre,saison,téléphone,adresse,code_postal,ville,date_de_naissance\nJean,Dupont,jean.dupont@example.com,Ténors,2025-2026,0612345678,12 rue de la Paix,75001,Paris,1985-03-15\n',
     'modele-import-membres.csv',
+    'prénom,nom,email,pupitre,saison,téléphone,adresse,code_postal,ville,date_de_naissance\nJean,Dupont,jean.dupont@example.com,Ténors,2025-2026,0612345678,12 rue de la Paix,75001,Paris,1985-03-15\n',
   );
 }
 

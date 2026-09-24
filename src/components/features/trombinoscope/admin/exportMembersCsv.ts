@@ -1,4 +1,4 @@
-import { downloadCsv, toCsv } from '@/utils/csv';
+import { downloadCsv, toCsv } from '@forthtilliath/ts-kit';
 
 import type { Season } from '../../concerts';
 import type { AdminMemberWithSeasons } from '../types';
@@ -38,7 +38,7 @@ export function exportMembersCsv(members: AdminMemberWithSeasons[], seasons: Sea
       .join(' | '),
   ]);
   downloadCsv(
-    toCsv([HEADERS, ...rows]),
     `membres-cda-${new Date().toISOString().slice(0, 10)}.csv`,
+    toCsv([HEADERS, ...rows]),
   );
 }
