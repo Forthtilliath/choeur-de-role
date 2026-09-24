@@ -1,0 +1,125 @@
+/* Contenu riche : rendu MDX, éditeur TipTap et badges de pupitre */
+
+/* Styles MDX */
+.mdx-content h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.mdx-content li {
+  margin-bottom: 0.25rem;
+  line-height: 1.7;
+}
+
+.mdx-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.mdx-content strong {
+  font-weight: 500;
+  /* color: var(--color-foreground); */
+}
+
+.mdx-content blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-foreground);
+  opacity: 0.8;
+}
+
+/* Images alignées par TipTap (text-align appliqué sur le nœud img) */
+.mdx-content img,
+.tiptap img {
+  max-width: 100%;
+  height: auto;
+}
+
+.mdx-content img[style*='text-align: center'],
+.tiptap img[style*='text-align: center'] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mdx-content img[style*='text-align: right'],
+.tiptap img[style*='text-align: right'] {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.tiptap {
+  caret-color: currentColor;
+  outline: none;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: currentColor;
+  opacity: 0.3;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+span[data-badge] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--color-background);
+}
+
+span[data-badge][data-variant='soprano'] {
+  background-color: var(--color-soprano);
+  color: black;
+}
+
+span[data-badge][data-variant='alto'] {
+  background-color: var(--color-alto);
+  color: black;
+}
+
+span[data-badge][data-variant='tenor'] {
+  background-color: var(--color-tenor);
+  color: black;
+}
+
+span[data-badge][data-variant='bass'] {
+  background-color: var(--color-bass);
+  color: black;
+}
