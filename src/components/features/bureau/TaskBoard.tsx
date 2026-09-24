@@ -2,12 +2,10 @@
 
 import { useMemo, useState } from 'react';
 import type { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
-import { DndContext, DragOverlay, useDroppable } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { Plus } from 'lucide-react';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { arrayMove } from '@dnd-kit/sortable';
 
 import { useDndSensors } from '@/hooks/useDndSensors';
-import { useNow } from '@/hooks/useNow';
 import type {
   CaMember,
   Task,
@@ -18,7 +16,10 @@ import type {
 } from '@/types/tasks';
 
 import { reorderTasks } from './actions';
+import { PriorityView } from './PriorityView';
+import { COLUMNS, STATUSES } from './taskBoardConfig';
 import { TaskCard } from './TaskCard';
+import { TaskColumn } from './TaskColumn';
 import { TaskModal } from './TaskModal';
 
 type TaskView = 'backlog' | 'by_priority';
@@ -27,210 +28,6 @@ const VIEWS: { id: TaskView; label: string }[] = [
   { id: 'backlog', label: 'Backlog' },
   { id: 'by_priority', label: 'Par priorité' },
 ];
-
-const STATUSES: TaskStatus[] = ['on_hold', 'todo', 'in_progress', 'done'];
-
-const COLUMNS: { id: TaskStatus; label: string; dotClass: string; emptyLabel: string }[] = [
-  {
-    id: 'on_hold',
-    label: 'En attente',
-    dotClass: 'bg-amber-400',
-    emptyLabel: 'Aucune tâche en attente',
-  },
-  {
-    id: 'todo',
-    label: 'À faire',
-    dotClass: 'bg-foreground/30',
-    emptyLabel: 'Aucune tâche à faire',
-  },
-  {
-    id: 'in_progress',
-    label: 'En cours',
-    dotClass: 'bg-blue-500',
-    emptyLabel: 'Aucune tâche en cours',
-  },
-  { id: 'done', label: 'Terminé', dotClass: 'bg-green-500', emptyLabel: 'Aucune tâche terminée' },
-];
-
-const PRIORITY_COLUMNS: {
-  id: TaskPriority;
-  label: string;
-  dotClass: string;
-  emptyLabel: string;
-}[] = [
-  { id: 'high', label: 'Haute', dotClass: 'bg-red-500', emptyLabel: 'Aucune tâche haute priorité' },
-  {
-    id: 'medium',
-    label: 'Moyenne',
-    dotClass: 'bg-amber-400',
-    emptyLabel: 'Aucune tâche priorité moyenne',
-  },
-  {
-    id: 'low',
-    label: 'Basse',
-    dotClass: 'bg-foreground/30',
-    emptyLabel: 'Aucune tâche basse priorité',
-  },
-];
-
-const STATUS_DOT: Record<TaskStatus, string> = {
-  on_hold: 'bg-amber-400',
-  todo: 'bg-foreground/30',
-  in_progress: 'bg-blue-500',
-  done: 'bg-green-500',
-};
-
-const STATUS_LABEL: Record<TaskStatus, string> = {
-  on_hold: 'En attente',
-  todo: 'À faire',
-  in_progress: 'En cours',
-  done: 'Terminé',
-};
-
-function formatDueDate(date: string) {
-  return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short' }).format(
-    new Date(date),
-  );
-}
-
-function TaskColumn({
-  column,
-  tasks,
-  readOnly,
-  onAddAction,
-  onTaskClickAction,
-}: {
-  column: (typeof COLUMNS)[number];
-  tasks: Task[];
-  readOnly: boolean;
-  onAddAction: () => void;
-  onTaskClickAction: (task: Task) => void;
-}) {
-  const { setNodeRef, isOver } = useDroppable({ id: column.id });
-
-  const header = (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <span className={`w-2 h-2 rounded-full shrink-0 ${column.dotClass}`} />
-        <span className="text-sm font-medium text-foreground">{column.label}</span>
-        <span className="text-xs text-foreground/40 bg-muted px-1.5 py-0.5 rounded-full font-medium">
-          {tasks.length}
-        </span>
-      </div>
-      {!readOnly && (
-        <button
-          onClick={onAddAction}
-          className="w-6 h-6 flex items-center justify-center rounded-md text-foreground/40 hover:text-foreground hover:bg-muted transition-colors"
-          title="Nouvelle tâche"
-        >
-          <Plus size={14} />
-        </button>
-      )}
-    </div>
-  );
-
-  if (readOnly) {
-    return (
-      <div className="flex flex-col gap-3 min-w-0">
-        {header}
-        <div className="flex flex-col gap-2 min-h-24 rounded-xl p-1.5 bg-background-secondary">
-          {tasks.length === 0 && (
-            <p className="text-xs text-foreground/30 text-center py-4 italic">
-              {column.emptyLabel}
-            </p>
-          )}
-          {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} onClickAction={() => onTaskClickAction(task)} />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-3 min-w-0">
-      {header}
-      <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
-        <div
-          ref={setNodeRef}
-          className={`flex flex-col gap-2 min-h-24 rounded-xl p-1.5 transition-colors ${
-            isOver ? 'bg-primary/5 ring-1 ring-primary/20' : 'bg-background-secondary'
-          }`}
-        >
-          {tasks.length === 0 && !isOver && (
-            <p className="text-xs text-foreground/30 text-center py-4 italic">
-              {column.emptyLabel}
-            </p>
-          )}
-          {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} onClickAction={() => onTaskClickAction(task)} />
-          ))}
-        </div>
-      </SortableContext>
-    </div>
-  );
-}
-
-function PriorityCard({ task, onClickAction }: { task: Task; onClickAction: () => void }) {
-  const now = new Date(useNow());
-  const isOverdue =
-    task.due_date &&
-    new Date(task.due_date) < now &&
-    task.status !== 'done' &&
-    task.status !== 'on_hold';
-
-  return (
-    <div
-      role="button"
-      tabIndex={0}
-      className="bg-background border border-border rounded-xl p-3 flex flex-col gap-2 cursor-pointer hover:border-primary/40 hover:shadow-sm transition-all"
-      onClick={onClickAction}
-      onKeyDown={(e) => {
-        if (e.key !== 'Enter' && e.key !== ' ') return;
-        e.preventDefault();
-        onClickAction();
-      }}
-    >
-      <div className="flex items-start gap-2">
-        <span
-          className={`w-2 h-2 rounded-full shrink-0 mt-1.5 ${STATUS_DOT[task.status]}`}
-          title={STATUS_LABEL[task.status]}
-        />
-        <p className="text-sm text-foreground leading-snug flex-1 min-w-0">{task.title}</p>
-      </div>
-      <div className="flex items-center justify-between gap-2 pl-4">
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] text-foreground/40">{STATUS_LABEL[task.status]}</span>
-          {task.due_date && (
-            <span
-              className={`text-[10px] font-medium ${isOverdue ? 'text-red-500' : 'text-foreground/40'}`}
-            >
-              · {formatDueDate(task.due_date)}
-            </span>
-          )}
-        </div>
-        {task.assignees.length > 0 && (
-          <div className="flex -space-x-1.5">
-            {task.assignees.slice(0, 3).map((a) => (
-              <span
-                key={a.member_id}
-                className="w-5 h-5 rounded-full bg-primary/20 text-primary text-[9px] font-bold flex items-center justify-center border border-background"
-                title={`${a.first_name ?? ''} ${a.last_name ?? ''}`.trim()}
-              >
-                {`${(a.first_name?.[0] ?? '').toUpperCase()}${(a.last_name?.[0] ?? '').toUpperCase()}`}
-              </span>
-            ))}
-            {task.assignees.length > 3 && (
-              <span className="w-5 h-5 rounded-full bg-foreground/10 text-foreground/50 text-[9px] font-bold flex items-center justify-center border border-background">
-                +{task.assignees.length - 3}
-              </span>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 type Props = {
   projectId: string;
@@ -430,44 +227,12 @@ export function TaskBoard({
 
       {/* Par priorité view */}
       {view === 'by_priority' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {PRIORITY_COLUMNS.map((col) => (
-            <div key={col.id} className="flex flex-col gap-3 min-w-0">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full shrink-0 ${col.dotClass}`} />
-                  <span className="text-sm font-medium text-foreground">{col.label}</span>
-                  <span className="text-xs text-foreground/40 bg-muted px-1.5 py-0.5 rounded-full font-medium">
-                    {tasksByPriority[col.id].length}
-                  </span>
-                </div>
-                {!readOnly && (
-                  <button
-                    onClick={() => setCreatePriority(col.id)}
-                    className="w-6 h-6 flex items-center justify-center rounded-md text-foreground/40 hover:text-foreground hover:bg-muted transition-colors"
-                    title="Nouvelle tâche"
-                  >
-                    <Plus size={14} />
-                  </button>
-                )}
-              </div>
-              <div className="flex flex-col gap-2 min-h-24 rounded-xl p-1.5 bg-background-secondary">
-                {tasksByPriority[col.id].length === 0 && (
-                  <p className="text-xs text-foreground/30 text-center py-4 italic">
-                    {col.emptyLabel}
-                  </p>
-                )}
-                {tasksByPriority[col.id].map((task) => (
-                  <PriorityCard
-                    key={task.id}
-                    task={task}
-                    onClickAction={() => setSelectedTask(task)}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <PriorityView
+          tasksByPriority={tasksByPriority}
+          readOnly={readOnly}
+          onCreateAction={setCreatePriority}
+          onTaskClickAction={setSelectedTask}
+        />
       )}
 
       {modalOpen && (
