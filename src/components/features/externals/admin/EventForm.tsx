@@ -4,71 +4,17 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 
-import { randomId } from '@forthtilliath/ts-kit';
-
 import { RichEditor } from '@/components/editor/RichEditorLazy';
 import { Button } from '@/components/ui/Button';
-import { useConfirm } from '@/context/ConfirmContext';
 import { useFormShortcuts } from '@/hooks/useFormShortcuts';
 
-import {
-  deleteEventFile,
-  replaceEventDates,
-  uploadEventFile,
-  uploadEventImage,
-  upsertEvent,
-} from '../clientQueries';
-import type { ExternalEvent, ExternalEventDate } from '../types';
+import { replaceEventDates, uploadEventImage, upsertEvent } from '../clientQueries';
+import type { ExternalEvent } from '../types';
 
-const pad = (n: number) => String(n).padStart(2, '0');
-const fmtDate = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-const fmtTime = (d: Date) =>
-  d.getHours() === 0 && d.getMinutes() === 0 ? '' : `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-const isSameDay = (a: Date, b: Date) =>
-  a.getFullYear() === b.getFullYear() &&
-  a.getMonth() === b.getMonth() &&
-  a.getDate() === b.getDate();
-
-type DateEntry = {
-  key: string; // identifiant client stable (clé React) — non enregistré
-  startDate: string; // "YYYY-MM-DD"
-  startTime: string; // "HH:MM" or ""
-  endTime: string; // "HH:MM" or "" — heure de fin le même jour
-  endDate: string; // "YYYY-MM-DD" or "" — jour de fin différent
-};
-
-function dateEntryFromRecord(d: ExternalEventDate): DateEntry {
-  const start = new Date(d.date);
-  const end = d.end_date ? new Date(d.end_date) : null;
-  const sameDayEnd = end && isSameDay(start, end);
-  return {
-    key: d.id,
-    startDate: fmtDate(start),
-    startTime: fmtTime(start),
-    endTime: sameDayEnd ? fmtTime(end!) : '',
-    endDate: end && !sameDayEnd ? fmtDate(end) : '',
-  };
-}
-
-function dateEntryToPayload(e: DateEntry): { date: string; end_date: string | null } {
-  const date = new Date(`${e.startDate}T${e.startTime || '00:00'}`).toISOString();
-  let end_date: string | null = null;
-  if (e.endDate) {
-    end_date = new Date(`${e.endDate}T${e.endTime || '00:00'}`).toISOString();
-  } else if (e.endTime) {
-    end_date = new Date(`${e.startDate}T${e.endTime}`).toISOString();
-  }
-  return { date, end_date };
-}
-
-const emptyEntry = (): DateEntry => ({
-  key: randomId(),
-  startDate: '',
-  startTime: '',
-  endTime: '',
-  endDate: '',
-});
-
+import type { DateEntry } from './eventDates';
+import { dateEntryFromRecord, dateEntryToPayload, emptyEntry } from './eventDates';
+import { EventDatesField } from './EventDatesField';
+import { EventFilesSection } from './EventFilesSection';
 export function EventForm({
   event,
   onCloseAction,
@@ -87,12 +33,8 @@ export function EventForm({
   const [dates, setDates] = useState<DateEntry[]>(
     () => event?.external_event_dates.map(dateEntryFromRecord) ?? [emptyEntry()],
   );
-  const [newFileLabel, setNewFileLabel] = useState('');
-  const [newFileInput, setNewFileInput] = useState<File | null>(null);
-  const [uploadingFile, setUploadingFile] = useState(false);
   const [files, setFiles] = useState(event?.external_event_files ?? []);
   const [saving, setSaving] = useState(false);
-  const confirm = useConfirm();
   const formRef = useFormShortcuts(onCloseAction);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -127,32 +69,6 @@ export function EventForm({
     onSaveAction({ ...saved, external_event_dates: newDates, external_event_files: files });
     toast.success(event ? 'Évènement modifié' : 'Évènement ajouté');
     setSaving(false);
-  }
-
-  async function handleAddFile() {
-    if (!event?.id || !newFileInput || !newFileLabel.trim()) return;
-    setUploadingFile(true);
-    const file = await uploadEventFile(event.id, newFileInput, newFileLabel.trim(), files.length);
-    if (file) {
-      setFiles((prev) => [...prev, file]);
-      toast.success('Fichier ajouté');
-    } else {
-      toast.error("Erreur lors de l'upload du fichier");
-    }
-    setNewFileLabel('');
-    setNewFileInput(null);
-    setUploadingFile(false);
-  }
-
-  async function handleDeleteFile(id: string, label: string) {
-    if (!(await confirm({ message: `Supprimer "${label}" ?`, danger: true }))) return;
-    const ok = await deleteEventFile(id);
-    if (ok) {
-      setFiles((prev) => prev.filter((f) => f.id !== id));
-      toast.success('Fichier supprimé');
-    } else {
-      toast.error('Erreur lors de la suppression');
-    }
   }
 
   return (
@@ -191,90 +107,7 @@ export function EventForm({
           </div>
         </div>
 
-        {/* Dates */}
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium text-foreground">Dates</span>
-          <div className="flex flex-col gap-3">
-            {dates.map((entry, idx) => {
-              const update = (patch: Partial<DateEntry>) =>
-                setDates((prev) => prev.map((e, i) => (i === idx ? { ...e, ...patch } : e)));
-              return (
-                <div
-                  key={entry.key}
-                  className="flex flex-col gap-1.5 p-3 border border-border rounded-xl bg-background"
-                >
-                  {/* Ligne 1 : date début + heures */}
-                  <div className="flex gap-2 items-center flex-wrap">
-                    <input
-                      type="date"
-                      value={entry.startDate}
-                      onChange={(e) => update({ startDate: e.target.value })}
-                      required={idx === 0}
-                      className="border border-border rounded-lg px-3 py-1.5 text-sm bg-background"
-                    />
-                    <span className="text-xs text-foreground/40">de</span>
-                    <input
-                      type="time"
-                      value={entry.startTime}
-                      onChange={(e) => update({ startTime: e.target.value })}
-                      className="border border-border rounded-lg px-3 py-1.5 text-sm bg-background w-28"
-                      placeholder="--:--"
-                    />
-                    <span className="text-xs text-foreground/40">à</span>
-                    <input
-                      type="time"
-                      value={entry.endTime}
-                      onChange={(e) => update({ endTime: e.target.value })}
-                      className="border border-border rounded-lg px-3 py-1.5 text-sm bg-background w-28"
-                      placeholder="--:--"
-                    />
-                    {dates.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => setDates((prev) => prev.filter((_, i) => i !== idx))}
-                        className="ml-auto text-foreground/30 hover:text-red-500 transition-colors text-sm"
-                      >
-                        ✕
-                      </button>
-                    )}
-                  </div>
-                  {/* Ligne 2 : date de fin (stage multi-jours) */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-foreground/40">jusqu&apos;au</span>
-                    <input
-                      type="date"
-                      value={entry.endDate}
-                      onChange={(e) => update({ endDate: e.target.value })}
-                      min={entry.startDate || undefined}
-                      className="border border-border rounded-lg px-3 py-1.5 text-sm bg-background"
-                    />
-                    {entry.endDate && (
-                      <button
-                        type="button"
-                        onClick={() => update({ endDate: '', endTime: '' })}
-                        className="text-foreground/30 hover:text-red-500 transition-colors text-xs"
-                      >
-                        ✕
-                      </button>
-                    )}
-                    {!entry.endDate && (
-                      <span className="text-xs text-foreground/30 italic">
-                        laisser vide si même journée
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <button
-            type="button"
-            onClick={() => setDates((prev) => [...prev, emptyEntry()])}
-            className="self-start text-xs text-primary hover:opacity-70 transition-opacity"
-          >
-            + Ajouter une occurrence
-          </button>
-        </div>
+        <EventDatesField dates={dates} onChangeAction={setDates} />
 
         {/* Description RichEditor */}
         <div className="flex flex-col gap-1">
@@ -359,68 +192,7 @@ export function EventForm({
 
         {/* Fichiers — uniquement en modification */}
         {event && (
-          <div className="flex flex-col gap-3">
-            <span className="text-sm font-medium text-foreground">Fichiers joints</span>
-
-            {files.length > 0 && (
-              <div className="flex flex-col gap-2">
-                {files.map((f) => (
-                  <div
-                    key={f.id}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg border border-border bg-background text-sm"
-                  >
-                    <span className="flex-1 truncate text-foreground/70">📎 {f.label}</span>
-                    <a
-                      href={f.file_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-primary hover:opacity-70"
-                    >
-                      Voir
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteFile(f.id, f.label)}
-                      className="text-foreground/30 hover:text-red-500 transition-colors text-xs"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="flex gap-2 items-center">
-              <input
-                value={newFileLabel}
-                onChange={(e) => setNewFileLabel(e.target.value)}
-                placeholder="Label du fichier..."
-                className="flex-1 border border-border rounded-lg px-3 py-2 text-sm bg-background"
-              />
-              <label className="cursor-pointer shrink-0">
-                <div className="px-3 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all bg-background">
-                  {newFileInput ? '✓ Fichier sélectionné' : '📎 Choisir'}
-                </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={(e) => setNewFileInput(e.target.files?.[0] ?? null)}
-                />
-              </label>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                disabled={!newFileInput || !newFileLabel.trim() || uploadingFile}
-                onClick={handleAddFile}
-              >
-                {uploadingFile ? '...' : 'Ajouter'}
-              </Button>
-            </div>
-            <p className="text-xs text-foreground/30">
-              Les fichiers sont disponibles sur la page publique de l&apos;évènement.
-            </p>
-          </div>
+          <EventFilesSection eventId={event.id} files={files} onFilesChangeAction={setFiles} />
         )}
 
         <div className="flex gap-3 justify-end pt-2">
