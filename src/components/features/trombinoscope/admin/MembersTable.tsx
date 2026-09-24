@@ -1,6 +1,6 @@
 'use client';
 
-import { useHorizontalScroll } from '@/hooks/useHorizontalScroll';
+import { useHorizontalScroll } from '@forthtilliath/react-kit/useHorizontalScroll';
 
 import type { AdminMemberWithSeasons, AuthInfo } from '../types';
 
