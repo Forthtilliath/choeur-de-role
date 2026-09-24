@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 
+import { swapItems } from '@forthtilliath/ts-kit';
+
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import type { DurationUnit, TaskCategory, TaskTemplate, TaskTemplateItem } from '@/types/tasks';
-import { swapItems } from '@/utils/swapItems';
 
 import { deleteTemplateItem, reorderTemplateItems, updateTemplateItem } from '../templateActions';
 

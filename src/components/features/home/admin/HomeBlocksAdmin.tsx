@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import { swapItems } from '@forthtilliath/ts-kit';
+
 import { EditableSection } from '@/components/editor/EditableSection';
 import { Button } from '@/components/ui/Button';
 import { useConfirm } from '@/context/ConfirmContext';
-import { swapItems } from '@/utils/swapItems';
 
 import {
   deleteBlock,

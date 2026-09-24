@@ -4,11 +4,10 @@ import { useState } from 'react';
 import { arrayMove } from '@dnd-kit/sortable';
 import { Plus } from 'lucide-react';
 
-import { randomId } from '@forthtilliath/ts-kit';
+import { randomId, swapItems } from '@forthtilliath/ts-kit';
 
 import { Button } from '@/components/ui/Button';
 import { useFormShortcuts } from '@/hooks/useFormShortcuts';
-import { swapItems } from '@/utils/swapItems';
 
 import type { PollDraft, PollQuestionDraft } from '../types';
 
