@@ -4,8 +4,9 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import { closestCenter, DndContext } from '@dnd-kit/core';
 import { arrayMove, rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 
+import { swapItems } from '@forthtilliath/ts-kit';
+
 import { useDndSensors } from '@/hooks/useDndSensors';
-import { swapItems } from '@/utils/swapItems';
 
 import { updatePhotosOrder } from '../clientQueries';
 import type { GalleryPhoto } from '../types';
