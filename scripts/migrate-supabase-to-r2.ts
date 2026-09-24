@@ -112,190 +112,57 @@ async function deleteFromSupabase(bucket: string, url: string): Promise<void> {
 
 // ─── Migrations ───────────────────────────────────────────────────────────────
 
-async function migrateSongFiles() {
-  console.log('\n📂 song_files (audio + score + lyrics)');
-  const { data: files, error } = await supabase
-    .from('song_files')
-    .select('id, file_url, label, type')
-    .not('file_url', 'like', 'r2://%');
+type RowMigration = {
+  title: string; // en-tête affiché, ex. « news_files »
+  table: string;
+  column: string; // colonne contenant l'URL du fichier
+  labelColumn: string; // colonne affichée dans les logs
+  bucket: string; // bucket Supabase d'origine
+  unit: string; // « fichier(s) », « logo(s) »…
+  isPrivate?: boolean; // bucket R2 privé (clé = chemin brut, URL r2://)
+};
+
+// Migre toutes les lignes d'une table dont le fichier est encore sur Supabase Storage
+async function migrateRows(m: RowMigration) {
+  console.log(`\n📂 ${m.title}`);
+  const query = supabase.from(m.table).select(`id, ${m.column}, ${m.labelColumn}`);
+  const { data, error } = m.isPrivate
+    ? await query.not(m.column, 'like', 'r2://%')
+    : await query.like(m.column, '%supabase.co%');
   if (error) throw error;
-  if (!files?.length) {
+  const rows = (data ?? []) as unknown as Record<string, string>[];
+  if (!rows.length) {
     console.log('  ✅ Rien à migrer');
     return;
   }
-  console.log(`  ${files.length} fichier(s) à migrer`);
+  console.log(`  ${rows.length} ${m.unit} à migrer`);
 
   let ok = 0,
     ko = 0;
-  for (const file of files) {
+  for (const row of rows) {
+    const url = row[m.column]!;
+    const label = row[m.labelColumn] ?? row.id;
     try {
-      const path = extractSupabasePath(file.file_url, 'repertoire');
-      const { buffer, contentType } = await downloadFromSupabase(file.file_url, 'repertoire');
-      const newUrl = await uploadToR2Private(path, buffer, contentType);
+      const path = extractSupabasePath(url, m.bucket);
+      const { buffer, contentType } = await downloadFromSupabase(url, m.bucket);
+      const newUrl = m.isPrivate
+        ? await uploadToR2Private(path, buffer, contentType)
+        : await uploadToR2Public(`${m.bucket}/${path}`, buffer, contentType);
       const { error: upErr } = await supabase
-        .from('song_files')
-        .update({ file_url: newUrl })
-        .eq('id', file.id);
+        .from(m.table)
+        .update({ [m.column]: newUrl })
+        .eq('id', row.id);
       if (upErr) throw upErr;
-      if (shouldDelete) await deleteFromSupabase('repertoire', file.file_url);
+      if (shouldDelete) await deleteFromSupabase(m.bucket, url);
       ok++;
-      console.log(`  ✓ [${ok}/${files.length}] ${file.label ?? file.id}`);
+      console.log(`  ✓ [${ok}/${rows.length}] ${label}`);
     } catch (err) {
       ko++;
-      console.error(`  ✗ ${file.label ?? file.id}`, err);
+      console.error(`  ✗ ${label}`, err);
     }
   }
   console.log(`  → ${ok} ok, ${ko} échec(s)`);
 }
-
-async function migrateNewsFiles() {
-  console.log('\n📂 news_files');
-  const { data: files, error } = await supabase
-    .from('news_files')
-    .select('id, file_url, label')
-    .like('file_url', '%supabase.co%');
-  if (error) throw error;
-  if (!files?.length) {
-    console.log('  ✅ Rien à migrer');
-    return;
-  }
-  console.log(`  ${files.length} fichier(s) à migrer`);
-
-  let ok = 0,
-    ko = 0;
-  for (const file of files) {
-    try {
-      const path = extractSupabasePath(file.file_url, 'documents');
-      const key = `documents/${path}`;
-      const { buffer, contentType } = await downloadFromSupabase(file.file_url, 'documents');
-      const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase
-        .from('news_files')
-        .update({ file_url: newUrl })
-        .eq('id', file.id);
-      if (upErr) throw upErr;
-      if (shouldDelete) await deleteFromSupabase('documents', file.file_url);
-      ok++;
-      console.log(`  ✓ [${ok}/${files.length}] ${file.label ?? file.id}`);
-    } catch (err) {
-      ko++;
-      console.error(`  ✗ ${file.label ?? file.id}`, err);
-    }
-  }
-  console.log(`  → ${ok} ok, ${ko} échec(s)`);
-}
-
-async function migrateEventFiles() {
-  console.log('\n📂 external_event_files');
-  const { data: files, error } = await supabase
-    .from('external_event_files')
-    .select('id, file_url, label')
-    .like('file_url', '%supabase.co%');
-  if (error) throw error;
-  if (!files?.length) {
-    console.log('  ✅ Rien à migrer');
-    return;
-  }
-  console.log(`  ${files.length} fichier(s) à migrer`);
-
-  let ok = 0,
-    ko = 0;
-  for (const file of files) {
-    try {
-      const path = extractSupabasePath(file.file_url, 'documents');
-      const key = `documents/${path}`;
-      const { buffer, contentType } = await downloadFromSupabase(file.file_url, 'documents');
-      const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase
-        .from('external_event_files')
-        .update({ file_url: newUrl })
-        .eq('id', file.id);
-      if (upErr) throw upErr;
-      if (shouldDelete) await deleteFromSupabase('documents', file.file_url);
-      ok++;
-      console.log(`  ✓ [${ok}/${files.length}] ${file.label ?? file.id}`);
-    } catch (err) {
-      ko++;
-      console.error(`  ✗ ${file.label ?? file.id}`, err);
-    }
-  }
-  console.log(`  → ${ok} ok, ${ko} échec(s)`);
-}
-
-async function migratePartnerLogos() {
-  console.log('\n📂 partners.logo_url');
-  const { data: partners, error } = await supabase
-    .from('partners')
-    .select('id, logo_url, name')
-    .like('logo_url', '%supabase.co%');
-  if (error) throw error;
-  if (!partners?.length) {
-    console.log('  ✅ Rien à migrer');
-    return;
-  }
-  console.log(`  ${partners.length} logo(s) à migrer`);
-
-  let ok = 0,
-    ko = 0;
-  for (const p of partners) {
-    try {
-      const path = extractSupabasePath(p.logo_url, 'partners');
-      const key = `partners/${path}`;
-      const { buffer, contentType } = await downloadFromSupabase(p.logo_url, 'partners');
-      const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase
-        .from('partners')
-        .update({ logo_url: newUrl })
-        .eq('id', p.id);
-      if (upErr) throw upErr;
-      if (shouldDelete) await deleteFromSupabase('partners', p.logo_url);
-      ok++;
-      console.log(`  ✓ [${ok}/${partners.length}] ${p.name}`);
-    } catch (err) {
-      ko++;
-      console.error(`  ✗ ${p.name}`, err);
-    }
-  }
-  console.log(`  → ${ok} ok, ${ko} échec(s)`);
-}
-
-async function migrateCaMeetings() {
-  console.log('\n📂 ca_meetings.pdf_url');
-  const { data: meetings, error } = await supabase
-    .from('ca_meetings')
-    .select('id, pdf_url, title')
-    .like('pdf_url', '%supabase.co%');
-  if (error) throw error;
-  if (!meetings?.length) {
-    console.log('  ✅ Rien à migrer');
-    return;
-  }
-  console.log(`  ${meetings.length} PV(s) à migrer`);
-
-  let ok = 0,
-    ko = 0;
-  for (const m of meetings) {
-    try {
-      const path = extractSupabasePath(m.pdf_url, 'documents');
-      const key = `documents/${path}`;
-      const { buffer, contentType } = await downloadFromSupabase(m.pdf_url, 'documents');
-      const newUrl = await uploadToR2Public(key, buffer, contentType);
-      const { error: upErr } = await supabase
-        .from('ca_meetings')
-        .update({ pdf_url: newUrl })
-        .eq('id', m.id);
-      if (upErr) throw upErr;
-      if (shouldDelete) await deleteFromSupabase('documents', m.pdf_url);
-      ok++;
-      console.log(`  ✓ [${ok}/${meetings.length}] ${m.title ?? m.id}`);
-    } catch (err) {
-      ko++;
-      console.error(`  ✗ ${m.title ?? m.id}`, err);
-    }
-  }
-  console.log(`  → ${ok} ok, ${ko} échec(s)`);
-}
-
 async function migrateSponsorDossier() {
   console.log('\n📂 content_blocks (dossier de sponsoring)');
   const { data: block, error } = await supabase
@@ -333,14 +200,54 @@ async function migrateSponsorDossier() {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 const ALL_TASKS: Record<string, () => Promise<void>> = {
-  song_files: migrateSongFiles,
-  news_files: migrateNewsFiles,
-  event_files: migrateEventFiles,
-  partners: migratePartnerLogos,
-  ca_meetings: migrateCaMeetings,
+  song_files: () =>
+    migrateRows({
+      title: 'song_files (audio + score + lyrics)',
+      table: 'song_files',
+      column: 'file_url',
+      labelColumn: 'label',
+      bucket: 'repertoire',
+      unit: 'fichier(s)',
+      isPrivate: true,
+    }),
+  news_files: () =>
+    migrateRows({
+      title: 'news_files',
+      table: 'news_files',
+      column: 'file_url',
+      labelColumn: 'label',
+      bucket: 'documents',
+      unit: 'fichier(s)',
+    }),
+  event_files: () =>
+    migrateRows({
+      title: 'external_event_files',
+      table: 'external_event_files',
+      column: 'file_url',
+      labelColumn: 'label',
+      bucket: 'documents',
+      unit: 'fichier(s)',
+    }),
+  partners: () =>
+    migrateRows({
+      title: 'partners.logo_url',
+      table: 'partners',
+      column: 'logo_url',
+      labelColumn: 'name',
+      bucket: 'partners',
+      unit: 'logo(s)',
+    }),
+  ca_meetings: () =>
+    migrateRows({
+      title: 'ca_meetings.pdf_url',
+      table: 'ca_meetings',
+      column: 'pdf_url',
+      labelColumn: 'title',
+      bucket: 'documents',
+      unit: 'PV(s)',
+    }),
   sponsor_dossier: migrateSponsorDossier,
 };
-
 async function main() {
   const tasks = onlyTables
     ? onlyTables.map((t) => {
