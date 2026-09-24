@@ -1,25 +1,19 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import type { DragEndEvent } from '@dnd-kit/core';
-import { closestCenter, DndContext } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import type { jsPDF } from 'jspdf';
 import { BookImage, FileText, Mail, MailCheck } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
 import { VoicePartFilter } from '@/components/ui/VoicePartFilter';
-import { useDndSensors } from '@/hooks/useDndSensors';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
-import { getVoicePartBg, MemberCell } from './MemberCell';
-import { SortableColumnRow } from './SortableColumnRow';
+import { ColumnMenu } from './ColumnMenu';
+import { exportMembersListPdf, exportTrombiPdf } from './trombiPdfExport';
+import type { TrombiSortDir, TrombiSortKey } from './TrombiTable';
+import { TrombiTable } from './TrombiTable';
 import type { Column, ColumnKey, TrombiMember, VoicePart } from './types';
 import { DEFAULT_COLUMNS } from './types';
-
-type SortKey = 'first_name' | 'last_name' | 'voice_part' | 'address';
-type SortDir = 'asc' | 'desc';
 
 const ROLE_GROUPS = [
   {
@@ -59,6 +53,37 @@ function deserializeColumns(raw: string): Column[] {
   }
 }
 
+function sortTrombiMembers(
+  members: TrombiMember[],
+  sortKey: TrombiSortKey,
+  sortDir: TrombiSortDir,
+) {
+  return [...members].sort((a, b) => {
+    let valA = '',
+      valB = '';
+    switch (sortKey) {
+      case 'first_name':
+        valA = a.first_name ?? '';
+        valB = b.first_name ?? '';
+        break;
+      case 'last_name':
+        valA = a.last_name ?? '';
+        valB = b.last_name ?? '';
+        break;
+      case 'voice_part':
+        valA = String(a.voice_parts?.order_index ?? 999);
+        valB = String(b.voice_parts?.order_index ?? 999);
+        break;
+      case 'address':
+        valA = `${a.city ?? ''} ${a.address ?? ''}`;
+        valB = `${b.city ?? ''} ${b.address ?? ''}`;
+        break;
+    }
+    const cmp = valA.localeCompare(valB, 'fr');
+    return sortDir === 'asc' ? cmp : -cmp;
+  });
+}
+
 type Props = {
   members: TrombiMember[];
   voiceParts: VoicePart[];
@@ -66,13 +91,12 @@ type Props = {
 
 export function TrombinoscopeClient({ members, voiceParts }: Props) {
   const [search, setSearch] = useState('');
-  const [sortKey, setSortKey] = useLocalStorage<SortKey>('trombi:sortKey', 'last_name');
-  const [sortDir, setSortDir] = useLocalStorage<SortDir>('trombi:sortDir', 'asc');
+  const [sortKey, setSortKey] = useLocalStorage<TrombiSortKey>('trombi:sortKey', 'last_name');
+  const [sortDir, setSortDir] = useLocalStorage<TrombiSortDir>('trombi:sortDir', 'asc');
   const [columns, setColumns] = useLocalStorage<Column[]>('trombi:columns', DEFAULT_COLUMNS, {
     serialize: serializeColumns,
     deserialize: deserializeColumns,
   });
-  const [showColumnMenu, setShowColumnMenu] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [selectedRoleGroups, setSelectedRoleGroups] = useState<Set<string>>(
     () => new Set(ROLE_GROUPS.map((g) => g.key)),
@@ -93,18 +117,6 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
     const valid = storedVoicePartIds.filter((id) => realParts.some((vp) => vp.id === id));
     return valid.length > 0 ? new Set(valid) : new Set(realParts.map((vp) => vp.id));
   }, [storedVoicePartIds, realParts]);
-
-  const sensors = useDndSensors();
-
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-    setColumns((prev) => {
-      const oldIndex = prev.findIndex((c) => c.key === active.id);
-      const newIndex = prev.findIndex((c) => c.key === over.id);
-      return arrayMove(prev, oldIndex, newIndex);
-    });
-  }
 
   function toggleRoleGroup(key: string) {
     setSelectedRoleGroups((prev) => {
@@ -149,51 +161,16 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
   );
 
   const sorted = useMemo(
-    () =>
-      [...filtered].sort((a, b) => {
-        let valA = '',
-          valB = '';
-        switch (sortKey) {
-          case 'first_name':
-            valA = a.first_name ?? '';
-            valB = b.first_name ?? '';
-            break;
-          case 'last_name':
-            valA = a.last_name ?? '';
-            valB = b.last_name ?? '';
-            break;
-          case 'voice_part':
-            valA = String(a.voice_parts?.order_index ?? 999);
-            valB = String(b.voice_parts?.order_index ?? 999);
-            break;
-          case 'address':
-            valA = `${a.city ?? ''} ${a.address ?? ''}`;
-            valB = `${b.city ?? ''} ${b.address ?? ''}`;
-            break;
-        }
-        const cmp = valA.localeCompare(valB, 'fr');
-        return sortDir === 'asc' ? cmp : -cmp;
-      }),
+    () => sortTrombiMembers(filtered, sortKey, sortDir),
     [filtered, sortKey, sortDir],
   );
 
-  function handleSort(key: SortKey) {
+  function handleSort(key: TrombiSortKey) {
     if (sortKey === key) setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
     else {
       setSortKey(key);
       setSortDir('asc');
     }
-  }
-
-  function toggleColumnVisible(key: ColumnKey) {
-    setColumns((prev) =>
-      prev.map((col) => (col.key === key ? { ...col, visible: !col.visible } : col)),
-    );
-  }
-
-  function resetColumns() {
-    setColumns(DEFAULT_COLUMNS);
-    setShowColumnMenu(false);
   }
 
   async function copyEmails() {
@@ -213,147 +190,6 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
       },
     );
   }
-
-  async function exportPDFList() {
-    const { default: jsPDF } = await import('jspdf');
-    const { default: autoTable } = await import('jspdf-autotable');
-    const doc = new jsPDF({ orientation: 'landscape' });
-    doc.setFontSize(16);
-    doc.text('Chœur de Rôle — Liste des choristes', 14, 16);
-    doc.setFontSize(10);
-    doc.text(`${sorted.length} choristes — ${new Date().toLocaleDateString('fr-FR')}`, 14, 23);
-
-    const visibleCols = columns.filter((c) => c.visible && c.key !== 'photo' && c.key !== 'ca');
-    const head = [visibleCols.map((c) => c.label)];
-    const body = sorted.map((m) =>
-      visibleCols.map((col) => {
-        switch (col.key) {
-          case 'voice_part':
-            return m.voice_parts?.name ?? '';
-          case 'first_name':
-            return m.first_name ?? '';
-          case 'last_name':
-            return m.last_name ?? '';
-          case 'address':
-            return [m.address, m.zip_code, m.city].filter(Boolean).join(', ');
-          case 'email':
-            return m.email ?? '';
-          case 'phone': {
-            const digits = (m.phone ?? '').replace(/\D/g, '');
-            return digits.length === 10 ? digits.match(/.{2}/g)!.join(' ') : (m.phone ?? '');
-          }
-          default:
-            return '';
-        }
-      }),
-    );
-    autoTable(doc, { head, body, startY: 28, styles: { fontSize: 9 } });
-    doc.save('choristes.pdf');
-  }
-
-  async function exportPDFTrombi() {
-    const { default: jsPDF } = await import('jspdf');
-    const doc = new jsPDF();
-    const pageW = doc.internal.pageSize.getWidth();
-    doc.setFontSize(14);
-    doc.text('Trombinoscope — Chœur de Rôle', pageW / 2, 14, { align: 'center' });
-    doc.setFontSize(9);
-    doc.setTextColor(120);
-    doc.text(
-      `${sorted.length} choristes — ${new Date().toLocaleDateString('fr-FR')}`,
-      pageW / 2,
-      20,
-      { align: 'center' },
-    );
-    doc.setTextColor(0);
-
-    const cols = 5;
-    const cellW = 38;
-    const cellH = 54;
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const marginX = (pageWidth - cols * cellW) / 2;
-    const marginY = 26;
-    const pageHeight = doc.internal.pageSize.getHeight();
-
-    async function fetchImageBase64(url: string): Promise<string | null> {
-      try {
-        const cleanUrl = url.split('?')[0] ?? url;
-        const res = await fetch(`/api/r2/image-view?url=${encodeURIComponent(cleanUrl)}`);
-        if (!res.ok) return null;
-        const blob = await res.blob();
-        return await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.onerror = () => resolve(null);
-          reader.readAsDataURL(blob);
-        });
-      } catch {
-        return null;
-      }
-    }
-
-    const photoMap = new Map<string, string | null>();
-    await Promise.all(
-      sorted
-        .filter((m) => m.photo_url)
-        .map(async (m) => {
-          const b64 = await fetchImageBase64(m.photo_url!);
-          photoMap.set(m.id, b64);
-        }),
-    );
-
-    let currentPage = 0;
-    for (const [i, m] of sorted.entries()) {
-      const itemsPerPage = Math.floor((pageHeight - marginY) / cellH) * cols;
-      const indexOnPage = i % itemsPerPage;
-      const colOnPage = indexOnPage % cols;
-      const rowOnPage = Math.floor(indexOnPage / cols);
-
-      const newPage = Math.floor(i / itemsPerPage);
-      if (newPage > currentPage) {
-        doc.addPage();
-        currentPage = newPage;
-      }
-
-      const x = marginX + colOnPage * cellW;
-      const y = marginY + rowOnPage * cellH;
-      const photoSize = 30;
-
-      const photoB64 = photoMap.get(m.id);
-      if (photoB64) {
-        try {
-          const fmt = photoB64.startsWith('data:image/png')
-            ? 'PNG'
-            : photoB64.startsWith('data:image/webp')
-              ? 'WEBP'
-              : 'JPEG';
-          doc.addImage(photoB64, fmt, x, y, photoSize, photoSize);
-        } catch {
-          drawPlaceholder(doc as unknown as jsPDF, x, y, photoSize, m);
-        }
-      } else {
-        drawPlaceholder(doc as unknown as jsPDF, x, y, photoSize, m);
-      }
-
-      doc.setFontSize(8);
-      doc.setTextColor(0);
-      const fullName = `${m.first_name ?? ''} ${m.last_name ?? ''}`.trim();
-      const nameLines = doc.splitTextToSize(fullName, cellW - 2);
-      doc.text(nameLines, x + photoSize / 2, y + photoSize + 5, { align: 'center' });
-
-      if (m.voice_parts?.name) {
-        doc.setFontSize(7);
-        doc.setTextColor(120);
-        doc.text(m.voice_parts.name, x + photoSize / 2, y + photoSize + 11, { align: 'center' });
-        doc.setTextColor(0);
-      }
-    }
-    doc.save('trombinoscope.pdf');
-  }
-
-  const visibleColumns = columns.filter((c) => c.visible);
-  const visibleCount = columns.filter((c) => c.visible).length;
-  const totalCount = columns.length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -388,10 +224,13 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
           </div>
 
           <div className="flex items-center gap-1.5 shrink-0">
-            <ButtonIcon onClick={exportPDFList} title="Exporter liste PDF">
+            <ButtonIcon
+              onClick={() => exportMembersListPdf(sorted, columns)}
+              title="Exporter liste PDF"
+            >
               <FileText />
             </ButtonIcon>
-            <ButtonIcon onClick={exportPDFTrombi} title="Exporter trombinoscope PDF">
+            <ButtonIcon onClick={() => exportTrombiPdf(sorted)} title="Exporter trombinoscope PDF">
               <BookImage />
             </ButtonIcon>
             <ButtonIcon
@@ -406,61 +245,7 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
               {copySuccess ? <MailCheck /> : <Mail />}
             </ButtonIcon>
 
-            <div className="relative">
-              <button
-                onClick={() => setShowColumnMenu((v) => !v)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-sm ${showColumnMenu ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60 hover:text-foreground hover:border-primary'}`}
-              >
-                <span className="hidden sm:inline">Colonnes</span>
-                <span
-                  className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${visibleCount === totalCount ? 'bg-foreground/10 text-foreground/40' : 'bg-primary text-white'}`}
-                >
-                  {visibleCount}/{totalCount}
-                </span>
-                <span className="text-xs opacity-60">{showColumnMenu ? '▲' : '▼'}</span>
-              </button>
-
-              {showColumnMenu && (
-                <div className="absolute right-0 top-11 z-20 bg-background border border-border rounded-xl shadow-xl w-64 overflow-hidden">
-                  <div className="px-4 py-3 border-b border-border bg-background-secondary flex items-center justify-between">
-                    <p className="text-xs font-medium text-foreground">Colonnes affichées</p>
-                    <button
-                      onClick={resetColumns}
-                      className="text-xs text-foreground/40 hover:text-primary transition-colors flex items-center gap-1"
-                    >
-                      ↺ Réinitialiser
-                    </button>
-                  </div>
-                  <div className="px-4 py-2 bg-background-secondary/50 border-b border-border">
-                    <p className="text-xs text-foreground/40">
-                      ⠿ Glisser pour réordonner · toggle pour afficher/masquer
-                    </p>
-                  </div>
-                  <div className="p-2">
-                    <DndContext
-                      sensors={sensors}
-                      collisionDetection={closestCenter}
-                      onDragEnd={handleDragEnd}
-                    >
-                      <SortableContext
-                        items={columns.map((c) => c.key)}
-                        strategy={verticalListSortingStrategy}
-                      >
-                        {columns.map((col, index) => (
-                          <SortableColumnRow
-                            key={col.key}
-                            col={col}
-                            index={index}
-                            total={columns.length}
-                            onToggleAction={toggleColumnVisible}
-                          />
-                        ))}
-                      </SortableContext>
-                    </DndContext>
-                  </div>
-                </div>
-              )}
-            </div>
+            <ColumnMenu columns={columns} onColumnsChangeAction={setColumns} />
           </div>
         </div>
 
@@ -490,69 +275,13 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
         </div>
       </div>
 
-      <div className="rounded-2xl overflow-hidden border border-border">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-background-secondary border-b border-border">
-                {visibleColumns.map((col) => (
-                  <th
-                    key={col.key}
-                    className="px-4 py-2.5 text-left font-medium text-xs text-foreground/50 tracking-wide whitespace-nowrap"
-                  >
-                    {(['first_name', 'last_name', 'voice_part', 'address'] as SortKey[]).includes(
-                      col.key as SortKey,
-                    ) ? (
-                      <button
-                        onClick={() => handleSort(col.key as SortKey)}
-                        className="flex items-center gap-1 hover:text-foreground transition-colors"
-                      >
-                        {col.label}
-                        <span className="text-xs opacity-60">
-                          {sortKey === col.key ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
-                        </span>
-                      </button>
-                    ) : (
-                      col.label
-                    )}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="dark:bg-white dark:text-gray-900">
-              {sorted.map((member, memberIndex) => {
-                const bg = getVoicePartBg(member.voice_parts?.name);
-                return (
-                  <tr
-                    key={member.id}
-                    className={`${bg} border-b border-white/40 dark:border-black/10 last:border-0`}
-                  >
-                    {visibleColumns.map((col) => (
-                      <td key={col.key} className="px-4 py-2">
-                        <MemberCell
-                          col={col}
-                          member={member}
-                          priority={col.key === 'photo' && memberIndex < 3}
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <TrombiTable
+        members={sorted}
+        columns={columns.filter((c) => c.visible)}
+        sortKey={sortKey}
+        sortDir={sortDir}
+        onSortAction={handleSort}
+      />
     </div>
   );
-}
-
-function drawPlaceholder(doc: jsPDF, x: number, y: number, size: number, m: TrombiMember) {
-  doc.setFillColor(220, 220, 220);
-  doc.rect(x, y, size, size, 'F');
-  const initials = `${(m.first_name ?? '?')[0]}${(m.last_name ?? '?')[0]}`.toUpperCase();
-  doc.setFontSize(12);
-  doc.setTextColor(150);
-  doc.text(initials, x + size / 2, y + size / 2 + 4, { align: 'center' });
-  doc.setTextColor(0);
 }
