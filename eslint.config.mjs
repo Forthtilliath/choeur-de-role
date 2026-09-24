@@ -14,7 +14,7 @@ const eslintConfig = defineConfig([
     // Not part of the package's tsconfig (src/sw.ts is explicitly excluded,
     // and the tsconfig's `include` doesn't cover plain .mjs scripts), so
     // keep them out of type-aware linting rather than crashing on them.
-    ignores: ['src/sw.ts', 'scripts/*.mjs'],
+    ignores: ['src/sw.ts', 'scripts/**/*.mjs'],
   },
   {
     // Deliberate co-location of a constant/hook/Tiptap node definition next
