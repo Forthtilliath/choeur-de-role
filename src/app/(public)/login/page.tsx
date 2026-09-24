@@ -4,7 +4,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { recordLogin, signIn, verifyTotpCode } from '@/components/features/auth/loginFlow';
+import {
+  abandonMfa,
+  recordLogin,
+  signIn,
+  verifyTotpCode,
+} from '@/components/features/auth/loginFlow';
 import { CredentialsStep, MfaStep } from '@/components/features/auth/LoginSteps';
 import { MfaSetupStep } from '@/components/features/auth/MfaSetupStep';
 import { Button } from '@/components/ui/Button';
@@ -41,11 +46,21 @@ export default function LoginPage() {
     router.refresh();
   }
 
-  // Retour au formulaire d'identifiants depuis une étape 2FA
-  function backToLogin(clearCode: () => void) {
+  // Abandon de l'étape 2FA → on réinitialise complètement : purge des facteurs
+  // en attente, déconnexion, retour au formulaire. La prochaine tentative
+  // recommence la manip depuis le début.
+  async function resetToLogin() {
+    setLoading(true);
+    await abandonMfa();
     setStep('login');
-    clearCode();
+    setMfaCode('');
+    setMfaFactorId('');
+    setEnrollCode('');
+    setEnrollQrCode('');
+    setEnrollSecret('');
+    setEnrollFactorId('');
     setError('');
+    setLoading(false);
   }
 
   async function handleSignIn(email: string, password: string) {
@@ -134,7 +149,7 @@ export default function LoginPage() {
               loading={loading}
               error={error}
               onSubmitAction={() => handleVerify(mfaFactorId, mfaCode, () => setMfaCode(''))}
-              onBackAction={() => backToLogin(() => setMfaCode(''))}
+              onRestartAction={resetToLogin}
             />
           )}
 
@@ -149,7 +164,7 @@ export default function LoginPage() {
               onSubmitAction={() =>
                 handleVerify(enrollFactorId, enrollCode, () => setEnrollCode(''))
               }
-              onBackAction={() => backToLogin(() => setEnrollCode(''))}
+              onRestartAction={resetToLogin}
             />
           )}
         </div>

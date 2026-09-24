@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase.client';
 
+type SupabaseClient = ReturnType<typeof createClient>;
+
 export type LoginOutcome =
   | { kind: 'error'; message: string }
   | { kind: 'done' }
@@ -8,6 +10,23 @@ export type LoginOutcome =
 
 export function recordLogin() {
   fetch('/api/auth/record-login', { method: 'POST' }).catch(() => {});
+}
+
+// Supprime les facteurs 2FA non vérifiés laissés par une tentative avortée,
+// pour que l'enrôlement reparte propre (un seul QR code à la fois).
+export async function purgeUnverifiedFactors(supabase: SupabaseClient) {
+  const { data } = await supabase.auth.mfa.listFactors();
+  const stale = (data?.all ?? []).filter((f) => f.status !== 'verified');
+  await Promise.all(
+    stale.map((f) => supabase.auth.mfa.unenroll({ factorId: f.id }).catch(() => {})),
+  );
+}
+
+// Abandon de l'étape 2FA : purge des facteurs en attente puis déconnexion locale
+export async function abandonMfa() {
+  const supabase = createClient();
+  await purgeUnverifiedFactors(supabase);
+  await supabase.auth.signOut({ scope: 'local' });
 }
 
 // Connexion par mot de passe puis détermination de l'étape suivante :
@@ -20,19 +39,29 @@ export async function signIn(email: string, password: string): Promise<LoginOutc
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const { data: memberData } = await supabase
+  const { data: memberData, error: memberError } = await supabase
     .from('members')
     .select('role')
     .eq('id', user!.id)
     .single();
-  const userIsAdmin = memberData?.role === 'admin' || memberData?.role === 'super_admin';
+
+  if (memberError || !memberData) {
+    // Impossible de vérifier le rôle → on n'ouvre pas de session bancale
+    await supabase.auth.signOut({ scope: 'local' });
+    return { kind: 'error', message: 'Impossible de vérifier votre compte, réessayez.' };
+  }
+
+  const userIsAdmin = memberData.role === 'admin' || memberData.role === 'super_admin';
 
   const { data: factors } = await supabase.auth.mfa.listFactors();
   const totpFactor = factors?.totp?.find((f) => f.status === 'verified');
 
   if (userIsAdmin) {
     if (!totpFactor) {
-      // Admin sans 2FA → enrollment obligatoire
+      // Admin sans 2FA vérifiée → on repart de zéro : purge des facteurs
+      // en attente d'une tentative précédente, puis (ré)affichage du QR code.
+      await purgeUnverifiedFactors(supabase);
+
       const { data: enrollData, error: enrollError } = await supabase.auth.mfa.enroll({
         factorType: 'totp',
         friendlyName: `CDR Admin (${email})`,

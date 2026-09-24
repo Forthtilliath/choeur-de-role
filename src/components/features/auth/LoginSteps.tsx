@@ -57,14 +57,15 @@ export function StepTitle({ title, children }: { title: string; children: React.
   );
 }
 
-export function BackToLoginButton({ onClick }: { onClick: () => void }) {
+export function RestartButton({ loading, onClick }: { loading: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="text-xs text-foreground/40 hover:text-foreground text-center transition-colors"
+      disabled={loading}
+      className="text-xs text-foreground/40 hover:text-foreground text-center transition-colors disabled:opacity-50"
     >
-      ← Retour à la connexion
+      ← Recommencer la connexion
     </button>
   );
 }
@@ -159,14 +160,14 @@ export function MfaStep({
   loading,
   error,
   onSubmitAction,
-  onBackAction,
+  onRestartAction,
 }: {
   code: string;
   onCodeChangeAction: (code: string) => void;
   loading: boolean;
   error: string;
   onSubmitAction: () => void;
-  onBackAction: () => void;
+  onRestartAction: () => void;
 }) {
   return (
     <>
@@ -200,7 +201,7 @@ export function MfaStep({
         </Button>
       </form>
 
-      <BackToLoginButton onClick={onBackAction} />
+      <RestartButton loading={loading} onClick={onRestartAction} />
     </>
   );
 }
