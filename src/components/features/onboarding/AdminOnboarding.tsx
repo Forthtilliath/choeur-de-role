@@ -7,41 +7,12 @@ import { toast } from 'sonner';
 import { completeAdminOnboarding } from '@/app/choristes/admin/bienvenue/actions';
 import { Button } from '@/components/ui/Button';
 
+import { StepProgress } from './OnboardingLayout';
 type Props = {
   firstName: string;
 };
 
 const TOTAL_STEPS = 2;
-
-function StepProgress({ current }: { current: number }) {
-  return (
-    <div className="flex items-center gap-2 mb-10">
-      {Array.from({ length: TOTAL_STEPS }, (_, i) => {
-        const step = i + 1;
-        const done = step < current;
-        const active = step === current;
-        return (
-          <div key={step} className="flex items-center gap-2">
-            <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium border transition-colors ${
-                active
-                  ? 'bg-primary border-primary text-white'
-                  : done
-                    ? 'bg-primary/20 border-primary/30 text-primary'
-                    : 'bg-background-secondary border-border text-foreground/30'
-              }`}
-            >
-              {done ? '✓' : step}
-            </div>
-            {step < TOTAL_STEPS && (
-              <div className={`h-px w-8 ${done ? 'bg-primary/40' : 'bg-border'}`} />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 const SETUP_FLOW = [
   {
@@ -103,7 +74,7 @@ export function AdminOnboarding({ firstName }: Props) {
 
   return (
     <div className="max-w-2xl">
-      <StepProgress current={step} />
+      <StepProgress current={step} total={TOTAL_STEPS} />
 
       {/* Step 1 — Bienvenue */}
       {step === 1 && (
