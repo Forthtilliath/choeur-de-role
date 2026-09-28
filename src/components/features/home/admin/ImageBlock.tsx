@@ -64,7 +64,7 @@ export function ImageBlock({
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center gap-3">
                 <button
                   onClick={handleConfirm}
-                  className="px-3 py-1.5 rounded-lg bg-primary hover:opacity-80 text-white text-xs font-medium"
+                  className="px-3 py-1.5 rounded-xl bg-primary text-white btn-token text-xs font-semibold"
                 >
                   ✓ Valider
                 </button>
@@ -104,13 +104,13 @@ export function ImageBlock({
         <div className="flex gap-2 justify-center">
           <button
             onClick={() => onChangeRatio('4/3')}
-            className={`text-xs px-3 py-1 rounded-lg border transition-all ${ratio === 'aspect-4/3' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/50'}`}
+            className={`text-xs px-3 py-1 rounded-lg border transition-all ${ratio === 'aspect-4/3' ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/50'}`}
           >
             Paysage (4/3)
           </button>
           <button
             onClick={() => onChangeRatio('3/4')}
-            className={`text-xs px-3 py-1 rounded-lg border transition-all ${ratio === 'aspect-3/4' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/50'}`}
+            className={`text-xs px-3 py-1 rounded-lg border transition-all ${ratio === 'aspect-3/4' ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/50'}`}
           >
             Portrait (3/4)
           </button>
