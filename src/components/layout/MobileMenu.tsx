@@ -7,11 +7,11 @@ import { AuthButton } from '@/components/layout/AuthButton';
 
 import { adminIcons, privateLinks, publicLinks } from './headerLinks';
 
-const ITEM_CLASS = 'flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm transition-colors';
+const ITEM_CLASS = 'flex items-center gap-3 w-full px-3 py-2 rounded-xl text-sm transition-colors';
 const IDLE_CLASS = 'text-foreground/70 hover:text-foreground hover:bg-background-tertiary';
-const ACTIVE_CLASS = 'bg-primary/10 text-primary-light font-medium';
+const ACTIVE_CLASS = 'bg-background text-primary-light font-semibold ring-1 ring-secondary/50';
 const SECTION_CLASS =
-  'text-[10px] font-semibold uppercase tracking-wider text-foreground/40 px-3 pt-4 pb-1';
+  'text-[10px] font-semibold uppercase tracking-[0.2em] text-secondary-dark dark:text-secondary px-3 pt-4 pb-1';
 
 function MenuButton({
   active,
@@ -59,7 +59,7 @@ export function MobileMenu({
   const [showAdminLinks, setShowAdminLinks] = useState(false);
 
   return (
-    <nav className="fixed inset-0 z-40 lg:hidden bg-background-secondary px-2 pt-20 pb-4 flex flex-col overflow-y-auto overscroll-contain">
+    <nav className="fixed inset-0 z-40 lg:hidden bg-background-secondary bg-board px-2 pt-20 pb-4 flex flex-col overflow-y-auto overscroll-contain">
       {/* Accueil */}
       <MenuButton active={pathname === '/'} icon="🏠" onClick={() => onNavigateAction('/')}>
         <span>Accueil</span>
@@ -92,7 +92,7 @@ export function MobileMenu({
               <span className="flex items-center gap-1.5">
                 {lien.label}
                 {lien.href === '/choristes/sondages' && pendingPollsCount > 0 && (
-                  <span className="inline-flex items-center justify-center w-4 h-4 rounded bg-primary text-white font-bold text-[10px]">
+                  <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-secondary text-ink font-bold text-[10px]">
                     {pendingPollsCount}
                   </span>
                 )}
