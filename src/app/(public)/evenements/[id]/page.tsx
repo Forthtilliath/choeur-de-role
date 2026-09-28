@@ -1,14 +1,16 @@
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
-import NextImage from 'next/image';
 import Link from 'next/link';
 
 import { getExternalEventBySlugQuery } from '@/components/features/externals/queries';
 import { Button } from '@/components/ui/Button';
 import { JsonLd } from '@/components/ui/JsonLd';
 import { LocationMap } from '@/components/ui/LocationMap';
+import { PosterFrame } from '@/components/ui/PosterFrame';
 import { SafeHtml } from '@/components/ui/SafeHtml';
 import { ShareButtons } from '@/components/ui/ShareButtons';
+import { StaffDivider } from '@/components/ui/StaffDivider';
+import { TitleFlourish } from '@/components/ui/TitleFlourish';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
 import { withNotFound } from '@/lib/withNotFound';
 import { formatEventDateRange, formatLongDateTime } from '@/utils/dateHelpers';
@@ -107,33 +109,24 @@ export default async function EvenementPage({ params }: { params: Promise<{ id: 
 
       <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-start">
         {/* Affiche */}
-        <div className="relative rounded-2xl overflow-hidden bg-background-secondary w-full aspect-poster">
-          {event.image_url ? (
-            <NextImage
-              src={event.image_url}
-              alt={event.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-6xl">🎭</span>
-            </div>
-          )}
-          {isUpcoming && (
-            <span className="absolute top-3 right-3 text-xs px-2 py-1 rounded-full bg-primary text-white">
-              À venir
-            </span>
-          )}
-        </div>
+        <PosterFrame
+          src={event.image_url}
+          alt={event.title}
+          fallback="🎭"
+          upcoming={isUpcoming}
+        />
 
         {/* Infos */}
         <div className="flex flex-col gap-6">
-          <h1 className="text-3xl font-medium text-foreground">{event.title}</h1>
+          <div>
+            <span className="inline-block mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-secondary-dark dark:text-secondary">
+              Évènement extérieur
+            </span>
+            <h1 className="text-4xl md:text-5xl font-semibold text-foreground">{event.title}</h1>
+            <TitleFlourish className="justify-start mt-4" />
+          </div>
 
-          <div className="flex flex-col gap-3">
+          <div className="card-game p-5 flex flex-col gap-3">
             {/* Dates */}
             {sortedDates.length > 0 && (
               <div className="flex flex-col gap-2">
@@ -167,7 +160,7 @@ export default async function EvenementPage({ params }: { params: Promise<{ id: 
                   href={f.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-primary hover:opacity-70 transition-opacity no-underline"
+                  className="flex items-center gap-2 text-sm text-primary-light hover:opacity-70 transition-opacity no-underline"
                 >
                   📎 {f.label}
                 </Link>
@@ -194,7 +187,7 @@ export default async function EvenementPage({ params }: { params: Promise<{ id: 
       {/* Description */}
       {event.description && (
         <section className="mt-8 md:mt-16">
-          <div className="border-t border-border mb-5 md:mb-10" />
+          <StaffDivider className="mb-8 md:mb-12" />
           <SafeHtml className="mdx-content max-w-3xl" html={event.description} />
         </section>
       )}

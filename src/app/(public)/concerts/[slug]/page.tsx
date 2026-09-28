@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
-import NextImage from 'next/image';
 
 import {
   getAlbumsForPerformance,
@@ -11,8 +10,11 @@ import {
 import { GalerieClient } from '@/components/features/galerie/GalerieClient';
 import { Button } from '@/components/ui/Button';
 import { JsonLd } from '@/components/ui/JsonLd';
+import { PosterFrame } from '@/components/ui/PosterFrame';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ShareButtons } from '@/components/ui/ShareButtons';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { TitleFlourish } from '@/components/ui/TitleFlourish';
 import { getUserQuery } from '@/lib/auth';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
 import { withNotFound } from '@/lib/withNotFound';
@@ -78,8 +80,7 @@ async function AlbumsSection({
   if (sortedAlbums.length === 0) return null;
   return (
     <section className="mt-10 md:mt-20">
-      <div className="border-t border-border mb-6 md:mb-12" />
-      <h2 className="text-xl font-medium text-foreground mb-8">Photos du concert</h2>
+      <SectionHeading symbol="📷">Photos du concert</SectionHeading>
       <GalerieClient albums={sortedAlbums} canEdit={canEdit} />
     </section>
   );
@@ -127,38 +128,27 @@ export default async function ConcertPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-start">
-        <div className="relative rounded-2xl overflow-hidden bg-background-secondary w-full aspect-poster">
-          {performance.image_url ? (
-            <NextImage
-              src={performance.image_url}
-              alt={performance.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-6xl">🎵</span>
-            </div>
-          )}
-        </div>
+        <PosterFrame
+          src={performance.image_url}
+          alt={performance.title}
+          fallback="🎵"
+          upcoming={isUpcoming}
+        />
 
         <div className="flex flex-col gap-6">
-          {performance.seasons && (
-            <span className="text-xs text-foreground/50 bg-background-secondary px-3 py-1 rounded-full self-start">
-              {performance.seasons.label}
-            </span>
-          )}
-
           <div>
-            <h1 className="text-3xl font-medium text-foreground mb-2">{performance.title}</h1>
-            {isUpcoming && (
-              <span className="text-xs px-2 py-1 rounded-full bg-primary text-white">À venir</span>
+            {performance.seasons && (
+              <span className="inline-block mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-secondary-dark dark:text-secondary">
+                Saison {performance.seasons.label}
+              </span>
             )}
+            <h1 className="text-4xl md:text-5xl font-semibold text-foreground">
+              {performance.title}
+            </h1>
+            <TitleFlourish className="justify-start mt-4" />
           </div>
 
-          <div className="flex flex-col gap-3">
+          <div className="card-game p-5 flex flex-col gap-3">
             {performance.venue && (
               <div className="flex items-center gap-3">
                 <span className="text-lg">📍</span>
