@@ -9,10 +9,10 @@ export function MeetingCard({ meeting }: { meeting: CaMeeting }) {
   const date = formatDate(meeting.meeting_date);
 
   return (
-    <details className="border border-border rounded-xl bg-background group">
-      <summary className="flex items-center justify-between px-6 py-4 cursor-pointer list-none hover:bg-background-secondary transition-colors rounded-xl gap-4">
+    <details className="card-game group">
+      <summary className="flex items-center justify-between px-6 py-4 cursor-pointer list-none hover:bg-background-secondary/60 transition-colors rounded-2xl gap-4">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-foreground">{meeting.title}</p>
+          <p className="font-display text-lg font-semibold text-foreground">{meeting.title}</p>
           <p className="text-xs text-foreground/50 mt-0.5">{date}</p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
@@ -21,12 +21,12 @@ export function MeetingCard({ meeting }: { meeting: CaMeeting }) {
               href={meeting.pdf_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-lg border border-border text-foreground/50 hover:text-primary hover:border-primary transition-all no-underline"
+              className="text-xs font-semibold flex items-center gap-1 px-3 py-1.5 rounded-xl border border-primary/40 text-primary-light hover:border-primary hover:bg-primary/10 transition-colors no-underline"
             >
               📄 PDF
             </Link>
           )}
-          <span className="text-foreground/30 text-sm transition-transform group-open:rotate-180">
+          <span className="text-secondary-dark dark:text-secondary text-sm transition-transform group-open:rotate-180">
             ▼
           </span>
         </div>

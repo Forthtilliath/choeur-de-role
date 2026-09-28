@@ -89,7 +89,7 @@ export function PollsChoristesClient({ polls: initialPolls, memberId }: Props) {
 
       {open.length > 0 && (
         <div className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold text-foreground/60 uppercase tracking-wide">
+          <h2 className="text-xs font-semibold text-secondary-dark dark:text-secondary uppercase tracking-[0.2em]">
             En attente de votre réponse
           </h2>
           {open.map((p) => (
@@ -105,7 +105,7 @@ export function PollsChoristesClient({ polls: initialPolls, memberId }: Props) {
 
       {done.length > 0 && (
         <div className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold text-foreground/60 uppercase tracking-wide">
+          <h2 className="text-xs font-semibold text-secondary-dark dark:text-secondary uppercase tracking-[0.2em]">
             Déjà répondus
           </h2>
           {done.map((p) => (
@@ -135,12 +135,15 @@ function PollCard({
   onEdit?: () => void;
 }) {
   return (
-    <div className="border border-border rounded-2xl p-4 bg-background-secondary flex items-start gap-4">
+    <div
+      data-poll-card
+      className={`card-game p-4 flex items-start gap-4 ${poll.has_responded ? '' : 'ring-2 ring-secondary/50'}`}
+    >
       <div className="mt-0.5 shrink-0">
         {poll.has_responded ? (
           <CheckCircle className="w-5 h-5 text-green-500" />
         ) : (
-          <ClipboardList className="w-5 h-5 text-primary" />
+          <ClipboardList className="w-5 h-5 text-primary-light" />
         )}
       </div>
       <div className="flex-1 min-w-0">

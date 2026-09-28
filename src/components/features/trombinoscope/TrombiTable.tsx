@@ -16,7 +16,7 @@ type Props = {
 
 export function TrombiTable({ members, columns, sortKey, sortDir, onSortAction }: Props) {
   return (
-    <div className="rounded-2xl overflow-hidden border border-border">
+    <div className="card-game overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>

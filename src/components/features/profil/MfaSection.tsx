@@ -106,12 +106,12 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
   if (status === 'loading') return null;
 
   return (
-    <div className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background">
+    <div className="flex flex-col gap-4 p-6 card-game">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="text-sm font-medium text-foreground flex items-center gap-2">
             {status === 'enrolled' ? (
-              <ShieldCheck size={15} className="text-primary" />
+              <ShieldCheck size={15} className="text-primary-light" />
             ) : (
               <ShieldOff size={15} className="text-foreground/40" />
             )}
@@ -146,7 +146,7 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
         <div className="flex flex-col gap-5 pt-4 border-t border-border">
           <ol className="flex flex-col gap-2">
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary-light font-semibold flex items-center justify-center text-[10px]">
                 1
               </span>
               <span>
@@ -156,7 +156,7 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
               </span>
             </li>
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary-light font-semibold flex items-center justify-center text-[10px]">
                 2
               </span>
               <span>
@@ -166,13 +166,13 @@ export function MfaSection({ isAdmin }: { isAdmin: boolean }) {
               </span>
             </li>
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary-light font-semibold flex items-center justify-center text-[10px]">
                 3
               </span>
               <span>Scannez le code ci-dessous avec votre téléphone.</span>
             </li>
             <li className="flex gap-3 text-xs text-foreground/70">
-              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary font-semibold flex items-center justify-center text-[10px]">
+              <span className="shrink-0 w-5 h-5 rounded-full bg-primary/15 text-primary-light font-semibold flex items-center justify-center text-[10px]">
                 4
               </span>
               <span>Entrez le code à 6 chiffres affiché dans l&apos;app pour confirmer.</span>
