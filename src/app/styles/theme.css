@@ -1,0 +1,172 @@
+/*
+ * Motifs du thème « Plateau & Partition ».
+ * Chaque utilitaire évoque un objet du jeu ou de la musique :
+ *   bg-board    → le plateau de jeu (grille de points)
+ *   bg-staff    → la portée à 5 lignes
+ *   bg-felt     → le tapis de jeu, toujours sombre
+ *   btn-token   → un jeton épais qui s'enfonce quand on appuie
+ *   card-game   → une carte à jouer, avec son liseré intérieur doré
+ *   frame-gold  → l'anneau doré du logo
+ *   nav-marker  → le pion posé sur la case active
+ */
+
+/* ── Formulaires ────────────────────────────────────────────────────── */
+
+/* Spécificité nulle (:where) : les classes posées sur un champ gardent la main */
+@layer base {
+  :where(input, textarea, select) {
+    accent-color: var(--color-primary);
+  }
+
+  /* Les champs « intégrés » (bg-transparent, sans bordure : palette, barres d'éditeur)
+     sont exclus : c'est leur conteneur qui porte l'état de focus */
+  :where(
+    input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'], .bg-transparent),
+    textarea:not(.bg-transparent),
+    select
+  ):focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-secondary) 40%, transparent);
+  }
+
+  :where(input, textarea)::placeholder {
+    color: color-mix(in oklch, var(--color-foreground) 40%, transparent);
+  }
+}
+
+/* ── Plateau ─────────────────────────────────────────────────────────── */
+
+@utility bg-board {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklch, var(--color-primary) 14%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+}
+
+@utility bg-felt {
+  background-color: var(--color-felt);
+  color: var(--color-felt-foreground);
+  background-image:
+    radial-gradient(
+      ellipse at top,
+      color-mix(in oklch, var(--color-royal) 35%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(circle at 1px 1px, oklch(100% 0 0 / 0.05) 1px, transparent 0);
+  background-size:
+    100% 100%,
+    24px 24px;
+}
+
+/* ── Portée ──────────────────────────────────────────────────────────── */
+
+/* 5 lignes espacées de 7px, estompées sur les bords. La couleur suit currentColor. */
+@utility bg-staff {
+  height: 29px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    currentColor 0 1px,
+    transparent 1px 7px
+  );
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+/* ── Jetons ──────────────────────────────────────────────────────────── */
+
+/* La tranche du jeton prend --token-edge (défaut : violet profond) */
+@utility btn-token {
+  box-shadow:
+    0 3px 0 0 var(--token-edge, var(--color-primary-deep)),
+    0 6px 12px -6px oklch(20% 0.08 293 / 0.45);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 150ms ease,
+    filter 150ms ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.07);
+    box-shadow:
+      0 4px 0 0 var(--token-edge, var(--color-primary-deep)),
+      0 10px 16px -8px oklch(20% 0.08 293 / 0.5);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 0 var(--token-edge, var(--color-primary-deep));
+  }
+}
+
+/* ── Cartes à jouer ─────────────────────────────────────────────────── */
+
+@utility card-game {
+  --card-frame:
+    inset 0 0 0 4px var(--color-background),
+    inset 0 0 0 5px color-mix(in oklch, var(--color-secondary) 40%, transparent);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: var(--card-frame), var(--shadow-sm);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+/* On soulève la carte de la table */
+@utility card-lift {
+  &:hover {
+    transform: translateY(-4px) rotate(-0.4deg);
+    border-color: color-mix(in oklch, var(--color-primary) 45%, var(--color-border));
+    box-shadow: var(--card-frame, 0 0 #0000), var(--shadow-lg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+/* ── Dorures ─────────────────────────────────────────────────────────── */
+
+@utility frame-gold {
+  border: 1px solid color-mix(in oklch, var(--color-gold) 75%, transparent);
+  box-shadow:
+    0 0 0 4px color-mix(in oklch, var(--color-gold) 18%, transparent),
+    var(--shadow-xl);
+}
+
+@utility text-gold-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-gold) 0%,
+    oklch(90% 0.1 88) 45%,
+    var(--color-gold) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────── */
+
+/* Losange doré sous le lien actif : le pion est sur cette case */
+@utility nav-marker {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 1px;
+    background-color: var(--color-secondary);
+    transform: translateX(-50%) rotate(45deg);
+  }
+}

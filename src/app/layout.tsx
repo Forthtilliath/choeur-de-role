@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
+import { Figtree, Fraunces } from 'next/font/google';
 import Script from 'next/script';
 import { Toaster } from 'sonner';
 
@@ -21,7 +21,13 @@ import { organizationJsonLd, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib
 
 import './globals.css';
 
-const geist = Geist({ subsets: ['latin'] });
+// Fraunces : titres (serif chaleureuse, un brin fantaisie) — Figtree : texte courant
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  axes: ['SOFT', 'WONK', 'opsz'],
+  variable: '--font-fraunces',
+});
+const figtree = Figtree({ subsets: ['latin'], variable: '--font-figtree' });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -89,13 +95,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     ? (await getActivePollsForMember()).filter((p) => !p.has_responded).length
     : 0;
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${fraunces.variable} ${figtree.variable}`}>
       <head>
         <JsonLd data={organizationJsonLd} />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-        <meta name="theme-color" content="#5b3fa8" />
+        <meta name="theme-color" content="#5e32b2" />
       </head>
-      <body className={geist.className}>
+      <body className="font-sans antialiased">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:outline-none"
