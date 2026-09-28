@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/Button';
 
 import { privateLinks } from './headerLinks';
 
-const LINK_CLASS = 'text-xs transition-all px-3 py-1 rounded-md whitespace-nowrap';
-const ACTIVE_CLASS = 'text-primary-light bg-primary/10 dark:bg-primary/20 font-medium';
-const IDLE_CLASS = 'text-foreground/70 hover:text-foreground hover:bg-background';
+const LINK_CLASS = 'text-xs transition-colors px-3 py-1 rounded-full whitespace-nowrap';
+const ACTIVE_CLASS =
+  'text-primary-light bg-background font-semibold shadow-sm ring-1 ring-secondary/50';
+const IDLE_CLASS = 'text-foreground/70 hover:text-foreground hover:bg-background/70';
 
 type Props = {
   pathname: string;
@@ -23,7 +24,7 @@ export function ChoristesSubNav({ pathname, isCa, isAdmin, pendingPollsCount }: 
   const inAdmin = pathname.startsWith('/choristes/admin');
 
   return (
-    <div className="hidden lg:flex fixed top-16 left-0 right-0 z-40 bg-background-tertiary border-b border-border">
+    <div className="hidden lg:flex fixed top-16 left-0 right-0 z-40 bg-background-tertiary bg-board border-b border-border">
       <div
         className={`max-w-5xl mx-auto px-4 h-10 flex items-center w-full ${isAdmin ? 'justify-between' : 'justify-center'}`}
       >
@@ -38,8 +39,8 @@ export function ChoristesSubNav({ pathname, isCa, isAdmin, pendingPollsCount }: 
                 {lien.label}
                 {lien.href === '/choristes/sondages' && pendingPollsCount > 0 && (
                   <span className="absolute top-0 right-0 -mt-1 -mr-1 flex size-3 z-51">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
-                    <span className="relative inline-flex size-3 rounded-full bg-primary justify-center items-center text-black text-[10px] font-bold">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary opacity-75"></span>
+                    <span className="relative inline-flex size-3 rounded-full bg-secondary justify-center items-center text-ink text-[10px] font-bold">
                       {pendingPollsCount}
                     </span>
                   </span>
