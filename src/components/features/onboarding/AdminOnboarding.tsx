@@ -80,7 +80,7 @@ export function AdminOnboarding({ firstName }: Props) {
       {step === 1 && (
         <div className="flex flex-col gap-6">
           <div>
-            <p className="text-xs text-primary font-medium uppercase tracking-widest mb-2">
+            <p className="text-xs text-primary-light font-medium uppercase tracking-widest mb-2">
               Accès administrateur
             </p>
             <h1 className="text-3xl font-medium text-foreground mb-3">
@@ -92,7 +92,7 @@ export function AdminOnboarding({ firstName }: Props) {
             </p>
           </div>
 
-          <div className="flex flex-col gap-0 rounded-2xl border border-border bg-background overflow-hidden">
+          <div className="flex flex-col gap-0 card-game overflow-hidden">
             <div className="px-5 py-3 bg-background-secondary border-b border-border">
               <p className="text-xs font-medium text-foreground/50 uppercase tracking-wide">
                 En tant qu&apos;administrateur, vous pouvez
@@ -138,10 +138,10 @@ export function AdminOnboarding({ firstName }: Props) {
             {SETUP_FLOW.map(({ icon, title, why, path, href }, i) => (
               <div
                 key={title}
-                className="flex gap-4 p-4 rounded-2xl border border-border bg-background"
+                className="flex gap-4 p-4 card-game"
               >
                 <div className="flex flex-col items-center gap-1 shrink-0">
-                  <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-xs font-semibold text-primary">
+                  <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-xs font-semibold text-primary-light">
                     {i + 1}
                   </div>
                   {i < SETUP_FLOW.length - 1 && <div className="w-px flex-1 bg-border min-h-3" />}
@@ -158,7 +158,7 @@ export function AdminOnboarding({ firstName }: Props) {
                       type="button"
                       onClick={() => handleComplete(href)}
                       disabled={completing}
-                      className="text-xs text-primary font-medium hover:underline disabled:opacity-50"
+                      className="text-xs text-primary-light font-medium hover:underline disabled:opacity-50"
                     >
                       Y aller →
                     </button>

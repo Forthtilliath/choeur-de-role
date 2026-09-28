@@ -20,7 +20,7 @@ test.describe('Page CA', () => {
   });
 
   test('des comptes-rendus sont affichés ou un message vide est présent', async ({ page }) => {
-    const meetings = page.locator('details.border.border-border');
+    const meetings = page.locator('main details');
     const count = await meetings.count();
 
     if (count === 0) {
@@ -31,7 +31,7 @@ test.describe('Page CA', () => {
   });
 
   test("cliquer sur un compte-rendu l'ouvre", async ({ page }) => {
-    const meetings = page.locator('details.border.border-border');
+    const meetings = page.locator('main details');
     if ((await meetings.count()) === 0) {
       test.skip(true, 'Aucun compte-rendu disponible — test non pertinent');
       return;

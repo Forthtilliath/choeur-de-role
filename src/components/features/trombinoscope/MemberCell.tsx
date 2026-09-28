@@ -115,7 +115,7 @@ export function MemberCell({
 
     case 'photo':
       return (
-        <div className="relative mx-auto w-20 h-20 min-w-20 rounded-sm overflow-hidden bg-background-secondary shadow-member-photo">
+        <div className="relative mx-auto w-20 h-20 min-w-20 rounded-lg overflow-hidden bg-background-secondary ring-2 ring-secondary/60 shadow-member-photo">
           {member.photo_url ? (
             <Image
               src={member.photo_url}

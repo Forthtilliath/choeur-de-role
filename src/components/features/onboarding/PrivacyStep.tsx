@@ -61,7 +61,7 @@ export function PrivacyStep({ value, onChangeAction, onNextAction }: Props) {
         calendrier. Vous pourrez modifier cela à tout moment dans votre profil.
       </StepHeader>
 
-      <div className="flex flex-col divide-y divide-border rounded-2xl border border-border bg-background px-4">
+      <div className="flex flex-col divide-y divide-border card-game px-4">
         <Switch
           checked={value.email}
           onChange={(v) => onChangeAction({ email: v })}
@@ -86,7 +86,7 @@ export function PrivacyStep({ value, onChangeAction, onNextAction }: Props) {
         />
       </div>
 
-      <div className="flex flex-col gap-2 rounded-2xl border border-border bg-background px-4 py-3">
+      <div className="flex flex-col gap-2 card-game px-4 py-3">
         <p className="text-sm font-medium text-foreground">Anniversaire sur le calendrier</p>
         <div className="flex gap-2 flex-wrap">
           {BIRTHDAY_OPTIONS.map((opt) => (
@@ -96,7 +96,7 @@ export function PrivacyStep({ value, onChangeAction, onNextAction }: Props) {
               onClick={() => onChangeAction({ birthday: opt.value })}
               className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
                 value.birthday === opt.value
-                  ? 'border-primary bg-primary/10 text-primary'
+                  ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40'
                   : 'border-border text-foreground/60 hover:border-foreground/30'
               }`}
             >

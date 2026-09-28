@@ -29,16 +29,19 @@ export function NewsCard({ news }: { news: News }) {
   return (
     <div
       id={`news-${news.id}`}
-      className={`rounded-xl border bg-background overflow-hidden scroll-mt-28 ${news.pinned ? 'border-primary' : 'border-border'}`}
+      data-pinned={news.pinned ? 'true' : undefined}
+      className={`card-game overflow-hidden scroll-mt-28 ${news.pinned ? 'ring-2 ring-secondary/60' : ''}`}
     >
       {news.pinned && (
-        <div className="px-6 py-2 bg-primary/10 border-b border-primary/20">
-          <p className="text-xs text-primary font-medium">📌 Épinglée</p>
+        <div className="px-6 py-2 bg-secondary/15 border-b border-secondary/30">
+          <p className="text-xs text-secondary-dark dark:text-secondary font-semibold uppercase tracking-[0.15em]">
+            📌 Épinglée
+          </p>
         </div>
       )}
       <div className="px-6 py-5">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-4 mb-3">
-          <h2 className="text-base font-medium text-foreground line-clamp-2">{news.title}</h2>
+          <h2 className="text-xl font-semibold text-foreground line-clamp-2">{news.title}</h2>
           <p className="text-xs text-foreground/60 shrink-0">{displayDate}</p>
         </div>
         <SafeHtml className="mdx-content text-sm" html={news.content} />
@@ -51,7 +54,7 @@ export function NewsCard({ news }: { news: News }) {
                 href={f.file_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-primary flex items-center gap-2 hover:opacity-70 transition-opacity no-underline w-fit"
+                className="text-sm text-primary-light flex items-center gap-2 hover:opacity-70 transition-opacity no-underline w-fit"
               >
                 📎 {f.label}
               </a>
