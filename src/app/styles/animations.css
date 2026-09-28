@@ -1,0 +1,85 @@
+/* Animations globales : navigation, panneaux mobiles, transitions de page */
+
+@keyframes nav-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-in {
+  animation: page-in 0.2s ease-out;
+}
+
+/* Carte retournée sur le plateau : le panneau du hero se dévoile */
+@keyframes card-deal {
+  from {
+    opacity: 0;
+    transform: translateY(16px) rotate(-1.5deg) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+.animate-card-deal {
+  animation: card-deal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Note qui flotte au-dessus de la portée */
+@keyframes note-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-card-deal,
+  .animate-page-in {
+    animation: none;
+  }
+}
