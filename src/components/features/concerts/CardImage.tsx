@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { UpcomingBadge } from '@/components/ui/UpcomingBadge';
+
 import type { PerformanceDatesWithSeasons } from './types';
 
 export function CardImage({
@@ -33,11 +35,7 @@ export function CardImage({
           {performance.seasons.label}
         </span>
       )}
-      {!past && (
-        <span className="absolute top-2 right-2 text-xs px-2 py-0.5 rounded-full bg-primary text-white">
-          À venir
-        </span>
-      )}
+      {!past && <UpcomingBadge className="absolute top-2 right-2" />}
     </div>
   );
 }

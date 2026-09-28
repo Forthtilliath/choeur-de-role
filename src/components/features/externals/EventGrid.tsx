@@ -1,3 +1,5 @@
+import { SectionHeading } from '@/components/ui/SectionHeading';
+
 import { EventCard } from './EventCard';
 import type { ExternalEvent } from './types';
 
@@ -12,8 +14,7 @@ export function EventGrid({
 }) {
   return (
     <section className="mb-8 md:mb-16">
-      <div className="border-t border-border mb-5 md:mb-10" />
-      <h2 className="text-xl font-medium text-foreground/60 mb-8">{title}</h2>
+      <SectionHeading muted={isPast}>{title}</SectionHeading>
       <div
         className={`grid gap-6 ${isPast ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'}`}
       >

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { SafeHtml } from '@/components/ui/SafeHtml';
+import { UpcomingBadge } from '@/components/ui/UpcomingBadge';
 import { useNow } from '@/hooks/useNow';
 import { formatEventDateRange } from '@/utils/dateHelpers';
 
@@ -28,10 +29,8 @@ export function EventCard({
 
   return (
     <div
-      className={`cursor-pointer group rounded-2xl overflow-hidden border bg-background flex flex-col transition-all duration-200 h-full ${
-        isPast
-          ? 'opacity-70 hover:opacity-100 border-border hover:border-border hover:shadow-md'
-          : 'border-border hover:border-primary/40 hover:shadow-lg hover:-translate-y-0.5'
+      className={`cursor-pointer group card-game card-lift overflow-hidden flex flex-col h-full ${
+        isPast ? 'opacity-75 hover:opacity-100' : ''
       }`}
       onClick={() => router.push(`/evenements/${event.slug ?? event.id}`)}
       role="link"
@@ -52,16 +51,12 @@ export function EventCard({
         ) : (
           <ChoirPlaceholder />
         )}
-        {!isPast && (
-          <span className="absolute top-2 right-2 text-xs px-2 py-0.5 rounded-full bg-primary text-white font-medium shadow-sm">
-            À venir
-          </span>
-        )}
+        {!isPast && <UpcomingBadge className="absolute top-2 right-2" />}
       </div>
 
       {/* Content */}
-      <div className="p-4 flex flex-col gap-2 flex-1">
-        <h3 className="text-sm font-semibold text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+      <div className="p-4 flex flex-col gap-2 flex-1 border-t border-border">
+        <h3 className="text-base font-semibold text-foreground leading-snug line-clamp-2 group-hover:text-primary-light transition-colors">
           {event.title}
         </h3>
 
@@ -107,7 +102,7 @@ export function EventCard({
                   href={f.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs flex items-center gap-1 text-primary hover:opacity-70 transition-opacity no-underline"
+                  className="text-xs flex items-center gap-1 text-primary-light hover:opacity-70 transition-opacity no-underline"
                   onClick={(e) => e.stopPropagation()}
                 >
                   📎 {f.label}
@@ -118,7 +113,7 @@ export function EventCard({
                   href={event.external_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-center py-1.5 rounded-lg border border-border text-foreground/60 no-underline hover:border-primary hover:text-primary transition-all"
+                  className="text-xs font-semibold text-center py-1.5 rounded-xl border border-primary/50 text-primary-light no-underline hover:border-primary hover:bg-primary/10 transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
                   En savoir plus →
