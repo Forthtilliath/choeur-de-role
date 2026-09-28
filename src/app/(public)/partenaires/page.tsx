@@ -15,6 +15,7 @@ import { SponsorDossierButton } from '@/components/features/partenaires/SponsorD
 import type { Partner } from '@/components/features/partenaires/types';
 import { Button } from '@/components/ui/Button';
 import { Main } from '@/components/ui/Main';
+import { StaffDivider } from '@/components/ui/StaffDivider';
 import { getUserQuery } from '@/lib/auth';
 import { getContentBlocks } from '@/lib/content';
 
@@ -65,15 +66,22 @@ export default async function PartenairesPage() {
         </div>
       )}
 
-      <div className="mt-10 md:mt-20 rounded-2xl p-6 md:p-12 text-center bg-muted">
-        <h2 className="text-2xl font-medium mb-4 text-foreground">
+      <div className="relative mt-10 md:mt-20 rounded-3xl p-6 md:p-12 text-center bg-felt frame-gold overflow-hidden">
+        <StaffDivider
+          symbol="♛"
+          surfaceClassName="bg-felt"
+          className="mb-8 text-secondary/30"
+        />
+        <h2 className="text-3xl font-semibold mb-4 text-felt-foreground">
           Vous souhaitez nous soutenir ?
         </h2>
-        <p className="mb-8 text-foreground/70">
+        <p className="mb-8 text-felt-foreground/75 max-w-xl mx-auto">
           Rejoignez nos partenaires et participez à l&apos;aventure du Chœur de Rôle. Contactez-nous
           pour en savoir plus sur nos offres de partenariat.
         </p>
-        <Button href="/contact?sujet=partenariat">Nous contacter</Button>
+        <Button href="/contact?sujet=partenariat" variant="secondary">
+          Nous contacter
+        </Button>
       </div>
     </Main>
   );
@@ -99,7 +107,8 @@ function PartnerCard({ partner }: { partner: Partner }) {
   );
 
   const content = (
-    <div className="rounded-xl flex items-center justify-center transition-opacity hover:opacity-80 bg-white border border-border w-full h-full mx-auto p-6">
+    // Toujours blanc, même en sombre : les logos partenaires sont prévus pour un fond clair
+    <div className="rounded-2xl flex items-center justify-center bg-white ring-1 ring-secondary/40 outline-1 -outline-offset-8 outline-secondary/35 shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-xl w-full h-full mx-auto p-6">
       <div className="relative w-full h-full">{logo}</div>
     </div>
   );

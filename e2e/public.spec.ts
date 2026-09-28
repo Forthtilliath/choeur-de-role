@@ -171,7 +171,7 @@ test.describe('Formulaire de contact', () => {
   test('?sujet=partenariat présélectionne la catégorie Devenir partenaire', async ({ page }) => {
     await page.goto('/contact?sujet=partenariat');
     const btn = page.getByRole('button', { name: /devenir partenaire/i });
-    await expect(btn).toHaveClass(/border-primary/);
+    await expect(btn).toHaveAttribute('aria-pressed', 'true');
   });
 
   test('?sujet=invalide désactive le bouton Envoyer', async ({ page }) => {
@@ -183,7 +183,7 @@ test.describe('Formulaire de contact', () => {
     await page.goto('/contact?sujet=invalide'); // pas de catégorie pré-sélectionnée
     const btn = page.getByRole('button', { name: /autre demande/i });
     await btn.click();
-    await expect(btn).toHaveClass(/border-primary/);
+    await expect(btn).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByRole('button', { name: /envoyer le message/i })).toBeEnabled();
   });
 
