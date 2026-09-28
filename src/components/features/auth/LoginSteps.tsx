@@ -51,8 +51,8 @@ export function FormError({ message }: { message: string }) {
 export function StepTitle({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1">
-      <h1 className="text-2xl font-medium text-foreground">{title}</h1>
-      <p className="text-sm text-foreground/50">{children}</p>
+      <h1 className="text-3xl font-semibold text-foreground">{title}</h1>
+      <p className="text-sm text-foreground/60">{children}</p>
     </div>
   );
 }

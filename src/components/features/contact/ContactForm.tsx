@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/Button';
+import { TitleFlourish } from '@/components/ui/TitleFlourish';
 import { formatPhone } from '@/utils/phoneHelpers';
 
 const CATEGORIES = [
@@ -67,9 +68,10 @@ export function ContactForm() {
 
   if (success) {
     return (
-      <div className="text-center py-8 md:py-16">
+      <div className="card-game text-center px-6 py-10 md:py-16">
         <p className="text-4xl mb-4">✉️</p>
-        <h2 className="text-xl font-medium mb-2 text-foreground">Message envoyé !</h2>
+        <h2 className="text-2xl font-semibold mb-2 text-foreground">Message envoyé !</h2>
+        <TitleFlourish className="mb-4" />
         <p className="text-foreground/60">
           Merci pour votre message. Nous vous répondrons dans les plus brefs délais.
         </p>
@@ -78,7 +80,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="card-game flex flex-col gap-6 p-6 md:p-8">
       {/* Catégorie */}
       <fieldset className="flex flex-col gap-2">
         <legend className="text-sm font-medium text-foreground">Objet de votre message</legend>
@@ -88,15 +90,16 @@ export function ContactForm() {
               key={cat.value}
               type="button"
               onClick={() => setCategory(cat.value)}
+              aria-pressed={category === cat.value}
               className={`flex items-center gap-4 p-4 rounded-xl border text-left transition-all ${
                 category === cat.value
-                  ? 'border-primary bg-primary/10'
-                  : 'border-border hover:border-primary/50'
+                  ? 'border-primary bg-primary/10 ring-2 ring-secondary/50'
+                  : 'border-border bg-background-secondary/50 hover:border-primary/50 hover:-translate-y-0.5'
               }`}
             >
               <div>
                 <p
-                  className={`text-sm font-medium ${category === cat.value ? 'text-primary' : 'text-foreground'}`}
+                  className={`text-sm font-semibold ${category === cat.value ? 'text-primary-light' : 'text-foreground'}`}
                 >
                   {cat.label}
                 </p>

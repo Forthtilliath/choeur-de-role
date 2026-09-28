@@ -122,22 +122,27 @@ export default function LoginPage() {
           className="object-cover object-top"
           priority
         />
-        <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/30 to-black/80" />
-        <div className="absolute bottom-12 left-0 right-0 px-10">
-          <p className="text-white text-3xl font-medium leading-snug drop-shadow-lg">
-            Chœur de Rôle
-          </p>
-          <p className="text-white/80 text-sm mt-2 drop-shadow">Espace réservé aux choristes</p>
+        <div className="absolute inset-0 bg-linear-to-b from-backdrop/20 via-backdrop/40 to-backdrop/90" />
+        <div className="absolute bottom-12 left-0 right-0 px-10 flex items-center gap-5">
+          <Image src="/images/logo.svg" alt="" width={72} height={72} unoptimized className="size-18" />
+          <div>
+            <p className="font-display text-white text-4xl font-semibold leading-tight drop-shadow-lg">
+              Chœur de Rôle
+            </p>
+            <p className="text-secondary text-xs uppercase tracking-[0.2em] mt-2 drop-shadow">
+              Espace réservé aux choristes
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Partie droite — formulaire */}
-      <div className="flex-1 relative flex flex-col items-center justify-center px-8 py-8 md:py-16 bg-background min-h-dvh md:min-h-0">
+      <div className="flex-1 relative flex flex-col items-center justify-center px-4 sm:px-8 py-20 md:py-16 bg-background bg-board min-h-dvh md:min-h-0">
         <Button href="/" variant="link" className="absolute top-6 left-6 flex items-center gap-1">
           ← Retour au site
         </Button>
 
-        <div className="w-full max-w-sm flex flex-col gap-8">
+        <div className="card-game w-full max-w-sm flex flex-col gap-8 p-6 sm:p-8">
           {step === 'login' && (
             <CredentialsStep loading={loading} error={error} onSubmitAction={handleSignIn} />
           )}

@@ -8,6 +8,7 @@ import Link from 'next/link';
 const GalerieLightbox = dynamic(() => import('./GalerieLightbox').then((m) => m.GalerieLightbox), {
   ssr: false,
 });
+import { StaffDivider } from '@/components/ui/StaffDivider';
 import { sortByOrderIndex } from '@/utils/arrayHelpers';
 
 import type { GalleryAlbum } from './types';
@@ -42,7 +43,7 @@ export function GalerieClient({ albums, canEdit = false }: Props) {
   return (
     <>
       <div className="flex flex-col gap-8 md:gap-12">
-        {albums.map((album) => {
+        {albums.map((album, albumIndex) => {
           const isExpanded = expandedAlbums.has(album.id);
           const sortedPhotos = sortByOrderIndex(album.gallery_photos);
           const sortedVideos = sortByOrderIndex(album.gallery_videos);
@@ -55,10 +56,11 @@ export function GalerieClient({ albums, canEdit = false }: Props) {
 
           return (
             <section key={album.id}>
+              {albumIndex > 0 && <StaffDivider className="mb-8 md:mb-12" />}
               {/* Header album */}
               <div className="flex items-center gap-4 mb-6">
                 {album.cover_url && (
-                  <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0">
+                  <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 -rotate-3 ring-2 ring-secondary/70 shadow-md">
                     <Image
                       src={album.cover_url}
                       alt={album.title}
@@ -70,11 +72,11 @@ export function GalerieClient({ albums, canEdit = false }: Props) {
                 )}
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-medium text-foreground">{album.title}</h2>
+                    <h2 className="text-2xl font-semibold text-foreground">{album.title}</h2>
                     {canEdit && (
                       <Link
                         href={`/choristes/admin/galerie?album=${album.id}`}
-                        className="text-xs text-foreground/30 hover:text-primary transition-colors no-underline shrink-0"
+                        className="text-xs text-foreground/30 hover:text-primary-light transition-colors no-underline shrink-0"
                         aria-label={`Modifier l'album ${album.title}`}
                       >
                         ⚙️
@@ -130,7 +132,7 @@ export function GalerieClient({ albums, canEdit = false }: Props) {
                         type="button"
                         onClick={() => openLightbox(album, index)}
                         aria-label={`Ouvrir la photo${photo.caption ? ` : ${photo.caption}` : ` ${index + 1} de ${album.title}`}`}
-                        className="relative aspect-square rounded-xl overflow-hidden bg-background-secondary hover:opacity-90 transition-opacity group"
+                        className="relative aspect-square rounded-xl overflow-hidden bg-background-secondary ring-1 ring-border shadow-sm transition-all duration-200 hover:-translate-y-1 hover:rotate-1 hover:shadow-lg hover:ring-secondary/60 group"
                       >
                         <Image
                           src={photo.url}
@@ -151,13 +153,13 @@ export function GalerieClient({ albums, canEdit = false }: Props) {
                         type="button"
                         onClick={() => toggleAlbum(album.id)}
                         aria-label={`Voir ${sortedPhotos.length - MAX_VISIBLE_PHOTOS} photos supplémentaires`}
-                        className="relative aspect-square rounded-xl overflow-hidden bg-background-tertiary hover:bg-primary/10 transition-colors flex items-center justify-center border border-border"
+                        className="relative aspect-square card-game card-lift bg-board flex items-center justify-center"
                       >
                         <div className="text-center">
-                          <p className="text-2xl font-medium text-foreground/60">
+                          <p className="font-display text-3xl font-semibold text-primary-light">
                             +{sortedPhotos.length - MAX_VISIBLE_PHOTOS}
                           </p>
-                          <p className="text-xs text-foreground/40 mt-1">photos</p>
+                          <p className="text-xs text-foreground/60 mt-1">photos</p>
                         </div>
                       </button>
                     )}
