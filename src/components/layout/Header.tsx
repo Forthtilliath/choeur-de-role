@@ -50,26 +50,41 @@ export function Header({
       {isPending && (
         <div className="fixed top-0 left-0 right-0 z-9999 h-1 bg-primary/20 overflow-hidden">
           <div
-            className="absolute inset-y-0 w-1/2 bg-primary"
+            className="absolute inset-y-0 w-1/2 bg-linear-to-r from-primary via-secondary to-primary"
             style={{ animation: 'nav-progress 1s ease-in-out infinite' }}
           />
         </div>
       )}
 
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background-secondary">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background-secondary/90 backdrop-blur-md">
+        {/* Filet doré : l'anneau du logo */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-0.75 bg-linear-to-r from-secondary-dark via-secondary to-secondary-dark"
+        />
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" onClick={() => setMenuOuvert(false)} className="flex items-center gap-3">
+          <Link
+            href="/"
+            onClick={() => setMenuOuvert(false)}
+            className="group flex items-center gap-3 no-underline"
+          >
             <Image
-              src="/images/logo.png"
+              src="/images/logo.svg"
               alt="Chœur de Rôle"
               loading="eager"
-              width={84}
-              height={56}
-              className="object-contain w-auto h-14"
+              unoptimized
+              width={48}
+              height={48}
+              className="size-12 transition-transform duration-300 group-hover:-rotate-12"
             />
-            <span className="text-foreground font-medium text-sm hidden sm:block">
-              Chœur de Rôle
+            <span className="hidden sm:flex flex-col leading-none">
+              <span className="font-display text-lg font-semibold text-foreground">
+                Chœur de Rôle
+              </span>
+              <span className="mt-1 text-[10px] uppercase tracking-[0.2em] text-secondary-dark dark:text-secondary">
+                Chorale à Angers
+              </span>
             </span>
           </Link>
 
@@ -79,7 +94,7 @@ export function Header({
               <Link
                 key={lien.href}
                 href={lien.href}
-                className={`text-sm transition-all px-3 py-1.5 rounded-md ${pathname === lien.href ? 'text-primary-light bg-primary/10 dark:bg-primary/20 font-medium' : 'text-foreground/70 hover:text-foreground hover:bg-muted'}`}
+                className={`text-sm transition-colors px-3 py-1.5 rounded-lg ${pathname === lien.href ? 'nav-marker text-primary-light font-semibold' : 'text-foreground/70 hover:text-foreground hover:bg-muted'}`}
               >
                 {lien.label}
               </Link>
