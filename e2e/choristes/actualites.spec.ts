@@ -47,7 +47,7 @@ test.describe('Page Actualités', () => {
     }
   });
 
-  test('les actualités épinglées ont la bordure primary', async ({ page }) => {
+  test('les actualités épinglées sont marquées comme telles', async ({ page }) => {
     await page.waitForSelector('[id^="news-"]', { timeout: 10_000 }).catch(() => null);
 
     const pinnedBadges = page.locator('p:text("📌 Épinglée")');
@@ -57,10 +57,10 @@ test.describe('Page Actualités', () => {
       return;
     }
 
-    // Structure : p → div.bg-primary/10 → div#news-X.border-primary (2 niveaux)
+    // Structure : p → bandeau « Épinglée » → div#news-X (2 niveaux)
     for (let i = 0; i < pinnedCount; i++) {
       const card = pinnedBadges.nth(i).locator('xpath=../..');
-      await expect(card).toHaveClass(/border-primary/);
+      await expect(card).toHaveAttribute('data-pinned', 'true');
     }
   });
 });

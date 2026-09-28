@@ -43,7 +43,7 @@ export function WelcomeStep({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="text-xs text-primary font-medium uppercase tracking-widest mb-2">Bienvenue</p>
+        <p className="text-xs text-primary-light font-medium uppercase tracking-widest mb-2">Bienvenue</p>
         <h1 className="text-3xl font-medium text-foreground mb-3">Bonjour {firstName}&nbsp;!</h1>
         <p className="text-foreground/60 leading-relaxed">
           Votre compte a été créé. Avant de rejoindre l&apos;espace choriste, prenons quelques
@@ -84,7 +84,7 @@ export function DiscoverStep({
         {DISCOVER_ITEMS.map(({ icon, title, desc, cta, href }) => (
           <div
             key={title}
-            className="flex gap-4 p-4 rounded-2xl border border-border bg-background"
+            className="flex gap-4 p-4 card-game"
           >
             <span className="text-2xl shrink-0 mt-0.5">{icon}</span>
             <div className="flex flex-col gap-1 min-w-0">
@@ -94,7 +94,7 @@ export function DiscoverStep({
                 type="button"
                 onClick={() => onCompleteAction(href)}
                 disabled={completing}
-                className="text-xs text-primary font-medium mt-1 hover:underline text-left disabled:opacity-50"
+                className="text-xs text-primary-light font-medium mt-1 hover:underline text-left disabled:opacity-50"
               >
                 {cta} →
               </button>

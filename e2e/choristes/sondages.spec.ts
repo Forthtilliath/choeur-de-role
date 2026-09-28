@@ -16,7 +16,7 @@ test.describe('Page Sondages', () => {
   });
 
   test('des sondages sont affichés ou un message vide est présent', async ({ page }) => {
-    const polls = page.locator('.border.border-border.rounded-2xl');
+    const polls = page.locator('[data-poll-card]');
     const count = await polls.count();
 
     if (count === 0) {
@@ -27,7 +27,7 @@ test.describe('Page Sondages', () => {
   });
 
   test('les sondages en attente sont séparés des sondages répondus', async ({ page }) => {
-    const polls = page.locator('.border.border-border.rounded-2xl');
+    const polls = page.locator('[data-poll-card]');
     if ((await polls.count()) === 0) {
       test.skip(true, 'Aucun sondage disponible — test non pertinent');
       return;

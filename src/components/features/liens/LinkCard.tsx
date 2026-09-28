@@ -12,13 +12,13 @@ export function LinkCard({ link }: { link: MemberLink }) {
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-4 p-4 rounded-xl border border-border bg-background hover:bg-background-secondary transition-colors no-underline group"
+      className="card-game card-lift flex items-center gap-4 p-4 no-underline group"
     >
-      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-        <span className="text-primary text-lg">🔗</span>
+      <div className="w-10 h-10 rounded-lg bg-primary/10 ring-1 ring-secondary/40 flex items-center justify-center shrink-0">
+        <span className="text-lg">🔗</span>
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+        <p className="text-sm font-semibold text-foreground group-hover:text-primary-light transition-colors">
           {link.label}
         </p>
         {link.description && (
@@ -32,7 +32,9 @@ export function LinkCard({ link }: { link: MemberLink }) {
           {VISIBILITY_LABEL[visibility]}
         </span>
       )}
-      <span className="text-foreground/30 text-sm shrink-0">→</span>
+      <span className="text-secondary-dark dark:text-secondary text-sm shrink-0 transition-transform group-hover:translate-x-1">
+        →
+      </span>
     </Link>
   );
 }

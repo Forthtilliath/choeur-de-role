@@ -58,7 +58,7 @@ type Props = {
 export function ProfileVisibilitySections({ values, onChangeAction }: Props) {
   return (
     <>
-      <div className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background">
+      <div className="flex flex-col gap-4 p-6 card-game">
         <SectionHeader title="Visibilité sur le trombinoscope" />
         <div className="flex flex-col divide-y divide-border">
           <div className="pb-3">
@@ -92,7 +92,7 @@ export function ProfileVisibilitySections({ values, onChangeAction }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background">
+      <div className="flex flex-col gap-4 p-6 card-game">
         <SectionHeader title="Visibilité sur le calendrier" />
         <div className="flex flex-col divide-y divide-border">
           <div className="pb-3">
@@ -108,7 +108,7 @@ export function ProfileVisibilitySections({ values, onChangeAction }: Props) {
                   onClick={() => onChangeAction({ visibilityBirthday: opt.value })}
                   className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
                     values.visibilityBirthday === opt.value
-                      ? 'border-primary bg-primary/10 text-primary'
+                      ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40'
                       : 'border-border text-foreground/60'
                   }`}
                 >

@@ -56,15 +56,15 @@ export function SongCard({
   const songPerformances = performances.filter((p) => p.songIds.includes(song.id));
 
   return (
-    <div ref={cardRef} className="border border-border rounded-2xl overflow-hidden bg-background">
+    <div ref={cardRef} data-song-card className="card-game overflow-hidden">
       {/* Header accordion */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full px-6 py-4 bg-background-secondary flex items-center justify-between hover:bg-background-tertiary transition-colors"
+        className="w-full px-6 py-4 flex items-center justify-between hover:bg-background-secondary/70 transition-colors"
       >
         <div className="flex-1 min-w-0 text-left">
           <div className="flex items-baseline gap-2 flex-wrap">
-            <h2 className="text-sm font-medium text-foreground">{song.title}</h2>
+            <h2 className="text-lg font-semibold text-foreground">{song.title}</h2>
             {song.composer && <p className="text-xs text-foreground/50">{song.composer}</p>}
             {song.label && <p className="text-xs text-foreground/40 italic">{song.label}</p>}
           </div>
@@ -81,7 +81,7 @@ export function SongCard({
           <span className="text-xs text-foreground/40">
             {totalFiles} fichier{totalFiles > 1 ? 's' : ''}
           </span>
-          <span className="text-foreground/40 text-sm">{open ? '▲' : '▼'}</span>
+          <span className="text-secondary-dark dark:text-secondary text-sm">{open ? '▲' : '▼'}</span>
         </div>
       </button>
 

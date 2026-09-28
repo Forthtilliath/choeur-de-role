@@ -161,8 +161,8 @@ export function ProfilClient({ member }: Props) {
 
         {changedFields.length > 0 && (
           <div className="text-sm bg-primary/10 border border-primary/20 rounded-lg px-4 py-3 flex flex-col gap-1">
-            <p className="font-medium text-primary">Profil mis à jour ✓</p>
-            <p className="text-xs text-primary/70">
+            <p className="font-medium text-primary-light">Profil mis à jour ✓</p>
+            <p className="text-xs text-primary-light/70">
               Champs modifiés : {changedFields.map((f) => FIELD_LABELS[f]).join(', ')}
             </p>
           </div>
@@ -187,7 +187,7 @@ export function ProfilClient({ member }: Props) {
       <MfaSection isAdmin={member.role === 'admin' || member.role === 'super_admin'} />
 
       {/* RGPD */}
-      <div className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background">
+      <div className="flex flex-col gap-4 p-6 card-game">
         <div>
           <h2 className="text-sm font-medium text-foreground">Mes données personnelles</h2>
           <p className="text-xs text-foreground/60 mt-0.5">

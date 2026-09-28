@@ -23,7 +23,7 @@ export function ProfileAddressSection({
   const hasAddress = !!(values.address || values.zipCode || values.city);
 
   return (
-    <div className="flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background">
+    <div className="flex flex-col gap-4 p-6 card-game">
       <h2 className="text-sm font-medium text-foreground">Adresse</h2>
       <div className="flex flex-col gap-1">
         <label htmlFor="profile-address" className="text-xs text-foreground/50">
@@ -69,7 +69,7 @@ export function ProfileAddressSection({
           <div className="flex items-center justify-between gap-3">
             <div>
               {geoStatus === 'confirmed' ? (
-                <p className="text-xs text-primary">✓ Position confirmée sur la carte</p>
+                <p className="text-xs text-primary-light">✓ Position confirmée sur la carte</p>
               ) : geoStatus === 'existing' ? (
                 <p className="text-xs text-foreground/50">
                   📍 Position existante — vérifiez si l&apos;adresse a changé
@@ -86,8 +86,8 @@ export function ProfileAddressSection({
               disabled={geocoding}
               className={`shrink-0 text-xs px-3 py-1.5 rounded-lg border transition-all flex items-center gap-1.5 ${
                 geoStatus === 'confirmed'
-                  ? 'border-primary/30 text-primary hover:bg-primary/10'
-                  : 'border-border text-foreground/60 hover:border-primary hover:text-primary'
+                  ? 'border-primary/30 text-primary-light hover:bg-primary/10'
+                  : 'border-border text-foreground/60 hover:border-primary hover:text-primary-light'
               } disabled:opacity-50`}
             >
               {geocoding ? (

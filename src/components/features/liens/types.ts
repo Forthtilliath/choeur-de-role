@@ -11,8 +11,8 @@ export const VISIBILITY_OPTIONS: { value: Visibility; label: string; description
 
 export const VISIBILITY_BADGE: Record<Visibility, string> = {
   member: 'bg-foreground/10 text-foreground/50',
-  ca: 'bg-blue-100 text-blue-600',
-  admin: 'bg-red-100 text-red-600',
+  ca: 'bg-secondary/20 text-secondary-dark dark:text-secondary',
+  admin: 'bg-red-100 text-red-600 dark:bg-red-950/50 dark:text-red-300',
 };
 
 export const VISIBILITY_LABEL: Record<Visibility, string> = {

@@ -33,7 +33,7 @@ test.describe('Page Répertoire', () => {
     // Attendre que le Suspense se résolve
     await page.waitForTimeout(2_000);
 
-    const songCards = page.locator('.border.border-border.rounded-2xl');
+    const songCards = page.locator('[data-song-card]');
     const count = await songCards.count();
 
     if (count === 0) {
@@ -47,7 +47,7 @@ test.describe('Page Répertoire', () => {
   test('cliquer sur un chant ouvre son accordéon', async ({ page }) => {
     await page.waitForTimeout(2_000);
 
-    const songCards = page.locator('.border.border-border.rounded-2xl');
+    const songCards = page.locator('[data-song-card]');
     if ((await songCards.count()) === 0) {
       test.skip(true, 'Aucun chant disponible — test non pertinent');
       return;
@@ -65,7 +65,7 @@ test.describe('Page Répertoire', () => {
   test('la recherche filtre les chants', async ({ page }) => {
     await page.waitForTimeout(2_000);
 
-    const songCards = page.locator('.border.border-border.rounded-2xl');
+    const songCards = page.locator('[data-song-card]');
     if ((await songCards.count()) === 0) {
       test.skip(true, 'Aucun chant disponible — test non pertinent');
       return;

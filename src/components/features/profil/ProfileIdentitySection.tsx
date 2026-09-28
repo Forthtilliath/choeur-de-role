@@ -3,7 +3,7 @@ import { formatPhone } from '@/utils/phoneHelpers';
 import type { ProfileFormValues } from './profileForm';
 import type { MemberProfile } from './types';
 
-const SECTION_CLASS = 'flex flex-col gap-4 p-6 rounded-2xl border border-border bg-background';
+const SECTION_CLASS = 'flex flex-col gap-4 p-6 card-game';
 const INPUT_CLASS = 'border border-border rounded-lg px-4 py-2 text-sm bg-background';
 const READONLY_CLASS =
   'text-sm text-foreground/60 px-4 py-2 border border-border rounded-lg bg-background-secondary';
