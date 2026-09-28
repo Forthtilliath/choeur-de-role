@@ -112,7 +112,7 @@ export function LinkForm({
                 </span>
                 <div>
                   <p
-                    className={`text-sm font-medium ${visibility === opt.value ? 'text-primary' : 'text-foreground'}`}
+                    className={`text-sm font-medium ${visibility === opt.value ? 'text-primary-light' : 'text-foreground'}`}
                   >
                     {opt.label}
                   </p>

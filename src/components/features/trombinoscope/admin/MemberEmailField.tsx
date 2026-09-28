@@ -43,7 +43,7 @@ export function MemberEmailField({ memberId, initialEmail }: Props) {
         <button
           type="button"
           onClick={() => setShowEmailForm((v) => !v)}
-          className="text-xs text-primary px-3 py-2 rounded-lg border border-border hover:border-primary transition-colors"
+          className="text-xs text-primary-light px-3 py-2 rounded-lg border border-border hover:border-primary transition-colors"
         >
           {showEmailForm ? 'Annuler' : 'Modifier'}
         </button>
@@ -61,14 +61,14 @@ export function MemberEmailField({ memberId, initialEmail }: Props) {
             type="button"
             onClick={handleEmailChange}
             disabled={emailSaving || !newEmail}
-            className="text-xs px-3 py-2 rounded-lg bg-primary text-white disabled:opacity-50"
+            className="text-xs px-3 py-2 rounded-xl bg-primary text-white btn-token disabled:opacity-50"
           >
             {emailSaving ? '...' : 'Confirmer'}
           </button>
         </div>
       )}
       {emailSuccess && (
-        <p className="text-xs text-primary">
+        <p className="text-xs text-primary-light">
           ✓ Email mis à jour — un email de confirmation a été envoyé à {currentEmail}.
         </p>
       )}

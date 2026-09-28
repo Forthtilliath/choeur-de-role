@@ -62,7 +62,7 @@ export function TemplateMetaForm({ template }: { template: TaskTemplate }) {
           <button
             type="submit"
             disabled={!templateName.trim() || savingMeta}
-            className="px-4 py-2 rounded-lg text-sm bg-primary text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+            className="px-4 py-2 rounded-xl text-sm bg-primary text-white btn-token font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {savingMeta ? 'Sauvegarde...' : 'Sauvegarder'}
           </button>

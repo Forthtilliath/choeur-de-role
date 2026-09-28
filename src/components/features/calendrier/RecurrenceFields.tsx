@@ -20,7 +20,7 @@ export function RecurrenceFields({ value, onChangeAction, previewCount }: Props)
               key={day}
               type="button"
               onClick={() => onChangeAction({ day: idx + 1 })}
-              className={`text-xs px-2.5 py-1 rounded-lg border transition-all ${value.day === idx + 1 ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
+              className={`text-xs px-2.5 py-1 rounded-lg border transition-all ${value.day === idx + 1 ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'}`}
             >
               {day}
             </button>
@@ -95,7 +95,7 @@ export function RecurrenceFields({ value, onChangeAction, previewCount }: Props)
         />
       </div>
       {previewCount > 0 && (
-        <p className="text-xs text-primary">
+        <p className="text-xs text-primary-light">
           → {previewCount} évènement{previewCount > 1 ? 's' : ''} seront créés
         </p>
       )}

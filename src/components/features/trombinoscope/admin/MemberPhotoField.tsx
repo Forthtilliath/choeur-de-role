@@ -102,7 +102,7 @@ export function MemberPhotoField({ member, onPhotoUpdateAction }: Props) {
             {photoUrl ? '📷 Changer la photo' : '📷 Ajouter une photo'}
           </Button>
         )}
-        {photoSuccess && <p className="text-xs text-primary">✓ Photo enregistrée</p>}
+        {photoSuccess && <p className="text-xs text-primary-light">✓ Photo enregistrée</p>}
       </div>
       <input
         ref={photoInputRef}

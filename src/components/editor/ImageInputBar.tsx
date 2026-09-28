@@ -26,7 +26,7 @@ export function ImageInputBar({ editor, onCloseAction }: Props) {
   }
 
   const modeClass = (mode: 'upload' | 'url') =>
-    `text-xs px-2.5 py-1 rounded-md transition-colors ${imageMode === mode ? 'bg-primary/10 text-primary font-medium' : 'text-foreground/50 hover:text-foreground'}`;
+    `text-xs px-2.5 py-1 rounded-md transition-colors ${imageMode === mode ? 'bg-primary/10 text-primary-light font-medium' : 'text-foreground/50 hover:text-foreground'}`;
 
   return (
     <div className="flex flex-col gap-2 px-3 py-2 border-b border-border bg-background-secondary shrink-0">
@@ -53,7 +53,7 @@ export function ImageInputBar({ editor, onCloseAction }: Props) {
       {imageMode === 'upload' ? (
         <label
           className={cn(
-            'flex items-center justify-center text-xs px-3 py-3 rounded-lg border border-dashed border-border text-foreground/60 cursor-pointer hover:border-primary/50 hover:text-primary transition-colors',
+            'flex items-center justify-center text-xs px-3 py-3 rounded-lg border border-dashed border-border text-foreground/60 cursor-pointer hover:border-primary/50 hover:text-primary-light transition-colors',
             imageUploading && 'opacity-50 cursor-not-allowed pointer-events-none',
           )}
         >
@@ -93,7 +93,7 @@ export function ImageInputBar({ editor, onCloseAction }: Props) {
           <button
             type="button"
             onClick={handleSetImage}
-            className="text-xs px-3 py-1.5 rounded-lg bg-primary text-white"
+            className="text-xs px-3 py-1.5 rounded-xl bg-primary text-white btn-token"
           >
             OK
           </button>

@@ -70,7 +70,7 @@ export function TemplateItemRow({
         ) : (
           <button
             onClick={() => setEditingTitle(true)}
-            className="text-sm text-foreground text-left truncate hover:text-primary transition-colors"
+            className="text-sm text-foreground text-left truncate hover:text-primary-light transition-colors"
           >
             {item.title}
           </button>

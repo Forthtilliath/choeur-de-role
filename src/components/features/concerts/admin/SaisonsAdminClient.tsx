@@ -178,7 +178,7 @@ export function SaisonsAdminClient({ initialSeasons }: Props) {
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <p className="text-sm font-medium text-foreground">{season.label}</p>
               <span
-                className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${season.active ? 'bg-primary/10 text-primary' : 'bg-foreground/10 text-foreground/40'}`}
+                className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${season.active ? 'bg-primary/10 text-primary-light' : 'bg-foreground/10 text-foreground/40'}`}
               >
                 {season.active ? 'Active' : 'Inactive'}
               </span>

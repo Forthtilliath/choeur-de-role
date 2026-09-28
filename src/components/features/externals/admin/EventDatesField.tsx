@@ -89,7 +89,7 @@ export function EventDatesField({ dates, onChangeAction }: Props) {
       <button
         type="button"
         onClick={() => onChangeAction((prev) => [...prev, emptyEntry()])}
-        className="self-start text-xs text-primary hover:opacity-70 transition-opacity"
+        className="self-start text-xs text-primary-light hover:opacity-70 transition-opacity"
       >
         + Ajouter une occurrence
       </button>

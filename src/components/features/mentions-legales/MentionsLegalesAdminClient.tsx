@@ -92,7 +92,7 @@ export function MentionsLegalesAdminClient({ initialData }: { initialData: Legal
       )}
 
       {success && (
-        <p className="text-sm text-primary bg-primary/10 border border-primary/20 rounded-lg px-4 py-2.5 text-center">
+        <p className="text-sm text-primary-light bg-primary/10 border border-primary/20 rounded-lg px-4 py-2.5 text-center">
           ✓ Informations mises à jour
         </p>
       )}

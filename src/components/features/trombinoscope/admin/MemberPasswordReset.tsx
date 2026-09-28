@@ -41,7 +41,7 @@ export function MemberPasswordReset({ memberId }: { memberId: string }) {
         </button>
       </div>
       {passwordResetSuccess && (
-        <p className="text-xs text-primary">✓ Nouveau mot de passe envoyé par email.</p>
+        <p className="text-xs text-primary-light">✓ Nouveau mot de passe envoyé par email.</p>
       )}
     </div>
   );

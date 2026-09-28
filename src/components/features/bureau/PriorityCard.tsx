@@ -54,7 +54,7 @@ export function PriorityCard({ task, onClickAction }: { task: Task; onClickActio
             {task.assignees.slice(0, 3).map((a) => (
               <span
                 key={a.member_id}
-                className="w-5 h-5 rounded-full bg-primary/20 text-primary text-[9px] font-bold flex items-center justify-center border border-background"
+                className="w-5 h-5 rounded-full bg-primary/20 text-primary-light text-[9px] font-bold flex items-center justify-center border border-background"
                 title={`${a.first_name ?? ''} ${a.last_name ?? ''}`.trim()}
               >
                 {`${(a.first_name?.[0] ?? '').toUpperCase()}${(a.last_name?.[0] ?? '').toUpperCase()}`}

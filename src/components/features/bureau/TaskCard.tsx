@@ -116,7 +116,7 @@ export function TaskCard({ task, overlay = false, onClickAction }: Props) {
             {task.assignees.slice(0, 3).map((a) => (
               <span
                 key={a.member_id}
-                className="w-5 h-5 rounded-full bg-primary/20 text-primary text-[9px] font-bold flex items-center justify-center border border-background"
+                className="w-5 h-5 rounded-full bg-primary/20 text-primary-light text-[9px] font-bold flex items-center justify-center border border-background"
                 title={`${a.first_name ?? ''} ${a.last_name ?? ''}`.trim()}
               >
                 {initials(a.first_name, a.last_name)}

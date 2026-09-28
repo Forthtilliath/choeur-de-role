@@ -158,7 +158,7 @@ export function PartnerForm({
                 key={String(opt.value)}
                 type="button"
                 onClick={() => setIsCurrent(opt.value)}
-                className={`flex-1 py-2 rounded-lg text-sm border transition-all ${isCurrent === opt.value ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
+                className={`flex-1 py-2 rounded-lg text-sm border transition-all ${isCurrent === opt.value ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'}`}
               >
                 {opt.label}
               </button>
@@ -178,7 +178,7 @@ export function PartnerForm({
                 className={`w-full h-12 rounded-lg ${isLarge ? 'bg-primary/20' : 'bg-foreground/10'}`}
               />
               <span
-                className={`text-xs font-medium ${isLarge ? 'text-primary' : 'text-foreground/50'}`}
+                className={`text-xs font-medium ${isLarge ? 'text-primary-light' : 'text-foreground/50'}`}
               >
                 Large
               </span>
@@ -200,7 +200,7 @@ export function PartnerForm({
                 />
               </div>
               <span
-                className={`text-xs font-medium ${!isLarge ? 'text-primary' : 'text-foreground/50'}`}
+                className={`text-xs font-medium ${!isLarge ? 'text-primary-light' : 'text-foreground/50'}`}
               >
                 Carré
               </span>

@@ -35,7 +35,7 @@ export function CsvImportUpload({ onFileAction, onCloseAction }: Props) {
         </p>
         <button
           onClick={downloadImportTemplate}
-          className="self-start text-primary hover:opacity-70 transition-opacity underline underline-offset-2"
+          className="self-start text-primary-light hover:opacity-70 transition-opacity underline underline-offset-2"
         >
           Télécharger le modèle .csv
         </button>

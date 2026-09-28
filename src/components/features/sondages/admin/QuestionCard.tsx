@@ -164,7 +164,7 @@ export function QuestionCard({
           <button
             type="button"
             onClick={onAddOption}
-            className="flex items-center gap-1.5 text-xs text-foreground/40 hover:text-primary transition-colors pl-5.5"
+            className="flex items-center gap-1.5 text-xs text-foreground/40 hover:text-primary-light transition-colors pl-5.5"
           >
             <Plus className="w-3.5 h-3.5" />
             Ajouter une option

@@ -182,7 +182,7 @@ export function TaskFormFields({ values, onChangeAction, categories, caMembers, 
                 onClick={() => toggleAssignee(member.id)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-all ${
                   isSelected
-                    ? 'bg-primary/10 border-primary/40 text-primary'
+                    ? 'bg-primary/10 border-primary/40 text-primary-light'
                     : 'border-border text-foreground/60 hover:border-primary/30 hover:text-foreground'
                 }`}
               >

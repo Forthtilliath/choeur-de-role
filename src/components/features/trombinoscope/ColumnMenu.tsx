@@ -49,7 +49,7 @@ export function ColumnMenu({ columns, onColumnsChangeAction }: Props) {
     <div className="relative">
       <button
         onClick={() => setShowColumnMenu((v) => !v)}
-        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-sm ${showColumnMenu ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60 hover:text-foreground hover:border-primary'}`}
+        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border transition-all text-sm ${showColumnMenu ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60 hover:text-foreground hover:border-primary'}`}
       >
         <span className="hidden sm:inline">Colonnes</span>
         <span
@@ -66,7 +66,7 @@ export function ColumnMenu({ columns, onColumnsChangeAction }: Props) {
             <p className="text-xs font-medium text-foreground">Colonnes affichées</p>
             <button
               onClick={resetColumns}
-              className="text-xs text-foreground/40 hover:text-primary transition-colors flex items-center gap-1"
+              className="text-xs text-foreground/40 hover:text-primary-light transition-colors flex items-center gap-1"
             >
               ↺ Réinitialiser
             </button>

@@ -115,7 +115,7 @@ export function DownloadModal({
       {/* Contient le clic pour éviter la fermeture au clic dans la modale */}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
       <div
-        className="bg-background rounded-2xl border border-border w-full max-w-md shadow-xl overflow-hidden"
+        className="bg-background rounded-2xl border border-secondary/40 w-full max-w-md shadow-xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
@@ -139,7 +139,7 @@ export function DownloadModal({
                 <button
                   key={type.value}
                   onClick={() => toggleType(type.value)}
-                  className={`flex-1 py-2 rounded-lg text-sm border transition-all ${selectedTypes.includes(type.value) ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
+                  className={`flex-1 py-2 rounded-lg text-sm border transition-all ${selectedTypes.includes(type.value) ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'}`}
                 >
                   {type.label}
                 </button>
@@ -152,7 +152,7 @@ export function DownloadModal({
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setSelectedVoicePartId(null)}
-                className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === null ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
+                className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === null ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'}`}
               >
                 Tous
               </button>
@@ -160,7 +160,7 @@ export function DownloadModal({
                 <button
                   key={vp.id}
                   onClick={() => setSelectedVoicePartId(vp.id)}
-                  className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === vp.id ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'} ${vp.id === myVoicePartId ? 'font-medium' : ''}`}
+                  className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === vp.id ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'} ${vp.id === myVoicePartId ? 'font-medium' : ''}`}
                 >
                   {vp.name}
                   {vp.id === myVoicePartId && ' ★'}
@@ -196,7 +196,7 @@ export function DownloadModal({
           <button
             onClick={handleDownload}
             disabled={downloading || selectedTypes.length === 0}
-            className="px-4 py-2 rounded-lg text-sm bg-primary text-white hover:opacity-80 disabled:opacity-50 transition-opacity"
+            className="px-4 py-2 rounded-xl text-sm bg-primary text-white btn-token disabled:opacity-50"
           >
             {downloading ? 'En cours...' : 'Télécharger (.zip)'}
           </button>

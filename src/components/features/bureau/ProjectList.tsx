@@ -62,7 +62,7 @@ function ProjectCard({ project, archived = false }: { project: TaskProject; arch
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex flex-col gap-1 min-w-0">
-          <span className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+          <span className="text-sm font-semibold text-foreground truncate group-hover:text-primary-light transition-colors">
             {project.name}
           </span>
           {project.description && (

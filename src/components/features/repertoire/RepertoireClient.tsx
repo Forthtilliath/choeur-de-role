@@ -90,7 +90,7 @@ export function RepertoireClient({
             <span className="text-xs text-foreground/50 hidden sm:inline">Pupitre :</span>
             <button
               onClick={() => setSelectedVoicePartId(null)}
-              className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === null ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
+              className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === null ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'}`}
             >
               Tous
             </button>
@@ -98,7 +98,7 @@ export function RepertoireClient({
               <button
                 key={vp.id}
                 onClick={() => setSelectedVoicePartId(vp.id)}
-                className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === vp.id ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'} ${vp.id === myVoicePartId ? 'font-medium' : ''}`}
+                className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoicePartId === vp.id ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'} ${vp.id === myVoicePartId ? 'font-medium' : ''}`}
               >
                 {vp.name}
                 {vp.id === myVoicePartId && ' ★'}
@@ -158,7 +158,7 @@ export function RepertoireClient({
           />
           <button
             onClick={() => setDownloadModal(true)}
-            className="px-4 py-2 rounded-lg text-sm border border-border text-foreground/60 hover:border-primary hover:text-primary transition-all shrink-0"
+            className="px-4 py-2 rounded-lg text-sm border border-border text-foreground/60 hover:border-primary hover:text-primary-light transition-all shrink-0"
           >
             ↓ Tout télécharger
           </button>

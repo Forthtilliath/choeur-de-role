@@ -73,7 +73,7 @@ export function CAAdminClient({ initialMeetings }: { initialMeetings: CaMeeting[
                       href={meeting.pdf_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs text-foreground/40 hover:text-primary transition-colors"
+                      className="text-xs text-foreground/40 hover:text-primary-light transition-colors"
                     >
                       📄 PDF
                     </Link>
@@ -85,7 +85,7 @@ export function CAAdminClient({ initialMeetings }: { initialMeetings: CaMeeting[
               <span
                 className={`text-xs px-2 py-1 rounded-full shrink-0 ${
                   meeting.published
-                    ? 'bg-primary/10 text-primary'
+                    ? 'bg-primary/10 text-primary-light'
                     : 'bg-foreground/10 text-foreground/40'
                 }`}
               >

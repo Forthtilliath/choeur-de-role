@@ -125,7 +125,7 @@ export function ProjectsAdmin({ projects, templates }: Props) {
             <button
               type="submit"
               disabled={!name.trim() || creating}
-              className="px-4 py-2 rounded-lg text-sm bg-primary text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+              className="px-4 py-2 rounded-xl text-sm bg-primary text-white btn-token font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {creating ? 'Création...' : 'Créer le projet'}
             </button>

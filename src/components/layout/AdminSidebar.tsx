@@ -89,7 +89,7 @@ export function AdminSidebar() {
                   className={cn(
                     'text-sm px-3 py-1.5 rounded-lg transition-colors',
                     isActive
-                      ? 'bg-primary/10 text-primary font-medium'
+                      ? 'bg-primary/10 text-primary-light font-medium'
                       : 'text-foreground/60 hover:text-foreground hover:bg-muted',
                   )}
                 >

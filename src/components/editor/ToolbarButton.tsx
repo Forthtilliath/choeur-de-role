@@ -7,7 +7,7 @@ const toolbarButtonVariants = cva(
   {
     variants: {
       active: {
-        true: 'bg-primary/15 text-primary',
+        true: 'bg-primary/15 text-primary-light',
         false: 'text-foreground/50 hover:text-foreground hover:bg-muted',
       },
     },

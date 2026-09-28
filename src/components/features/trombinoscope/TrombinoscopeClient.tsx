@@ -196,7 +196,7 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
       <div className="text-center">
         <h1 className="text-2xl font-medium text-foreground">Trombinoscope</h1>
         <p className="text-sm text-foreground/50 mt-1">
-          <span className="text-primary font-medium">{sorted.length}</span> choriste
+          <span className="text-primary-light font-medium">{sorted.length}</span> choriste
           {sorted.length > 1 ? 's' : ''}
         </p>
       </div>
@@ -238,7 +238,7 @@ export function TrombinoscopeClient({ members, voiceParts }: Props) {
               title="Copier les emails"
               className={
                 copySuccess
-                  ? 'border-primary bg-primary/10 text-primary'
+                  ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40'
                   : 'border-border text-foreground/60 hover:text-foreground hover:border-primary'
               }
             >

@@ -40,7 +40,7 @@ export function NotificationsPopup() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center p-4 sm:items-center pointer-events-none bg-black/20 dark:bg-black/40 backdrop-blur-sm">
-      <div className="pointer-events-auto w-full max-w-sm bg-background border border-border rounded-2xl shadow-xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
+      <div className="pointer-events-auto w-full max-w-sm bg-background border border-secondary/40 rounded-2xl shadow-xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border bg-background-secondary">
           <div>
             <p className="text-sm font-medium text-foreground">

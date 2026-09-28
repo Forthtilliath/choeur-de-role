@@ -111,7 +111,7 @@ export function MediathequeSongCard({
               <button
                 key={type ?? 'all'}
                 onClick={() => onFileTypeChangeAction(type)}
-                className={`px-3 py-1 rounded-lg text-xs border transition-all ${activeFileType === type ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/50'}`}
+                className={`px-3 py-1 rounded-lg text-xs border transition-all ${activeFileType === type ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/50'}`}
               >
                 {label}
               </button>
