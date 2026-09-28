@@ -51,7 +51,7 @@ export function NonAudioFileRow({ fileUrl, label, downloadName, type, date, id }
         </div>
         <button
           onClick={handleDownload}
-          className="p-1 text-foreground hover:text-primary transition-colors shrink-0"
+          className="p-1 text-foreground hover:text-primary-light transition-colors shrink-0"
           title="Télécharger"
           aria-label="Télécharger"
         >
@@ -60,7 +60,7 @@ export function NonAudioFileRow({ fileUrl, label, downloadName, type, date, id }
         {id && (
           <button
             onClick={handleShare}
-            className="p-1 text-foreground hover:text-primary transition-colors shrink-0"
+            className="p-1 text-foreground hover:text-primary-light transition-colors shrink-0"
             title="Copier le lien partageable"
             aria-label="Copier le lien partageable"
           >
@@ -71,7 +71,7 @@ export function NonAudioFileRow({ fileUrl, label, downloadName, type, date, id }
           onClick={handleOpen}
           disabled={loading}
           data-testid="open-file-btn"
-          className="p-1 text-foreground hover:text-primary transition-colors shrink-0 disabled:opacity-50"
+          className="p-1 text-foreground hover:text-primary-light transition-colors shrink-0 disabled:opacity-50"
           title="Ouvrir"
           aria-label="Ouvrir"
         >

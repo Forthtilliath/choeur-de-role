@@ -100,7 +100,7 @@ export function RepresentationFileManager({ performanceId }: { performanceId: st
             />
             <div className="flex items-center gap-2">
               <label aria-label="Ajouter un fichier" className="flex-1 cursor-pointer min-w-0">
-                <div className="flex items-center gap-2 px-3 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all bg-background">
+                <div className="flex items-center gap-2 px-3 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary-light transition-all bg-background">
                   <span>📎</span>
                   <span className="truncate">{file ? file.name : 'Choisir un fichier...'}</span>
                 </div>

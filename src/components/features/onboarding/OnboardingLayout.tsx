@@ -14,7 +14,7 @@ export function StepProgress({ current, total }: { current: number; total: numbe
                 active
                   ? 'bg-primary border-primary text-white'
                   : done
-                    ? 'bg-primary/20 border-primary/30 text-primary'
+                    ? 'bg-primary/20 border-primary/30 text-primary-light'
                     : 'bg-background-secondary border-border text-foreground/30'
               }`}
             >
@@ -39,7 +39,7 @@ export function StepHeader({
 }) {
   return (
     <div>
-      <p className="text-xs text-primary font-medium uppercase tracking-widest mb-2">{eyebrow}</p>
+      <p className="text-xs text-primary-light font-medium uppercase tracking-widest mb-2">{eyebrow}</p>
       <h2 className="text-2xl font-medium text-foreground mb-2">{title}</h2>
       <p className="text-foreground/60 text-sm">{children}</p>
     </div>

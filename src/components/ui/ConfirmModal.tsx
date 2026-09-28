@@ -65,7 +65,7 @@ export function ConfirmModal({
         if (e.target === e.currentTarget) onCancel();
       }}
     >
-      <div className="bg-background rounded-2xl border border-border w-full max-w-sm shadow-2xl flex flex-col">
+      <div className="bg-background rounded-2xl border border-secondary/40 w-full max-w-sm shadow-2xl flex flex-col">
         {/* Header */}
         <div className="p-6 flex items-center gap-4">
           <div
@@ -154,7 +154,7 @@ export function ConfirmModal({
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
               danger
                 ? 'bg-red-600 text-white hover:bg-red-700'
-                : 'bg-primary text-white hover:opacity-90'
+                : 'bg-primary text-white btn-token'
             }`}
           >
             {confirmLabel}

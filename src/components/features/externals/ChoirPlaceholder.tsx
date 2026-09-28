@@ -1,7 +1,7 @@
 // Illustration affichée quand un évènement n'a pas d'affiche
 export function ChoirPlaceholder() {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-linear-to-b from-primary/5 to-primary/15 text-primary">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-linear-to-b from-primary/5 to-primary/15 text-primary-light">
       <svg
         viewBox="0 0 200 130"
         fill="none"
@@ -177,7 +177,7 @@ export function ChoirPlaceholder() {
           strokeLinecap="round"
         />
       </svg>
-      <p className="text-[10px] text-primary/40 mt-1 font-medium tracking-widest uppercase">
+      <p className="text-[10px] text-primary-light/40 mt-1 font-medium tracking-widest uppercase">
         Pas d&apos;affiche
       </p>
     </div>

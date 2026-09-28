@@ -126,7 +126,7 @@ export function AudioFileRow({ fileUrl, label, downloadName, date }: Props) {
           {/* Télécharger */}
           <button
             onClick={handleDownload}
-            className="p-1 text-foreground hover:text-primary transition-colors shrink-0"
+            className="p-1 text-foreground hover:text-primary-light transition-colors shrink-0"
             aria-label="Télécharger"
           >
             <Download size={17} />
@@ -136,7 +136,7 @@ export function AudioFileRow({ fileUrl, label, downloadName, date }: Props) {
           <button
             onClick={handlePlayPause}
             disabled={loadingUrl}
-            className="w-8 h-8 rounded-full bg-primary/15 hover:bg-primary/25 flex items-center justify-center text-primary transition-colors shrink-0 disabled:opacity-50"
+            className="w-8 h-8 rounded-full bg-primary/15 hover:bg-primary/25 flex items-center justify-center text-primary-light transition-colors shrink-0 disabled:opacity-50"
             aria-label={isPlaying ? 'Pause' : 'Lecture'}
           >
             {loadingUrl ? (

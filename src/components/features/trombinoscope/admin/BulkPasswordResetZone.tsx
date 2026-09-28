@@ -61,7 +61,7 @@ export function BulkPasswordResetZone() {
         </button>
       </div>
       {bulkResetResult !== null && (
-        <p className="text-xs text-primary">
+        <p className="text-xs text-primary-light">
           ✓ {bulkResetResult} choriste{bulkResetResult > 1 ? 's' : ''} ont reçu leur nouveau mot de
           passe.
         </p>

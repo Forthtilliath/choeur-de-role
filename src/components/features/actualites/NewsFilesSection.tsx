@@ -65,7 +65,7 @@ export function NewsFilesSection({ newsId, files, onFilesChangeAction }: Props) 
                 href={f.file_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs px-2.5 py-1 rounded-md border border-border text-foreground/60 hover:text-primary hover:border-primary transition-colors no-underline shrink-0"
+                className="text-xs px-2.5 py-1 rounded-md border border-border text-foreground/60 hover:text-primary-light hover:border-primary transition-colors no-underline shrink-0"
               >
                 Voir
               </a>
@@ -102,7 +102,7 @@ export function NewsFilesSection({ newsId, files, onFilesChangeAction }: Props) 
           className={`shrink-0 px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
             uploading
               ? 'border-border text-foreground/40 cursor-not-allowed'
-              : 'border-primary text-primary hover:bg-primary/5 cursor-pointer'
+              : 'border-primary text-primary-light hover:bg-primary/5 cursor-pointer'
           }`}
         >
           {uploading ? 'Upload…' : '+ Fichier'}

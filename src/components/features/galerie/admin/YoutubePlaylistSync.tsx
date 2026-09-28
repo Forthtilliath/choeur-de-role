@@ -55,7 +55,7 @@ export function YoutubePlaylistSync({ albumId, currentUrl, videoCount, onSyncAct
         <button
           onClick={handleSync}
           disabled={syncing || !url.trim()}
-          className="px-3 py-2 rounded-lg border border-border text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all disabled:opacity-40 shrink-0 flex items-center gap-1.5"
+          className="px-3 py-2 rounded-lg border border-border text-sm text-foreground/60 hover:border-primary hover:text-primary-light transition-all disabled:opacity-40 shrink-0 flex items-center gap-1.5"
         >
           {syncing ? (
             <>

@@ -81,7 +81,7 @@ export function RichEditor({ content, onChangeAction, placeholder, dark }: Props
       >
         <EditorContent
           editor={editor}
-          className={`mdx-content p-4 min-h-48 ${dark ? 'bg-gray-900 text-white' : 'bg-background text-foreground'}`}
+          className={`mdx-content p-4 min-h-48 ${dark ? 'bg-backdrop text-white' : 'bg-background text-foreground'}`}
         />
       </div>
     </div>

@@ -152,7 +152,7 @@ export function TaskModal({
           if (e.target === e.currentTarget) onCloseAction();
         }}
       >
-        <div className="bg-background rounded-2xl border border-border w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
+        <div className="bg-background rounded-2xl border border-secondary/40 w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl">
           {/* Header */}
           <div className="flex items-center justify-between gap-3 px-6 pt-5 pb-4 border-b border-border shrink-0">
             <h2 className="text-base font-semibold text-foreground">
@@ -216,7 +216,7 @@ export function TaskModal({
                   <button
                     onClick={handleSave}
                     disabled={!values.title.trim() || saving}
-                    className="px-4 py-2 rounded-lg text-sm bg-primary text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+                    className="px-4 py-2 rounded-xl text-sm bg-primary text-white btn-token font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     {saving ? 'Enregistrement...' : isNew ? 'Créer' : 'Sauvegarder'}
                   </button>

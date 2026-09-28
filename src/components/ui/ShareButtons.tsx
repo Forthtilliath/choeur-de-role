@@ -81,7 +81,7 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
           onClick={handleCopy}
           className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-border text-foreground/60 hover:text-foreground hover:border-foreground/30 transition-colors cursor-pointer"
         >
-          {copied ? <Check size={12} className="text-primary" /> : <Copy size={12} />}
+          {copied ? <Check size={12} className="text-primary-light" /> : <Copy size={12} />}
           {copied ? 'Copié !' : 'Copier le lien'}
         </button>
       </div>

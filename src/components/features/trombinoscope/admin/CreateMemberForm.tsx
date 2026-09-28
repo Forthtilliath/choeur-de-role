@@ -102,7 +102,7 @@ export function CreateMemberForm({ voiceParts, seasons, onCloseAction, onSuccess
 
   const pillClass = (active: boolean) =>
     `px-3 py-1.5 rounded-lg text-sm border transition-all ${
-      active ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'
+      active ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'
     }`;
 
   // Écran de succès avec passphrase (mode sans email)

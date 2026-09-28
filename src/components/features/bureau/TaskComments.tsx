@@ -86,7 +86,7 @@ export function TaskComments({ taskId, initialComments, caMembers, currentUserId
       <div className="flex flex-col gap-3">
         {comments.map((c) => (
           <div key={c.id} className="flex gap-2.5 group/comment">
-            <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+            <span className="w-6 h-6 rounded-full bg-primary/20 text-primary-light text-[9px] font-bold flex items-center justify-center shrink-0 mt-0.5">
               {authorInitials(c.author_name)}
             </span>
             <div className="flex-1 min-w-0">
@@ -120,7 +120,7 @@ export function TaskComments({ taskId, initialComments, caMembers, currentUserId
         <button
           type="submit"
           disabled={!newComment.trim() || savingComment}
-          className="px-3 py-2 rounded-lg bg-primary text-white text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+          className="px-3 py-2 rounded-xl bg-primary text-white btn-token text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {savingComment ? '...' : 'Envoyer'}
         </button>

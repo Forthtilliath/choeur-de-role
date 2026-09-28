@@ -46,7 +46,7 @@ export function SortableNewsItem({
           label: '🗓 Programmée',
           className: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
         }
-      : { label: 'Publié', className: 'bg-primary/10 text-primary' };
+      : { label: 'Publié', className: 'bg-primary/10 text-primary-light' };
 
   return (
     <div
@@ -67,7 +67,7 @@ export function SortableNewsItem({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 flex-wrap">
-            {item.pinned && <Pin size={13} className="text-primary shrink-0" />}
+            {item.pinned && <Pin size={13} className="text-primary-light shrink-0" />}
             <p className="text-sm font-medium text-foreground truncate">{item.title}</p>
             <span className={`text-xs px-2 py-0.5 rounded-full shrink-0 ${badge.className}`}>
               {badge.label}

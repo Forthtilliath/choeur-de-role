@@ -11,7 +11,7 @@ export function LocationMap({ location }: { location: string }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="text-xs text-foreground/60 flex items-start gap-1 hover:text-primary transition-colors w-full text-left"
+        className="text-xs text-foreground/60 flex items-start gap-1 hover:text-primary-light transition-colors w-full text-left"
       >
         <span className="shrink-0 mt-px">📍</span>
         <span className="wrap-break-word min-w-0 flex-1">{location}</span>
@@ -34,7 +34,7 @@ export function LocationMap({ location }: { location: string }) {
               href={`https://www.google.com/maps/dir/?api=1&destination=${encoded}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary transition-all no-underline"
+              className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary-light transition-all no-underline"
             >
               🗺 Google Maps
             </a>
@@ -42,7 +42,7 @@ export function LocationMap({ location }: { location: string }) {
               href={`https://waze.com/ul?q=${encoded}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary transition-all no-underline"
+              className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary-light transition-all no-underline"
             >
               🚗 Waze
             </a>
@@ -50,7 +50,7 @@ export function LocationMap({ location }: { location: string }) {
               href={`https://maps.apple.com/?daddr=${encoded}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary transition-all no-underline"
+              className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary-light transition-all no-underline"
             >
               🍎 Apple Plans
             </a>

@@ -183,7 +183,7 @@ export function CalendarGrid({
               {canEdit && (
                 <button
                   onClick={() => onClickAddDayAction(new Date(year, month, cell.day))}
-                  className="absolute top-1 right-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity w-6 h-6 md:w-4 md:h-4 rounded flex items-center justify-center bg-primary/20 text-primary text-xs hover:bg-primary/40"
+                  className="absolute top-1 right-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity w-6 h-6 md:w-4 md:h-4 rounded flex items-center justify-center bg-primary/20 text-primary-light text-xs hover:bg-primary/40"
                 >
                   +
                 </button>

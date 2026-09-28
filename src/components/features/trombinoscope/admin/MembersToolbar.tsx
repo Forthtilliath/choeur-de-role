@@ -128,14 +128,14 @@ export function MembersToolbar({
         </Select>
         <button
           onClick={onToggleShowLockedAction}
-          className={`px-3 py-1.5 rounded-lg text-xs border transition-all ${showLocked ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/50 hover:border-foreground/30'}`}
+          className={`px-3 py-1.5 rounded-lg text-xs border transition-all ${showLocked ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/50 hover:border-foreground/30'}`}
         >
           🔒 {showLocked ? 'Masquer les verrouillés' : 'Voir les verrouillés'}
         </button>
         {recentCount > 0 && (
           <button
             onClick={onToggleShowRecentAction}
-            className={`px-3 py-1.5 rounded-lg text-xs border transition-all ${showRecent ? 'border-primary bg-primary/10 text-primary' : 'border-orange-300 text-orange-500'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs border transition-all ${showRecent ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-orange-300 text-orange-500'}`}
           >
             ✏️ {recentCount} modif{recentCount > 1 ? 's' : ''}
           </button>

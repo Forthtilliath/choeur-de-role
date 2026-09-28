@@ -57,7 +57,7 @@ export function EventRow({
       </div>
 
       <span
-        className={`text-xs px-2 py-1 rounded-full shrink-0 ${event.published ? 'bg-primary/10 text-primary' : 'bg-foreground/10 text-foreground/40'}`}
+        className={`text-xs px-2 py-1 rounded-full shrink-0 ${event.published ? 'bg-primary/10 text-primary-light' : 'bg-foreground/10 text-foreground/40'}`}
       >
         {event.published ? 'Publié' : 'Brouillon'}
       </span>

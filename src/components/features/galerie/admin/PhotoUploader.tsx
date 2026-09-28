@@ -71,8 +71,8 @@ export function PhotoUploader({ uploading, onUploadAction }: Props) {
           className={cn(
             'cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed transition-colors text-sm',
             uploading
-              ? 'border-primary text-primary bg-primary/5 pointer-events-none'
-              : 'border-border text-foreground/50 hover:border-primary hover:bg-primary/5 hover:text-primary',
+              ? 'border-primary text-primary-light bg-primary/5 pointer-events-none'
+              : 'border-border text-foreground/50 hover:border-primary hover:bg-primary/5 hover:text-primary-light',
           )}
         >
           {uploading ? '⏳ Upload en cours...' : '📷 Choisir des photos'}

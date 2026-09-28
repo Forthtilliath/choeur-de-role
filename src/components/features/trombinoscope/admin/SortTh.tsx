@@ -28,7 +28,7 @@ export function SortTh({
           type="button"
           onClick={() => onSort(col)}
           className={`flex items-center gap-1 text-xs font-medium transition-colors ${
-            active ? 'text-primary' : 'text-foreground/50 hover:text-foreground'
+            active ? 'text-primary-light' : 'text-foreground/50 hover:text-foreground'
           }`}
         >
           {label}

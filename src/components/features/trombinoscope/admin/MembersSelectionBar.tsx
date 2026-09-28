@@ -51,7 +51,7 @@ export function MembersSelectionBar({
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={onCopyEmailsAction}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-primary text-white text-xs font-medium hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary text-white btn-token text-xs font-semibold"
           >
             <Mail size={13} />
             Copier les emails ({selectedCount})

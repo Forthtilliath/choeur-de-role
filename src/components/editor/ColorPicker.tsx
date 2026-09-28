@@ -102,7 +102,7 @@ export function ColorPicker({ editor, dark, onOpenAction }: Props) {
                 }}
                 className={cn(
                   'flex items-center gap-2.5 w-full px-3 py-1.5 text-sm text-left transition-colors hover:bg-muted',
-                  isActive ? 'text-primary font-medium' : 'text-foreground',
+                  isActive ? 'text-primary-light font-medium' : 'text-foreground',
                 )}
               >
                 <span
@@ -110,7 +110,7 @@ export function ColorPicker({ editor, dark, onOpenAction }: Props) {
                   style={{ backgroundColor: color.value || (dark ? '#F9FAFB' : '#111827') }}
                 />
                 <span className="flex-1">{color.label}</span>
-                {isActive && <Check className="size-3 text-primary" />}
+                {isActive && <Check className="size-3 text-primary-light" />}
               </button>
             );
           })}

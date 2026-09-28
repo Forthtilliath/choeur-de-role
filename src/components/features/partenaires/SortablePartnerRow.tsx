@@ -67,7 +67,7 @@ export function SortablePartnerRow({
         </p>
       </div>
       <span
-        className={`text-xs px-2 py-1 rounded-full ${partner.active ? 'bg-primary/10 text-primary' : 'bg-foreground/10 text-foreground/40'}`}
+        className={`text-xs px-2 py-1 rounded-full ${partner.active ? 'bg-primary/10 text-primary-light' : 'bg-foreground/10 text-foreground/40'}`}
       >
         {partner.active ? 'Actif' : 'Inactif'}
       </span>

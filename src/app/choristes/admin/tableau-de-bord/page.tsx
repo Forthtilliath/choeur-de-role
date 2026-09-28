@@ -38,7 +38,7 @@ function StatCard({
       href={href}
       className="border border-border rounded-2xl p-5 bg-background-secondary flex flex-col gap-3 hover:border-primary/40 hover:bg-primary/5 transition-colors group"
     >
-      <div className="flex items-center gap-2 text-foreground/50 group-hover:text-primary/70 transition-colors">
+      <div className="flex items-center gap-2 text-foreground/50 group-hover:text-primary-light/70 transition-colors">
         <Icon size={15} />
         <span className="text-xs font-medium uppercase tracking-wide">{title}</span>
       </div>

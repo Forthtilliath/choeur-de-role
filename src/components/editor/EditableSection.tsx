@@ -94,7 +94,7 @@ export function EditableSection({
           {canEdit && (
             <button
               onClick={() => setEditing(true)}
-              className="absolute top-0 right-0 md:opacity-0 md:group-hover:opacity-100 transition-opacity text-xs px-2 py-1 rounded-md bg-primary text-white"
+              className="absolute top-0 right-0 md:opacity-0 md:group-hover:opacity-100 text-xs px-2 py-1 rounded-md bg-primary text-white btn-token"
             >
               ✏️ Modifier
             </button>

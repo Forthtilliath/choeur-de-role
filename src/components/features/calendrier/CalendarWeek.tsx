@@ -151,7 +151,7 @@ export function CalendarWeek({
               {canEdit && (
                 <button
                   onClick={() => onClickAddDayAction(day)}
-                  className="w-full text-xs text-foreground/30 hover:text-primary hover:bg-primary/10 rounded py-0.5 transition-colors mt-auto"
+                  className="w-full text-xs text-foreground/30 hover:text-primary-light hover:bg-primary/10 rounded py-0.5 transition-colors mt-auto"
                 >
                   +
                 </button>
@@ -191,7 +191,7 @@ export function CalendarWeek({
                 {canEdit && (
                   <button
                     onClick={() => onClickAddDayAction(day)}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center bg-primary/10 text-primary-light hover:bg-primary/20 transition-colors"
                   >
                     +
                   </button>

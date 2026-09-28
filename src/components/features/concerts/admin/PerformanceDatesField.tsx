@@ -39,7 +39,7 @@ export function PerformanceDatesField({
       <button
         type="button"
         onClick={onAddAction}
-        className="text-sm text-primary hover:opacity-70 self-start transition-opacity"
+        className="text-sm text-primary-light hover:opacity-70 self-start transition-opacity"
       >
         + Ajouter une date
       </button>

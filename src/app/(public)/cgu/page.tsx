@@ -82,7 +82,7 @@ export default function CGUPage() {
         <p>
           Pour toute question relative aux présentes CGU, vous pouvez contacter l&apos;association à
           l&apos;adresse suivante :{' '}
-          <a href="mailto:contact@choeur-de-role.fr" className="text-primary hover:opacity-70">
+          <a href="mailto:contact@choeur-de-role.fr" className="text-primary-light hover:opacity-70">
             contact@choeur-de-role.fr
           </a>
         </p>

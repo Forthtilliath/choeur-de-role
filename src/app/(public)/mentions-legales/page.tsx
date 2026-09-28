@@ -25,7 +25,7 @@ export default async function MentionsLegalesPage() {
           <strong>Contact :</strong>{' '}
           <Link
             href={`mailto:${legalData.contact_email}`}
-            className="text-primary hover:opacity-70"
+            className="text-primary-light hover:opacity-70"
           >
             {legalData.contact_email}
           </Link>
@@ -44,7 +44,7 @@ export default async function MentionsLegalesPage() {
                 href={legalData.hebergeur_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:opacity-70"
+                className="text-primary-light hover:opacity-70"
               >
                 {legalData.hebergeur_url}
               </Link>
@@ -69,7 +69,7 @@ export default async function MentionsLegalesPage() {
       <Section title="4. Données personnelles">
         <p>
           Le traitement des données personnelles collectées sur ce site est décrit dans notre{' '}
-          <Link href="/politique-confidentialite" className="text-primary hover:opacity-70">
+          <Link href="/politique-confidentialite" className="text-primary-light hover:opacity-70">
             Politique de confidentialité
           </Link>
           .
