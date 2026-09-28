@@ -10,6 +10,8 @@ import { useImagePreview } from '@/hooks/useImagePreview';
 import { createClient } from '@/lib/supabase.client';
 import { uploadImageToR2 } from '@/utils/uploadImageToR2';
 
+import { HeroCard } from '../HeroCard';
+
 type Props = {
   heroTitle: string;
   heroSubtitle: string;
@@ -62,7 +64,7 @@ export function HeroAdmin({ heroTitle, heroSubtitle, heroImage }: Props) {
         className="object-cover object-top"
         priority
       />
-      <div className="absolute inset-0 bg-backdrop/25" />
+      <div className="absolute inset-0 bg-linear-to-t from-backdrop/80 via-backdrop/25 to-backdrop/20" />
 
       {/* Bouton changer photo hero */}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
@@ -90,7 +92,7 @@ export function HeroAdmin({ heroTitle, heroSubtitle, heroImage }: Props) {
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 text-center">
-        <div className="px-8 py-10 rounded-2xl bg-backdrop/35 border border-white/15 backdrop-contrast-50">
+        <HeroCard>
           <div className="[&_.mdx-content]:text-white">
             <EditableSection
               page="home"
@@ -111,13 +113,15 @@ export function HeroAdmin({ heroTitle, heroSubtitle, heroImage }: Props) {
               onSaveOverrideAction={(content) => saveBlock('hero_subtitle', content)}
             />
           </div>
-          <div className="flex gap-4 justify-center mt-8">
-            <Button href="/concerts">Nos concerts</Button>
+          <div className="flex flex-wrap gap-4 justify-center mt-8">
+            <Button href="/concerts" variant="secondary">
+              Nos concerts
+            </Button>
             <Button href="/contact" variant="white">
               Nous contacter
             </Button>
           </div>
-        </div>
+        </HeroCard>
       </div>
     </section>
   );

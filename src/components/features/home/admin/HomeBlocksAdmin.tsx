@@ -125,7 +125,7 @@ export function HomeBlocksAdmin({ initialBlocks }: Props) {
         return (
           <section
             key={block.id}
-            className={`py-10 md:py-20 px-4 relative ${isEven ? 'bg-background' : 'bg-background-secondary'} ${!block.active ? 'opacity-50' : ''}`}
+            className={`py-10 md:py-20 px-4 relative ${isEven ? 'bg-background' : 'bg-background-secondary bg-board'} ${!block.active ? 'opacity-50' : ''}`}
           >
             {/* Barre d&apos;outils */}
             <div className="max-w-5xl mx-auto mb-4 flex items-center gap-2">
@@ -191,7 +191,7 @@ export function HomeBlocksAdmin({ initialBlocks }: Props) {
       {/* Bloc Nous rejoindre — toujours en dernier, non déplaçable */}
       {joinBlock && (
         <section
-          className={`py-10 md:py-20 px-4 ${contentBlocks.length % 2 ? 'bg-background-secondary' : 'bg-background'}`}
+          className={`py-10 md:py-20 px-4 ${contentBlocks.length % 2 ? 'bg-background-secondary bg-board' : 'bg-background'}`}
         >
           <div className="max-w-2xl mx-auto text-center">
             <div className="mb-4 flex justify-center">
