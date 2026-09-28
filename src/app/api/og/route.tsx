@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
         height: '630px',
         display: 'flex',
         flexDirection: 'column',
-        background: 'linear-gradient(135deg, #0b1a0e 0%, #132215 55%, #1a3020 100%)',
+        background: 'linear-gradient(135deg, #3f1c7c 0%, #5e32b2 55%, #2a1356 100%)',
         padding: '60px',
         position: 'relative',
         fontFamily: 'system-ui, sans-serif',
@@ -30,16 +30,16 @@ export async function GET(request: NextRequest) {
           top: 0,
           left: 0,
           right: 0,
-          height: '5px',
-          background: 'linear-gradient(90deg, #4a9e60 0%, #7bbbe5 100%)',
+          height: '6px',
+          background: 'linear-gradient(90deg, #8a5600 0%, #e6ac3d 50%, #8a5600 100%)',
         }}
       />
 
       {/* Nom du site */}
       <div
         style={{
-          color: 'rgba(255,255,255,0.42)',
-          fontSize: '20px',
+          color: '#e6ac3d',
+          fontSize: '22px',
           letterSpacing: '0.06em',
           display: 'flex',
           alignItems: 'center',
@@ -97,6 +97,20 @@ export async function GET(request: NextRequest) {
       >
         choeur-de-role.fr
       </div>
+
+      {/* Losange doré en coin, comme l'indice d'une carte à jouer */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '48px',
+          right: '64px',
+          width: '22px',
+          height: '22px',
+          background: '#e6ac3d',
+          transform: 'rotate(45deg)',
+          borderRadius: '3px',
+        }}
+      />
     </div>,
     { width: 1200, height: 630 },
   );
