@@ -1,56 +1,16 @@
 @import 'tailwindcss' source('../');
+@import './styles/animations.css';
+@import './styles/theme.css';
 @import './styles/content.css';
 @import './styles/leaflet.css';
 
-@keyframes nav-progress {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(200%);
-  }
-}
-
-@keyframes slide-up {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-up {
-  animation: slide-up 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-}
-
-@keyframes slide-down {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
-  }
-}
-
-.animate-slide-down {
-  animation: slide-down 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-}
-
-@keyframes page-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-page-in {
-  animation: page-in 0.2s ease-out;
-}
+/*
+ * Thème « Plateau & Partition »
+ * Le site est un livret de règles posé sur une partition : parchemin ivoire,
+ * encre violette, dorures de l'anneau du logo. En sombre, un tapis de jeu en
+ * velours violet nuit. Les motifs (portée, plateau, jetons, cartes) vivent dans
+ * styles/theme.css.
+ */
 
 @layer base {
   :root {
@@ -63,8 +23,23 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--color-secondary);
     outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    font-variation-settings:
+      'SOFT' 60,
+      'WONK' 0;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklch, var(--color-secondary) 45%, transparent);
+    color: var(--color-foreground);
   }
 }
 
@@ -77,6 +52,11 @@
 }
 
 @theme {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+
+  /* Pupitres = couleurs de joueurs */
   --color-soprano: oklch(69.8% 0.1613 55.14); /* With black : 7.44 */ /* #EFA462 */
   --color-alto: oklch(96.8% 0.211 109.8); /* With black : 19.56 */
   --color-tenor: oklch(73.94% 0.1829 151.8); /* With black : 9.77 */ /* #2CCE6F */
@@ -84,29 +64,39 @@
   --color-pianist: oklch(73.07% 0.2099 345.6);
   --color-choir-director: oklch(64.89% 0.237 26.97);
 
-  --color-app-green: oklch(48% 0.19 295); /* primaire "Chœur de Rôle" : violet/indigo (thème JDR) */
-  --color-trombi-link: oklch(38% 0.17 295);
-  --color-app-blue: oklch(65% 0.15 75); /* secondaire : or/ambre (dés, fantasy) */
-  --color-app-blue-dark: oklch(45% 0.13 75); /* même teinte, assez sombre pour texte blanc */
+  /* Marque : violet royal du logo + or de son anneau */
+  --color-royal: oklch(45% 0.19 293); /* #5e32b2 — texte blanc ≈ 7.4:1 */
+  --color-royal-deep: oklch(34% 0.15 293); /* #3f1c7c — tranche des jetons */
+  --color-gold: oklch(78% 0.14 80); /* #e6ac3d — anneau du logo */
+  --color-gold-dark: oklch(50% 0.11 70); /* #8a5600 — texte blanc ≈ 6.8:1 */
 
-  --color-primary: var(--color-app-green);
-  /* Variante claire pour texte violet sur fond sombre (nav active state) — le primary
-     lui-même doit rester assez sombre pour le texte blanc des boutons, ces deux usages
-     n'ont pas la même valeur de contraste optimale. */
-  --color-primary-light: var(--color-app-green);
-  --color-secondary: var(--color-app-blue);
-  --color-secondary-dark: var(--color-app-blue-dark);
-  --color-accent: var(--soprano);
-  --color-foreground: oklch(15% 0.01 295);
-  --color-muted: oklch(0.97 0 0);
-  --color-border: oklch(88% 0.01 295);
+  --color-primary: var(--color-royal);
+  /* Variante pour le violet utilisé comme texte (et non comme fond) — plus claire en sombre */
+  --color-primary-light: var(--color-royal);
+  --color-primary-deep: var(--color-royal-deep);
+  --color-secondary: var(--color-gold);
+  --color-secondary-dark: var(--color-gold-dark);
+  --color-accent: var(--color-soprano);
 
-  --color-background: oklch(99% 0.005 295);
-  --color-background-secondary: oklch(97% 0.015 295);
-  --color-background-tertiary: oklch(95% 0.02 295);
-  --color-background-admin: oklch(90.019% 0.05193 18.054);
+  /* Alias historiques, conservés pour les composants qui les référencent */
+  --color-app-green: var(--color-primary);
+  --color-trombi-link: var(--color-royal-deep);
 
-  --color-backdrop: oklch(10% 0.02 295);
+  --color-foreground: oklch(22% 0.04 295); /* encre */
+  --color-ink: oklch(22% 0.04 295); /* encre fixe, pour le texte sur fond doré dans les deux modes */
+  --color-muted-foreground: oklch(45% 0.03 295);
+  --color-muted: oklch(93.5% 0.015 85);
+  --color-border: oklch(86% 0.028 78);
+
+  --color-background: oklch(97.5% 0.012 85); /* ivoire */
+  --color-background-secondary: oklch(95% 0.018 82); /* parchemin */
+  --color-background-tertiary: oklch(92% 0.024 80);
+  --color-background-admin: oklch(92% 0.035 45);
+
+  --color-backdrop: oklch(14% 0.05 293);
+  /* Tapis de jeu : toujours sombre (footer, cartouches), quel que soit le mode */
+  --color-felt: oklch(19% 0.06 293);
+  --color-felt-foreground: oklch(95% 0.015 85);
 
   --spacing-full-wo-header: calc(100dvh - 4rem - 1px);
 
@@ -119,10 +109,18 @@
   --spacing-main-visitor: calc(100dvh - var(--spacing-header-visitor));
   --spacing-main-chorister: calc(100dvh - var(--spacing-header-chorister));
 
-  --shadow-voice-badge: 0 0 6px 2px oklch(0% 0 0 / 0.8);
-  --shadow-member-photo: 0 0 4px 2px oklch(0% 0 0 / 0.7);
+  /* Ombres teintées violet : des pièces posées sur un plateau, pas du gris neutre */
+  --shadow-xs: 0 1px 1px oklch(25% 0.08 293 / 0.06);
+  --shadow-sm: 0 1px 2px oklch(25% 0.08 293 / 0.08), 0 1px 1px oklch(25% 0.08 293 / 0.04);
+  --shadow-md: 0 4px 10px -2px oklch(25% 0.08 293 / 0.12), 0 2px 4px oklch(25% 0.08 293 / 0.06);
+  --shadow-lg:
+    0 12px 24px -8px oklch(25% 0.08 293 / 0.18), 0 4px 8px oklch(25% 0.08 293 / 0.06);
+  --shadow-xl:
+    0 24px 40px -12px oklch(25% 0.08 293 / 0.24), 0 8px 16px oklch(25% 0.08 293 / 0.08);
 
-  --shadow-header: 0 1px 8px 0 var(--color-red-500)/0.08;
+  /* Badge de pupitre = jeton : tranche en bas + ombre portée */
+  --shadow-voice-badge: inset 0 -2px 0 oklch(0% 0 0 / 0.18), 0 1px 3px oklch(25% 0.08 293 / 0.35);
+  --shadow-member-photo: 0 6px 14px -4px oklch(25% 0.08 293 / 0.45);
 
   --aspect-poster: 875 / 1241;
 }
@@ -147,23 +145,28 @@ html {
   overflow-x: clip;
   background-color: var(--color-background);
   color: var(--color-foreground);
+  scrollbar-color: color-mix(in oklch, var(--color-primary) 45%, transparent) transparent;
 }
 
+/* Tapis de jeu : velours violet nuit, dorures plus lumineuses */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-foreground: oklch(93% 0.008 295);
-    --color-background: oklch(13% 0.015 295);
-    --color-background-secondary: oklch(17% 0.018 295);
-    --color-background-tertiary: oklch(21% 0.022 295);
-    --color-background-admin: oklch(15% 0.035 18.054);
-    --color-muted: oklch(20% 0.01 295);
-    --color-border: oklch(30% 0.012 295);
-    --color-backdrop: oklch(5% 0.02 295);
-    /* Primary plus vif pour le dark mode, sans casser le contraste texte blanc (≥4.5:1 WCAG AA) */
-    --color-app-green: oklch(55% 0.2 295);
-    --color-primary: var(--color-app-green);
-    /* Plus clair : utilisé quand le violet sert de texte (pas de fond) sur une surface sombre */
-    --color-primary-light: oklch(68% 0.2 295);
+    --color-foreground: oklch(94% 0.015 85);
+    --color-muted-foreground: oklch(72% 0.03 290);
+    --color-background: oklch(16% 0.035 290);
+    --color-background-secondary: oklch(20% 0.04 290);
+    --color-background-tertiary: oklch(24% 0.045 290);
+    --color-background-admin: oklch(18% 0.04 30);
+    --color-muted: oklch(23% 0.03 290);
+    --color-border: oklch(33% 0.04 290);
+    --color-backdrop: oklch(8% 0.03 293);
+    --color-felt: oklch(12% 0.04 293);
+    /* Primary plus vif, sans casser le contraste du texte blanc (≥ 4.5:1) */
+    --color-primary: oklch(55% 0.2 293);
+    --color-primary-light: oklch(76% 0.13 293);
+    --color-primary-deep: oklch(38% 0.16 293);
+    /* --color-trombi-link reste sombre : les lignes du trombinoscope gardent un fond blanc en sombre */
+    --color-secondary: oklch(82% 0.14 82);
   }
 }
 
