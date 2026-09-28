@@ -125,7 +125,7 @@ export function SongForm({
                 </span>
                 <span
                   className={
-                    selectedPerformances.includes(p.id) ? 'text-primary' : 'text-foreground'
+                    selectedPerformances.includes(p.id) ? 'text-primary-light' : 'text-foreground'
                   }
                 >
                   {p.title}

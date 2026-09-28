@@ -91,7 +91,7 @@ export function SongFileForm({
               key={t}
               type="button"
               onClick={() => handleTypeChange(t)}
-              className={`flex-1 py-2 rounded-lg text-sm border transition-all ${type === t ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
+              className={`flex-1 py-2 rounded-lg text-sm border transition-all ${type === t ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'}`}
             >
               {t === 'audio' ? '🎵 Audio' : t === 'lyrics' ? '📝 Paroles' : '📄 Partition'}
             </button>
@@ -131,7 +131,7 @@ export function SongFileForm({
             <div
               className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 border-dashed transition-all ${
                 newFile
-                  ? 'border-primary bg-primary/5 text-primary'
+                  ? 'border-primary bg-primary/5 text-primary-light'
                   : 'border-border text-foreground/40 hover:border-primary/50 hover:bg-primary/5'
               }`}
             >
@@ -162,7 +162,7 @@ export function SongFileForm({
                   key={vp.id}
                   type="button"
                   onClick={() => toggleVoicePart(vp.id)}
-                  className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoiceParts.includes(vp.id) ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground/60'}`}
+                  className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${selectedVoiceParts.includes(vp.id) ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40' : 'border-border text-foreground/60'}`}
                 >
                   {vp.name}
                 </button>

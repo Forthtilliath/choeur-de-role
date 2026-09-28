@@ -41,7 +41,7 @@ export function LinkInputBar({ editor, onCloseAction }: Props) {
       <button
         type="button"
         onClick={handleSetLink}
-        className="text-xs px-3 py-1.5 rounded-lg bg-primary text-white"
+        className="text-xs px-3 py-1.5 rounded-xl bg-primary text-white btn-token"
       >
         OK
       </button>

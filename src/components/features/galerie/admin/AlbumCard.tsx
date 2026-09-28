@@ -110,7 +110,7 @@ export function AlbumCard({
           ) : (
             <button
               onClick={() => setEditingTitle(true)}
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors text-left truncate w-full"
+              className="text-sm font-medium text-foreground hover:text-primary-light transition-colors text-left truncate w-full"
             >
               {album.title}
             </button>

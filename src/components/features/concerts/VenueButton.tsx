@@ -11,7 +11,7 @@ export function VenueButton({ venue }: { venue: string }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-foreground/70 hover:text-primary transition-colors text-left text-sm underline decoration-dotted"
+        className="text-foreground/70 hover:text-primary-light transition-colors text-left text-sm underline decoration-dotted"
       >
         {venue}
       </button>
@@ -26,7 +26,7 @@ export function VenueButton({ venue }: { venue: string }) {
           {/* Contient le clic pour éviter la fermeture au clic dans la modale */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
           <div
-            className="bg-background rounded-2xl border border-border overflow-hidden w-full max-w-3xl shadow-xl"
+            className="bg-background rounded-2xl border border-secondary/40 overflow-hidden w-full max-w-3xl shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -60,7 +60,7 @@ export function VenueButton({ venue }: { venue: string }) {
                 href={`https://www.google.com/maps/dir/?api=1&destination=${encoded}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary transition-all no-underline"
+                className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary-light transition-all no-underline"
               >
                 🗺 Google Maps
               </a>
@@ -68,7 +68,7 @@ export function VenueButton({ venue }: { venue: string }) {
                 href={`https://waze.com/ul?q=${encoded}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary transition-all no-underline"
+                className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary-light transition-all no-underline"
               >
                 🚗 Waze
               </a>
@@ -76,7 +76,7 @@ export function VenueButton({ venue }: { venue: string }) {
                 href={`https://maps.apple.com/?daddr=${encoded}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary transition-all no-underline"
+                className="text-xs px-2.5 py-1 rounded-lg border border-border text-foreground/60 hover:border-primary hover:text-primary-light transition-all no-underline"
               >
                 🍎 Apple Plans
               </a>

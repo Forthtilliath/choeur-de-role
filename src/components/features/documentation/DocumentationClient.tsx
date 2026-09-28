@@ -68,7 +68,7 @@ export function DocumentationClient() {
               {section.steps.map((step, index) => (
                 <div key={step.title} className="px-6 py-4 flex gap-4">
                   {/* Numéro */}
-                  <div className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 text-primary-light text-xs font-medium flex items-center justify-center shrink-0 mt-0.5">
                     {index + 1}
                   </div>
 
@@ -81,7 +81,7 @@ export function DocumentationClient() {
                     {step.tip && (
                       <div className="flex gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/20">
                         <span className="text-xs shrink-0">💡</span>
-                        <p className="text-xs text-primary/80">{step.tip}</p>
+                        <p className="text-xs text-primary-light/80">{step.tip}</p>
                       </div>
                     )}
 

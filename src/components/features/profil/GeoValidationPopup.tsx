@@ -67,7 +67,7 @@ export function GeoValidationPopup({ coords, address, onConfirmAction, onCloseAc
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-background rounded-2xl border border-border overflow-hidden w-full max-w-lg shadow-xl flex flex-col">
+      <div className="bg-background rounded-2xl border border-secondary/40 overflow-hidden w-full max-w-lg shadow-xl flex flex-col">
         <div className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
           <div>
             <p className="text-sm font-medium text-foreground">Vérifier la localisation</p>
@@ -81,7 +81,7 @@ export function GeoValidationPopup({ coords, address, onConfirmAction, onCloseAc
           </button>
         </div>
         <div className="px-6 py-3 bg-primary/5 border-b border-primary/10 shrink-0">
-          <p className="text-xs text-primary">
+          <p className="text-xs text-primary-light">
             📍 Déplacez le marker si la position n&apos;est pas exacte, puis confirmez.
           </p>
         </div>

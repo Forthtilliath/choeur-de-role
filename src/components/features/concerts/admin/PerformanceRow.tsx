@@ -44,7 +44,7 @@ export function PerformanceRow({
         ) : (
           <div className="relative w-10 h-14 rounded-lg overflow-hidden bg-background-secondary shrink-0">
             <div className="w-full h-full flex items-center justify-center bg-primary/10">
-              <span className="text-primary text-lg">🎵</span>
+              <span className="text-primary-light text-lg">🎵</span>
             </div>
           </div>
         )}

@@ -26,7 +26,7 @@ export function MemberSeasonsField({ seasons, memberSeasons, onToggleSeasonActio
               onClick={() => onToggleSeasonAction(s.id)}
               className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
                 assigned
-                  ? 'border-primary bg-primary/10 text-primary'
+                  ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40'
                   : 'border-border text-foreground/60'
               }`}
             >

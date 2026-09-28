@@ -162,7 +162,7 @@ export function MemberRow({
           {member.email && (
             <Link
               href={`mailto:${member.email}`}
-              className="text-xs text-primary hover:opacity-70 no-underline"
+              className="text-xs text-primary-light hover:opacity-70 no-underline"
             >
               {member.email}
             </Link>
@@ -221,7 +221,7 @@ export function MemberRow({
               onClick={handleResendInvite}
               disabled={resending}
               title="Renvoyer l'invitation"
-              className={`${resendSuccess ? 'border-primary text-primary' : 'border-orange-300 text-orange-500 hover:text-orange-500 hover:border-orange-500'} disabled:opacity-50`}
+              className={`${resendSuccess ? 'border-primary text-primary-light' : 'border-orange-300 text-orange-500 hover:text-orange-500 hover:border-orange-500'} disabled:opacity-50`}
             >
               {resending ? (
                 <LoaderCircle className="animate-spin" />

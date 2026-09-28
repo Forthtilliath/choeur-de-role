@@ -14,7 +14,7 @@ export default function PolitiqueConfidentialitePage() {
         </p>
         <p>
           Contact DPO :{' '}
-          <a href="mailto:contact@choeur-de-role.fr" className="text-primary hover:opacity-70">
+          <a href="mailto:contact@choeur-de-role.fr" className="text-primary-light hover:opacity-70">
             contact@choeur-de-role.fr
           </a>
         </p>
@@ -83,7 +83,7 @@ export default function PolitiqueConfidentialitePage() {
               href="https://supabase.com/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:opacity-70"
+              className="text-primary-light hover:opacity-70"
             >
               Politique de confidentialité
             </a>
@@ -94,7 +94,7 @@ export default function PolitiqueConfidentialitePage() {
               href="https://vercel.com/legal/privacy-policy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:opacity-70"
+              className="text-primary-light hover:opacity-70"
             >
               Politique de confidentialité
             </a>
@@ -105,7 +105,7 @@ export default function PolitiqueConfidentialitePage() {
               href="https://resend.com/legal/privacy-policy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:opacity-70"
+              className="text-primary-light hover:opacity-70"
             >
               Politique de confidentialité
             </a>
@@ -155,7 +155,7 @@ export default function PolitiqueConfidentialitePage() {
         </ul>
         <p>
           Pour exercer ces droits, contactez-nous à{' '}
-          <a href="mailto:contact@choeur-de-role.fr" className="text-primary hover:opacity-70">
+          <a href="mailto:contact@choeur-de-role.fr" className="text-primary-light hover:opacity-70">
             contact@choeur-de-role.fr
           </a>
           . Nous nous engageons à répondre dans un délai d&apos;un mois.
@@ -166,7 +166,7 @@ export default function PolitiqueConfidentialitePage() {
             href="https://www.cnil.fr"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:opacity-70"
+            className="text-primary-light hover:opacity-70"
           >
             CNIL
           </a>

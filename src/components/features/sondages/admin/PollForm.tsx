@@ -199,7 +199,7 @@ export function PollForm({ initialDraft, saving, onSaveAction, onCancelAction }:
         <button
           type="button"
           onClick={addQuestion}
-          className="flex items-center justify-center gap-2 border-2 border-dashed border-border rounded-2xl py-3 text-sm text-foreground/40 hover:border-primary/50 hover:text-primary transition-colors"
+          className="flex items-center justify-center gap-2 border-2 border-dashed border-border rounded-2xl py-3 text-sm text-foreground/40 hover:border-primary/50 hover:text-primary-light transition-colors"
         >
           <Plus className="w-4 h-4" />
           Ajouter une question

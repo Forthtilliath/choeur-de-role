@@ -67,7 +67,7 @@ export function VolumeControl() {
     <div className="relative shrink-0" ref={volumePopupRef}>
       <button
         onClick={() => (showVolumePopup ? closeVolumePopup() : openVolumePopup())}
-        className="text-foreground/40 hover:text-primary transition-colors"
+        className="text-foreground/40 hover:text-primary-light transition-colors"
         aria-label="Volume"
       >
         {volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}

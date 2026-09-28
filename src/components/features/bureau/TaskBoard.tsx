@@ -176,7 +176,7 @@ export function TaskBoard({
             onClick={() => setView(v.id)}
             className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
               view === v.id
-                ? 'border-primary text-primary'
+                ? 'border-primary text-primary-light'
                 : 'border-transparent text-foreground/50 hover:text-foreground'
             }`}
           >

@@ -66,7 +66,7 @@ export function EventFilesSection({ eventId, files, onFilesChangeAction }: Props
                 href={f.file_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-primary hover:opacity-70"
+                className="text-xs text-primary-light hover:opacity-70"
               >
                 Voir
               </a>
@@ -90,7 +90,7 @@ export function EventFilesSection({ eventId, files, onFilesChangeAction }: Props
           className="flex-1 border border-border rounded-lg px-3 py-2 text-sm bg-background"
         />
         <label className="cursor-pointer shrink-0">
-          <div className="px-3 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all bg-background">
+          <div className="px-3 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary-light transition-all bg-background">
             {newFileInput ? '✓ Fichier sélectionné' : '📎 Choisir'}
           </div>
           <input

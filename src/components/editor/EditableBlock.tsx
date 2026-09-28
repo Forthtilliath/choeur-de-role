@@ -33,7 +33,7 @@ export function EditableBlock({ content, canEdit, onSaveAction, children }: Prop
           {children}
           <button
             onClick={() => setEditing(true)}
-            className="absolute top-2 right-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity text-xs px-2 py-1 rounded-md bg-primary text-white"
+            className="absolute top-2 right-2 md:opacity-0 md:group-hover:opacity-100 text-xs px-2 py-1 rounded-md bg-primary text-white btn-token"
           >
             ✏️ Modifier
           </button>

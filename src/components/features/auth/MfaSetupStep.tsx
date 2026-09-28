@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { CodeInput, FormError, RestartButton, StepTitle } from './LoginSteps';
 
 const STEP_BADGE_CLASS =
-  'shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-xs';
+  'shrink-0 w-6 h-6 rounded-full bg-primary/15 text-primary-light font-bold flex items-center justify-center text-xs';
 
 type Props = {
   qrCode: string;

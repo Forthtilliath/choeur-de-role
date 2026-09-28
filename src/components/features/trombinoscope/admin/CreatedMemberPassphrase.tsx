@@ -28,7 +28,7 @@ export function CreatedMemberPassphrase({ passphrase, member, onCloseAction }: P
           Passphrase de connexion
         </span>
         <div className="flex items-center gap-2">
-          <code className="flex-1 font-mono text-base font-semibold bg-background border border-primary/30 text-primary rounded-lg px-4 py-3 select-all">
+          <code className="flex-1 font-mono text-base font-semibold bg-background border border-primary/30 text-primary-light rounded-lg px-4 py-3 select-all">
             {passphrase}
           </code>
           <button

@@ -145,7 +145,7 @@ export function EventForm({
               Affiche <span className="text-foreground/40 font-normal">(portrait recommandé)</span>
             </span>
             <label aria-label="Ajouter une affiche" className="cursor-pointer self-start">
-              <div className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary transition-all bg-background">
+              <div className="flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm text-foreground/60 hover:border-primary hover:text-primary-light transition-all bg-background">
                 <span>📷</span>
                 <span>{imagePreview ? "Changer l'affiche" : 'Ajouter une affiche'}</span>
               </div>

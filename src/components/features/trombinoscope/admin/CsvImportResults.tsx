@@ -50,7 +50,7 @@ export function CsvImportResults({ results, onCloseAction }: Props) {
                       <td className="px-3 py-2 text-foreground/60 font-mono text-xs">{r.email}</td>
                       <td className="px-3 py-2">
                         <div className="flex items-center gap-2">
-                          <code className="text-xs font-mono text-primary bg-primary/5 px-2 py-0.5 rounded">
+                          <code className="text-xs font-mono text-primary-light bg-primary/5 px-2 py-0.5 rounded">
                             {r.passphrase}
                           </code>
                           <button

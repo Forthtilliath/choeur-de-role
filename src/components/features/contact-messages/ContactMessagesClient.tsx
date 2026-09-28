@@ -11,9 +11,9 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  rejoindre: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-  partenariat: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-  autre: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+  rejoindre: 'bg-primary/10 text-primary-light',
+  partenariat: 'bg-secondary/20 text-secondary-dark dark:text-secondary',
+  autre: 'bg-foreground/10 text-foreground/70',
 };
 
 const UNDO_DELAY = 4000;
@@ -100,8 +100,8 @@ export function ContactMessagesClient({ messages: initial }: Props) {
         </div>
         {unreadCount > 0 && (
           <div className="bg-primary/10 border border-primary/20 rounded-xl px-4 py-3 text-center">
-            <p className="text-2xl font-semibold text-primary">{unreadCount}</p>
-            <p className="text-xs text-primary/70 mt-0.5">Non traité{unreadCount > 1 ? 's' : ''}</p>
+            <p className="text-2xl font-semibold text-primary-light">{unreadCount}</p>
+            <p className="text-xs text-primary-light/70 mt-0.5">Non traité{unreadCount > 1 ? 's' : ''}</p>
           </div>
         )}
         {(['rejoindre', 'partenariat', 'autre'] as const).map((cat) => {
@@ -222,7 +222,7 @@ export function ContactMessagesClient({ messages: initial }: Props) {
                     <div>
                       <span className="text-foreground/50 text-xs">Email</span>
                       <p>
-                        <a href={`mailto:${msg.email}`} className="text-primary hover:opacity-70">
+                        <a href={`mailto:${msg.email}`} className="text-primary-light hover:opacity-70">
                           {msg.email}
                         </a>
                       </p>

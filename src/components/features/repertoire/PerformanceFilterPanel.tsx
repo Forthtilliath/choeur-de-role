@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import type { PerformanceFilter } from './types';
 
-const ACTIVE_CLASS = 'border-primary bg-primary/10 text-primary';
+const ACTIVE_CLASS = 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40';
 const IDLE_CLASS = 'border-border text-foreground/60';
 
 type Props = {
@@ -83,7 +83,7 @@ export function PerformanceFilterPanel({
                   isActive
                     ? ACTIVE_CLASS
                     : isStoredNotInSong
-                      ? 'border-dashed border-primary/60 text-primary/60'
+                      ? 'border-dashed border-primary/60 text-primary-light/60'
                       : IDLE_CLASS
                 }`}
               >
@@ -98,7 +98,7 @@ export function PerformanceFilterPanel({
               className={`px-3 py-1.5 rounded-lg text-sm border transition-all ${
                 effectivePerformanceId === selectedPastPerf.id
                   ? ACTIVE_CLASS
-                  : 'border-dashed border-primary/40 text-primary/50 hover:border-primary/60 hover:text-primary/70'
+                  : 'border-dashed border-primary/40 text-primary-light/50 hover:border-primary/60 hover:text-primary-light/70'
               }`}
             >
               {selectedPastPerf.title}

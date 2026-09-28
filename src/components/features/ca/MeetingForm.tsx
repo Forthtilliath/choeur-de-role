@@ -93,8 +93,8 @@ export function MeetingForm({
               <div
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-sm transition-all ${
                   extracting
-                    ? 'border-primary bg-primary/10 text-primary pointer-events-none'
-                    : 'border-border text-foreground/60 hover:border-primary hover:text-primary bg-background'
+                    ? 'border-primary bg-primary/10 text-primary-light ring-1 ring-secondary/40 pointer-events-none'
+                    : 'border-border text-foreground/60 hover:border-primary hover:text-primary-light bg-background'
                 }`}
               >
                 {extracting ? (
@@ -122,13 +122,13 @@ export function MeetingForm({
                 href={pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-primary hover:opacity-70 transition-opacity"
+                className="text-xs text-primary-light hover:opacity-70 transition-opacity"
               >
                 Voir le PDF →
               </Link>
             )}
           </div>
-          {extracting && <p className="text-xs text-primary/70">Extraction en cours...</p>}
+          {extracting && <p className="text-xs text-primary-light/70">Extraction en cours...</p>}
           {extractError && <p className="text-xs text-orange-500">{extractError}</p>}
           {pdfUrl && !extracting && (
             <p className="text-xs text-foreground/40">Le PDF sera disponible pour les choristes.</p>

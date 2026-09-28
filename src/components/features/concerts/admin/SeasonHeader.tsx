@@ -76,7 +76,7 @@ export function SeasonHeader({
               {season.label}
             </span>
             {season.active && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary-light">
                 Active
               </span>
             )}
@@ -103,7 +103,7 @@ export function SeasonHeader({
             onClick={onToggleActiveAction}
             className={`p-1.5 rounded-lg transition-all ${
               season.active
-                ? 'text-primary/80 hover:text-primary'
+                ? 'text-primary-light/80 hover:text-primary-light'
                 : 'text-foreground/30 hover:text-foreground/60'
             }`}
             title={season.active ? 'Désactiver' : 'Activer'}
