@@ -30,7 +30,7 @@ export function ConcertCard({
 
   return (
     <div
-      className={`rounded-2xl overflow-hidden border border-border bg-background flex flex-col transition-all ${past ? 'opacity-70 hover:opacity-100' : 'hover:border-primary/50'}`}
+      className={`card-game card-lift overflow-hidden flex flex-col ${past ? 'opacity-75 hover:opacity-100' : ''}`}
     >
       {/* Image cliquable vers la page détail */}
       {slug ? (
@@ -45,12 +45,14 @@ export function ConcertCard({
       <div className="p-4 flex flex-col gap-2 flex-1 border-t border-border">
         {slug ? (
           <Link href={`/concerts/${slug}`} className="no-underline">
-            <h3 className="text-sm font-medium text-foreground leading-snug hover:text-primary transition-colors">
+            <h3 className="text-base font-semibold text-foreground leading-snug hover:text-primary-light transition-colors">
               {performance.title}
             </h3>
           </Link>
         ) : (
-          <h3 className="text-sm font-medium text-foreground leading-snug">{performance.title}</h3>
+          <h3 className="text-base font-semibold text-foreground leading-snug">
+            {performance.title}
+          </h3>
         )}
 
         <div className="flex flex-col gap-1 mt-auto min-h-10">
@@ -76,7 +78,7 @@ export function ConcertCard({
             href={performance.ticket_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 text-xs text-center py-1.5 rounded-lg bg-primary text-white no-underline hover:opacity-80 transition-opacity"
+            className="mt-2 text-xs font-semibold text-center py-1.5 rounded-xl border border-primary-deep bg-primary text-white no-underline btn-token"
           >
             Réserver
           </Link>
