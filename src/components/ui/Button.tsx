@@ -4,21 +4,24 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg text-sm font-medium disabled:opacity-40 disabled:pointer-events-none no-underline hover:cursor-pointer border',
+  'inline-flex items-center justify-center rounded-xl text-sm font-semibold disabled:opacity-40 disabled:pointer-events-none no-underline hover:cursor-pointer border',
   {
     variants: {
+      // Les variantes pleines sont des jetons (btn-token) : tranche foncée, s'enfoncent au clic
       variant: {
-        primary: 'bg-primary border-primary text-white transition-opacity hover:opacity-80',
+        primary: 'bg-primary border-primary-deep text-white btn-token',
         outline:
-          'text-primary border-primary hover:bg-primary/10 transition-opacity hover:opacity-80',
+          'text-primary-light border-primary/60 hover:border-primary hover:bg-primary/10 transition-colors',
         secondary:
-          'bg-secondary-dark border-secondary-dark text-white transition-opacity hover:opacity-80',
+          'bg-secondary border-secondary-dark/50 text-ink btn-token [--token-edge:var(--color-secondary-dark)]',
         'outline-secondary':
-          'text-secondary-dark dark:text-secondary border-secondary-dark dark:border-secondary hover:bg-secondary/20 transition-opacity hover:opacity-80',
-        ghost: 'text-foreground hover:bg-muted hover:text-foreground',
-        'ghost-white': 'text-white/80 hover:bg-white/10 hover:text-white',
-        white: 'bg-white/10 text-white border-white/50 transition-opacity hover:opacity-80',
-        danger: 'bg-red-500 border-red-500 text-white transition-opacity hover:opacity-80',
+          'text-secondary-dark dark:text-secondary border-secondary-dark/60 dark:border-secondary/60 hover:bg-secondary/15 transition-colors',
+        ghost: 'text-foreground hover:bg-muted hover:text-foreground transition-colors',
+        'ghost-white': 'text-white/80 hover:bg-white/10 hover:text-white transition-colors',
+        white:
+          'bg-white/10 text-white border-white/50 backdrop-blur-sm hover:bg-white/20 hover:border-white/80 transition-colors',
+        danger:
+          'bg-red-600 border-red-800 text-white btn-token [--token-edge:var(--color-red-800)]',
         link: 'text-foreground/70 hover:text-foreground transition-colors border-0',
       },
       size: {

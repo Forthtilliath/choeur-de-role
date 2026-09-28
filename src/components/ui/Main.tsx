@@ -1,6 +1,7 @@
 import type React from 'react';
 
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
+import { TitleFlourish } from '@/components/ui/TitleFlourish';
 import { cn } from '@/lib/utils';
 
 type Variant = 'public' | 'choriste' | 'admin';
@@ -74,7 +75,7 @@ export function Main({
           {Boolean(title || actions) && (
             <div className="flex items-start justify-between gap-4 mb-8">
               <div className="min-w-0">
-                {title && <h1 className="text-2xl font-medium text-foreground">{title}</h1>}
+                {title && <h1 className="text-3xl font-semibold text-foreground">{title}</h1>}
                 {subtitle && <p className="text-sm text-foreground/70 mt-1">{subtitle}</p>}
               </div>
               {Boolean(actions) && <div className="shrink-0">{actions}</div>}
@@ -93,7 +94,7 @@ export function Main({
         {Boolean(title || actions) && (
           <div className="flex items-center justify-between gap-4 mb-8">
             <div className="min-w-0">
-              {title && <h1 className="text-2xl font-medium text-foreground">{title}</h1>}
+              {title && <h1 className="text-3xl font-semibold text-foreground">{title}</h1>}
               {subtitle && <p className="text-sm text-foreground/70 mt-1">{subtitle}</p>}
             </div>
             {Boolean(actions) && <div className="shrink-0">{actions}</div>}
@@ -116,7 +117,10 @@ export function Main({
       {Boolean(title || subtitle || actions) && (
         <div className="text-center mb-10 md:mb-16">
           {title && (
-            <h1 className="text-3xl md:text-4xl font-medium mb-3 text-foreground">{title}</h1>
+            <>
+              <h1 className="text-4xl md:text-5xl font-semibold text-foreground">{title}</h1>
+              <TitleFlourish className="mt-4 mb-4" />
+            </>
           )}
           {subtitle && <p className="text-foreground/70 max-w-xl mx-auto">{subtitle}</p>}
           {Boolean(actions) && <div className="mt-6">{actions}</div>}

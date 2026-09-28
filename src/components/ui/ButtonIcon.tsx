@@ -3,12 +3,12 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonIconVariants = cva(
-  'inline-flex items-center justify-center rounded-lg border text-foreground/60 hover:text-foreground transition-all hover:cursor-pointer',
+  'inline-flex items-center justify-center rounded-xl border text-foreground/60 hover:text-foreground transition-all hover:cursor-pointer',
   {
     variants: {
       variant: {
-        default: 'border-border hover:border-primary',
-        primary: 'border-primary text-white bg-primary hover:bg-primary/80',
+        default: 'border-border bg-background hover:border-primary hover:bg-primary/5',
+        primary: 'border-primary-deep text-white hover:text-white bg-primary btn-token',
         outline:
           'border-border border-primary/80 hover:border-primary bg-transparent hover:bg-primary/10',
         danger:
