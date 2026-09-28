@@ -83,12 +83,15 @@ export function CommandPaletteInner({
       {/* Contient le clic pour éviter la fermeture au clic dans la palette */}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
-        className="w-full max-w-xl mx-4 bg-background border border-border rounded-2xl shadow-2xl overflow-hidden"
+        className="group w-full max-w-xl mx-4 bg-background border border-border rounded-2xl shadow-2xl overflow-hidden transition-colors focus-within:border-primary/50"
         onMouseDown={(e) => e.stopPropagation()}
       >
         {/* Input */}
         <div className="flex items-center gap-3 px-4">
-          <Search size={16} className="text-foreground/40 shrink-0" />
+          <Search
+            size={16}
+            className="text-foreground/40 shrink-0 transition-colors group-focus-within:text-secondary-dark dark:group-focus-within:text-secondary"
+          />
           <input
             ref={inputRef}
             value={query}
@@ -97,7 +100,7 @@ export function CommandPaletteInner({
             placeholder="Rechercher un choriste, un chant, une actualité..."
             className="flex-1 bg-transparent outline-none text-sm text-foreground placeholder:text-foreground/40 py-4"
           />
-          <kbd className="text-xs text-foreground/30 border border-border rounded px-1.5 py-0.5 shrink-0">
+          <kbd className="text-[10px] font-semibold text-foreground/50 bg-muted border border-border rounded-md px-1.5 py-0.5 shrink-0 shadow-[inset_0_-1px_0_var(--color-border)]">
             Esc
           </kbd>
         </div>
@@ -142,7 +145,7 @@ export function CommandPaletteInner({
                             )}
                           </span>
                           {isActive && (
-                            <kbd className="text-xs text-foreground/30 border border-border rounded px-1.5 py-0.5 shrink-0">
+                            <kbd className="text-[10px] font-semibold text-foreground/50 bg-muted border border-border rounded-md px-1.5 py-0.5 shrink-0 shadow-[inset_0_-1px_0_var(--color-border)]">
                               ↵
                             </kbd>
                           )}
