@@ -6,21 +6,9 @@ import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
 import { getUserQuery } from '@/lib/auth';
 import { sendWelcomeEmail } from '@/lib/email';
+import { bulkImportSchema, importRowSchema, MAX_IMPORT_ROWS } from '@/lib/memberSchemas';
 import { generatePassphrase } from '@/lib/passphrase';
 import { createAdminClient } from '@/lib/supabase.server';
-
-type ImportRow = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  voice_part_id?: string | null;
-  season_ids?: string[];
-  phone?: string | null;
-  address?: string | null;
-  zip_code?: string | null;
-  city?: string | null;
-  birthday?: string | null;
-};
 
 export type ImportRowResult = {
   first_name: string;
@@ -37,42 +25,46 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Non autorisé' }, { status: 403 });
   }
 
-  const body = await request.json();
-  const { rows, send_emails } = body as { rows: ImportRow[]; send_emails: boolean };
-
-  if (!Array.isArray(rows) || rows.length === 0) {
-    return NextResponse.json({ error: 'Aucune ligne à importer' }, { status: 400 });
+  const parsed = bulkImportSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: `Entre 1 et ${MAX_IMPORT_ROWS} lignes à importer par envoi.` },
+      { status: 400 },
+    );
   }
+  const { rows, send_emails } = parsed.data;
 
   try {
     const adminSupabase = createAdminClient();
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
     const results: ImportRowResult[] = [];
 
-    for (const row of rows) {
+    for (const rawRow of rows) {
+      const row = importRowSchema.safeParse(rawRow);
+      if (!row.success) {
+        // Ligne signalée telle que reçue, pour que l'admin la retrouve dans son fichier
+        const raw = (rawRow ?? {}) as Record<string, unknown>;
+        results.push({
+          first_name: String(raw.first_name ?? ''),
+          last_name: String(raw.last_name ?? ''),
+          email: String(raw.email ?? ''),
+          success: false,
+          error: 'Ligne invalide : prénom, nom et e-mail valide requis',
+        });
+        continue;
+      }
       const {
         first_name,
         last_name,
         email,
         voice_part_id,
-        season_ids = [],
+        season_ids,
         phone,
         address,
         zip_code,
         city,
         birthday,
-      } = row;
-
-      if (!first_name || !last_name || !email) {
-        results.push({
-          first_name,
-          last_name,
-          email,
-          success: false,
-          error: 'Champs requis manquants',
-        });
-        continue;
-      }
+      } = row.data;
 
       const passphrase = generatePassphrase(3);
 
