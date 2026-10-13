@@ -1528,7 +1528,9 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      clear_login_attempts: { Args: { p_email: string }; Returns: undefined };
       get_my_role: { Args: never; Returns: string };
+      register_login_attempt: { Args: { p_email: string }; Returns: string | null };
     };
     Enums: {
       [_ in never]: never;
