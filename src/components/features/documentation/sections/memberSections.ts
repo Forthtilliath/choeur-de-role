@@ -11,7 +11,7 @@ export const MEMBER_SECTIONS: Section[] = [
       {
         title: 'Ajouter un choriste',
         content:
-          'Administration → Membres → "+ Ajouter un membre". Remplissez le prénom, nom, email et pupitre. Un email est automatiquement envoyé au choriste avec son mot de passe (8 caractères aléatoires) et un lien d\'activation.',
+          'Administration → Membres → "+ Ajouter un membre". Remplissez le prénom, nom, email et pupitre. Un email est automatiquement envoyé au choriste avec son mot de passe (4 mots tirés au hasard) et un lien d\'activation.',
         tip: 'Le choriste doit cliquer sur le lien dans les 24h pour activer son compte.',
       },
       {
