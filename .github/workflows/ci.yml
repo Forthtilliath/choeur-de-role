@@ -1,19 +1,27 @@
 name: CI
 
+# PR vers main uniquement (pas de doublon push + pull_request), brouillons ignorés
 on:
-  push:
-    branches: ['**']
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   check:
     name: TypeScript · ESLint · Tests unitaires
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v5
@@ -39,3 +47,81 @@ jobs:
         run: npm test
         env:
           SKIP_ENV_VALIDATION: 'true'
+
+  # Job lourd (~5 min) : seulement si les vérifications rapides passent
+  lighthouse:
+    name: Lighthouse
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      AUTH_URL: http://localhost:3000
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      # Supabase local : port fixe (supabase/config.toml). On utilise `localhost` plutôt
+      # que l'IP renvoyée par `supabase status` — z.url() (src/env.ts) rejette 127.0.0.1.
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:54321
+      # Valeurs factices : non utilisées par les pages publiques mesurées par Lighthouse,
+      # mais requises par la validation env (src/env.ts).
+      AUTH_SECRET: ci-lighthouse-not-a-real-session-secret
+      RESEND_API_KEY: re_ci_placeholder
+      NEXT_MAIL_CONTACT: ci@example.com
+      YOUTUBE_API_KEY: ci_placeholder
+      # R2 : vraies valeurs (images de la galerie / médias du répertoire).
+      # Les outils lancés dans ce job ont des versions figées : jamais de @latest avec ces secrets.
+      CLOUDFLARE_R2_ENDPOINT: ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+      CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+      CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+      CLOUDFLARE_R2_BUCKET_NAME: ${{ secrets.CLOUDFLARE_R2_BUCKET_NAME }}
+      CLOUDFLARE_R2_IMAGES_BUCKET_NAME: ${{ secrets.CLOUDFLARE_R2_IMAGES_BUCKET_NAME }}
+      CLOUDFLARE_R2_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_PUBLIC_URL }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - uses: supabase/setup-cli@v3
+        with:
+          version: 2.120.0
+
+      - name: Mettre à jour npm
+        run: npm install -g npm@11
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Démarrer Supabase local
+        run: supabase start
+
+      - name: Exposer les clés Supabase locales
+        run: |
+          supabase status -o env \
+            --override-name auth.anon_key=NEXT_PUBLIC_SUPABASE_ANON_KEY \
+            --override-name auth.service_role_key=SUPABASE_SERVICE_ROLE_KEY \
+            | grep -E '^(NEXT_PUBLIC_SUPABASE_ANON_KEY|SUPABASE_SERVICE_ROLE_KEY)=' \
+            >> "$GITHUB_ENV"
+
+      - name: Cache Next.js build
+        uses: actions/cache@v6
+        with:
+          path: .next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Démarrer le serveur
+        run: npm start &
+
+      - name: Attendre que le serveur soit prêt
+        run: npx wait-on@9.5.1 http://localhost:3000 --timeout 30000
+
+      - name: Lancer Lighthouse CI
+        run: npx @lhci/cli@0.15.1 autorun
