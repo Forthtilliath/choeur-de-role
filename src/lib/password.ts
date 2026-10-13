@@ -1,27 +1,30 @@
-// Alphanumérique sans caractères ambigus à la lecture (0/O/o, 1/l/I) :
-// 56 symboles → 56^8 ≈ 9,7 × 10^13 combinaisons pour 8 caractères (~46,4 bits).
-export const PASSWORD_ALPHABET = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+// Liste de 6 000 mots courants construite depuis Lexique 3 (http://www.lexique.org,
+// CC BY-SA 4.0) par scripts/build-wordlist.mjs.
+import wordlist from '@/lib/wordlist.json';
 
-// Plus grand multiple de la taille de l'alphabet tenant sur un octet :
-// les octets au-delà sont rejetés pour éviter le biais du modulo.
-const MAX_UNBIASED_BYTE = 256 - (256 % PASSWORD_ALPHABET.length);
+export const PASSWORD_WORDS: readonly string[] = wordlist;
+export const PASSWORD_WORD_COUNT = 4;
 
-// Générateur cryptographique (crypto.getRandomValues), jamais Math.random
-export function generatePassword(length: number = 8): string {
-  if (!Number.isInteger(length) || length < 8) {
-    throw new Error('Un mot de passe doit faire au moins 8 caractères');
+// 4 mots parmi 6 000 → 6000^4 ≈ 1,3 × 10^15 combinaisons (~50,2 bits)
+
+// Plus grand multiple de la taille de la liste tenant sur 32 bits :
+// les tirages au-delà sont rejetés pour éviter le biais du modulo.
+const MAX_UNBIASED = Math.floor(2 ** 32 / PASSWORD_WORDS.length) * PASSWORD_WORDS.length;
+
+function randomIndex(): number {
+  const buffer = new Uint32Array(1);
+  for (;;) {
+    crypto.getRandomValues(buffer);
+    const value = buffer[0]!;
+    if (value < MAX_UNBIASED) return value % PASSWORD_WORDS.length;
   }
-
-  let password = '';
-  while (password.length < length) {
-    const bytes = crypto.getRandomValues(new Uint8Array(length * 2));
-    for (const byte of bytes) {
-      if (byte >= MAX_UNBIASED_BYTE) continue;
-      password += PASSWORD_ALPHABET[byte % PASSWORD_ALPHABET.length];
-      if (password.length === length) break;
-    }
-  }
-  return password;
 }
 
-// Exemple : "q7RmW3kz"
+// Générateur cryptographique (crypto.getRandomValues), jamais Math.random
+export function generatePassword(): string {
+  return Array.from({ length: PASSWORD_WORD_COUNT }, () => PASSWORD_WORDS[randomIndex()]).join(
+    '-',
+  );
+}
+
+// Exemple : "falaise-cobalt-tisane-moulin"
