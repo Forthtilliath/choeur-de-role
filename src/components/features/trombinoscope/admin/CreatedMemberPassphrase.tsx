@@ -18,14 +18,14 @@ export function CreatedMemberPassphrase({ passphrase, member, onCloseAction }: P
 
       <div className="flex flex-col gap-1">
         <p className="text-sm text-foreground/70">
-          Le compte a été créé sans envoi d&apos;email. Notez la passphrase ci-dessous — elle ne
+          Le compte a été créé sans envoi d&apos;email. Notez le mot de passe ci-dessous — il ne
           sera plus accessible ensuite.
         </p>
       </div>
 
       <div className="flex flex-col gap-2">
         <span className="text-xs font-medium text-foreground/50 uppercase tracking-wide">
-          Passphrase de connexion
+          Mot de passe de connexion
         </span>
         <div className="flex items-center gap-2">
           <code className="flex-1 font-mono text-base font-semibold bg-background border border-primary/30 text-primary-light rounded-lg px-4 py-3 select-all">

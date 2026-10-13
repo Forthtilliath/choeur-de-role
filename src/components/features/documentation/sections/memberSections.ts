@@ -11,14 +11,14 @@ export const MEMBER_SECTIONS: Section[] = [
       {
         title: 'Ajouter un choriste',
         content:
-          'Administration → Membres → "+ Ajouter un membre". Remplissez le prénom, nom, email et pupitre. Un email est automatiquement envoyé au choriste avec son mot de passe (passphrase de 4 mots) et un lien d\'activation.',
+          'Administration → Membres → "+ Ajouter un membre". Remplissez le prénom, nom, email et pupitre. Un email est automatiquement envoyé au choriste avec son mot de passe (8 caractères aléatoires) et un lien d\'activation.',
         tip: 'Le choriste doit cliquer sur le lien dans les 24h pour activer son compte.',
       },
       {
         title: 'Renvoyer une invitation',
         content:
-          'Si le choriste n\'a pas cliqué sur le lien ou si celui-ci a expiré, un bouton ✉ "Renvoyer" apparaît sur sa ligne dans le tableau. Cliquez dessus pour générer un nouveau lien et une nouvelle passphrase.',
-        warning: "L'ancienne passphrase sera invalidée.",
+          'Si le choriste n\'a pas cliqué sur le lien ou si celui-ci a expiré, un bouton ✉ "Renvoyer" apparaît sur sa ligne dans le tableau. Cliquez dessus pour générer un nouveau lien et un nouveau mot de passe.',
+        warning: "L'ancien mot de passe sera invalidé.",
       },
       {
         title: "Modifier l'email d'un choriste",

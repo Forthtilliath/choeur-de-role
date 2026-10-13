@@ -113,7 +113,7 @@ export function CsvImportPreview({
         <span className="text-sm text-foreground/70">
           Envoyer les emails d&apos;invitation
           <span className="text-foreground/40 text-xs block">
-            Sans email : les passphrases s&apos;affichent dans les résultats
+            Sans email : les mots de passe s&apos;affichent dans les résultats
           </span>
         </span>
       </label>

@@ -32,7 +32,7 @@ const SETUP_FLOW = [
   {
     icon: '✉️',
     title: 'Inviter les choristes',
-    why: `Chaque invitation envoie un email automatique avec un lien d'activation et un mot de passe généré automatiquement — trois mots séparés par des tirets. Le choriste n'a rien à créer.`,
+    why: `Chaque invitation envoie un email automatique avec un lien d'activation et un mot de passe aléatoire de 8 caractères généré automatiquement. Le choriste n'a rien à créer.`,
     path: 'Administration → Membres',
     href: '/choristes/admin/membres',
   },
