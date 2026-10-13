@@ -1,36 +1,41 @@
 import { describe, expect, it } from 'vitest';
 
-import { generatePassword, PASSWORD_ALPHABET } from '../password';
+import { generatePassword, PASSWORD_WORD_COUNT, PASSWORD_WORDS } from '../password';
+
+describe('PASSWORD_WORDS', () => {
+  it('contient 6 000 mots uniques', () => {
+    expect(PASSWORD_WORDS).toHaveLength(6000);
+    expect(new Set(PASSWORD_WORDS).size).toBe(PASSWORD_WORDS.length);
+  });
+
+  it('ne contient que des mots de 6 à 8 lettres minuscules sans accent', () => {
+    for (const word of PASSWORD_WORDS) {
+      expect(word).toMatch(/^[a-z]{6,8}$/);
+    }
+  });
+});
 
 describe('generatePassword', () => {
-  it('retourne 8 caractères par défaut', () => {
-    expect(generatePassword()).toHaveLength(8);
-  });
-
-  it('respecte la longueur demandée', () => {
-    expect(generatePassword(12)).toHaveLength(12);
-  });
-
-  it('refuse une longueur inférieure à 8', () => {
-    expect(() => generatePassword(6)).toThrow();
-    expect(() => generatePassword(8.5)).toThrow();
-  });
-
-  it('est uniquement alphanumérique, sans caractères ambigus', () => {
+  it('retourne 4 mots de la liste séparés par des tirets', () => {
     for (let i = 0; i < 200; i++) {
-      expect(generatePassword()).toMatch(/^[a-km-np-zA-HJ-NP-Z2-9]{8}$/);
+      const parts = generatePassword().split('-');
+      expect(parts).toHaveLength(PASSWORD_WORD_COUNT);
+      for (const word of parts) {
+        expect(PASSWORD_WORDS).toContain(word);
+      }
     }
-    expect(PASSWORD_ALPHABET).toHaveLength(56);
-    expect(PASSWORD_ALPHABET).not.toMatch(/[0O1lIo]/);
-  });
-
-  it('couvre tout l’alphabet (pas de symbole jamais tiré)', () => {
-    const seen = new Set(Array.from({ length: 500 }, () => generatePassword()).join(''));
-    expect(seen.size).toBe(PASSWORD_ALPHABET.length);
   });
 
   it('produit des mots de passe distincts', () => {
     const results = new Set(Array.from({ length: 1000 }, () => generatePassword()));
     expect(results.size).toBe(1000);
+  });
+
+  it('tire les mots dans toute la liste, pas seulement en début', () => {
+    const indexes = Array.from({ length: 500 }, () => generatePassword().split('-'))
+      .flat()
+      .map((word) => PASSWORD_WORDS.indexOf(word));
+    expect(Math.max(...indexes)).toBeGreaterThan(PASSWORD_WORDS.length * 0.9);
+    expect(Math.min(...indexes)).toBeLessThan(PASSWORD_WORDS.length * 0.1);
   });
 });
