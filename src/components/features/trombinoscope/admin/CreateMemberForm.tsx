@@ -250,7 +250,7 @@ export function CreateMemberForm({ voiceParts, seasons, onCloseAction, onSuccess
             <span className="text-sm text-foreground/70">
               Créer sans envoi d&apos;email{' '}
               <span className="text-foreground/40 text-xs">
-                (affiche la passphrase à la création)
+                (affiche le mot de passe à la création)
               </span>
             </span>
           </label>

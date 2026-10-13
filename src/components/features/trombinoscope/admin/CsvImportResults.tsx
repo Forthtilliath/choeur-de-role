@@ -38,7 +38,7 @@ export function CsvImportResults({ results, onCloseAction }: Props) {
                   <tr className="border-b border-border bg-background">
                     <th className={TH_CLASS}>Nom</th>
                     <th className={TH_CLASS}>Email</th>
-                    <th className={TH_CLASS}>Passphrase</th>
+                    <th className={TH_CLASS}>Mot de passe</th>
                   </tr>
                 </thead>
                 <tbody>
