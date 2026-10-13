@@ -7,7 +7,7 @@ import { logAudit } from '@/lib/auditLog';
 import { getUserQuery } from '@/lib/auth';
 import { sendWelcomeEmail } from '@/lib/email';
 import { bulkImportSchema, importRowSchema, MAX_IMPORT_ROWS } from '@/lib/memberSchemas';
-import { generatePassphrase } from '@/lib/passphrase';
+import { generatePassword } from '@/lib/password';
 import { createAdminClient } from '@/lib/supabase.server';
 
 export type ImportRowResult = {
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
         birthday,
       } = row.data;
 
-      const passphrase = generatePassphrase(3);
+      const passphrase = generatePassword();
 
       const { data: newUser, error: authError } = await adminSupabase.auth.admin.createUser({
         email,

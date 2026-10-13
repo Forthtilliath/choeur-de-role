@@ -5,7 +5,7 @@ import { env } from '@/env';
 import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
 import { sendWelcomeEmail } from '@/lib/email';
-import { generatePassphrase } from '@/lib/passphrase';
+import { generatePassword } from '@/lib/password';
 import { createAdminClient, createServerClient } from '@/lib/supabase.server';
 
 export async function POST(request: Request) {
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Email introuvable' }, { status: 400 });
     }
 
-    const passphrase = generatePassphrase(4);
+    const passphrase = generatePassword();
     await adminClient.auth.admin.updateUserById(memberId, { password: passphrase });
 
     const { data: linkData } = await adminClient.auth.admin.generateLink({

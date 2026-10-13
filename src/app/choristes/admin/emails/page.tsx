@@ -10,13 +10,13 @@ import {
   passwordResetEmailHtml,
   welcomeEmailHtml,
 } from '@/lib/emailTemplates';
-import { generatePassphrase } from '@/lib/passphrase';
+import { generatePassword } from '@/lib/password';
 
 export const metadata: Metadata = { title: 'Prévisualisation des emails' };
 
 const SAMPLE_URL = 'https://choeur-de-role.fr/login?token=exemple';
 
-const PASSPHRASE = generatePassphrase(3);
+const PASSPHRASE = generatePassword();
 
 export default async function EmailsPreviewPage() {
   await handlePageAccess(isAdmin);
