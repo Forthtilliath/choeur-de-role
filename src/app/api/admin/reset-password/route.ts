@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
 import { sendPasswordResetEmail } from '@/lib/email';
-import { generatePassphrase } from '@/lib/passphrase';
+import { generatePassword } from '@/lib/password';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { createAdminClient, createServerClient } from '@/lib/supabase.server';
 
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 
       const results = await Promise.allSettled(
         confirmed.map(async (m) => {
-          const passphrase = generatePassphrase(3);
+          const passphrase = generatePassword();
           await adminClient.auth.admin.updateUserById(m.id, { password: passphrase });
           await sendPasswordResetEmail({
             to: m.email!,
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Membre introuvable ou sans email' }, { status: 400 });
     }
 
-    const passphrase = generatePassphrase(3);
+    const passphrase = generatePassword();
     const { error: authError } = await adminClient.auth.admin.updateUserById(memberId, {
       password: passphrase,
     });

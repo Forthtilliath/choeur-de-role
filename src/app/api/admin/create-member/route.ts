@@ -6,7 +6,7 @@ import { toApiError } from '@/lib/apiError';
 import { logAudit } from '@/lib/auditLog';
 import { getUserQuery } from '@/lib/auth';
 import { sendWelcomeEmail } from '@/lib/email';
-import { generatePassphrase } from '@/lib/passphrase';
+import { generatePassword } from '@/lib/password';
 import { MEMBER_ROLES } from '@/lib/roles';
 import { createAdminClient } from '@/lib/supabase.server';
 
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const passphrase = generatePassphrase(3);
+    const passphrase = generatePassword();
     const adminSupabase = createAdminClient();
 
     const { data: newUser, error: authError } = await adminSupabase.auth.admin.createUser({
