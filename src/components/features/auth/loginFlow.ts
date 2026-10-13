@@ -29,12 +29,34 @@ export async function abandonMfa() {
   await supabase.auth.signOut({ scope: 'local' });
 }
 
+// Portillon serveur : compte la tentative, refuse si le compte est bloqué (3 essais / 5 min)
+async function requestLoginAttempt(email: string): Promise<string | null> {
+  try {
+    const res = await fetch('/api/auth/login-attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    if (res.ok) return null;
+    const body = (await res.json().catch(() => ({}))) as { error?: unknown };
+    return typeof body.error === 'string' ? body.error : 'Connexion impossible, réessayez.';
+  } catch {
+    return 'Connexion impossible, réessayez.';
+  }
+}
+
 // Connexion par mot de passe puis détermination de l'étape suivante :
 // 2FA obligatoire pour les admins (enrôlement si absente), facultative pour les choristes.
 export async function signIn(email: string, password: string): Promise<LoginOutcome> {
+  const blocked = await requestLoginAttempt(email);
+  if (blocked) return { kind: 'error', message: blocked };
+
   const supabase = createClient();
   const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
   if (signInError) return { kind: 'error', message: 'Email ou mot de passe incorrect' };
+
+  // Mot de passe correct → compteur remis à zéro (la 2FA a sa propre vérification)
+  await fetch('/api/auth/login-attempt', { method: 'DELETE' }).catch(() => {});
 
   const {
     data: { user },
